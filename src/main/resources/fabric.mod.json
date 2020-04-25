@@ -3,8 +3,8 @@
   "id": "modid",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "KEdit",
+  "description": "Map Editor, Made Easy!",
   "authors": [
     "Me!"
   ],
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "ejektaflex.testmod.ExampleMod"
     ]
   },
   "mixins": [
