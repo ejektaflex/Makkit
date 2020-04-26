@@ -15,7 +15,7 @@ class MyLayers(name: String?, format: VertexFormat?, p_i225992_3_: Int, p_i22599
                         .lineWidth(LineWidth(OptionalDouble.of(3.0)))
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .texture(NO_TEXTURE)
-                        .depthTest(DepthTest(519))
+                        .depthTest(DepthTest("always", 519))
                         .cull(Cull(false))
                         .lightmap(Lightmap(false))
                         .writeMaskState(WriteMaskState(true, false))
