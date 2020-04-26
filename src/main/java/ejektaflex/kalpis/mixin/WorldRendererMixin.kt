@@ -1,6 +1,6 @@
-package ejektaflex.testmod.mixin
+package ejektaflex.kalpis.mixin
 
-import ejektaflex.testmod.event.Events
+import ejektaflex.kalpis.event.Events
 import net.minecraft.client.render.*
 import net.minecraft.client.util.math.Matrix4f
 import net.minecraft.client.util.math.MatrixStack

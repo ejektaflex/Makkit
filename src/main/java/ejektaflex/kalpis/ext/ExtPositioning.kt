@@ -1,12 +1,13 @@
-package ejektaflex.testmod.ext
+package ejektaflex.kalpis.ext
 
+import ejektaflex.kalpis.render.RenderHelper
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 
-fun MatrixStack.drawOffset(pos: Vec3d, func: () -> Unit) {
+fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {
     translate(-pos.x, -pos.y, -pos.z)
-    func()
+    func(helper)
     translate(pos.x, pos.y, pos.z)
 }
 

@@ -1,4 +1,4 @@
-package ejektaflex.testmod.mixin
+package ejektaflex.kalpis.mixin
 
 import net.minecraft.client.gui.screen.TitleScreen
 import org.spongepowered.asm.mixin.Mixin

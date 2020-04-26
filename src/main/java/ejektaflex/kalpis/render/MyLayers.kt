@@ -1,4 +1,4 @@
-package ejektaflex.testmod.render
+package ejektaflex.kalpis.render
 
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexFormat

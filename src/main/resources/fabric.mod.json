@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "kalpis",
   "version": "${version}",
 
   "name": "KEdit",
@@ -19,11 +19,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ejektaflex.testmod.ExampleMod"
+      "ejektaflex.kalpis.ExampleMod"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "kalpis.mixins.json"
   ],
 
   "depends": {
