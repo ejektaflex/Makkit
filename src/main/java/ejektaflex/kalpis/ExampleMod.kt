@@ -35,7 +35,7 @@ class ExampleMod : ModInitializer {
             //println("Hai")
 
 
-            drawBox(box)
+            drawBox(box, red)
 
             val result = boxTraceForSide(box)
 

@@ -1,12 +1,14 @@
 package ejektaflex.kalpis.render
 
+import ejektaflex.kalpis.ext.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import net.minecraft.client.render.WorldRenderer
+import net.minecraft.client.util.TextFormat
+import net.minecraft.client.util.math.Vector3f
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
 
 object RenderHelper : AbstractRenderHelper() {
 
@@ -14,16 +16,18 @@ object RenderHelper : AbstractRenderHelper() {
         drawBox(Box(pos, pos + size))
     }
 
-    fun drawBox(box: Box) {
+    val red = Vector3f(1f, 0.5f, 0f)
+
+    fun drawBox(box: Box, color: Vector3f = Vector3f(1f, 1f, 1f)) {
         WorldRenderer.drawBox(
                 matrices,
                 eVerts.getBuffer(MyLayers.OVERLAY_LINES),
                 box,
-                1f, 1f, 1f, 1f
+                color.x, color.y, color.z, 1f
         )
     }
 
-    data class BoxTraceResult(val dir: Direction, val vec: Vec3d)
+
 
     fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance) {
         val player = mc.player!!
@@ -39,14 +43,13 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance): Direction? {
+    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance): BoxTraceResult? {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
         return box.rayTraceForSide(
                 vec1, vec1.add(vec2.x * distance, vec2.y * distance, vec2.z * distance)
         )
-
     }
 
     fun drawBoxBox(pos: BlockPos, size: BlockPos) {
