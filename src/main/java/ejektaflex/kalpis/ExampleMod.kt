@@ -6,6 +6,7 @@ import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 
 class ExampleMod : ModInitializer {
 
@@ -33,9 +34,16 @@ class ExampleMod : ModInitializer {
 
             //println("Hai")
 
+
             drawBox(box)
 
-            boxTrace(box)
+            val result = boxTraceForSide(box)
+
+            if (result != null) {
+                println(result)
+            } else {
+                //println("No result")
+            }
 
             //box.rayTrace()
 
@@ -46,6 +54,8 @@ class ExampleMod : ModInitializer {
                         BlockPos(1, 1, 1)
                 )
             }
+
+
 
         }
     }

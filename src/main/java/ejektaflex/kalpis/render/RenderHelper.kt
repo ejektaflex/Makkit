@@ -6,6 +6,7 @@ import net.minecraft.client.render.WorldRenderer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 
 object RenderHelper : AbstractRenderHelper() {
 
@@ -22,6 +23,8 @@ object RenderHelper : AbstractRenderHelper() {
         )
     }
 
+    data class BoxTraceResult(val dir: Direction, val vec: Vec3d)
+
     fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance) {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
@@ -36,11 +39,11 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance) {
+    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance): Direction? {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
-        val result = box.rayTraceForSide(
+        return box.rayTraceForSide(
                 vec1, vec1.add(vec2.x * distance, vec2.y * distance, vec2.z * distance)
         )
 

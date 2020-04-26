@@ -7,7 +7,7 @@
   ],
   "client": [
     "ExampleMixin",
-    "BoxMixin2",
+    "BoxMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

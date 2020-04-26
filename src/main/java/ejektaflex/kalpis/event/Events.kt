@@ -10,7 +10,7 @@ import net.minecraft.client.util.math.MatrixStack
 object Events {
 
     private fun <E : Any> createSimpleEvent(): Event<(E) -> Unit> {
-        return EventFactory.createArrayBacked(Function1::class.java) { listeners ->
+        return EventFactory.createArrayBacked<(E) -> Unit>(Function1::class.java) { listeners ->
             { evt ->
                 for (listener in listeners) {
                     listener(evt)

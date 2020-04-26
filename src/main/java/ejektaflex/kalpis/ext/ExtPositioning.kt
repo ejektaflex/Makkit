@@ -26,14 +26,13 @@ operator fun BlockPos.plus(other: BlockPos): BlockPos {
     return add(other.x, other.y, other.z)
 }
 
-fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): Direction {
+fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): Direction? {
     var ds = doubleArrayOf(1.0)
     val d = max.x - min.x
     val e = max.y - min.y
     val f = max.z - min.z
-    val thisSided = this as BoxMixin
-    //return thisSided.traceCollisionBox(this, min, ds, null, d, e, f)
-    return Direction.DOWN
+    return BoxMixin.traceCollisionSide(this, min, ds, null, d, e, f)
+    //return Direction.DOWN
 }
 
 /*
