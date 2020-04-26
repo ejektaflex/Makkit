@@ -37,24 +37,8 @@ class EditRegion() {
     }
 
     fun closestOutsidePos(result: BoxTraceResult): BlockPos {
-
-        val a = result
-        /*
-        val pla = result.start
-        val hit = result.hit
-
-        val new = hit.add(hit).subtract(hit.x * 0.95, hit.y * 0.95, hit.z * 0.95)
-        return BlockPos(new)
-
-         */
-
-        //result.hit.
-
-        // 6.0, 5.5, 5.35
-        // east
-        // 1, 0, 0
-        var dirVec = result.dir.vector
-        var dirD = Vec3d(dirVec.x.toDouble(), dirVec.y.toDouble(), dirVec.z.toDouble())
+        val dirVec = result.dir.unitVector
+        val dirD = Vec3d(dirVec.x.toDouble(), dirVec.y.toDouble(), dirVec.z.toDouble())
         return BlockPos(result.hit + dirD.multiply(0.5))
     }
 

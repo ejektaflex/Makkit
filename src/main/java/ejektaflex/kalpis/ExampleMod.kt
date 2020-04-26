@@ -32,6 +32,7 @@ class ExampleMod : ModInitializer {
         val region = EditRegion()
 
         region.pos = region.pos.add(5, 5, 5)
+        region.size = region.size.add(4, 1, 2)
 
         RenderHelper.drawInWorld {
 
