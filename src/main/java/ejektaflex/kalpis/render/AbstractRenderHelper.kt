@@ -12,6 +12,8 @@ abstract class AbstractRenderHelper {
 
     protected lateinit var matrices: MatrixStack
 
+    protected var tickDelta: Float = 0f
+
     protected lateinit var camera: Camera
 
     protected lateinit var buffers: BufferBuilderStorage
@@ -19,8 +21,9 @@ abstract class AbstractRenderHelper {
     protected val eVerts: VertexConsumerProvider.Immediate
         get() = buffers.entityVertexConsumers
 
-    fun setState(matricesIn: MatrixStack, cameraIn: Camera, buffersIn: BufferBuilderStorage) {
+    fun setState(matricesIn: MatrixStack, tickDeltaIn: Float, cameraIn: Camera, buffersIn: BufferBuilderStorage) {
         matrices = matricesIn
+        tickDelta = tickDeltaIn
         camera = cameraIn
         buffers = buffersIn
     }

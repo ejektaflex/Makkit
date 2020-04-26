@@ -5,6 +5,7 @@ import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 
 class ExampleMod : ModInitializer {
 
@@ -20,16 +21,24 @@ class ExampleMod : ModInitializer {
 
     fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
-        RenderHelper.setState(e.matrices, e.camera, e.buffers)
+        RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers)
 
         //val box = Box(1.0, 1.0, 1.0, 2.0, 2.0, 2.0)
 
+
+        var box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+
+
         RenderHelper.drawInWorld {
 
-            drawBox(
-                    BlockPos(1, 1, 1),
-                    BlockPos(1, 1, 1)
-            )
+            //println("Hai")
+
+            drawBox(box)
+
+            boxTrace(box)
+
+            //box.rayTrace()
+
 
             for (entity in mc.world!!.entities) {
                 drawBox(

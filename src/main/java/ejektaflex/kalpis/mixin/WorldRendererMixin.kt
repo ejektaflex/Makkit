@@ -25,7 +25,7 @@ abstract class WorldRendererMixin {
             camera: Camera, gameRenderer: GameRenderer, lightmapTextureManager: LightmapTextureManager,
             projection: Matrix4f, ci: CallbackInfo
     ) {
-        Events.DrawScreenEvent.Dispatcher.invoker()(Events.DrawScreenEvent(matrices, camera, gameRenderer, getBufferBuilders()))
+        Events.DrawScreenEvent.Dispatcher.invoker()(Events.DrawScreenEvent(matrices, tickDelta, camera, gameRenderer, getBufferBuilders()))
     }
 
 }

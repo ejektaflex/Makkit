@@ -19,7 +19,7 @@ object Events {
         }
     }
 
-    data class DrawScreenEvent(val matrices: MatrixStack, val camera: Camera, val renderer: GameRenderer, val buffers: BufferBuilderStorage) {
+    data class DrawScreenEvent(val matrices: MatrixStack, val tickDelta: Float, val camera: Camera, val renderer: GameRenderer, val buffers: BufferBuilderStorage) {
         companion object {
             val Dispatcher = createSimpleEvent<DrawScreenEvent>()
         }
