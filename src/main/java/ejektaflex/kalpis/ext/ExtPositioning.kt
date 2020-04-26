@@ -14,7 +14,7 @@ fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: Re
     translate(pos.x, pos.y, pos.z)
 }
 
-private fun BlockPos.vec3d(): Vec3d {
+fun BlockPos.vec3d(): Vec3d {
     return Vec3d(x.toDouble(), y.toDouble(), z.toDouble())
 }
 
@@ -41,6 +41,13 @@ fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
         null
     }
 }
+
+val Vec3d.ZERO: Vec3d
+    get() = Vec3d(0.0, 0.0, 0.0)
+
+val Vec3d.ONE: Vec3d
+    get() = Vec3d(1.0, 1.0, 1.0)
+
 
 /*
 public Optional<Vec3d> rayTrace(Vec3d min, Vec3d max) {

@@ -1,14 +1,13 @@
-package ejektaflex.kalpis.data
+package ejektaflex.kalpis.edit
 
 import ejektaflex.kalpis.ext.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
-import ejektaflex.kalpis.render.RenderHelper
-import net.minecraft.client.util.math.Vector3f
-import net.minecraft.util.math.*
-import org.lwjgl.system.MathUtil
+import ejektaflex.kalpis.render.RenderBox
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 
-class EditRegion() {
-
+class BlockRegion {
     var pos: BlockPos = BlockPos(0, 0, 0)
         set(value) {
             field = value
@@ -24,7 +23,10 @@ class EditRegion() {
     val end: BlockPos
         get() = pos + size
 
-    private var color: Vector3f = Vector3f(1f, 1f, 1f)
+    fun fitTo(renderBox: RenderBox) {
+        pos = BlockPos(renderBox.pos)
+        size = BlockPos(renderBox.pos)
+    }
 
     private var areaPositions: List<BlockPos> = calcAreaPositions()
 
@@ -54,17 +56,4 @@ class EditRegion() {
         }
         return buff
     }
-
-    private val box: Box
-        get() = Box(pos, end)
-
-    fun draw(colorIn: Vector3f?) {
-        RenderHelper.drawBox(box, colorIn ?: color)
-    }
-
-    fun trace(): BoxTraceResult? {
-        return RenderHelper.boxTraceForSide(box)
-    }
-
-
 }

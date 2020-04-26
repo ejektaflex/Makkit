@@ -4,26 +4,27 @@ import ejektaflex.kalpis.ext.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import net.minecraft.client.render.WorldRenderer
-import net.minecraft.client.util.math.Vector3f
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
 object RenderHelper : AbstractRenderHelper() {
 
-    fun drawBox(pos: BlockPos, size: BlockPos, color: Vector3f = Vector3f(1f, 1f, 1f)) {
+    fun drawBox(pos: BlockPos, size: BlockPos, color: RenderColor) {
         drawBox(Box(pos, pos + size), color)
     }
 
-    val red = Vector3f(1f, 0f, 0f)
-    val orange = Vector3f(1f, 0.5f, 0f)
 
-    fun drawBox(box: Box, color: Vector3f = Vector3f(1f, 1f, 1f)) {
+
+
+
+    fun drawBox(box: Box, color: RenderColor = RenderColor.WHITE) {
+        val colors = color.floats
         WorldRenderer.drawBox(
                 matrices,
                 eVerts.getBuffer(MyLayers.OVERLAY_LINES),
                 box,
-                color.x, color.y, color.z, 1f
+                colors[0], colors[1], colors[2], colors[3]
         )
     }
 

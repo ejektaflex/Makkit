@@ -1,6 +1,6 @@
 package ejektaflex.kalpis
 
-import ejektaflex.kalpis.data.EditRegion
+import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.event.Events
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
@@ -20,38 +20,17 @@ class ExampleMod : ModInitializer {
 
     }
 
-    fun onDrawScreen(e: Events.DrawScreenEvent) {
+    val region = EditRegion().apply {
+        moveTo(4, 4, 4, 4, 3, 2)
+    }
+
+    private fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers)
 
-        //val box = Box(1.0, 1.0, 1.0, 2.0, 2.0, 2.0)
-
-
-        var box = Box(5.0, 5.0, 5.0, 1.0, 1.0, 1.0)
-
-        val region = EditRegion()
-
-        region.pos = region.pos.add(5, 5, 5)
-        region.size = region.size.add(4, 1, 2)
-
         RenderHelper.drawInWorld {
-
-            //println("Hai")
-
-            region.draw(red)
-
-            val result = region.trace()
-
-            if (result != null) {
-                val nearest = region.closestBlock(result.hit)
-                nearest?.let {
-                    drawBox(region.closestOutsidePos(result), BlockPos(1, 1, 1), orange)
-                }
-            }
-
-
-
-
+            region.update()
+            region.draw()
         }
     }
 
