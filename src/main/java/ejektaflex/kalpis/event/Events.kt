@@ -1,4 +1,4 @@
-package ejektaflex.testmod.event
+package ejektaflex.kalpis.event
 
 import net.fabricmc.fabric.api.event.Event
 import net.fabricmc.fabric.api.event.EventFactory
