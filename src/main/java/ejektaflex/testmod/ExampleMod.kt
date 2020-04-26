@@ -1,5 +1,6 @@
 package ejektaflex.testmod
 
+import ejektaflex.testmod.event.Events
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 
@@ -13,7 +14,16 @@ class ExampleMod : ModInitializer {
         // Proceed with mild caution.
         println("Hello Fabric world!")
 
+        Events.DrawScreenEvent.Dispatcher.register { e: Events.DrawScreenEvent ->
+
+            RenderHelper.drawBox(e.matrices, e.camera, e.buffers)
+
+
+        }
+
     }
+
+
 
 
 
