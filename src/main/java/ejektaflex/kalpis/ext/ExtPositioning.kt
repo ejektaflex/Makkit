@@ -26,7 +26,7 @@ operator fun BlockPos.plus(other: BlockPos): BlockPos {
     return add(other.x, other.y, other.z)
 }
 
-data class BoxTraceResult(val dir: Direction, val vec: Vec3d)
+data class BoxTraceResult(val start: Vec3d, val dir: Direction, val hit: Vec3d)
 
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     val ds = doubleArrayOf(1.0)
@@ -36,7 +36,7 @@ fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     val side = BoxMixin.traceCollisionSide(this, min, ds, null, d, e, f)
     return if (side != null) {
         val g = ds[0]
-        BoxTraceResult(side, min.add(g * d, g * e, g * f))
+        BoxTraceResult(min, side, min.add(g * d, g * e, g * f))
     } else {
         null
     }

@@ -1,12 +1,12 @@
 package ejektaflex.kalpis
 
+import ejektaflex.kalpis.data.EditRegion
 import ejektaflex.kalpis.event.Events
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
 
 class ExampleMod : ModInitializer {
 
@@ -27,33 +27,27 @@ class ExampleMod : ModInitializer {
         //val box = Box(1.0, 1.0, 1.0, 2.0, 2.0, 2.0)
 
 
-        var box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+        var box = Box(5.0, 5.0, 5.0, 1.0, 1.0, 1.0)
 
+        val region = EditRegion()
+
+        region.pos = region.pos.add(5, 5, 5)
 
         RenderHelper.drawInWorld {
 
             //println("Hai")
 
+            region.draw(red)
 
-            drawBox(box, red)
-
-            val result = boxTraceForSide(box)
+            val result = region.trace()
 
             if (result != null) {
-                println(result)
-            } else {
-                //println("No result")
+                val nearest = region.closestBlock(result.hit)
+                nearest?.let {
+                    drawBox(region.closestOutsidePos(result), BlockPos(1, 1, 1), orange)
+                }
             }
 
-            //box.rayTrace()
-
-
-            for (entity in mc.world!!.entities) {
-                drawBox(
-                        BlockPos(entity.blockPos),
-                        BlockPos(1, 1, 1)
-                )
-            }
 
 
 
