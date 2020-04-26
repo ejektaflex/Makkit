@@ -1,6 +1,7 @@
 package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.ext.plus
+import ejektaflex.kalpis.ext.rayTraceForSide
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -22,7 +23,6 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
     fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance) {
-        camera.updateEyeHeight()
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
@@ -34,6 +34,16 @@ object RenderHelper : AbstractRenderHelper() {
             val b = a
             println("Got")
         }
+    }
+
+    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance) {
+        val player = mc.player!!
+        val vec1 = player.getCameraPosVec(tickDelta)
+        val vec2 = player.getRotationVec(tickDelta)
+        val result = box.rayTraceForSide(
+                vec1, vec1.add(vec2.x * distance, vec2.y * distance, vec2.z * distance)
+        )
+
     }
 
     fun drawBoxBox(pos: BlockPos, size: BlockPos) {
