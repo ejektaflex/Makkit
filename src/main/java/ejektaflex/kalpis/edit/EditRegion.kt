@@ -2,10 +2,10 @@ package ejektaflex.kalpis.edit
 
 import ejektaflex.kalpis.ExampleMod
 import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.edit.planes.MovePlane
 import ejektaflex.kalpis.ext.dirMask
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
-import ejektaflex.kalpis.render.RenderHelper
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -18,75 +18,73 @@ class EditRegion() {
 
     val dragRender = RenderBox()
 
+    val movePlane = MovePlane(this)
+
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
         region.pos = BlockPos(x, y, z)
         region.size = BlockPos(x + sx, y + sy, z + sz)
     }
 
-    var wasDragging = false
-    var isDragging = false
 
-    var dragHit: BoxTraceResult? = null
 
-    fun onRelease() {
+    var dragStart: BoxTraceResult? = null
 
-    }
-
-    fun onGrab() {
-
-    }
+    val isDragging: Boolean
+        get() = dragStart != null
 
     fun update() {
         blocksRender.fitTo(region)
-        val isDragging = ExampleMod.dragBinding.isPressed
+        movePlane.update()
 
+        updateDrag()
+    }
+
+    private fun updateDrag() {
+
+        // Try to start dragging
+        if (dragStart == null && ExampleMod.dragBinding.isPressed) {
+            dragStart = blocksRender.trace()
+            if (dragStart != null) {
+                onStartDragging(dragStart!!)
+            }
+        }
+
+        // Try to stop dragging
+        if (dragStart != null && !ExampleMod.dragBinding.isPressed) {
+            dragStart = null
+        }
 
     }
 
-    val movePlane = RenderBox()
+    private fun onStartDragging(dragPoint: BoxTraceResult) {
+
+        val areaSize = Vec3d(16.0, 16.0, 16.0).dirMask(dragPoint.dir)
+
+        movePlane.hitbox.box = Box(
+                dragPoint.hit.subtract(areaSize),
+                dragPoint.hit.add(areaSize)
+        )
+
+    }
 
     fun draw() {
 
         val result = blocksRender.trace()
 
-        blocksRender.color = if (result != null) {
-            RenderColor.GREEN
+        blocksRender.color = RenderColor.GREEN
+
+        movePlane.tryDraw()
+
+        val hitPlane = movePlane.tryHit()
+
+        if (dragStart != null && hitPlane != null) {
+            blocksRender.draw(offset = hitPlane.hit.subtract(dragStart!!.hit))
         } else {
-            RenderColor.RED
+            blocksRender.draw()
         }
 
 
 
-
-
-
-
-
-        blocksRender.draw()
-        dragRender.draw(RenderColor.ORANGE)
-
-        // 7.37, 6.77, 4.0
-        // north on 0, 0, 1
-
-        // Need: 2.37, 1.77, 4.0 <-> 12.37, 11.77, 4.0
-
-        // Hitmask: 7.37, 6.77, 0.0
-        // 5/5/5 mask: 1/1/0 * 5/5/5 = 5/5/0
-
-        if (result != null) {
-
-            val areaSize = Vec3d(1.0, 1.0, 1.0).dirMask(result.dir)
-
-            movePlane.box = Box(
-                    result.hit.subtract(areaSize),
-                    result.hit.add(areaSize)
-            )
-
-            
-
-        }
-
-        movePlane.draw(RenderColor.BLUE)
 
 
         /*

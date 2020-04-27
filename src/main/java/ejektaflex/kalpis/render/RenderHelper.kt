@@ -29,7 +29,7 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
 
-    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance): BoxTraceResult? {
+    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 3): BoxTraceResult? {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
