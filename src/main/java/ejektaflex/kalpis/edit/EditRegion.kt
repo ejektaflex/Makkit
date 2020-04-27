@@ -5,7 +5,7 @@ import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.edit.drag.Drag
 import ejektaflex.kalpis.edit.planes.MovePlane
 import ejektaflex.kalpis.edit.planes.SizePlane
-import ejektaflex.kalpis.ext.dirMask
+import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.ext.otherDirections
 import ejektaflex.kalpis.ext.round
 import ejektaflex.kalpis.render.RenderBox
@@ -54,7 +54,7 @@ class EditRegion() {
         when (drag) {
             moveDrag -> {
                 println("Dragging move")
-                val areaSize = Vec3d(16.0, 16.0, 16.0).dirMask(dragPoint.dir)
+                val areaSize = Vec3d(16.0, 16.0, 16.0).flipMask(dragPoint.dir)
 
                 movePlane.hitbox.box = Box(
                         dragPoint.hit.subtract(areaSize),
@@ -71,7 +71,7 @@ class EditRegion() {
 
                 dirs.forEachIndexed { i, direction ->
 
-                    val areaSize = Vec3d(3.0, 3.0, 3.0).dirMask(direction)
+                    val areaSize = Vec3d(3.0, 3.0, 3.0).flipMask(direction)
 
                     planes[i].hitbox.box = Box(
                             dragPoint.hit.subtract(areaSize),

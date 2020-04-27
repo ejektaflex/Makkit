@@ -5,6 +5,8 @@ import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.ICanHit
 import ejektaflex.kalpis.edit.IEditor
 import ejektaflex.kalpis.edit.drag.Drag
+import ejektaflex.kalpis.ext.dirMask
+import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.Vec3d
@@ -29,7 +31,7 @@ class SizePlane(private val region: EditRegion) : IEditor, ICanHit {
         val start = drag.start
         val current = hitbox.trace()
         if (start != null && current != null) {
-            return current.hit.subtract(start.hit)
+            return current.hit.subtract(start.hit).dirMask(start.dir)
         }
         return null
     }
