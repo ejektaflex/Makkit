@@ -9,12 +9,12 @@ import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.Vec3d
 
-class MovePlane(private val region: EditRegion) : IEditor, ICanHit {
+class SizePlane(private val region: EditRegion) : IEditor, ICanHit {
 
     override var hitbox = RenderBox()
 
     override fun shouldDraw(): Boolean {
-        return region.moveDrag.isDragging()
+        return region.sizeDrag.isDragging()
     }
 
     fun tryHit(): BoxTraceResult? {

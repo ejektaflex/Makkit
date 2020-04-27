@@ -6,12 +6,9 @@ import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
-import net.fabricmc.fabric.api.event.client.ClientTickCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
 import org.lwjgl.glfw.GLFW
 
 class ExampleMod : ModInitializer {
@@ -30,7 +27,9 @@ class ExampleMod : ModInitializer {
         println("Hello Fabric world!")
 
         KeyBindingRegistry.INSTANCE.addCategory("KEdit")
-        KeyBindingRegistry.INSTANCE.register(dragBinding)
+
+        KeyBindingRegistry.INSTANCE.register(moveDragBinding)
+        KeyBindingRegistry.INSTANCE.register(sizeDragBinding)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
 
@@ -48,10 +47,17 @@ class ExampleMod : ModInitializer {
     }
 
     companion object {
-        val dragBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "drag"),
-                InputUtil.Type.MOUSE,
-                GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+        val moveDragBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "move_drag"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_Z,
+                "KEdit"
+        ).build()
+
+        val sizeDragBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "size_drag"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_X,
                 "KEdit"
         ).build()
     }

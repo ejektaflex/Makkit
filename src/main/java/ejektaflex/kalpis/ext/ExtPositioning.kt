@@ -42,6 +42,12 @@ fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     }
 }
 
+fun Direction.otherDirections(): List<Direction> {
+    return enumValues<Direction>().filter {
+        it.direction == this.direction && it != this
+    }
+}
+
 val Vec3d.ZERO: Vec3d
     get() = Vec3d(0.0, 0.0, 0.0)
 
