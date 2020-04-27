@@ -4,9 +4,13 @@ interface IEditor {
 
     fun update()
 
-    fun shouldDraw(): Boolean
+    fun shouldDraw(): Boolean {
+        return true
+    }
 
-    fun onDraw()
+    fun onDraw() {
+
+    }
 
     fun tryDraw() {
         if (shouldDraw()) {

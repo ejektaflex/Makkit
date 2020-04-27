@@ -1,7 +1,7 @@
 package ejektaflex.kalpis.edit
 
-import ejektaflex.kalpis.ExampleMod
 import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.edit.drag.Drag
 import ejektaflex.kalpis.edit.planes.MovePlane
 import ejektaflex.kalpis.ext.dirMask
 import ejektaflex.kalpis.render.RenderBox
@@ -16,7 +16,9 @@ class EditRegion() {
 
     val blocksRender = RenderBox()
 
-    val dragRender = RenderBox()
+    val previewRender = RenderBox()
+
+    val drag = Drag(this)
 
     val movePlane = MovePlane(this)
 
@@ -26,37 +28,15 @@ class EditRegion() {
     }
 
 
-
-    var dragStart: BoxTraceResult? = null
-
-    val isDragging: Boolean
-        get() = dragStart != null
-
     fun update() {
         blocksRender.fitTo(region)
         movePlane.update()
 
-        updateDrag()
+        drag.update()
     }
 
-    private fun updateDrag() {
 
-        // Try to start dragging
-        if (dragStart == null && ExampleMod.dragBinding.isPressed) {
-            dragStart = blocksRender.trace()
-            if (dragStart != null) {
-                onStartDragging(dragStart!!)
-            }
-        }
-
-        // Try to stop dragging
-        if (dragStart != null && !ExampleMod.dragBinding.isPressed) {
-            dragStart = null
-        }
-
-    }
-
-    private fun onStartDragging(dragPoint: BoxTraceResult) {
+    fun onStartDragging(dragPoint: BoxTraceResult) {
 
         val areaSize = Vec3d(16.0, 16.0, 16.0).dirMask(dragPoint.dir)
 
@@ -64,6 +44,10 @@ class EditRegion() {
                 dragPoint.hit.subtract(areaSize),
                 dragPoint.hit.add(areaSize)
         )
+
+    }
+
+    fun onStopDragging(stopPoint: BoxTraceResult) {
 
     }
 
@@ -75,26 +59,15 @@ class EditRegion() {
 
         movePlane.tryDraw()
 
-        val hitPlane = movePlane.tryHit()
+        val offset = movePlane.getDrawOffset(drag)
 
-        if (dragStart != null && hitPlane != null) {
-            blocksRender.draw(offset = hitPlane.hit.subtract(dragStart!!.hit))
-        } else {
-            blocksRender.draw()
+        if (offset != null) {
+            previewRender.fitTo(region)
+            previewRender.draw(offset = offset)
         }
 
+        blocksRender.draw()
 
-
-
-
-        /*
-        if (result != null) {
-            val nearest = region.closestBlock(result.hit)
-            nearest?.let {
-                RenderHelper.drawBox(region.closestOutsidePos(result), BlockPos(1, 1, 1), RenderColor.ORANGE)
-            }
-        }
-        */
     }
 
 
