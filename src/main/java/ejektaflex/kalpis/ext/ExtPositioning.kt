@@ -1,12 +1,10 @@
 package ejektaflex.kalpis.ext
 
+import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.mixin.BoxMixin
 import ejektaflex.kalpis.render.RenderHelper
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.*
 
 fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {
     translate(-pos.x, -pos.y, -pos.z)
@@ -26,7 +24,6 @@ operator fun BlockPos.plus(other: BlockPos): BlockPos {
     return add(other.x, other.y, other.z)
 }
 
-data class BoxTraceResult(val start: Vec3d, val dir: Direction, val hit: Vec3d)
 
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     val ds = doubleArrayOf(1.0)
@@ -48,6 +45,18 @@ val Vec3d.ZERO: Vec3d
 val Vec3d.ONE: Vec3d
     get() = Vec3d(1.0, 1.0, 1.0)
 
+// 1 -> 0, 0 -> 1
+private fun intSwitch(i: Int): Int {
+    return (kotlin.math.abs(i) - 1) * -1
+}
+
+
+
+fun Vec3d.dirMask(dir: Direction): Vec3d {
+    val unit = dir.vector
+    val mask = Vec3i(intSwitch(unit.x), intSwitch(unit.y), intSwitch(unit.z))
+    return Vec3d(x * mask.x, y * mask.y, z * mask.z)
+}
 
 /*
 public Optional<Vec3d> rayTrace(Vec3d min, Vec3d max) {

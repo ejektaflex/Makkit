@@ -1,6 +1,6 @@
 package ejektaflex.kalpis.edit
 
-import ejektaflex.kalpis.ext.BoxTraceResult
+import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.render.RenderBox
 import net.minecraft.util.math.BlockPos

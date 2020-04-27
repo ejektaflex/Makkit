@@ -1,6 +1,6 @@
 package ejektaflex.kalpis.render
 
-import ejektaflex.kalpis.ext.BoxTraceResult
+import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import net.minecraft.client.render.WorldRenderer
