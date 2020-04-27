@@ -119,13 +119,15 @@ class EditRegion() {
 
             if (offsets.isNotEmpty()) {
                 val offsetToUse = offsets.minBy { it.distanceTo(sizeDrag.start!!.start) }!!
-                println(offsetToUse)
-                previewSmooth.draw(RenderColor.RED, offsetToUse)
+                //println(offsetToUse)
+
+                previewSmooth.fitTo(region)
+                //previewSmooth.draw(RenderColor.RED, offsetToUse)
+
+                previewBlocky.fitTo(region)
                 previewBlocky.draw(RenderColor.ORANGE, offsetToUse.round())
             }
         }
-
-
 
 
 
