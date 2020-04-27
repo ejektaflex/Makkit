@@ -1,41 +1,29 @@
 package ejektaflex.kalpis.edit.planes
 
-import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.edit.EditRegion
-import ejektaflex.kalpis.edit.ICanHit
-import ejektaflex.kalpis.edit.IEditor
 import ejektaflex.kalpis.edit.drag.Drag
-import ejektaflex.kalpis.render.RenderBox
-import ejektaflex.kalpis.render.RenderColor
-import net.minecraft.util.math.Vec3d
+import ejektaflex.kalpis.ext.round
+import net.minecraft.util.math.Box
 
-class MovePlane(private val region: EditRegion) : IEditor, ICanHit {
+class MovePlane(region: EditRegion) : Plane(region) {
 
-    override var hitbox = RenderBox()
+    override fun calcDragBox(drag: Drag, smooth: Boolean, otherPlanes: List<Plane>): Box? {
 
-    override fun shouldDraw(): Boolean {
-        return region.moveDrag.isDragging()
-    }
+        if (drag.isDragging()) {
+            val offset = getDrawOffset(drag)
 
-    fun tryHit(): BoxTraceResult? {
-        return hitbox.trace()
-    }
+            if (offset != null) {
 
-    override fun update() {
+                val rounding = when (smooth) {
+                    true -> offset
+                    false -> offset.round()
+                }
 
-    }
-
-    fun getDrawOffset(drag: Drag): Vec3d? {
-        val start = drag.start
-        val current = hitbox.trace()
-        if (start != null && current != null) {
-            return current.hit.subtract(start.hit)
+                return region.region.box.offset(rounding)
+            }
         }
-        return null
-    }
 
-    override fun onDraw() {
-        hitbox.draw(RenderColor.BLUE)
+        return null
     }
 
 }

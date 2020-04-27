@@ -63,8 +63,6 @@ private fun intSwitch(i: Int): Int {
     return (kotlin.math.abs(i) - 1) * -1
 }
 
-
-
 fun Vec3d.flipMask(dir: Direction): Vec3d {
     val unit = dir.vector
     val mask = Vec3i(intSwitch(unit.x), intSwitch(unit.y), intSwitch(unit.z))
@@ -76,18 +74,10 @@ fun Vec3d.dirMask(dir: Direction): Vec3d {
     return Vec3d(x * unit.x, y * unit.y, z * unit.z)
 }
 
-/*
-public Optional<Vec3d> rayTrace(Vec3d min, Vec3d max) {
-      double[] ds = new double[]{1.0D};
-      double d = max.x - min.x;
-      double e = max.y - min.y;
-      double f = max.z - min.z;
-      Direction direction = traceCollisionSide(this, min, ds, (Direction)null, d, e, f);
-      if (direction == null) {
-         return Optional.empty();
-      } else {
-         double g = ds[0];
-         return Optional.of(min.add(g * d, g * e, g * f));
-      }
-   }
- */
+fun Box.getStart(): Vec3d {
+    return Vec3d(x1, y1, z1)
+}
+
+fun Box.getEnd(): Vec3d {
+    return Vec3d(x2, y2, z2)
+}

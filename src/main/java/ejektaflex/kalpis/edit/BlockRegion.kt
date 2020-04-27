@@ -1,6 +1,8 @@
 package ejektaflex.kalpis.edit
 
 import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.ext.getEnd
+import ejektaflex.kalpis.ext.getStart
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.render.RenderBox
 import net.minecraft.util.math.BlockPos
@@ -27,6 +29,14 @@ class BlockRegion {
         pos = BlockPos(renderBox.pos)
         size = BlockPos(renderBox.size)
     }
+
+    fun fitTo(inBox: Box) {
+        pos = BlockPos(inBox.getStart())
+        size = BlockPos(inBox.getEnd().subtract(inBox.getStart()))
+    }
+
+    val box: Box
+        get() = Box(pos, size)
 
     private var areaPositions: List<BlockPos> = calcAreaPositions()
 

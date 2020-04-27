@@ -24,7 +24,7 @@ class Drag(val region: EditRegion, val binding: FabricKeyBinding) : IEditor {
 
         // Try to stop dragging
         if (start != null && !binding.isPressed) {
-            region.onStopDragging(start!!)
+            region.onStopDragging(this, start!!)
             start = null
         }
     }
