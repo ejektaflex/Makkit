@@ -6,6 +6,7 @@ import ejektaflex.kalpis.ext.dirMask
 import ejektaflex.kalpis.ext.round
 import ejektaflex.kalpis.ext.vec3d
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 class SizePlane(region: EditRegion) : Plane(region) {
@@ -16,6 +17,30 @@ class SizePlane(region: EditRegion) : Plane(region) {
 
     override fun getDrawOffset(drag: Drag): Vec3d? {
         return super.getDrawOffset(drag)?.dirMask(drag.start!!.dir)
+    }
+
+    fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
+        var a = x1
+        var b = y1
+        var c = z1
+
+        if (dir.vector.x * a < 0) {
+            a -= off.x
+        }
+
+        if (dir.vector.y * b < 0) {
+            b -= off.y
+        }
+
+        if (dir.vector.z * c < 0) {
+            c -= off.z
+        }
+
+        var d = x2 + off.x
+        var e = y2 + off.y
+        var f = z2 + off.z
+
+        return Box(a, b, c, d, e, f)
     }
 
     override fun calcDragBox(drag: Drag, smooth: Boolean, otherPlanes: List<Plane>): Box? {
@@ -46,9 +71,10 @@ class SizePlane(region: EditRegion) : Plane(region) {
                     }
                     region.shrinkDrag -> {
                         val shrinkVec = rounding.multiply(drag.start!!.dir.opposite.vec3d())
-                        region.region.box.shrink(
-                                shrinkVec.x, shrinkVec.y, shrinkVec.z
-                        )
+                        val dir = drag.start!!.dir
+                        println("$dir, ${dir.vector}, $shrinkVec")
+                        region.region.box.shrinkSide(shrinkVec.dirMask(dir.opposite), dir)
+                        //region.region.box.shrink(shrinkVec.x, shrinkVec.y, shrinkVec.z)
                     }
                     else -> throw Exception("Unsupported Size Plane Drag!")
                 }

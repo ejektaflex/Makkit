@@ -38,14 +38,5 @@ object RenderHelper : AbstractRenderHelper() {
         )
     }
 
-    fun drawBoxBox(pos: BlockPos, size: BlockPos) {
-
-
-
-    }
-
-    fun drawBoxWall(start: BlockPos, size: Pair<Int, Int>, dir1: Direction, dir2: Direction)  {
-
-    }
 
 }

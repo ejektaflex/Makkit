@@ -74,6 +74,8 @@ fun Vec3d.dirMask(dir: Direction): Vec3d {
     return Vec3d(x * unit.x, y * unit.y, z * unit.z)
 }
 
+
+
 fun Box.getStart(): Vec3d {
     return Vec3d(x1, y1, z1)
 }
