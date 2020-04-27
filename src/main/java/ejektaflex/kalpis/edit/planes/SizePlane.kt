@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d
 class SizePlane(region: EditRegion) : Plane(region) {
 
     override fun shouldDraw(): Boolean {
-        return region.stretchDrag.isDragging()
+        return region.stretchDrag.isDragging() || region.shrinkDrag.isDragging()
     }
 
     override fun getDrawOffset(drag: Drag): Vec3d? {
@@ -24,21 +24,28 @@ class SizePlane(region: EditRegion) : Plane(region) {
         var b = y1
         var c = z1
 
+
+        var d = x2
+        var e = y2
+        var f = z2
+
         if (dir.vector.x * a < 0) {
             a -= off.x
+        } else {
+            d += off.x
         }
 
         if (dir.vector.y * b < 0) {
             b -= off.y
+        } else {
+            e += off.y
         }
 
         if (dir.vector.z * c < 0) {
             c -= off.z
+        } else {
+            f += off.z
         }
-
-        var d = x2 + off.x
-        var e = y2 + off.y
-        var f = z2 + off.z
 
         return Box(a, b, c, d, e, f)
     }
@@ -65,16 +72,14 @@ class SizePlane(region: EditRegion) : Plane(region) {
 
                 return when (drag) {
                     region.stretchDrag -> {
-                        region.region.box.stretch(
-                                rounding.multiply(drag.start!!.dir.vec3d())
-                        )
+                        val shrinkVec = rounding.multiply(drag.start!!.dir.opposite.vec3d())
+                        val dir = drag.start!!.dir
+                        region.region.box.shrinkSide(shrinkVec.dirMask(dir), dir.opposite)
                     }
                     region.shrinkDrag -> {
                         val shrinkVec = rounding.multiply(drag.start!!.dir.opposite.vec3d())
                         val dir = drag.start!!.dir
-                        println("$dir, ${dir.vector}, $shrinkVec")
                         region.region.box.shrinkSide(shrinkVec.dirMask(dir.opposite), dir)
-                        //region.region.box.shrink(shrinkVec.x, shrinkVec.y, shrinkVec.z)
                     }
                     else -> throw Exception("Unsupported Size Plane Drag!")
                 }
