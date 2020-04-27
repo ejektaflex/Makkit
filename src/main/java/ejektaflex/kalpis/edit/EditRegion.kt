@@ -4,6 +4,7 @@ import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.edit.drag.Drag
 import ejektaflex.kalpis.edit.planes.MovePlane
 import ejektaflex.kalpis.ext.dirMask
+import ejektaflex.kalpis.ext.round
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.BlockPos
@@ -16,7 +17,8 @@ class EditRegion() {
 
     val blocksRender = RenderBox()
 
-    val previewRender = RenderBox()
+    val previewSmooth = RenderBox()
+    val previewBlocky = RenderBox()
 
     val drag = Drag(this)
 
@@ -53,8 +55,6 @@ class EditRegion() {
 
     fun draw() {
 
-        val result = blocksRender.trace()
-
         blocksRender.color = RenderColor.GREEN
 
         movePlane.tryDraw()
@@ -62,8 +62,10 @@ class EditRegion() {
         val offset = movePlane.getDrawOffset(drag)
 
         if (offset != null) {
-            previewRender.fitTo(region)
-            previewRender.draw(offset = offset)
+            previewSmooth.fitTo(region)
+            previewSmooth.draw(RenderColor.BLUE, offset)
+            previewBlocky.fitTo(region)
+            previewBlocky.draw(RenderColor.ORANGE, offset.round())
         }
 
         blocksRender.draw()

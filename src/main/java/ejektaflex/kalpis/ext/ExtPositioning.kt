@@ -24,6 +24,9 @@ operator fun BlockPos.plus(other: BlockPos): BlockPos {
     return add(other.x, other.y, other.z)
 }
 
+fun Vec3d.round(): Vec3d {
+    return Vec3d(kotlin.math.round(x), kotlin.math.round(y), kotlin.math.round(z))
+}
 
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     val ds = doubleArrayOf(1.0)
