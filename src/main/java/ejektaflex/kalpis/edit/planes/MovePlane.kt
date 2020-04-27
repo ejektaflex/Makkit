@@ -7,6 +7,10 @@ import net.minecraft.util.math.Box
 
 class MovePlane(region: EditRegion) : Plane(region) {
 
+    override fun shouldDraw(): Boolean {
+        return region.moveDrag.isDragging()
+    }
+
     override fun calcDragBox(drag: Drag, smooth: Boolean, otherPlanes: List<Plane>): Box? {
 
         if (drag.isDragging()) {

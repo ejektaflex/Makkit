@@ -10,6 +10,10 @@ import net.minecraft.util.math.Vec3d
 
 class SizePlane(region: EditRegion) : Plane(region) {
 
+    override fun shouldDraw(): Boolean {
+        return region.sizeDrag.isDragging()
+    }
+
     override fun getDrawOffset(drag: Drag): Vec3d? {
         return super.getDrawOffset(drag)?.dirMask(drag.start!!.dir)
     }

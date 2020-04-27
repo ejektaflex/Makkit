@@ -15,9 +15,8 @@ import net.minecraft.util.math.Vec3d
 
 class EditRegion() {
 
-    val region = BlockRegion()
 
-    val blocksRender = RenderBox()
+    val region = RenderBox()
 
     val previewBlock = RenderBox()
 
@@ -30,13 +29,11 @@ class EditRegion() {
     val sizePlane2 = SizePlane(this)
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
-        region.pos = BlockPos(x, y, z)
-        region.size = BlockPos(x + sx, y + sy, z + sz)
+        region.box = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
 
     fun update() {
-        blocksRender.fitTo(region)
         movePlane.update()
 
         sizePlane1.update()
@@ -87,13 +84,13 @@ class EditRegion() {
 
         when (drag) {
             moveDrag -> {
-                val box = movePlane.calcDragBox(drag)
-                box?.let { region.fitTo(it) }
+                val box = movePlane.calcDragBox(drag, false)
+                box?.let { region.box = it }
                 println("move: $box")
             }
             sizeDrag -> {
-                val box = sizePlane1.calcDragBox(drag, otherPlanes = listOf(sizePlane2))
-                box?.let { region.fitTo(it) }
+                val box = sizePlane1.calcDragBox(drag, false, listOf(sizePlane2))
+                box?.let { region.box = it }
                 print("size: $box")
             }
         }
@@ -105,22 +102,34 @@ class EditRegion() {
 
     fun draw() {
 
-        blocksRender.color = RenderColor.GREEN
+        region.color = RenderColor.GREEN
 
-        //movePlane.tryDraw()
-        //sizePlane1.tryDraw()
-        //sizePlane2.tryDraw()
+        var showPlanes = true
+
+        var smoothStep = true
 
         if (moveDrag.isDragging()) {
-            previewBlock.box = movePlane.calcDragBox(moveDrag)
+            previewBlock.box = movePlane.calcDragBox(moveDrag, smoothStep)
                     ?: previewBlock.box
             previewBlock.draw(RenderColor.BLUE)
+
+            if (showPlanes) {
+                movePlane.tryDraw()
+            }
+
         }
 
         if (sizeDrag.isDragging()) {
-            previewBlock.box = sizePlane1.calcDragBox(sizeDrag, otherPlanes = listOf(sizePlane2))
+            previewBlock.box = sizePlane1.calcDragBox(sizeDrag, smoothStep, otherPlanes = listOf(sizePlane2))
                     ?: previewBlock.box
+
             previewBlock.draw(RenderColor.BLUE)
+
+            if (showPlanes) {
+                sizePlane1.tryDraw()
+                sizePlane2.tryDraw()
+            }
+
         }
 
 
@@ -128,7 +137,7 @@ class EditRegion() {
         //offset = sizePlane1.getDrawOffset()
 
 
-        blocksRender.draw()
+        region.draw()
 
     }
 

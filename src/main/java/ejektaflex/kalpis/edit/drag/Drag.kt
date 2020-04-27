@@ -16,7 +16,7 @@ class Drag(val region: EditRegion, val binding: FabricKeyBinding) : IEditor {
     override fun update() {
         // Try to start dragging
         if (start == null && binding.isPressed) {
-            start = region.blocksRender.trace()
+            start = region.region.trace()
             if (start != null) {
                 region.onStartDragging(this, start!!)
             }

@@ -16,10 +16,6 @@ abstract class Plane(val region: EditRegion) : IEditor, ICanHit {
 
     override var hitbox = RenderBox()
 
-    override fun shouldDraw(): Boolean {
-        return region.moveDrag.isDragging()
-    }
-
     fun tryHit(): BoxTraceResult? {
         return hitbox.trace()
     }
