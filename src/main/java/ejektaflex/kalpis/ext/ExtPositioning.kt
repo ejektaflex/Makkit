@@ -48,6 +48,10 @@ fun Direction.otherDirections(): List<Direction> {
     }
 }
 
+fun Direction.vec3d(): Vec3d {
+    return Vec3d(unitVector)
+}
+
 val Vec3d.ZERO: Vec3d
     get() = Vec3d(0.0, 0.0, 0.0)
 

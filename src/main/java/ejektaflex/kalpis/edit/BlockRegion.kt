@@ -25,7 +25,7 @@ class BlockRegion {
 
     fun fitTo(renderBox: RenderBox) {
         pos = BlockPos(renderBox.pos)
-        size = BlockPos(renderBox.pos)
+        size = BlockPos(renderBox.size)
     }
 
     private var areaPositions: List<BlockPos> = calcAreaPositions()

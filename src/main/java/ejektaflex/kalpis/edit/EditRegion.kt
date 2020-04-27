@@ -8,6 +8,7 @@ import ejektaflex.kalpis.edit.planes.SizePlane
 import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.ext.otherDirections
 import ejektaflex.kalpis.ext.round
+import ejektaflex.kalpis.ext.vec3d
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.BlockPos
@@ -54,7 +55,7 @@ class EditRegion() {
         when (drag) {
             moveDrag -> {
                 println("Dragging move")
-                val areaSize = Vec3d(16.0, 16.0, 16.0).flipMask(dragPoint.dir)
+                val areaSize = Vec3d(12.0, 12.0, 12.0).flipMask(dragPoint.dir)
 
                 movePlane.hitbox.box = Box(
                         dragPoint.hit.subtract(areaSize),
@@ -71,7 +72,7 @@ class EditRegion() {
 
                 dirs.forEachIndexed { i, direction ->
 
-                    val areaSize = Vec3d(3.0, 3.0, 3.0).flipMask(direction)
+                    val areaSize = Vec3d(8.0, 8.0, 8.0).flipMask(direction)
 
                     planes[i].hitbox.box = Box(
                             dragPoint.hit.subtract(areaSize),
@@ -86,17 +87,24 @@ class EditRegion() {
     }
 
     fun onStopDragging(stopPoint: BoxTraceResult) {
+        //region.fitTo(previewBlocky)
+
+        region.fitTo(previewBlocky)
+
+        println(previewBlocky.box)
 
     }
+
+
 
 
     fun draw() {
 
         blocksRender.color = RenderColor.GREEN
 
-        movePlane.tryDraw()
-        sizePlane1.tryDraw()
-        sizePlane2.tryDraw()
+        //movePlane.tryDraw()
+        //sizePlane1.tryDraw()
+        //sizePlane2.tryDraw()
 
         if (moveDrag.isDragging()) {
             var offset = movePlane.getDrawOffset(moveDrag)
@@ -105,17 +113,18 @@ class EditRegion() {
                 previewSmooth.fitTo(region)
                 //previewSmooth.draw(RenderColor.BLUE, offset)
                 previewBlocky.fitTo(region)
-                //previewBlocky.draw(RenderColor.ORANGE, offset.round())
+                previewBlocky.box = previewBlocky.box.offset(offset.round())
+                previewBlocky.draw(RenderColor.ORANGE)
             }
 
 
         }
 
         if (sizeDrag.isDragging()) {
-            val offsets = listOf(
+            val offsets = listOfNotNull(
                     sizePlane1.getDrawOffset(sizeDrag),
                     sizePlane2.getDrawOffset(sizeDrag)
-            ).filterNotNull()
+            )
 
             if (offsets.isNotEmpty()) {
                 val offsetToUse = offsets.minBy { it.distanceTo(sizeDrag.start!!.start) }!!
@@ -125,7 +134,10 @@ class EditRegion() {
                 //previewSmooth.draw(RenderColor.RED, offsetToUse)
 
                 previewBlocky.fitTo(region)
-                previewBlocky.draw(RenderColor.ORANGE, offsetToUse.round())
+                previewBlocky.box = previewBlocky.box.stretch(
+                        offsetToUse.round().multiply(sizeDrag.start!!.dir.vec3d())
+                )
+                previewBlocky.draw(RenderColor.ORANGE)
             }
         }
 

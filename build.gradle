@@ -84,8 +84,3 @@ publishing {
 		// mavenLocal()
 	}
 }
-compileKotlin {
-    kotlinOptions {
-        freeCompilerArgs = ["-XXLanguage:+InlineClasses"]
-    }
-}
