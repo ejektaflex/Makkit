@@ -42,7 +42,7 @@ fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     }
 }
 
-fun Direction.otherDirections(): List<Direction> {
+fun Direction.otherDirectionalAxes(): List<Direction> {
     return enumValues<Direction>().filter {
         it.direction == this.direction && it != this
     }

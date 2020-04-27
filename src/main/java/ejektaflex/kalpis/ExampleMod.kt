@@ -29,7 +29,8 @@ class ExampleMod : ModInitializer {
         KeyBindingRegistry.INSTANCE.addCategory("KEdit")
 
         KeyBindingRegistry.INSTANCE.register(moveDragBinding)
-        KeyBindingRegistry.INSTANCE.register(sizeDragBinding)
+        KeyBindingRegistry.INSTANCE.register(stretchDragBinding)
+        KeyBindingRegistry.INSTANCE.register(shrinkDragBinding)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
 
@@ -54,10 +55,17 @@ class ExampleMod : ModInitializer {
                 "KEdit"
         ).build()
 
-        val sizeDragBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "size_drag"),
+        val stretchDragBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "stretch_drag"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_X,
+                "KEdit"
+        ).build()
+
+        val shrinkDragBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "shrink_drag"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_C,
                 "KEdit"
         ).build()
     }

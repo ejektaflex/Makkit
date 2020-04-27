@@ -34,7 +34,7 @@ abstract class Plane(val region: EditRegion) : IEditor, ICanHit {
     }
 
     override fun onDraw() {
-        hitbox.draw(RenderColor.BLUE)
+        hitbox.draw(RenderColor.PINK)
     }
 
 }

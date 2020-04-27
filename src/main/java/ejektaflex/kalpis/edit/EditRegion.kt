@@ -6,7 +6,7 @@ import ejektaflex.kalpis.edit.drag.Drag
 import ejektaflex.kalpis.edit.planes.MovePlane
 import ejektaflex.kalpis.edit.planes.SizePlane
 import ejektaflex.kalpis.ext.flipMask
-import ejektaflex.kalpis.ext.otherDirections
+import ejektaflex.kalpis.ext.otherDirectionalAxes
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.BlockPos
@@ -21,7 +21,9 @@ class EditRegion() {
     val previewBlock = RenderBox()
 
     val moveDrag = Drag(this, ExampleMod.moveDragBinding)
-    val sizeDrag = Drag(this, ExampleMod.sizeDragBinding)
+    val stretchDrag = Drag(this, ExampleMod.stretchDragBinding)
+    val shrinkDrag = Drag(this, ExampleMod.shrinkDragBinding)
+
 
     val movePlane = MovePlane(this)
 
@@ -40,7 +42,8 @@ class EditRegion() {
         sizePlane2.update()
 
         moveDrag.update()
-        sizeDrag.update()
+        stretchDrag.update()
+        shrinkDrag.update()
     }
 
 
@@ -56,13 +59,13 @@ class EditRegion() {
                         dragPoint.hit.add(areaSize)
                 )
             }
-            sizeDrag -> {
+            stretchDrag, shrinkDrag -> {
 
                 println("Dragging size")
 
                 val planes = listOf(sizePlane1, sizePlane2)
 
-                val dirs = dragPoint.dir.otherDirections()
+                val dirs = dragPoint.dir.otherDirectionalAxes()
 
                 dirs.forEachIndexed { i, direction ->
 
@@ -88,7 +91,7 @@ class EditRegion() {
                 box?.let { region.box = it }
                 println("move: $box")
             }
-            sizeDrag -> {
+            stretchDrag, shrinkDrag -> {
                 val box = sizePlane1.calcDragBox(drag, false, listOf(sizePlane2))
                 box?.let { region.box = it }
                 print("size: $box")
@@ -119,23 +122,19 @@ class EditRegion() {
 
         }
 
-        if (sizeDrag.isDragging()) {
-            previewBlock.box = sizePlane1.calcDragBox(sizeDrag, smoothStep, otherPlanes = listOf(sizePlane2))
-                    ?: previewBlock.box
+        for (drag in listOf(stretchDrag, shrinkDrag)) {
+            if (drag.isDragging()) {
+                previewBlock.box = sizePlane1.calcDragBox(drag, smoothStep, otherPlanes = listOf(sizePlane2))
+                        ?: previewBlock.box
 
-            previewBlock.draw(RenderColor.BLUE)
+                previewBlock.draw(RenderColor.BLUE)
 
-            if (showPlanes) {
-                sizePlane1.tryDraw()
-                sizePlane2.tryDraw()
+                if (showPlanes) {
+                    sizePlane1.tryDraw()
+                    sizePlane2.tryDraw()
+                }
             }
-
         }
-
-
-
-        //offset = sizePlane1.getDrawOffset()
-
 
         region.draw()
 

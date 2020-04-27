@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d
 class SizePlane(region: EditRegion) : Plane(region) {
 
     override fun shouldDraw(): Boolean {
-        return region.sizeDrag.isDragging()
+        return region.stretchDrag.isDragging()
     }
 
     override fun getDrawOffset(drag: Drag): Vec3d? {
@@ -38,9 +38,20 @@ class SizePlane(region: EditRegion) : Plane(region) {
                     false -> offsetToUse.round()
                 }
 
-                return region.region.box.stretch(
-                        rounding.multiply(drag.start!!.dir.vec3d())
-                )
+                return when (drag) {
+                    region.stretchDrag -> {
+                        region.region.box.stretch(
+                                rounding.multiply(drag.start!!.dir.vec3d())
+                        )
+                    }
+                    region.shrinkDrag -> {
+                        val shrinkVec = rounding.multiply(drag.start!!.dir.opposite.vec3d())
+                        region.region.box.shrink(
+                                shrinkVec.x, shrinkVec.y, shrinkVec.z
+                        )
+                    }
+                    else -> throw Exception("Unsupported Size Plane Drag!")
+                }
             }
         }
 
