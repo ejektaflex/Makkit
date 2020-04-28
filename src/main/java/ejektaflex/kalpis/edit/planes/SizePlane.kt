@@ -3,6 +3,8 @@ package ejektaflex.kalpis.edit.planes
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.drag.Drag
 import ejektaflex.kalpis.ext.*
+import ejektaflex.kalpis.render.RenderBox
+import ejektaflex.kalpis.render.RenderColor
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
@@ -42,6 +44,25 @@ class SizePlane(region: EditRegion) : Plane(region) {
 
                 val shrinkVec = rounding.multiply(drag.start!!.dir.opposite.vec3d())
                 val dir = drag.start!!.dir
+
+                /* face plane rendering
+                val sideSize = region.region.size.flipMask(dir)
+
+                val width = region.region.size.dirMask(dir)
+
+                val cutPrev = RenderBox(
+                        region.region.box.center.subtract(
+                                sideSize.multiply(0.5)
+                        ).add(
+                                width.multiply(0.5)
+                        ),
+                        sideSize
+                )
+                
+                cutPrev.draw(RenderColor.PINK, offset = Vec3d(0.05, 0.05, 0.05))
+                 */
+
+
 
                 return when (drag) {
                     region.stretchDrag -> {
