@@ -31,6 +31,7 @@ class ExampleMod : ModInitializer {
         KeyBindingRegistry.INSTANCE.register(moveDragBinding)
         KeyBindingRegistry.INSTANCE.register(stretchDragBinding)
         KeyBindingRegistry.INSTANCE.register(shrinkDragBinding)
+        KeyBindingRegistry.INSTANCE.register(deleteBinding)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
 
@@ -66,6 +67,13 @@ class ExampleMod : ModInitializer {
                 Identifier("kedit", "shrink_drag"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_C,
+                "KEdit"
+        ).build()
+
+        val deleteBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "delete"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_BACKSPACE,
                 "KEdit"
         ).build()
     }

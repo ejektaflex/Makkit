@@ -9,6 +9,10 @@ import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.ext.otherDirectionalAxes
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
+import net.minecraft.block.Blocks
+import net.minecraft.client.MinecraftClient
+import net.minecraft.item.AirBlockItem
+import net.minecraft.item.BlockItem
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -44,6 +48,31 @@ class EditRegion() {
         moveDrag.update()
         stretchDrag.update()
         shrinkDrag.update()
+
+        if (ExampleMod.deleteBinding.isPressed) {
+
+            println("Whoa")
+
+            val blocks = region.getBlockArray()
+
+            val mc = MinecraftClient.getInstance()
+            val player = mc.player!!
+            val item = player.mainHandStack.item
+
+
+            if (item is BlockItem) {
+                blocks.forEach { pos ->
+                    mc.world!!.setBlockState(pos, item.block.defaultState)
+                }
+            } else if (item is AirBlockItem) {
+                blocks.forEach { pos ->
+                    mc.world!!.setBlockState(pos, Blocks.AIR.defaultState)
+                }
+            }
+
+
+        }
+
     }
 
 
