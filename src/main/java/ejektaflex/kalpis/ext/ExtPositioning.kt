@@ -74,6 +74,19 @@ fun Vec3d.dirMask(dir: Direction): Vec3d {
     return Vec3d(x * unit.x, y * unit.y, z * unit.z)
 }
 
+fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
+
+    var vecA = getStart()
+    var vecB = getEnd()
+
+    if (dir.direction == Direction.AxisDirection.NEGATIVE) {
+        vecA = vecA.subtract(off)
+    } else {
+        vecB = vecB.subtract(off)
+    }
+
+    return Box(vecA, vecB)
+}
 
 
 fun Box.getStart(): Vec3d {
