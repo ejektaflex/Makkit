@@ -41,8 +41,6 @@ internal abstract class DragTool(val region: EditRegion, val binding: FabricKeyB
             start = null
         }
 
-
-
     }
 
     open fun getDrawOffset(box: Box): Vec3d? {

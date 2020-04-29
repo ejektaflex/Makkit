@@ -4,15 +4,10 @@ import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import ejektaflex.kalpis.mixin.TextRendererMixin
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 object RenderHelper : AbstractRenderHelper() {

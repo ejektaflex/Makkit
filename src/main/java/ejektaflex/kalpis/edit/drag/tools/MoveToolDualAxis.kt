@@ -6,7 +6,7 @@ import ejektaflex.kalpis.ext.round
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 
-internal class DualAxisMoveTool(region: EditRegion, binding: FabricKeyBinding) : SinglePlaneDragTool(region, binding) {
+internal class MoveToolDualAxis(region: EditRegion, binding: FabricKeyBinding) : SinglePlaneDragTool(region, binding) {
 
     override fun calcDragBox(smooth: Boolean): Box? {
 

@@ -1,8 +1,8 @@
 package ejektaflex.kalpis.edit
 
 import ejektaflex.kalpis.ExampleMod
-import ejektaflex.kalpis.edit.drag.tools.DualAxisMoveTool
-import ejektaflex.kalpis.edit.drag.tools.SingleAxisResizeTool
+import ejektaflex.kalpis.edit.drag.tools.MoveToolDualAxis
+import ejektaflex.kalpis.edit.drag.tools.ResizeToolSingleAxis
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import ejektaflex.kalpis.render.RenderHelper
@@ -13,7 +13,7 @@ import net.minecraft.item.BlockItem
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
-class EditRegion() {
+class EditRegion {
 
 
     val area = RenderBox().apply {
@@ -24,12 +24,14 @@ class EditRegion() {
         color = RenderColor.BLUE
     }
 
-    private val moveTool = DualAxisMoveTool(this, ExampleMod.moveDragBinding)
-    private val resizeTool = SingleAxisResizeTool(this, ExampleMod.resizeSideBinding)
+    private val moveTool = MoveToolDualAxis(this, ExampleMod.moveDragBinding)
+    private val resizeTool = ResizeToolSingleAxis(this, ExampleMod.resizeSideBinding)
+    private val resizeToolOpp = ResizeToolSingleAxis(this, ExampleMod.resizeOppSideBinding, true)
 
     private val tools = listOf(
             moveTool,
-            resizeTool
+            resizeTool,
+            resizeToolOpp
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
@@ -72,11 +74,9 @@ class EditRegion() {
 
         tools.find { it.isDragging() }?.tryDraw()
 
-        RenderHelper.drawText(area.box.center.add(0.0, area.box.yLength / 2, 0.0), "Hello!")
+        RenderHelper.drawText(area.box.center.add(0.0, area.box.yLength / 2, 0.0), "Edit Region 1")
 
     }
-
-
 
 
 }

@@ -1,7 +1,5 @@
 package ejektaflex.kalpis.render
 
-import net.minecraft.client.util.math.Vector3f
-
 enum class RenderColor(val r: Float, val g: Float, val b: Float, val a: Float = 1f) {
     WHITE(1f, 1f, 1f),
     RED(1f, 0f, 0f),

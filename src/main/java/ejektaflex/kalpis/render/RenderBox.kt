@@ -1,7 +1,6 @@
 package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.data.BoxTraceResult
-import ejektaflex.kalpis.edit.drag.DragTool
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d

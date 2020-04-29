@@ -43,8 +43,4 @@ abstract class AbstractRenderHelper {
         matrices.drawOffset(camera.pos, func, RenderHelper)
     }
 
-    companion object {
-        val BLOCK_UNIT = BlockPos(1, 1, 1)
-    }
-
 }

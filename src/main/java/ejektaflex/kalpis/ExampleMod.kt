@@ -29,7 +29,7 @@ class ExampleMod : ModInitializer {
         KeyBindingRegistry.INSTANCE.addCategory("KEdit")
 
         KeyBindingRegistry.INSTANCE.register(moveDragBinding)
-        KeyBindingRegistry.INSTANCE.register(stretchDragBinding)
+        KeyBindingRegistry.INSTANCE.register(resizeOppSideBinding)
         KeyBindingRegistry.INSTANCE.register(resizeSideBinding)
         KeyBindingRegistry.INSTANCE.register(deleteBinding)
 
@@ -50,21 +50,21 @@ class ExampleMod : ModInitializer {
 
     companion object {
         val moveDragBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "move_drag"),
+                Identifier("kedit", "move_dual_axis"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_Z,
                 "KEdit"
         ).build()
 
-        val stretchDragBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "stretch_drag"),
+        val resizeOppSideBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "resize_single_axis_opp"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_X,
                 "KEdit"
         ).build()
 
         val resizeSideBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "shrink_drag"),
+                Identifier("kedit", "resize_single_axis"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_C,
                 "KEdit"

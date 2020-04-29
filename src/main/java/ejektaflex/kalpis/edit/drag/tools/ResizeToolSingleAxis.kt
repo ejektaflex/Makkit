@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal class SingleAxisResizeTool(
+internal class ResizeToolSingleAxis(
         region: EditRegion,
         binding: FabricKeyBinding,
         val opposite: Boolean = false
