@@ -1,12 +1,12 @@
 package ejektaflex.kalpis.edit.drag.tools
 
 import ejektaflex.kalpis.edit.EditRegion
-import ejektaflex.kalpis.edit.drag.SinglePlaneDragTool
+import ejektaflex.kalpis.edit.drag.DualAxisDragTools
 import ejektaflex.kalpis.ext.round
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 
-internal class MoveToolDualAxis(region: EditRegion, binding: FabricKeyBinding) : SinglePlaneDragTool(region, binding) {
+internal class MoveToolsDualAxis(region: EditRegion, binding: FabricKeyBinding) : DualAxisDragTools(region, binding) {
 
     override fun calcDragBox(smooth: Boolean): Box? {
 

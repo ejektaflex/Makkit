@@ -8,6 +8,7 @@ import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 object RenderHelper : AbstractRenderHelper() {
@@ -41,7 +42,35 @@ object RenderHelper : AbstractRenderHelper() {
         matrices.pop()
     }
 
+    fun getLookVector(): Vec3d {
+        return mc.player!!.getRotationVec(tickDelta)
+    }
 
+    fun getLookDirections(): List<Direction> {
+        val vec = getLookVector()
+        var dirs = mutableListOf<Direction>()
+
+        if (vec.z < 0) {
+            dirs.add(Direction.SOUTH)
+        } else {
+            dirs.add(Direction.NORTH)
+        }
+
+        // Y dir is flipped
+        if (vec.y < 0) {
+            dirs.add(Direction.UP)
+        } else {
+            dirs.add(Direction.DOWN)
+        }
+
+        if (vec.x < 0) {
+            dirs.add(Direction.EAST)
+        } else {
+            dirs.add(Direction.WEST)
+        }
+
+        return dirs
+    }
 
     fun drawBox(box: Box, color: RenderColor = RenderColor.WHITE) {
         val colors = color.floats

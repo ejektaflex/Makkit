@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DualPlaneDragTool(region: EditRegion, binding: FabricKeyBinding) : DragTool(region,binding) {
+internal abstract class SingleAxisDragTool(region: EditRegion, binding: FabricKeyBinding) : DragTool(region,binding) {
 
     protected val planeAxis1 = RenderBox()
     protected val planeAxis2 = RenderBox()

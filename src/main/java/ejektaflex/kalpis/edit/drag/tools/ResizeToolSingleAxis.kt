@@ -1,7 +1,7 @@
 package ejektaflex.kalpis.edit.drag.tools
 
 import ejektaflex.kalpis.edit.EditRegion
-import ejektaflex.kalpis.edit.drag.DualPlaneDragTool
+import ejektaflex.kalpis.edit.drag.SingleAxisDragTool
 import ejektaflex.kalpis.ext.dirMask
 import ejektaflex.kalpis.ext.round
 import ejektaflex.kalpis.ext.shrinkSide
@@ -14,8 +14,9 @@ internal class ResizeToolSingleAxis(
         region: EditRegion,
         binding: FabricKeyBinding,
         val opposite: Boolean = false
-) : DualPlaneDragTool(region, binding) {
+) : SingleAxisDragTool(region, binding) {
 
+    // Constrain to direction
     override fun getDrawOffset(box: Box): Vec3d? {
         return super.getDrawOffset(box)?.dirMask(start!!.dir)
     }

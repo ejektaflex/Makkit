@@ -46,3 +46,13 @@ fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
         null
     }
 }
+
+// Returns the center point of the edge between the faces of the given directions
+// NOTE: Opposite directions will return a zero vector
+fun Box.edgeCenterPos(dirA: Direction, dirB: Direction): Vec3d {
+    return center.add(
+            (dirA.vec3d().add(dirB.vec3d()))
+                    .multiply(getSize())
+                    .multiply(0.5)
+    )
+}

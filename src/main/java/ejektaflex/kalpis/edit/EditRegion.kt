@@ -1,7 +1,7 @@
 package ejektaflex.kalpis.edit
 
 import ejektaflex.kalpis.ExampleMod
-import ejektaflex.kalpis.edit.drag.tools.MoveToolDualAxis
+import ejektaflex.kalpis.edit.drag.tools.MoveToolsDualAxis
 import ejektaflex.kalpis.edit.drag.tools.ResizeToolSingleAxis
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
@@ -24,7 +24,7 @@ class EditRegion {
         color = RenderColor.BLUE
     }
 
-    private val moveTool = MoveToolDualAxis(this, ExampleMod.moveDragBinding)
+    private val moveTool = MoveToolsDualAxis(this, ExampleMod.moveDragBinding)
     private val resizeTool = ResizeToolSingleAxis(this, ExampleMod.resizeSideBinding)
     private val resizeToolOpp = ResizeToolSingleAxis(this, ExampleMod.resizeOppSideBinding, true)
 
@@ -76,14 +76,17 @@ class EditRegion {
             val hit = area.trace()
             hit?.let {
                 area.drawFace(it.dir)
-                area.drawDimensions(it.dir)
+                area.drawAxisNumbers()
+                //area.drawDimensions(it.dir)
             }
         }
 
 
         tools.find { it.isDragging() }?.tryDraw()
 
-        RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), "Edit Region 1")
+        val dirsPretty = RenderHelper.getLookDirections().joinToString(",") { it.toString() }
+        //RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), dirsPretty)
+
 
     }
 

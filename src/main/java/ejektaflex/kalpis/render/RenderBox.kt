@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import java.util.*
 
 class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 1.0, 1.0)) {
 
@@ -27,57 +28,17 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         return buff
     }
 
-    // get other axis directions. then for each dir 0..x, then for each 0..y
-    // pick coord mask = otherDirections[x] + otherDirections[y]
-    // then multiply by plane size to get offset?
+    fun drawAxisNumbers() {
+        val dirs = RenderHelper.getLookDirections()
 
-    private fun flipSwitch(x: Int) = (x * 2) - 1
+        dirs.forEachIndexed { i, direction ->
+            val shifted = dirs[(i + 1) % 3]
+            val dirForLen = dirs[(i + 2) % 3]
 
-    fun drawDimensions(dir: Direction) {
+            val pos = box.edgeCenterPos(direction, shifted)
 
-        val facePlane = getFacePlane(dir)
-
-        val others = enumValues<Direction>().filter {
-            it != dir && it != dir.opposite
+            RenderHelper.drawText(pos, size.axisValue(dirForLen.axis).toInt().toString())
         }
-
-        others.forEachIndexed { i, direction ->
-            val faceSize = facePlane.getSize()
-
-            val textPos = facePlane.center.add(
-                    facePlane.getSize().multiply(direction.vec3d()).multiply(0.5)
-            )
-
-            val text = facePlane.getSize().edgeLengthBetweenFaces(dir, direction).toString()
-
-            RenderHelper.drawText(textPos, text)
-
-        }
-
-
-        // Mask:    0 0 1
-        // Others:
-        // n = -1 -1 -1
-        // a = 0 1 0
-        // b = 1 0 0
-
-        // 0 -> -1, 1 -> 1
-        // or 1 -> 0, 0 -> -1 // YES, subtract 1
-
-        // 0 -1 0
-        // 0 1 0
-        // -1 0 0
-        // 1 0 0
-
-        // -1 -1 0 = an + bn
-        // 1 -1 0 = a + bn
-        // -1 1 0 = an + b
-        // 1 1 0 = a + b
-
-
-
-
-
     }
 
     fun getFacePlane(dir: Direction): Box {

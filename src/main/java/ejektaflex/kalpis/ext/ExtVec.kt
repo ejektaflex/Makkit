@@ -49,3 +49,7 @@ fun Vec3d.edgeLengthBetweenFaces(a: Direction, b: Direction): Double {
 fun Vec3d.arr(): DoubleArray {
     return doubleArrayOf(x, y, z)
 }
+
+fun Vec3d.axisValue(axis: Direction.Axis): Double {
+    return axis.choose(x, y, z)
+}

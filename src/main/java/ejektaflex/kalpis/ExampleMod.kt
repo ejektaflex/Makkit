@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Direction
 import org.lwjgl.glfw.GLFW
 
 class ExampleMod : ModInitializer {
@@ -46,6 +47,9 @@ class ExampleMod : ModInitializer {
         RenderHelper.drawInWorld {
             region.update()
             region.draw()
+
+
+
         }
     }
 
