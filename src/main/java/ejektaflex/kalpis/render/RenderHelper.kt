@@ -22,11 +22,11 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
 
-    fun drawText(pos: Vec3d, text: String, center: Boolean = true) {
+    fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
         matrices.multiply(camera.rotation)
-        matrices.scale(-0.1f, -0.1f, 0.1f)
+        matrices.scale(-textSize/32, -textSize/32, -textSize/32)
 
         val centerDiv = if (center) 2 else 1
 
@@ -35,7 +35,7 @@ object RenderHelper : AbstractRenderHelper() {
                 // x offset to center text
                 -textRenderer.method_27525(LiteralText(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
-                553648127,
+                0xFF0000,
                 true,
                 matrices.peek().model,
                 buffers.outlineVertexConsumers,
