@@ -2,13 +2,20 @@ package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.ext.drawOffset
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Matrix4f
 
 abstract class AbstractRenderHelper {
+
+    protected val mc = MinecraftClient.getInstance()
+
+    val textRenderer: TextRenderer
+        get() = mc.textRenderer
 
     protected lateinit var matrices: MatrixStack
 
@@ -18,17 +25,19 @@ abstract class AbstractRenderHelper {
 
     protected lateinit var buffers: BufferBuilderStorage
 
+    protected lateinit var matrix4f: Matrix4f
+
     protected val eVerts: VertexConsumerProvider.Immediate
         get() = buffers.entityVertexConsumers
 
-    fun setState(matricesIn: MatrixStack, tickDeltaIn: Float, cameraIn: Camera, buffersIn: BufferBuilderStorage) {
+    fun setState(matricesIn: MatrixStack, tickDeltaIn: Float, cameraIn: Camera, buffersIn: BufferBuilderStorage, matrixIn: Matrix4f) {
         matrices = matricesIn
         tickDelta = tickDeltaIn
         camera = cameraIn
         buffers = buffersIn
+        matrix4f = matrixIn
     }
 
-    protected val mc = MinecraftClient.getInstance()
 
     fun drawInWorld(func: RenderHelper.() -> Unit) {
         matrices.drawOffset(camera.pos, func, RenderHelper)

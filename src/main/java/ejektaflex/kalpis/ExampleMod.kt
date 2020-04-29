@@ -40,7 +40,7 @@ class ExampleMod : ModInitializer {
 
     private fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
-        RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers)
+        RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
 
         RenderHelper.drawInWorld {
             region.update()

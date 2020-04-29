@@ -6,6 +6,7 @@ import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.util.math.Matrix4f
 
 object Events {
 
@@ -19,7 +20,14 @@ object Events {
         }
     }
 
-    data class DrawScreenEvent(val matrices: MatrixStack, val tickDelta: Float, val camera: Camera, val renderer: GameRenderer, val buffers: BufferBuilderStorage) {
+    data class DrawScreenEvent(
+            val matrices: MatrixStack,
+            val tickDelta: Float,
+            val camera: Camera,
+            val renderer: GameRenderer,
+            val buffers: BufferBuilderStorage,
+            val matrix: Matrix4f
+    ) {
         companion object {
             val Dispatcher = createSimpleEvent<DrawScreenEvent>()
         }

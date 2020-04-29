@@ -9,6 +9,7 @@ import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.ext.otherDirectionalAxes
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
+import ejektaflex.kalpis.render.RenderHelper
 import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.AirBlockItem
@@ -140,6 +141,10 @@ class EditRegion() {
 
         var smoothStep = true
 
+        region.draw()
+
+        RenderHelper.drawText(region.box.center.add(0.0, region.box.yLength/2, 0.0), "Hello!")
+
         if (moveDrag.isDragging()) {
             previewBlock.box = movePlane.calcDragBox(moveDrag, smoothStep)
                     ?: previewBlock.box
@@ -165,7 +170,6 @@ class EditRegion() {
             }
         }
 
-        region.draw()
 
     }
 

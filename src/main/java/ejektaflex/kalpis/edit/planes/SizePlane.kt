@@ -58,7 +58,7 @@ class SizePlane(region: EditRegion) : Plane(region) {
                         ),
                         sideSize
                 )
-                
+
                 cutPrev.draw(RenderColor.PINK, offset = Vec3d(0.05, 0.05, 0.05))
                  */
 
