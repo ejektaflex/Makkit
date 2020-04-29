@@ -30,7 +30,7 @@ class ExampleMod : ModInitializer {
 
         KeyBindingRegistry.INSTANCE.register(moveDragBinding)
         KeyBindingRegistry.INSTANCE.register(stretchDragBinding)
-        KeyBindingRegistry.INSTANCE.register(shrinkDragBinding)
+        KeyBindingRegistry.INSTANCE.register(resizeSideBinding)
         KeyBindingRegistry.INSTANCE.register(deleteBinding)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
@@ -63,7 +63,7 @@ class ExampleMod : ModInitializer {
                 "KEdit"
         ).build()
 
-        val shrinkDragBinding = FabricKeyBinding.Builder.create(
+        val resizeSideBinding = FabricKeyBinding.Builder.create(
                 Identifier("kedit", "shrink_drag"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_C,

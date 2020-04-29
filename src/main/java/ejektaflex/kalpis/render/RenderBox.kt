@@ -1,6 +1,7 @@
 package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.edit.drag.DragTool
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -22,6 +23,8 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inSize: Vec3d = Vec3d(1.0, 
         }
         return buff
     }
+
+
 
     val pos: Vec3d
         get() = Vec3d(box.x1, box.y1, box.z1)

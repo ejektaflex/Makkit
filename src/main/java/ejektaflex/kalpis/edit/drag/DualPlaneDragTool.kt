@@ -1,0 +1,52 @@
+package ejektaflex.kalpis.edit.drag
+
+import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.edit.EditRegion
+import ejektaflex.kalpis.ext.flipMask
+import ejektaflex.kalpis.ext.otherDirectionalAxes
+import ejektaflex.kalpis.render.RenderBox
+import ejektaflex.kalpis.render.RenderColor
+import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
+
+internal abstract class DualPlaneDragTool(region: EditRegion, binding: FabricKeyBinding) : DragTool(region,binding) {
+
+    protected val planeAxis1 = RenderBox()
+    protected val planeAxis2 = RenderBox()
+
+    val planes: List<RenderBox>
+        get() = listOf(planeAxis1, planeAxis2)
+
+
+    override fun onStartDragging(start: BoxTraceResult) {
+        println("Dragging size")
+
+        val planes = planes
+
+        val dirs = start.dir.otherDirectionalAxes()
+
+        dirs.forEachIndexed { i, direction ->
+            val areaSize = Vec3d(8.0, 8.0, 8.0).flipMask(direction)
+            planes[i].box = Box(
+                    start.hit.subtract(areaSize),
+                    start.hit.add(areaSize)
+            )
+        }
+    }
+
+    override fun onStopDragging(stop: BoxTraceResult) {
+        val box = calcDragBox(false)
+        box?.let { region.area.box = it }
+    }
+
+     override fun onDraw() {
+         if (isDragging()) {
+             region.preview.box = calcDragBox(true) ?: region.preview.box
+
+             planeAxis1.draw(RenderColor.PINK)
+             planeAxis2.draw(RenderColor.PINK)
+         }
+     }
+
+}
