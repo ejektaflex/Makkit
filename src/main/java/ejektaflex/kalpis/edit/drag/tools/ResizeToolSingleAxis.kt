@@ -39,23 +39,6 @@ internal class ResizeToolSingleAxis(
                 val shrinkVec = rounding.multiply(start!!.dir.opposite.vec3d())
                 val dir = start!!.dir
 
-                /* face plane rendering
-                val sideSize = region.region.size.flipMask(dir)
-
-                val width = region.region.size.dirMask(dir)
-
-                val cutPrev = RenderBox(
-                        region.region.box.center.subtract(
-                                sideSize.multiply(0.5)
-                        ).add(
-                                width.multiply(0.5)
-                        ),
-                        sideSize
-                )
-
-                cutPrev.draw(RenderColor.PINK, offset = Vec3d(0.05, 0.05, 0.05))
-                 */
-
                 return when (opposite) {
                     false -> {
                         region.area.box.shrinkSide(shrinkVec, dir)

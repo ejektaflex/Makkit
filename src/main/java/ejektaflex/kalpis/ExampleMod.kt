@@ -26,12 +26,13 @@ class ExampleMod : ModInitializer {
 
         println("Hello Fabric world!")
 
-        KeyBindingRegistry.INSTANCE.addCategory("KEdit")
-
-        KeyBindingRegistry.INSTANCE.register(moveDragBinding)
-        KeyBindingRegistry.INSTANCE.register(resizeOppSideBinding)
-        KeyBindingRegistry.INSTANCE.register(resizeSideBinding)
-        KeyBindingRegistry.INSTANCE.register(deleteBinding)
+        KeyBindingRegistry.INSTANCE.apply {
+            addCategory("KEdit")
+            register(moveDragBinding)
+            register(resizeOppSideBinding)
+            register(resizeSideBinding)
+            register(deleteBinding)
+        }
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
 

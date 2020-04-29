@@ -22,13 +22,13 @@ internal abstract class DualPlaneDragTool(region: EditRegion, binding: FabricKey
     override fun onStartDragging(start: BoxTraceResult) {
         println("Dragging size")
 
-        val planes = planes
+        val renderPlanes = planes
 
         val dirs = start.dir.otherDirectionalAxes()
 
         dirs.forEachIndexed { i, direction ->
             val areaSize = Vec3d(8.0, 8.0, 8.0).flipMask(direction)
-            planes[i].box = Box(
+            renderPlanes[i].box = Box(
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)
             )

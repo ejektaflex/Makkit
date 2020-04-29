@@ -67,14 +67,22 @@ class EditRegion {
 
         area.draw()
 
-        if (tools.any { it.isDragging() }) {
+        val anyToolsDragging = tools.any { it.isDragging() }
+
+        if (anyToolsDragging) {
             tools.forEach { tool -> tool.update() }
             preview.draw()
+        } else {
+            val hit = area.trace()
+            hit?.let {
+                area.drawFace(it.dir)
+            }
         }
 
+        
         tools.find { it.isDragging() }?.tryDraw()
 
-        RenderHelper.drawText(area.box.center.add(0.0, area.box.yLength / 2, 0.0), "Edit Region 1")
+        RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), "Edit Region 1")
 
     }
 

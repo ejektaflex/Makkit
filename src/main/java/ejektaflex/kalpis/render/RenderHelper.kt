@@ -31,10 +31,10 @@ object RenderHelper : AbstractRenderHelper() {
                 -textRenderer.method_27525(LiteralText(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
                 0xFF0000,
-                true,
+                false,
                 matrices.peek().model,
                 buffers.outlineVertexConsumers,
-                false, // see through
+                true, // see through
                 0,
                 15728880
         )
