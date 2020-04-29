@@ -76,10 +76,11 @@ class EditRegion {
             val hit = area.trace()
             hit?.let {
                 area.drawFace(it.dir)
+                area.drawDimensions(it.dir)
             }
         }
 
-        
+
         tools.find { it.isDragging() }?.tryDraw()
 
         RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), "Edit Region 1")

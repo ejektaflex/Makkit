@@ -27,15 +27,58 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         return buff
     }
 
+    // get other axis directions. then for each dir 0..x, then for each 0..y
+    // pick coord mask = otherDirections[x] + otherDirections[y]
+    // then multiply by plane size to get offset?
+
+    private fun flipSwitch(x: Int) = (x * 2) - 1
+
     fun drawDimensions(dir: Direction) {
+
+        val facePlane = getFacePlane(dir)
+
+        val others = enumValues<Direction>().filter {
+            it != dir && it != dir.opposite
+        }
+
+        others.forEachIndexed { i, direction ->
+            val faceSize = facePlane.getSize()
+
+            val textPos = facePlane.center.add(
+                    facePlane.getSize().multiply(direction.vec3d()).multiply(0.5)
+            )
+
+            val text = facePlane.getSize().edgeLengthBetweenFaces(dir, direction).toString()
+
+            RenderHelper.drawText(textPos, text)
+
+        }
+
+
+        // Mask:    0 0 1
+        // Others:
+        // n = -1 -1 -1
+        // a = 0 1 0
+        // b = 1 0 0
+
+        // 0 -> -1, 1 -> 1
+        // or 1 -> 0, 0 -> -1 // YES, subtract 1
+
+        // 0 -1 0
+        // 0 1 0
+        // -1 0 0
+        // 1 0 0
+
+        // -1 -1 0 = an + bn
+        // 1 -1 0 = a + bn
+        // -1 1 0 = an + b
+        // 1 1 0 = a + b
+
+
 
 
 
     }
-
-    // get other axis directions. then for each dir 0..x, then for each 0..y
-    // pick coord mask = otherDirections[x] + otherDirections[y]
-    // then multiply by plane size to get offset?
 
     fun getFacePlane(dir: Direction): Box {
         val faceSize = size.flipMask(dir)

@@ -30,7 +30,7 @@ object RenderHelper : AbstractRenderHelper() {
                 // x offset to center text
                 -textRenderer.method_27525(LiteralText(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
-                0xFF0000,
+                0xFFFFFF,
                 false,
                 matrices.peek().model,
                 buffers.outlineVertexConsumers,

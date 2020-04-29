@@ -35,3 +35,17 @@ fun Vec3d.dirMask(dir: Direction): Vec3d {
     val unit = dir.vector
     return Vec3d(x * unit.x, y * unit.y, z * unit.z)
 }
+
+fun Vec3d.mapFunc(func: (it: Double) -> Double): Vec3d {
+    return Vec3d(func(x), func(y), func(z))
+}
+
+fun Vec3d.edgeLengthBetweenFaces(a: Direction, b: Direction): Double {
+    return arr()[enumValues<Direction.Axis>().first {
+        it != a.axis && it != b.axis
+    }.ordinal]
+}
+
+fun Vec3d.arr(): DoubleArray {
+    return doubleArrayOf(x, y, z)
+}
