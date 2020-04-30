@@ -4,11 +4,10 @@
   "package": "ejektaflex.kalpis.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "TextRendererMixin"
   ],
   "client": [
     "BoxMixin",
-    "ExampleMixin",
+    "TextRendererMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

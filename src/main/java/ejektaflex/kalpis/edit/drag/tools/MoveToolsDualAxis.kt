@@ -12,12 +12,10 @@ internal class MoveToolsDualAxis(region: EditRegion, binding: FabricKeyBinding) 
         super.onDraw()
 
         region.preview.draw()
-        // TODO Change to drawing position data
         val offset = getDrawOffset(plane.box)
         if (offset != null) {
             region.preview.drawNearAxisLabels(offset)
         }
-
 
     }
 
