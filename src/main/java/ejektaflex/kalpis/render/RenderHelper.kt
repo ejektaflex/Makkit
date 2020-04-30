@@ -4,7 +4,6 @@ import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import ejektaflex.kalpis.mixin.TextRendererMixin
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.BlockPos
@@ -75,12 +74,23 @@ object RenderHelper : AbstractRenderHelper() {
 
     fun drawBox(box: Box, color: RenderColor = RenderColor.WHITE) {
         val colors = color.floats
+
+        // Render twice, once for in front of objects and transparently behind
+
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(RenderLayer.getLines()),
+                eVerts.getBuffer(MyLayers.OVERLAY_LINES_FRONT),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
+
+        WorldRenderer.drawBox(
+                matrices,
+                eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND),
+                box,
+                colors[0], colors[1], colors[2], colors[3]
+        )
+
     }
 
 

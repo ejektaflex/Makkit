@@ -1,5 +1,6 @@
 package ejektaflex.kalpis
 
+import com.mojang.blaze3d.systems.RenderSystem
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.event.Events
 import ejektaflex.kalpis.render.RenderHelper
@@ -9,7 +10,6 @@ import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Direction
 import org.lwjgl.glfw.GLFW
 
 class ExampleMod : ModInitializer {
@@ -54,6 +54,9 @@ class ExampleMod : ModInitializer {
     }
 
     companion object {
+
+
+
         val moveDragBinding = FabricKeyBinding.Builder.create(
                 Identifier("kedit", "move_dual_axis"),
                 InputUtil.Type.KEYSYM,
