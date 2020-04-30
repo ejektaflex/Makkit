@@ -56,3 +56,15 @@ fun Box.edgeCenterPos(dirA: Direction, dirB: Direction): Vec3d {
                     .multiply(0.5)
     )
 }
+
+fun Box.faceCenterPos(dir: Direction): Vec3d {
+    return center.add(
+            dir.vec3d()
+                    .multiply(getSize())
+                    .multiply(0.5)
+    )
+}
+
+fun Box.sizeInDirection(dir: Direction): Double {
+    return getSize().axisValue(dir.axis)
+}

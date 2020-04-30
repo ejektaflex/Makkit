@@ -7,6 +7,7 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import java.util.*
+import kotlin.math.roundToInt
 
 class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 1.0, 1.0)) {
 
@@ -37,8 +38,15 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
             val pos = box.edgeCenterPos(direction, shifted)
 
-            RenderHelper.drawText(pos, size.axisValue(dirForLen.axis).toInt().toString())
+            RenderHelper.drawText(pos, size.axisValue(dirForLen.axis).roundToInt().toString())
         }
+    }
+
+    fun drawTextOn(face: Direction, text: String) {
+        RenderHelper.drawText(
+                box.faceCenterPos(face),
+                text
+        )
     }
 
     fun getFacePlane(dir: Direction): Box {

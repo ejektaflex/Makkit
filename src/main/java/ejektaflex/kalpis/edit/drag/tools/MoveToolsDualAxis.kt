@@ -8,13 +8,19 @@ import net.minecraft.util.math.Box
 
 internal class MoveToolsDualAxis(region: EditRegion, binding: FabricKeyBinding) : DualAxisDragTools(region, binding) {
 
-    override fun calcDragBox(smooth: Boolean): Box? {
+    override fun onDraw() {
+        super.onDraw()
 
+        region.preview.draw()
+        // TODO Change to drawing position data
+        region.preview.drawAxisNumbers()
+    }
+
+    override fun calcDragBox(smooth: Boolean): Box? {
         if (isDragging()) {
             val offset = getDrawOffset(plane.box)
 
             if (offset != null) {
-
                 val rounding = when (smooth) {
                     true -> offset
                     false -> offset.round()
@@ -23,7 +29,6 @@ internal class MoveToolsDualAxis(region: EditRegion, binding: FabricKeyBinding) 
                 return region.area.box.offset(rounding)
             }
         }
-
         return null
     }
 

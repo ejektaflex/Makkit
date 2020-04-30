@@ -13,8 +13,7 @@ import net.minecraft.item.BlockItem
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
-class EditRegion {
-
+class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = true) {
 
     val area = RenderBox().apply {
         color = RenderColor.GREEN
@@ -70,9 +69,12 @@ class EditRegion {
         val anyToolsDragging = tools.any { it.isDragging() }
 
         if (anyToolsDragging) {
-            tools.forEach { tool -> tool.update() }
-            preview.draw()
+            tools.forEach { tool ->
+                tool.update()
+                tool.tryDraw()
+            }
         } else {
+            // default state when no drag tool is being used
             val hit = area.trace()
             hit?.let {
                 area.drawFace(it.dir)
@@ -81,13 +83,9 @@ class EditRegion {
             }
         }
 
-
-        tools.find { it.isDragging() }?.tryDraw()
-
         val dirsPretty = RenderHelper.getLookDirections().joinToString(",") { it.toString() }
         //RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), dirsPretty)
-
-
+        
     }
 
 

@@ -2,13 +2,11 @@ package ejektaflex.kalpis.edit.drag.tools
 
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.drag.SingleAxisDragTool
-import ejektaflex.kalpis.ext.dirMask
-import ejektaflex.kalpis.ext.round
-import ejektaflex.kalpis.ext.shrinkSide
-import ejektaflex.kalpis.ext.vec3d
+import ejektaflex.kalpis.ext.*
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import kotlin.math.roundToInt
 
 internal class ResizeToolSingleAxis(
         region: EditRegion,
@@ -19,6 +17,17 @@ internal class ResizeToolSingleAxis(
     // Constrain to direction
     override fun getDrawOffset(box: Box): Vec3d? {
         return super.getDrawOffset(box)?.dirMask(start!!.dir)
+    }
+
+    override fun onDraw() {
+        super.onDraw()
+
+        region.preview.draw()
+
+        region.preview.drawTextOn(
+                start!!.dir,
+                region.preview.box.sizeInDirection(start!!.dir).roundToInt().toString()
+        )
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {

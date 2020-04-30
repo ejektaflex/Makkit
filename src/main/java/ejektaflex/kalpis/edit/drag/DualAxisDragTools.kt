@@ -30,9 +30,11 @@ internal abstract class DualAxisDragTools(region: EditRegion, binding: FabricKey
 
     override fun onDraw() {
         if (isDragging()) {
-            region.preview.box = calcDragBox(true) ?: region.preview.box
+            region.preview.box = calcDragBox(region.smoothDrag) ?: region.preview.box
 
-            plane.draw(RenderColor.PINK)
+            if (region.drawDragPlane) {
+                plane.draw(RenderColor.PINK)
+            }
         }
     }
 
