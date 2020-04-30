@@ -15,6 +15,8 @@ import net.minecraft.util.math.Box
 
 class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = true) {
 
+    val samplePlaneSize = 16.0
+
     val area = RenderBox().apply {
         color = RenderColor.GREEN
     }
@@ -41,7 +43,6 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
         tools.forEach { tool -> tool.update() }
 
         if (ExampleMod.deleteBinding.isPressed) {
-
 
             val blocks = area.getBlockArray()
 

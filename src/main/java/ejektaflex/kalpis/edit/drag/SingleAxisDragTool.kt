@@ -27,7 +27,11 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: FabricKe
         val dirs = start.dir.otherDirectionalAxes()
 
         dirs.forEachIndexed { i, direction ->
-            val areaSize = Vec3d(8.0, 8.0, 8.0).flipMask(direction)
+            val areaSize = Vec3d(
+                    region.samplePlaneSize,
+                    region.samplePlaneSize,
+                    region.samplePlaneSize
+            ).flipMask(direction)
             renderPlanes[i].box = Box(
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)

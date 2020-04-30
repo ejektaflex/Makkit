@@ -4,6 +4,7 @@ import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
 import ejektaflex.kalpis.mixin.TextRendererMixin
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.BlockPos
@@ -29,7 +30,7 @@ object RenderHelper : AbstractRenderHelper() {
         textRenderer.draw(
                 LiteralText(text),
                 // x offset to center text
-                -textRenderer.method_27525(LiteralText(text)).toFloat() / 2,
+                -textRenderer.getStringWidth(LiteralText(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
                 0xFFFFFF,
                 false,
@@ -76,7 +77,7 @@ object RenderHelper : AbstractRenderHelper() {
         val colors = color.floats
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(MyLayers.OVERLAY_LINES),
+                eVerts.getBuffer(RenderLayer.getLines()),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )

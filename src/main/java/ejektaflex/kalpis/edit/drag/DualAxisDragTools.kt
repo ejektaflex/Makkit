@@ -15,7 +15,11 @@ internal abstract class DualAxisDragTools(region: EditRegion, binding: FabricKey
 
     override fun onStartDragging(start: BoxTraceResult) {
         println("Dragging move")
-        val areaSize = Vec3d(12.0, 12.0, 12.0).flipMask(start.dir)
+        val areaSize = Vec3d(
+                region.samplePlaneSize,
+                region.samplePlaneSize,
+                region.samplePlaneSize
+        ).flipMask(start.dir)
 
         plane.box = Box(
                 start.hit.subtract(areaSize),
