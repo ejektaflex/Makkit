@@ -29,7 +29,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         return buff
     }
 
-    fun drawAxisNumbers() {
+    fun drawNearAxisLabels(func: () -> Vec3d) {
         val dirs = RenderHelper.getLookDirections()
 
         dirs.forEachIndexed { i, direction ->
@@ -38,8 +38,20 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
             val pos = box.edgeCenterPos(direction, shifted)
 
-            RenderHelper.drawText(pos, size.axisValue(dirForLen.axis).roundToInt().toString())
+            RenderHelper.drawText(pos, func().axisValue(dirForLen.axis).roundToInt().toString())
         }
+    }
+
+    fun drawNearAxisLabels(vec3d: Vec3d) {
+        drawNearAxisLabels { vec3d }
+    }
+
+    fun drawAxisSizes() {
+        drawNearAxisLabels(size)
+    }
+
+    fun drawAxisPositions() {
+        drawNearAxisLabels(pos)
     }
 
     fun drawTextOn(face: Direction, text: String) {

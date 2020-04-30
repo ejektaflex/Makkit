@@ -13,7 +13,12 @@ internal class MoveToolsDualAxis(region: EditRegion, binding: FabricKeyBinding) 
 
         region.preview.draw()
         // TODO Change to drawing position data
-        region.preview.drawAxisNumbers()
+        val offset = getDrawOffset(plane.box)
+        if (offset != null) {
+            region.preview.drawNearAxisLabels(offset)
+        }
+
+
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {

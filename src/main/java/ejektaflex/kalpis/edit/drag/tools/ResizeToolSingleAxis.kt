@@ -21,7 +21,6 @@ internal class ResizeToolSingleAxis(
 
     override fun onDraw() {
         super.onDraw()
-
         region.preview.draw()
 
         region.preview.drawTextOn(
@@ -31,9 +30,7 @@ internal class ResizeToolSingleAxis(
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {
-
         if (isDragging()) {
-
             val offsets = planes.mapNotNull {
                 getDrawOffset(it.box)
             }

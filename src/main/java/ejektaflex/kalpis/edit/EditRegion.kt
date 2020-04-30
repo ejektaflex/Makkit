@@ -42,7 +42,6 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
 
         if (ExampleMod.deleteBinding.isPressed) {
 
-            println("Whoa")
 
             val blocks = area.getBlockArray()
 
@@ -78,14 +77,14 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             val hit = area.trace()
             hit?.let {
                 area.drawFace(it.dir)
-                area.drawAxisNumbers()
+                area.drawAxisSizes()
                 //area.drawDimensions(it.dir)
             }
         }
 
         val dirsPretty = RenderHelper.getLookDirections().joinToString(",") { it.toString() }
         //RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), dirsPretty)
-        
+
     }
 
 
