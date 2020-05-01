@@ -81,6 +81,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
                 area.drawAxisSizes()
                 //area.drawDimensions(it.dir)
             }
+
+            for (pos in area.getBlockArray()) {
+                if (!MinecraftClient.getInstance().world!!.getBlockState(pos).isAir) {
+                    RenderHelper.drawBlockPos(pos, RenderColor.ORANGE)
+                }
+            }
+
         }
 
         val dirsPretty = RenderHelper.getLookDirections().joinToString(",") { it.toString() }

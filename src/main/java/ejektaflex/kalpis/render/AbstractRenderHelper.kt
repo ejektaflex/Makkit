@@ -17,7 +17,7 @@ abstract class AbstractRenderHelper {
     val textRenderer: TextRenderer
         get() = mc.textRenderer
 
-    protected lateinit var matrices: MatrixStack
+    lateinit var matrices: MatrixStack
 
     protected var tickDelta: Float = 0f
 
@@ -27,7 +27,7 @@ abstract class AbstractRenderHelper {
 
     protected lateinit var matrix4f: Matrix4f
 
-    protected val eVerts: VertexConsumerProvider.Immediate
+    val eVerts: VertexConsumerProvider.Immediate
         get() = buffers.entityVertexConsumers
 
     fun setState(matricesIn: MatrixStack, tickDeltaIn: Float, cameraIn: Camera, buffersIn: BufferBuilderStorage, matrixIn: Matrix4f) {

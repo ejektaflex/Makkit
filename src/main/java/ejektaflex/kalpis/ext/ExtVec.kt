@@ -8,8 +8,9 @@ import net.minecraft.util.math.Vec3i
 val Vec3d.ZERO: Vec3d
     get() = Vec3d(0.0, 0.0, 0.0)
 
-val Vec3d.ONE: Vec3d
-    get() = Vec3d(1.0, 1.0, 1.0)
+fun Vec3d.ONE(): Vec3d {
+    return Vec3d(1.0, 1.0, 1.0)
+}
 
 
 operator fun Vec3d.plus(other: Vec3d): Vec3d {

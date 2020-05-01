@@ -47,9 +47,6 @@ class ExampleMod : ModInitializer {
         RenderHelper.drawInWorld {
             region.update()
             region.draw()
-
-
-
         }
     }
 

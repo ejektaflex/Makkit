@@ -96,7 +96,8 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     var color: RenderColor = RenderColor.WHITE
 
     fun draw(colorIn: RenderColor? = null, offset: Vec3d = Vec3d.ZERO) {
-        RenderHelper.drawBox(box.offset(offset), colorIn ?: color)
+        //RenderHelper.drawBox(box.offset(offset), colorIn ?: color)
+        RenderHelper.drawBoxFilled(this)
     }
 
     fun trace(): BoxTraceResult? {

@@ -1,21 +1,26 @@
 package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.data.BoxTraceResult
+import ejektaflex.kalpis.ext.color
 import ejektaflex.kalpis.ext.plus
 import ejektaflex.kalpis.ext.rayTraceForSide
+import ejektaflex.kalpis.ext.toBox
 import ejektaflex.kalpis.mixin.TextRendererMixin
-import net.minecraft.client.render.WorldRenderer
+import ejektaflex.kalpis.render.quads.QuadDrawer
+import net.minecraft.client.render.*
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import org.lwjgl.opengl.GL11
 
 object RenderHelper : AbstractRenderHelper() {
 
     fun drawBox(pos: BlockPos, size: BlockPos, color: RenderColor) {
         drawBox(Box(pos, pos + size), color)
     }
+
 
 
     fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
@@ -72,6 +77,18 @@ object RenderHelper : AbstractRenderHelper() {
         return dirs
     }
 
+    fun drawBlockPos(pos: BlockPos, color: RenderColor = RenderColor.WHITE) {
+        val colors = color.floats
+
+        WorldRenderer.drawBox(
+                matrices,
+                eVerts.getBuffer(MyLayers.OVERLAY_LINES_HIT_WALL),
+                pos.toBox(),
+                colors[0], colors[1], colors[2], colors[3]
+        )
+
+    }
+
     fun drawBox(box: Box, color: RenderColor = RenderColor.WHITE) {
         val colors = color.floats
 
@@ -90,6 +107,17 @@ object RenderHelper : AbstractRenderHelper() {
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
+
+    }
+
+
+    fun drawBoxFilled(box: RenderBox) {
+
+        QuadDrawer.draw(box)
+
+
+
+
 
     }
 
