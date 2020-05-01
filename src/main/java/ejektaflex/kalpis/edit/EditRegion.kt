@@ -5,6 +5,8 @@ import ejektaflex.kalpis.edit.drag.tools.MoveToolDualAxis
 import ejektaflex.kalpis.edit.drag.tools.MoveToolSingleAxis
 import ejektaflex.kalpis.edit.drag.tools.ResizeToolDualAxis
 import ejektaflex.kalpis.edit.drag.tools.ResizeToolSingleAxis
+import ejektaflex.kalpis.ext.getBlockArray
+import ejektaflex.kalpis.ext.wallBlocks
 import ejektaflex.kalpis.render.MyLayers
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
@@ -15,6 +17,7 @@ import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import org.lwjgl.glfw.GLFW
 
 class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = true) {
 
@@ -31,13 +34,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     private val moveToolDual = MoveToolDualAxis(this, ExampleMod.moveDragBinding)
     private val resizeTool = ResizeToolSingleAxis(this, ExampleMod.resizeSideBinding)
     private val moveToolSingle = MoveToolSingleAxis(this, ExampleMod.moveDragSingleBinding)
-    private val resizeToolDual = ResizeToolDualAxis(this, ExampleMod.resizeDualSideBinding)
+    //private val resizeToolDual = ResizeToolDualAxis(this, ExampleMod.resizeDualSideBinding)
 
     private val tools = listOf(
             moveToolDual,
             resizeTool,
-            moveToolSingle,
-            resizeToolDual
+            moveToolSingle//,
+            //resizeToolDual
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
@@ -64,7 +67,29 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
                     mc.world!!.setBlockState(pos, Blocks.AIR.defaultState)
                 }
             }
+
         }
+
+        if (ExampleMod.wallsBinding.isPressed) {
+
+            val blocks = area.box.wallBlocks()
+
+            val mc = MinecraftClient.getInstance()
+            val player = mc.player!!
+            val item = player.mainHandStack.item
+
+            if (item is BlockItem) {
+                blocks.forEach { pos ->
+                    mc.world!!.setBlockState(pos, item.block.defaultState)
+                }
+            } else if (item is AirBlockItem) {
+                blocks.forEach { pos ->
+                    mc.world!!.setBlockState(pos, Blocks.AIR.defaultState)
+                }
+            }
+
+        }
+
     }
 
     fun draw() {
@@ -80,7 +105,7 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             }
         } else {
             // default state when no drag tool is being used
-            val hit = area.trace()
+            val hit = area.trace(MinecraftClient.getInstance().options.keySprint.isPressed)
             hit?.let {
                 area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.45f))
                 area.drawAxisSizes()

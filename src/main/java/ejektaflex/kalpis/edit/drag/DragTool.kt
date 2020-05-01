@@ -5,6 +5,7 @@ import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.IEditor
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
+import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
@@ -29,7 +30,7 @@ internal abstract class DragTool(val region: EditRegion, val binding: FabricKeyB
     override fun update() {
         // Try to start dragging
         if (start == null && binding.isPressed) {
-            start = region.area.trace()
+            start = region.area.trace(reverse = MinecraftClient.getInstance().options.keySprint.isPressed)
             if (start != null) {
                 onStartDragging(start!!)
             }

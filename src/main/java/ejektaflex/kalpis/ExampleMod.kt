@@ -82,9 +82,16 @@ class ExampleMod : ModInitializer {
         ).build()
 
         val deleteBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "delete"),
+                Identifier("kedit", "fill/delete"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_BACKSPACE,
+                "KEdit"
+        ).build()
+
+        val wallsBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "walls"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_R,
                 "KEdit"
         ).build()
     }

@@ -2,6 +2,7 @@ package ejektaflex.kalpis.ext
 
 import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.mixin.BoxMixin
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
@@ -75,4 +76,34 @@ fun Box.positionInDirection(dir: Direction): Double {
 
 fun Box.positionOffsetInDirection(dir: Direction, other: Box): Double {
     return getStart().axisValue(dir.axis) - other.getStart().axisValue(dir.axis)
+}
+
+fun Box.getBlockArray(): List<BlockPos> {
+    val buff = mutableListOf<BlockPos>()
+    val startPos = BlockPos(x1, y1, z1)
+    val endPos = BlockPos(x2, y2, z2)
+    for (dx in startPos.x until endPos.x) {
+        for (dy in startPos.y until endPos.y) {
+            for (dz in startPos.z until endPos.z) {
+                buff.add(BlockPos(dx, dy, dz))
+            }
+        }
+    }
+    return buff
+}
+
+fun Box.wallBlocks(): List<BlockPos> {
+    val buff = mutableListOf<BlockPos>()
+    val startPos = BlockPos(x1, y1, z1)
+    val endPos = BlockPos(x2, y2, z2)
+    for (dx in startPos.x until endPos.x) {
+        for (dy in startPos.y until endPos.y) {
+            for (dz in startPos.z until endPos.z) {
+                if (dx == startPos.x || dx == endPos.x - 1 || dz == startPos.z || dz == endPos.z - 1) {
+                    buff.add(BlockPos(dx, dy, dz))
+                }
+            }
+        }
+    }
+    return buff
 }

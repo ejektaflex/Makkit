@@ -99,8 +99,8 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         RenderHelper.drawBoxEdges(box.offset(offset), colorIn ?: color)
     }
 
-    fun trace(): BoxTraceResult? {
-        return RenderHelper.boxTraceForSide(box)
+    fun trace(reverse: Boolean = false): BoxTraceResult? {
+        return RenderHelper.boxTraceForSide(box, reverse = reverse)
     }
 
 }
