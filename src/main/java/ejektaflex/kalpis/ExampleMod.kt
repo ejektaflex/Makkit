@@ -2,6 +2,7 @@ package ejektaflex.kalpis
 
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.event.Events
+import ejektaflex.kalpis.keys.KeyRemapper
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
@@ -16,7 +17,7 @@ class ExampleMod : ModInitializer {
     val mc: MinecraftClient = MinecraftClient.getInstance()
 
 
-    val region = EditRegion().apply {
+    val region = EditRegion(drawDragPlane = true).apply {
         moveTo(4, 4, 4, 4, 3, 2)
     }
 
@@ -31,6 +32,9 @@ class ExampleMod : ModInitializer {
             register(resizeSideBinding)
             register(deleteBinding)
         }
+
+        KeyRemapper.remap("key.saveToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET)
+        KeyRemapper.remap("key.loadToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_BRACKET)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
 

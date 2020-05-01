@@ -49,8 +49,8 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: FabricKe
              region.preview.box = calcDragBox(region.smoothDrag) ?: region.preview.box
 
              if (region.drawDragPlane) {
-                 planeAxis1.draw(RenderColor.PINK)
-                 planeAxis2.draw(RenderColor.PINK)
+                 planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))
+                 planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
              }
 
          }

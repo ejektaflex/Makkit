@@ -37,7 +37,7 @@ internal abstract class DualAxisDragTools(region: EditRegion, binding: FabricKey
             region.preview.box = calcDragBox(region.smoothDrag) ?: region.preview.box
 
             if (region.drawDragPlane) {
-                plane.draw(RenderColor.PINK)
+                plane.draw(RenderColor.PINK.toAlpha(0.2f))
             }
         }
     }

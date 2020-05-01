@@ -1,7 +1,5 @@
 package ejektaflex.kalpis.render
 
-import kotlin.math.roundToInt
-
 data class RenderColor(val value: Long) : Cloneable {
 
     var a = (value shr 24 and 255).toFloat() / 255.0f

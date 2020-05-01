@@ -4,9 +4,11 @@
   "package": "ejektaflex.kalpis.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "MixinKeybindDefaultChanger"
   ],
   "client": [
     "BoxMixin",
+    "MixinKeyDefaultRemapper",
     "TextRendererMixin",
     "WorldRendererMixin"
   ],
