@@ -1,32 +1,42 @@
 package ejektaflex.kalpis.render
 
-class RenderColor(val r: Float, val g: Float, val b: Float, val a: Float = 1f) {
+import kotlin.math.roundToInt
 
+data class RenderColor(val value: Long) : Cloneable {
+
+    var a = (value shr 24 and 255).toFloat() / 255.0f
+        private set
+
+    val r = (value shr 16 and 255).toFloat() / 255.0f
+    val g = (value shr 8 and 255).toFloat() / 255.0f
+    val b = (value and 255).toFloat() / 255.0f
+
+    constructor(int: Int) : this(0xFF000000 + int)
+
+    //constructor(int: Int, alpha: Int) : this(int + (alpha.toLong()) shl 24)
+
+    val intValue: Int
+        get() = value.toInt()
 
     val floats: FloatArray by lazy {
         floatArrayOf(r, g, b, a)
     }
 
-    fun toAlpha(inA: Float) = RenderColor(r, g, b, inA)
+    fun toAlpha(inA: Float): RenderColor = (clone() as RenderColor).apply {
+        a = inA
+    }
 
     companion object {
-
-        fun from(int: Int): RenderColor {
-            //val a = (int shr 24 and 255).toFloat() / 255.0f
-            val r = (int shr 16 and 255).toFloat() / 255.0f
-            val g = (int shr 8 and 255).toFloat() / 255.0f
-            val b = (int and 255).toFloat() / 255.0f
-
-            return RenderColor(r, g, b, 1f)
-        }
-
-        val WHITE = from(0xFFFFFF)
-        val RED = from(0xe43b44)
-        val ORANGE = from(0xfeae34)
-        val GREEN = from(0x63c74d)
-        val BLUE = from(0x0099db)
-        val DARK_BLUE = from(0x124e89)
-        val PINK = from(0xf6757a)
+        val WHITE = RenderColor(0xFFFFFF)
+        val RED = RenderColor(0xe43b44)
+        val ORANGE = RenderColor(0xfeae34)
+        val GREEN = RenderColor(0x63c74d)
+        val BLUE = RenderColor(0x0099db)
+        val DARK_BLUE = RenderColor(0x124e89)
+        val PINK = RenderColor(0xf6757a)
+        val YELLOW = RenderColor(0xfee761)
+        val PURPLE = RenderColor(0xb55088)
+        val DARK_PURPLE = RenderColor(0x68386c)
     }
 
 

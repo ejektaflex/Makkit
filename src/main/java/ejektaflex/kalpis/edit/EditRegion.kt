@@ -77,7 +77,7 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             // default state when no drag tool is being used
             val hit = area.trace()
             hit?.let {
-                area.drawFace(it.dir, RenderColor.from(0xfee761).toAlpha(.45f))
+                area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.45f))
                 area.drawAxisSizes()
                 //area.drawDimensions(it.dir)
             }

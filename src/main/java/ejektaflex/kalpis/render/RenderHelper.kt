@@ -1,26 +1,23 @@
 package ejektaflex.kalpis.render
 
 import ejektaflex.kalpis.data.BoxTraceResult
-import ejektaflex.kalpis.ext.color
-import ejektaflex.kalpis.ext.plus
-import ejektaflex.kalpis.ext.rayTraceForSide
-import ejektaflex.kalpis.ext.toBox
+import ejektaflex.kalpis.ext.*
 import ejektaflex.kalpis.mixin.TextRendererMixin
 import ejektaflex.kalpis.render.quads.QuadDrawer
 import net.minecraft.client.render.*
 import net.minecraft.text.LiteralText
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.*
 
 object RenderHelper : AbstractRenderHelper() {
 
-    fun drawBox(pos: BlockPos, size: BlockPos, color: RenderColor) {
-        drawBox(Box(pos, pos + size), color)
-    }
+    val QUAD_BUFFER: VertexConsumer
+        get() = RenderHelper.eVerts.getBuffer(MyLayers.OVERLAY_QUADS)
 
+    val LINE_BUFF_FRONT: VertexConsumer
+        get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_FRONT)
 
+    val LINE_BUFF_BEHIND: VertexConsumer
+        get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND)
 
     fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
         matrices.push()
@@ -60,7 +57,7 @@ object RenderHelper : AbstractRenderHelper() {
             dirs.add(Direction.NORTH)
         }
 
-        // Y dir is flipped
+        // Y dir is flipped?
         if (vec.y < 0) {
             dirs.add(Direction.UP)
         } else {
@@ -88,38 +85,34 @@ object RenderHelper : AbstractRenderHelper() {
 
     }
 
-    fun drawBox(box: Box, color: RenderColor = RenderColor.WHITE) {
+    fun drawBoxEdges(box: Box, color: RenderColor = RenderColor.WHITE) {
         val colors = color.floats
 
-        // Render twice, once for in front of objects and transparently behind
-
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(MyLayers.OVERLAY_LINES_FRONT),
+                LINE_BUFF_FRONT,
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
 
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND),
+                LINE_BUFF_BEHIND,
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
 
     }
 
-
-    fun drawBoxFilled(box: RenderBox, color: RenderColor) {
-
-        QuadDrawer.draw(box, color)
-
-
-
-
-
+    fun drawFaceFilled(box: Box, side: Direction, color: RenderColor) {
+        BoxData.getDrawFunc(side).invoke(box, QUAD_BUFFER, RenderHelper.matrices.peek().model, color)
     }
 
+    fun drawBoxFilled(box: Box, color: RenderColor) {
+        for (side in enumValues<Direction>()) {
+            drawFaceFilled(box, side, color)
+        }
+    }
 
     fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6): BoxTraceResult? {
         val player = mc.player!!
@@ -128,6 +121,66 @@ object RenderHelper : AbstractRenderHelper() {
         return box.rayTraceForSide(
                 vec1, vec1.add(vec2.x * distance, vec2.y * distance, vec2.z * distance)
         )
+    }
+
+
+    object BoxData {
+
+        fun getDrawFunc(side: Direction): Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit {
+            return drawDirections[side] ?: error("Draw Func for direction ${side.name} does not exist!")
+        }
+
+        private val drawDown: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x2, y1, z2).color(color).next()
+            vert.vertex(mat, x1, y1, z2).color(color).next()
+            vert.vertex(mat, x1, y1, z1).color(color).next()
+            vert.vertex(mat, x2, y1, z1).color(color).next()
+        }
+
+        private val drawUp: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x1, y2, z2).color(color).next()
+            vert.vertex(mat, x2, y2, z2).color(color).next()
+            vert.vertex(mat, x2, y2, z1).color(color).next()
+            vert.vertex(mat, x1, y2, z1).color(color).next()
+        }
+
+        private val drawNorth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x2, y1, z1).color(color).next()
+            vert.vertex(mat, x1, y1, z1).color(color).next()
+            vert.vertex(mat, x1, y2, z1).color(color).next()
+            vert.vertex(mat, x2, y2, z1).color(color).next()
+        }
+
+        private val drawSouth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x1, y1, z2).color(color).next()
+            vert.vertex(mat, x2, y1, z2).color(color).next()
+            vert.vertex(mat, x2, y2, z2).color(color).next()
+            vert.vertex(mat, x1, y2, z2).color(color).next()
+        }
+
+        private val drawWest: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x1, y1, z1).color(color).next()
+            vert.vertex(mat, x1, y1, z2).color(color).next()
+            vert.vertex(mat, x1, y2, z2).color(color).next()
+            vert.vertex(mat, x1, y2, z1).color(color).next()
+        }
+
+        private val drawEast: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
+            vert.vertex(mat, x2, y1, z2).color(color).next()
+            vert.vertex(mat, x2, y1, z1).color(color).next()
+            vert.vertex(mat, x2, y2, z1).color(color).next()
+            vert.vertex(mat, x2, y2, z2).color(color).next()
+        }
+
+        val drawDirections = mapOf(
+                Direction.DOWN to drawDown,
+                Direction.UP to drawUp,
+                Direction.NORTH to drawNorth,
+                Direction.SOUTH to drawSouth,
+                Direction.WEST to drawWest,
+                Direction.EAST to drawEast
+        )
+
     }
 
 
