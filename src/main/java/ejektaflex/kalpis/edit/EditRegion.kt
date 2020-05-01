@@ -3,6 +3,7 @@ package ejektaflex.kalpis.edit
 import ejektaflex.kalpis.ExampleMod
 import ejektaflex.kalpis.edit.drag.tools.MoveToolDualAxis
 import ejektaflex.kalpis.edit.drag.tools.MoveToolSingleAxis
+import ejektaflex.kalpis.edit.drag.tools.ResizeToolDualAxis
 import ejektaflex.kalpis.edit.drag.tools.ResizeToolSingleAxis
 import ejektaflex.kalpis.render.MyLayers
 import ejektaflex.kalpis.render.RenderBox
@@ -30,11 +31,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     private val moveToolDual = MoveToolDualAxis(this, ExampleMod.moveDragBinding)
     private val resizeTool = ResizeToolSingleAxis(this, ExampleMod.resizeSideBinding)
     private val moveToolSingle = MoveToolSingleAxis(this, ExampleMod.moveDragSingleBinding)
+    private val resizeToolDual = ResizeToolDualAxis(this, ExampleMod.resizeDualSideBinding)
 
     private val tools = listOf(
             moveToolDual,
             resizeTool,
-            moveToolSingle
+            moveToolSingle,
+            resizeToolDual
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {

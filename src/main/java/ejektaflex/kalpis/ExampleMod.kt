@@ -17,7 +17,7 @@ class ExampleMod : ModInitializer {
     val mc: MinecraftClient = MinecraftClient.getInstance()
 
 
-    val region = EditRegion(drawDragPlane = true).apply {
+    val region = EditRegion().apply {
         moveTo(4, 4, 4, 4, 3, 2)
     }
 
@@ -71,6 +71,13 @@ class ExampleMod : ModInitializer {
                 Identifier("kedit", "resize_single_axis"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_C,
+                "KEdit"
+        ).build()
+
+        val resizeDualSideBinding = FabricKeyBinding.Builder.create(
+                Identifier("kedit", "resize_dual_axis"),
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_V,
                 "KEdit"
         ).build()
 
