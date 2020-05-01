@@ -1,6 +1,5 @@
 package ejektaflex.kalpis
 
-import com.mojang.blaze3d.systems.RenderSystem
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.event.Events
 import ejektaflex.kalpis.render.RenderHelper
@@ -15,8 +14,6 @@ import org.lwjgl.glfw.GLFW
 class ExampleMod : ModInitializer {
 
     val mc: MinecraftClient = MinecraftClient.getInstance()
-
-
 
 
     val region = EditRegion().apply {
@@ -51,8 +48,6 @@ class ExampleMod : ModInitializer {
     }
 
     companion object {
-
-
 
         val moveDragBinding = FabricKeyBinding.Builder.create(
                 Identifier("kedit", "move_dual_axis"),

@@ -21,17 +21,18 @@ object QuadDrawer {
     private val QUAD_BUFFER: VertexConsumer
         get() = RenderHelper.eVerts.getBuffer(MyLayers.OVERLAY_QUADS)
 
-    fun drawSide(box: RenderBox, side: Direction) {
-        (drawDirections[side] ?: error("Invalid draw side in Quad Drawer")).invoke(box, QUAD_BUFFER, RenderHelper.matrices.peek().model)
+    fun drawSide(box: RenderBox, side: Direction, color: RenderColor) {
+        (drawDirections[side] ?: error("Invalid draw side in Quad Drawer"))
+                .invoke(box, QUAD_BUFFER, RenderHelper.matrices.peek().model, color)
     }
 
-    fun draw(box: RenderBox) {
-        for (side in drawDirections.values) {
-            side.invoke(box, QUAD_BUFFER, RenderHelper.matrices.peek().model)
+    fun draw(box: RenderBox, color: RenderColor) {
+        for (side in enumValues<Direction>()) {
+            drawSide(box, side, color)
         }
     }
 
-    private val drawDown: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawDown: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x2, y1, z2).color(color).next()
             vert.vertex(mat, x1, y1, z2).color(color).next()
@@ -40,7 +41,7 @@ object QuadDrawer {
         }
     }
 
-    private val drawUp: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawUp: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x1, y2, z2).color(color).next()
             vert.vertex(mat, x2, y2, z2).color(color).next()
@@ -49,7 +50,7 @@ object QuadDrawer {
         }
     }
 
-    private val drawNorth: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawNorth: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x2, y1, z1).color(color).next()
             vert.vertex(mat, x1, y1, z1).color(color).next()
@@ -58,7 +59,7 @@ object QuadDrawer {
         }
     }
 
-    private val drawSouth: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawSouth: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x1, y1, z2).color(color).next()
             vert.vertex(mat, x2, y1, z2).color(color).next()
@@ -67,7 +68,7 @@ object QuadDrawer {
         }
     }
 
-    private val drawWest: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawWest: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x1, y1, z1).color(color).next()
             vert.vertex(mat, x1, y1, z2).color(color).next()
@@ -76,7 +77,7 @@ object QuadDrawer {
         }
     }
 
-    private val drawEast: RenderBox.(vert: VertexConsumer, mat: Matrix4f) -> Unit = { vert, mat ->
+    private val drawEast: RenderBox.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
         box.apply {
             vert.vertex(mat, x2, y1, z2).color(color).next()
             vert.vertex(mat, x2, y1, z1).color(color).next()

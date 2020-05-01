@@ -13,7 +13,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import org.lwjgl.opengl.GL11
 
 object RenderHelper : AbstractRenderHelper() {
 
@@ -111,9 +110,9 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
 
-    fun drawBoxFilled(box: RenderBox) {
+    fun drawBoxFilled(box: RenderBox, color: RenderColor) {
 
-        QuadDrawer.draw(box)
+        QuadDrawer.draw(box, color)
 
 
 

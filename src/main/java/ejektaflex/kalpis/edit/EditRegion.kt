@@ -18,11 +18,11 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     val samplePlaneSize = 16.0
 
     val area = RenderBox().apply {
-        color = RenderColor.GREEN
+        color = RenderColor.GREEN.toAlpha(0.45f)
     }
 
     val preview = RenderBox().apply {
-        color = RenderColor.BLUE
+        color = RenderColor.BLUE.toAlpha(0.45f)
     }
 
     private val moveTool = MoveToolsDualAxis(this, ExampleMod.moveDragBinding)
@@ -77,14 +77,14 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             // default state when no drag tool is being used
             val hit = area.trace()
             hit?.let {
-                area.drawFace(it.dir)
+                area.drawFace(it.dir, RenderColor.from(0xfee761).toAlpha(.45f))
                 area.drawAxisSizes()
                 //area.drawDimensions(it.dir)
             }
 
             for (pos in area.getBlockArray()) {
                 if (!MinecraftClient.getInstance().world!!.getBlockState(pos).isAir) {
-                    RenderHelper.drawBlockPos(pos, RenderColor.ORANGE)
+                    RenderHelper.drawBlockPos(pos, RenderColor.ORANGE.toAlpha(.2f))
                 }
             }
 
