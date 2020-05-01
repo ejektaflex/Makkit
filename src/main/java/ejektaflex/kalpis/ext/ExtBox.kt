@@ -68,3 +68,11 @@ fun Box.faceCenterPos(dir: Direction): Vec3d {
 fun Box.sizeInDirection(dir: Direction): Double {
     return getSize().axisValue(dir.axis)
 }
+
+fun Box.positionInDirection(dir: Direction): Double {
+    return getStart().axisValue(dir.axis)
+}
+
+fun Box.positionOffsetInDirection(dir: Direction, other: Box): Double {
+    return getStart().axisValue(dir.axis) - other.getStart().axisValue(dir.axis)
+}

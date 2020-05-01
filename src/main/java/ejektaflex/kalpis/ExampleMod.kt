@@ -28,7 +28,7 @@ class ExampleMod : ModInitializer {
         KeyBindingRegistry.INSTANCE.apply {
             addCategory("KEdit")
             register(moveDragBinding)
-            register(resizeOppSideBinding)
+            register(moveDragSingleBinding)
             register(resizeSideBinding)
             register(deleteBinding)
         }
@@ -60,7 +60,7 @@ class ExampleMod : ModInitializer {
                 "KEdit"
         ).build()
 
-        val resizeOppSideBinding = FabricKeyBinding.Builder.create(
+        val moveDragSingleBinding = FabricKeyBinding.Builder.create(
                 Identifier("kedit", "resize_single_axis_opp"),
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_X,

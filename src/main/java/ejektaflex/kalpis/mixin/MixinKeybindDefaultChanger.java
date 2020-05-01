@@ -8,10 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(KeyBinding.class)
 public interface MixinKeybindDefaultChanger  {
-
-    @Accessor("defaultKeyCode")
-    void setDefaultKeyCode(InputUtil.KeyCode code);
-
+    @Accessor void setDefaultKeyCode(InputUtil.KeyCode code);
 }
 
 
