@@ -3,6 +3,7 @@ package ejektaflex.kalpis.edit
 import ejektaflex.kalpis.ExampleMod
 import ejektaflex.kalpis.edit.drag.tools.MoveToolsDualAxis
 import ejektaflex.kalpis.edit.drag.tools.ResizeToolSingleAxis
+import ejektaflex.kalpis.render.MyLayers
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import ejektaflex.kalpis.render.RenderHelper
@@ -79,19 +80,15 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             hit?.let {
                 area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.45f))
                 area.drawAxisSizes()
-                //area.drawDimensions(it.dir)
             }
 
             for (pos in area.getBlockArray()) {
-                if (!MinecraftClient.getInstance().world!!.getBlockState(pos).isAir) {
-                    RenderHelper.drawBlockPos(pos, RenderColor.ORANGE.toAlpha(.2f))
+                if (MinecraftClient.getInstance().world!!.getBlockState(pos).isAir) {
+                    RenderHelper.drawBlockFaces(pos, RenderColor.ORANGE.toAlpha(.2f), MyLayers.OVERLAY_QUADS_BEHIND)
                 }
             }
 
         }
-
-        val dirsPretty = RenderHelper.getLookDirections().joinToString(",") { it.toString() }
-        //RenderHelper.drawText(preview.box.center.add(0.0, preview.box.yLength / 2, 0.0), dirsPretty)
 
     }
 

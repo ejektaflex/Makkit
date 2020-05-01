@@ -61,7 +61,19 @@ class MyLayers(name: String?, format: VertexFormat?, p_i225992_3_: Int, p_i22599
         val OVERLAY_QUADS: RenderLayer = of("overlay_quads",
                 VertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
                 MultiPhaseParameters.builder()
+                        // Fix Z-Fighting on overlapping planes with ground
+                        .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
+                        .writeMaskState(COLOR_MASK)
+                        .shadeModel(SMOOTH_SHADE_MODEL)
+                        .build(false))
+
+        val OVERLAY_QUADS_BEHIND: RenderLayer = of("overlay_quads_behind",
+                VertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
+                MultiPhaseParameters.builder()
+                        .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+                        .transparency(TRANSLUCENT_TRANSPARENCY)
+                        .depthTest(DepthTest("overlay_quads_behind", 516))
                         .writeMaskState(COLOR_MASK)
                         .shadeModel(SMOOTH_SHADE_MODEL)
                         .build(false))

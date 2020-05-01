@@ -3,20 +3,16 @@ package ejektaflex.kalpis.render
 import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.ext.*
 import ejektaflex.kalpis.mixin.TextRendererMixin
-import ejektaflex.kalpis.render.quads.QuadDrawer
 import net.minecraft.client.render.*
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.*
 
 object RenderHelper : AbstractRenderHelper() {
 
-    val QUAD_BUFFER: VertexConsumer
-        get() = RenderHelper.eVerts.getBuffer(MyLayers.OVERLAY_QUADS)
-
-    val LINE_BUFF_FRONT: VertexConsumer
+    private val LINE_BUFF_FRONT: VertexConsumer
         get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_FRONT)
 
-    val LINE_BUFF_BEHIND: VertexConsumer
+    private val LINE_BUFF_BEHIND: VertexConsumer
         get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND)
 
     fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
@@ -73,44 +69,42 @@ object RenderHelper : AbstractRenderHelper() {
         return dirs
     }
 
-    fun drawBlockPos(pos: BlockPos, color: RenderColor = RenderColor.WHITE) {
-        val colors = color.floats
-
-        WorldRenderer.drawBox(
-                matrices,
-                eVerts.getBuffer(MyLayers.OVERLAY_LINES_HIT_WALL),
-                pos.toBox(),
-                colors[0], colors[1], colors[2], colors[3]
-        )
-
+    fun drawBlockFaces(pos: BlockPos, color: RenderColor = RenderColor.WHITE, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
+        drawBoxFilled(Box(pos.vec3d(), pos.vec3d().add(1.0, 1.0, 1.0)), color, layer)
     }
 
-    fun drawBoxEdges(box: Box, color: RenderColor = RenderColor.WHITE) {
+
+    fun drawBoxEdges(
+            box: Box,
+            color: RenderColor = RenderColor.WHITE,
+            layerFront: RenderLayer = MyLayers.OVERLAY_LINES_FRONT,
+            layerBack: RenderLayer = MyLayers.OVERLAY_LINES_BEHIND
+    ) {
         val colors = color.floats
 
         WorldRenderer.drawBox(
                 matrices,
-                LINE_BUFF_FRONT,
+                eVerts.getBuffer(layerFront),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
 
         WorldRenderer.drawBox(
                 matrices,
-                LINE_BUFF_BEHIND,
+                eVerts.getBuffer(layerBack),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
 
     }
 
-    fun drawFaceFilled(box: Box, side: Direction, color: RenderColor) {
-        BoxData.getDrawFunc(side).invoke(box, QUAD_BUFFER, RenderHelper.matrices.peek().model, color)
+    fun drawFaceFilled(box: Box, side: Direction, color: RenderColor, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
+        BoxData.getDrawFunc(side).invoke(box, eVerts.getBuffer(layer), RenderHelper.matrices.peek().model, color)
     }
 
-    fun drawBoxFilled(box: Box, color: RenderColor) {
+    fun drawBoxFilled(box: Box, color: RenderColor, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
         for (side in enumValues<Direction>()) {
-            drawFaceFilled(box, side, color)
+            drawFaceFilled(box, side, color, layer)
         }
     }
 
