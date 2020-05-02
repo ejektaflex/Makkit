@@ -1,8 +1,8 @@
 package ejektaflex.kalpis.render
 
-import ejektaflex.kalpis.data.BoxTraceResult
-import ejektaflex.kalpis.ext.*
-import ejektaflex.kalpis.mixin.TextRendererMixin
+import ejektaflex.kalpis.client.data.BoxTraceResult
+import ejektaflex.kalpis.common.ext.*
+import ejektaflex.kalpis.client.mixin.TextRendererMixin
 import net.minecraft.client.render.*
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.*

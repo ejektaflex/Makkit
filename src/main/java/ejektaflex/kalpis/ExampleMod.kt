@@ -1,10 +1,11 @@
 package ejektaflex.kalpis
 
-import ejektaflex.kalpis.edit.EditRegion
-import ejektaflex.kalpis.edit.input.InputState
-import ejektaflex.kalpis.edit.input.KeyStateHandler
-import ejektaflex.kalpis.event.Events
-import ejektaflex.kalpis.keys.KeyRemapper
+import ejektaflex.kalpis.client.editor.EditRegion
+import ejektaflex.kalpis.client.editor.input.InputState
+import ejektaflex.kalpis.client.editor.input.KeyStateHandler
+import ejektaflex.kalpis.client.event.Events
+import ejektaflex.kalpis.common.io.StructureHelper
+import ejektaflex.kalpis.client.keys.KeyRemapper
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
@@ -32,6 +33,10 @@ class ExampleMod : ModInitializer {
             for (bindHandler in keyHandlers) {
                 register(bindHandler.binding)
             }
+        }
+
+        saveHandler.setKeyDown {
+            StructureHelper.saveStructure(region.area, Identifier("kedit", "doot"))
         }
 
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
@@ -125,6 +130,16 @@ class ExampleMod : ModInitializer {
                 ).build()
         )
 
+
+        val saveHandler = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "save_selection"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_M,
+                        "KEdit"
+                ).build()
+        )
+
         val keyHandlers = listOf(
                 moveDragBinding,
                 moveDragSingleBinding, // TODO Fix inversion on negative face directions
@@ -132,8 +147,10 @@ class ExampleMod : ModInitializer {
                 //resizeDualSideBinding, // Awkward to use
                 deleteBinding,
                 fillBinding,
-                toggleBackBinding
+                toggleBackBinding,
+                saveHandler
         )
+
 
     }
 

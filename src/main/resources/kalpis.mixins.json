@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "ejektaflex.kalpis.mixin",
+  "package": "ejektaflex.kalpis.client.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinKeybindDefaultChanger"

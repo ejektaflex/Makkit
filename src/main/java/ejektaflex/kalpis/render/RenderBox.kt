@@ -1,7 +1,7 @@
 package ejektaflex.kalpis.render
 
-import ejektaflex.kalpis.data.BoxTraceResult
-import ejektaflex.kalpis.ext.*
+import ejektaflex.kalpis.client.data.BoxTraceResult
+import ejektaflex.kalpis.common.ext.*
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction

@@ -1,13 +1,12 @@
 package ejektaflex.kalpis.render
 
-import ejektaflex.kalpis.ext.drawOffset
+import ejektaflex.kalpis.common.ext.drawOffset
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Matrix4f
 
 abstract class AbstractRenderHelper {
