@@ -2,6 +2,7 @@ package ejektaflex.kalpis.edit.drag.tools
 
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.drag.SingleAxisDragTool
+import ejektaflex.kalpis.edit.input.KeyStateHandler
 import ejektaflex.kalpis.ext.*
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
@@ -10,7 +11,7 @@ import kotlin.math.roundToInt
 
 internal class ResizeToolSingleAxis(
         region: EditRegion,
-        binding: FabricKeyBinding,
+        binding: KeyStateHandler,
         val opposite: Boolean = false
 ) : SingleAxisDragTool(region, binding) {
 

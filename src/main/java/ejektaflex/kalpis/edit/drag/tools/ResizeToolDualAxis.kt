@@ -2,6 +2,7 @@ package ejektaflex.kalpis.edit.drag.tools
 
 import ejektaflex.kalpis.edit.EditRegion
 import ejektaflex.kalpis.edit.drag.DualAxisDragTools
+import ejektaflex.kalpis.edit.input.KeyStateHandler
 import ejektaflex.kalpis.ext.otherDirectionalAxes
 import ejektaflex.kalpis.ext.round
 import ejektaflex.kalpis.ext.shrinkSide
@@ -9,7 +10,7 @@ import ejektaflex.kalpis.ext.vec3d
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 
-internal class ResizeToolDualAxis(region: EditRegion, binding: FabricKeyBinding) : DualAxisDragTools(region, binding) {
+internal class ResizeToolDualAxis(region: EditRegion, binding: KeyStateHandler) : DualAxisDragTools(region, binding) {
 
     override fun onDraw() {
         super.onDraw()

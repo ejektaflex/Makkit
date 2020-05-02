@@ -2,6 +2,7 @@ package ejektaflex.kalpis.edit.drag
 
 import ejektaflex.kalpis.data.BoxTraceResult
 import ejektaflex.kalpis.edit.EditRegion
+import ejektaflex.kalpis.edit.input.KeyStateHandler
 import ejektaflex.kalpis.ext.flipMask
 import ejektaflex.kalpis.ext.otherDirectionalAxes
 import ejektaflex.kalpis.render.RenderBox
@@ -10,7 +11,7 @@ import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class SingleAxisDragTool(region: EditRegion, binding: FabricKeyBinding) : DragTool(region,binding) {
+internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
 
     protected val planeAxis1 = RenderBox()
     protected val planeAxis2 = RenderBox()

@@ -1,6 +1,8 @@
 package ejektaflex.kalpis
 
 import ejektaflex.kalpis.edit.EditRegion
+import ejektaflex.kalpis.edit.input.InputState
+import ejektaflex.kalpis.edit.input.KeyStateHandler
 import ejektaflex.kalpis.event.Events
 import ejektaflex.kalpis.keys.KeyRemapper
 import ejektaflex.kalpis.render.RenderHelper
@@ -27,12 +29,13 @@ class ExampleMod : ModInitializer {
 
         KeyBindingRegistry.INSTANCE.apply {
             addCategory("KEdit")
-            register(moveDragBinding)
-            register(moveDragSingleBinding)
-            register(resizeSideBinding)
-            register(deleteBinding)
+            for (bindHandler in keyHandlers) {
+                register(bindHandler.binding)
+            }
         }
 
+        // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
+        // If they wish to see the new bindings.
         KeyRemapper.remap("key.saveToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET)
         KeyRemapper.remap("key.loadToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_BRACKET)
 
@@ -45,6 +48,12 @@ class ExampleMod : ModInitializer {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
 
+        for (handler in keyHandlers) {
+            handler.update()
+        }
+
+        InputState.update()
+
         RenderHelper.drawInWorld {
             region.update()
             region.draw()
@@ -53,47 +62,79 @@ class ExampleMod : ModInitializer {
 
     companion object {
 
-        val moveDragBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "move_dual_axis"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_Z,
-                "KEdit"
-        ).build()
+        val moveDragBinding = KeyStateHandler(
+                    FabricKeyBinding.Builder.create(
+                    Identifier("kedit", "move_dual_axis"),
+                    InputUtil.Type.KEYSYM,
+                    GLFW.GLFW_KEY_Z,
+                    "KEdit"
+            ).build()
+        )
 
-        val moveDragSingleBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "resize_single_axis_opp"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_X,
-                "KEdit"
-        ).build()
+        val moveDragSingleBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "resize_single_axis_opp"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_X,
+                        "KEdit"
+                ).build()
+        )
 
-        val resizeSideBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "resize_single_axis"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_C,
-                "KEdit"
-        ).build()
+        val resizeSideBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "resize_single_axis"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_C,
+                        "KEdit"
+                ).build()
+        )
 
-        val resizeDualSideBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "resize_dual_axis"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_V,
-                "KEdit"
-        ).build()
+        val resizeDualSideBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "resize_dual_axis"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_V,
+                        "KEdit"
+                ).build()
+        )
 
-        val deleteBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "fill/delete"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_BACKSPACE,
-                "KEdit"
-        ).build()
+        val deleteBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "fill/delete"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_BACKSPACE,
+                        "KEdit"
+                ).build()
+        )
 
-        val wallsBinding = FabricKeyBinding.Builder.create(
-                Identifier("kedit", "walls"),
-                InputUtil.Type.KEYSYM,
-                GLFW.GLFW_KEY_R,
-                "KEdit"
-        ).build()
+        val fillBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "walls"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_R,
+                        "KEdit"
+                ).build()
+        )
+
+        val toggleBackBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "toggle_back_selection"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_LEFT_ALT,
+                        "KEdit"
+                ).build()
+        )
+
+        val keyHandlers = listOf(
+                moveDragBinding,
+                moveDragSingleBinding, // TODO Fix inversion on negative face directions
+                resizeSideBinding,
+                //resizeDualSideBinding, // Awkward to use
+                deleteBinding,
+                fillBinding,
+                toggleBackBinding
+        )
+
     }
 
 
