@@ -8,9 +8,8 @@ enum class WorldOperation(val execute: (it: EditAction) -> Unit) {
 
     private companion object {
         fun fillBlocks(action: EditAction) {
-            println("Beepboop")
             for (pos in action.box.getBlockArray()) {
-                action.player.world.setBlockState(pos, action.palette.random())
+                action.change(pos, action.palette.random())
             }
         }
     }

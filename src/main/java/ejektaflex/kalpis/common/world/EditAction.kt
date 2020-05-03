@@ -32,6 +32,7 @@ data class EditAction(
     }
 
     fun doApply() {
+        operation.execute(this)
         for (entry in stateMap) {
             player.world.setBlockState(entry.key, entry.value.second)
         }

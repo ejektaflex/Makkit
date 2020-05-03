@@ -79,7 +79,6 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     fun doOperation(operation: WorldOperation) {
         val trace = trace()
         if (trace != null) {
-            println("Sending pakkit")
             ClientSidePacketRegistry.INSTANCE.sendToServer(
                     EditIntentPacket(
                             BlockPos(area.pos),
