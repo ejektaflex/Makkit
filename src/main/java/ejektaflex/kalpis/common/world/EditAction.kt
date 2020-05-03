@@ -1,5 +1,6 @@
 package ejektaflex.kalpis.common.world
 
+import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
@@ -10,7 +11,8 @@ data class EditAction(
         val player: ServerPlayerEntity,
         val box: Box,
         val direction: Direction,
-        val operation: WorldOperation
+        val operation: WorldOperation,
+        val palette: List<BlockState>
 ) {
     // Pos: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()

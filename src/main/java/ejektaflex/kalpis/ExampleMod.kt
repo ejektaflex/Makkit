@@ -4,8 +4,8 @@ import ejektaflex.kalpis.client.editor.EditRegion
 import ejektaflex.kalpis.client.editor.input.InputState
 import ejektaflex.kalpis.client.editor.input.KeyStateHandler
 import ejektaflex.kalpis.client.event.Events
-import ejektaflex.kalpis.common.io.StructureHelper
 import ejektaflex.kalpis.client.keys.KeyRemapper
+import ejektaflex.kalpis.common.world.WorldOperation
 import ejektaflex.kalpis.render.RenderHelper
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
@@ -28,6 +28,7 @@ class ExampleMod : ModInitializer {
 
         println("Hello Fabric world!")
 
+
         KeyBindingRegistry.INSTANCE.apply {
             addCategory("KEdit")
             for (bindHandler in keyHandlers) {
@@ -35,8 +36,8 @@ class ExampleMod : ModInitializer {
             }
         }
 
-        saveHandler.setKeyDown {
-            StructureHelper.saveStructure(region.area, Identifier("kedit", "doot"))
+        fillBinding.setKeyDown {
+            region.doOperation(WorldOperation.FILL)
         }
 
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
@@ -114,7 +115,7 @@ class ExampleMod : ModInitializer {
 
         val fillBinding = KeyStateHandler(
                 FabricKeyBinding.Builder.create(
-                        Identifier("kedit", "walls"),
+                        Identifier("kedit", "fill"),
                         InputUtil.Type.KEYSYM,
                         GLFW.GLFW_KEY_R,
                         "KEdit"
@@ -147,8 +148,7 @@ class ExampleMod : ModInitializer {
                 //resizeDualSideBinding, // Awkward to use
                 deleteBinding,
                 fillBinding,
-                toggleBackBinding,
-                saveHandler
+                toggleBackBinding
         )
 
 

@@ -1,15 +1,18 @@
 package ejektaflex.kalpis.client.editor
 
 import ejektaflex.kalpis.ExampleMod
+import ejektaflex.kalpis.client.data.BoxTraceResult
 import ejektaflex.kalpis.client.editor.drag.tools.MoveToolDualAxis
 import ejektaflex.kalpis.client.editor.drag.tools.MoveToolSingleAxis
 import ejektaflex.kalpis.client.editor.drag.tools.ResizeToolSingleAxis
 import ejektaflex.kalpis.client.editor.input.InputState
-import ejektaflex.kalpis.common.ext.wallBlocks
+import ejektaflex.kalpis.common.network.EditIntentPacket
+import ejektaflex.kalpis.common.world.WorldOperation
 import ejektaflex.kalpis.render.MyLayers
 import ejektaflex.kalpis.render.RenderBox
 import ejektaflex.kalpis.render.RenderColor
 import ejektaflex.kalpis.render.RenderHelper
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.AirBlockItem
@@ -67,27 +70,26 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             }
 
         }
+    }
 
-        if (ExampleMod.fillBinding.isDown) {
+    fun trace(): BoxTraceResult? {
+        return area.trace(InputState.isBackSelecting)
+    }
 
-            val blocks = area.box.wallBlocks()
-
-            val mc = MinecraftClient.getInstance()
-            val player = mc.player!!
-            val item = player.mainHandStack.item
-
-            if (item is BlockItem) {
-                blocks.forEach { pos ->
-                    mc.world!!.setBlockState(pos, item.block.defaultState)
-                }
-            } else if (item is AirBlockItem) {
-                blocks.forEach { pos ->
-                    mc.world!!.setBlockState(pos, Blocks.AIR.defaultState)
-                }
-            }
-
+    fun doOperation(operation: WorldOperation) {
+        val trace = trace()
+        if (trace != null) {
+            println("Sending pakkit")
+            ClientSidePacketRegistry.INSTANCE.sendToServer(
+                    EditIntentPacket(
+                            BlockPos(area.pos),
+                            BlockPos(area.end),
+                            trace.dir,
+                            WorldOperation.FILL,
+                            listOf(MinecraftClient.getInstance().player!!.mainHandStack)
+                    )
+            )
         }
-
     }
 
     fun draw() {
@@ -97,14 +99,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
         val anyToolsDragging = tools.any { it.isDragging() }
 
         if (anyToolsDragging) {
-
             tools.forEach { tool ->
                 tool.update()
                 tool.tryDraw()
             }
         } else {
             // default state when no drag tool is being used
-            val hit = area.trace(InputState.isBackSelecting)
+            val hit = trace()
             hit?.let {
                 area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.4f))
                 area.drawAxisSizes()

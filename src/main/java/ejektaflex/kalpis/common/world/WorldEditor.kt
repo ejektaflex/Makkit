@@ -1,25 +1,23 @@
 package ejektaflex.kalpis.common.world
 
-import ejektaflex.kalpis.common.io.EditIntent
+import ejektaflex.kalpis.common.network.EditIntentPacket
+import net.minecraft.item.BlockItem
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
 import java.util.*
 
 object WorldEditor {
 
     private val stackMap = mutableMapOf<String, Stack<EditAction>>()
 
-    //fun handleNetworkOperation(player: ServerPlayerEntity, start: BlockPos, end: BlockPos, side: Int, op: Int) {
-
-
-    fun handleNetworkOperation(player: ServerPlayerEntity, intent: EditIntent) {
+    fun handleNetworkOperation(player: ServerPlayerEntity, intent: EditIntentPacket) {
         val action = EditAction(
                 player,
                 Box(intent.start, intent.end),
                 intent.side,
-                intent.op
+                intent.op,
+                // will crash if item is not a BlockItem, change this eventually
+                intent.palette.map { (it.item as BlockItem).block.defaultState }
         )
 
         try {
