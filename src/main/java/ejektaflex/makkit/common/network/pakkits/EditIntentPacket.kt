@@ -58,7 +58,7 @@ class EditIntentPacket(
     companion object : ClientPakkitHandler {
         val ID = Identifier("makkit", "edit_intent")
 
-        override fun getId() = EditIntentPacket.ID
+        override fun getId() = ID
 
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val intent = EditIntentPacket(buffer)

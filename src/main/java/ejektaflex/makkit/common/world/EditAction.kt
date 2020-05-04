@@ -16,7 +16,7 @@ data class EditAction(
     // Pos: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()
 
-    fun change(pos: BlockPos, state: BlockState) {
+    fun edit(pos: BlockPos, state: BlockState) {
         if (pos !in stateMap) {
             stateMap[pos] = player.world.getBlockState(pos) to state
         } else {
@@ -24,7 +24,7 @@ data class EditAction(
         }
     }
 
-    fun revertChange(pos: BlockPos) {
+    fun clear(pos: BlockPos) {
         if (pos in stateMap) {
             stateMap.remove(pos)
         }
@@ -36,13 +36,13 @@ data class EditAction(
         operation.execute(this)
     }
 
-    fun doApply() {
+    fun commit() {
         for (entry in stateMap) {
             player.world.setBlockState(entry.key, entry.value.second)
         }
     }
 
-    fun undoApply() {
+    fun undoCommit() {
         for (entry in stateMap) {
             player.world.setBlockState(entry.key, entry.value.first)
         }

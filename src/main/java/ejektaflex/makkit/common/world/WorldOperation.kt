@@ -9,7 +9,7 @@ enum class WorldOperation(val execute: (it: EditAction) -> Unit) {
     private companion object {
         fun fillBlocks(action: EditAction) {
             for (pos in action.box.getBlockArray()) {
-                action.change(pos, action.palette.random())
+                action.edit(pos, action.palette.random())
             }
         }
     }

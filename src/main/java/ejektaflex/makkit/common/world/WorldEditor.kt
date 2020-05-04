@@ -1,16 +1,26 @@
 package ejektaflex.makkit.common.world
 
+import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.EditIntentPacket
 import net.minecraft.block.Blocks
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Items
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.LiteralText
 import net.minecraft.util.math.Box
-import java.util.*
 
 object WorldEditor {
 
-    private val stackMap = mutableMapOf<String, Stack<EditAction>>()
+    private val userHistories = mutableMapOf<String, UserActionHistory>()
+
+    fun getHistoryOf(player: ServerPlayerEntity): UserActionHistory {
+        val uuid = player.uuidAsString
+
+        return userHistories.getOrPut(uuid) {
+            UserActionHistory(uuid)
+        }
+    }
 
     fun handleNetworkOperation(player: ServerPlayerEntity, intent: EditIntentPacket) {
         val action = EditAction(
@@ -30,27 +40,31 @@ object WorldEditor {
 
         try {
             action.calcChangeSet()
-            action.doApply()
+            action.commit()
+
+            getHistoryOf(player).addToHistory(action)
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
+    fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
 
-    private fun handleUndo(player: ServerPlayerEntity) {
-        if (player.uuidAsString !in stackMap) {
-            return
-        } else {
+        println("Handling ${pakkit.mode} of ${player.displayName}")
 
+        val history = getHistoryOf(player)
+
+        val result = when (pakkit.mode) {
+            UndoRedoMode.UNDO -> history.undo()
+            UndoRedoMode.REDO -> history.redo()
         }
+
+        if (!result) {
+            player.sendMessage(LiteralText("Could not ${pakkit.mode}!"), true)
+        }
+
     }
-
-
-
-
-
-
-
 
 
 }

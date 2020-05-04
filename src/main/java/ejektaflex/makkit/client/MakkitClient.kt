@@ -7,6 +7,8 @@ import ejektaflex.makkit.client.event.Events
 import ejektaflex.makkit.client.keys.KeyRemapper
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
+import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
@@ -37,6 +39,13 @@ class MakkitClient : ClientModInitializer {
             region.doOperation(WorldOperation.FILL)
         }
 
+        undoButton.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+        }
+
+        redoButton.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+        }
 
 
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
@@ -146,6 +155,24 @@ class MakkitClient : ClientModInitializer {
                 ).build()
         )
 
+        val undoButton = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "undo"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_COMMA,
+                        "KEdit"
+                ).build()
+        )
+
+        val redoButton = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "redo"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_PERIOD,
+                        "KEdit"
+                ).build()
+        )
+
         val keyHandlers = listOf(
                 moveDragBinding,
                 moveDragSingleBinding, // TODO Fix inversion on negative face directions
@@ -153,7 +180,9 @@ class MakkitClient : ClientModInitializer {
                 //resizeDualSideBinding, // Awkward to use
                 deleteBinding,
                 fillBinding,
-                toggleBackBinding
+                toggleBackBinding,
+                undoButton,
+                redoButton
         )
 
 
