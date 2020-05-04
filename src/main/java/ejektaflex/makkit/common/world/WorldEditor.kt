@@ -18,7 +18,7 @@ object WorldEditor {
         val uuid = player.uuidAsString
 
         return userHistories.getOrPut(uuid) {
-            UserActionHistory(uuid)
+            UserActionHistory()
         }
     }
 

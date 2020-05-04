@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
+// TODO lift player out of this and commit/revert in UserActionHistory
 data class EditAction(
         val player: ServerPlayerEntity,
         val box: Box,
@@ -42,7 +43,7 @@ data class EditAction(
         }
     }
 
-    fun undoCommit() {
+    fun revertCommit() {
         for (entry in stateMap) {
             player.world.setBlockState(entry.key, entry.value.first)
         }
