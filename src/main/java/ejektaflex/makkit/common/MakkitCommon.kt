@@ -1,14 +1,11 @@
 package ejektaflex.makkit.common
 
-import ejektaflex.makkit.client.network.EditIntentPacket
-import ejektaflex.makkit.common.network.EditIntentPacketHandler
+import ejektaflex.makkit.common.network.pakkits.EditIntentPacket
 import net.fabricmc.api.ModInitializer
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 
 class MakkitCommon : ModInitializer {
     override fun onInitialize() {
-        //EditIntentPacketHandler.registerC2S()
+        EditIntentPacket.registerC2S()
         println("Common init")
-
     }
 }

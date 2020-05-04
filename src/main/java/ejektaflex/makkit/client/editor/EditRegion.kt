@@ -6,7 +6,7 @@ import ejektaflex.makkit.client.editor.drag.tools.MoveToolDualAxis
 import ejektaflex.makkit.client.editor.drag.tools.MoveToolSingleAxis
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSingleAxis
 import ejektaflex.makkit.client.editor.input.InputState
-import ejektaflex.makkit.client.network.EditIntentPacket
+import ejektaflex.makkit.common.network.pakkits.EditIntentPacket
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.MyLayers
 import ejektaflex.makkit.client.render.RenderBox
@@ -80,18 +80,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
         val trace = trace()
         if (trace != null) {
 
-            val pakkit = EditIntentPacket(
+            EditIntentPacket(
                     BlockPos(area.pos),
                     BlockPos(area.end),
                     trace.dir,
                     WorldOperation.FILL,
                     listOf(MinecraftClient.getInstance().player!!.mainHandStack)
-            )
-
-            println("Sending packet with ID: ${pakkit.getId()}")
-            ClientSidePacketRegistry.INSTANCE.sendToServer(pakkit.getId(), pakkit.write())
-
-            //pakkit.sendToServer()
+            ).sendToServer()
 
         }
     }

@@ -1,6 +1,6 @@
 package ejektaflex.makkit.common.world
 
-import ejektaflex.makkit.client.network.EditIntentPacket
+import ejektaflex.makkit.common.network.pakkits.EditIntentPacket
 import net.minecraft.block.Blocks
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Items
@@ -13,7 +13,6 @@ object WorldEditor {
     private val stackMap = mutableMapOf<String, Stack<EditAction>>()
 
     fun handleNetworkOperation(player: ServerPlayerEntity, intent: EditIntentPacket) {
-        println("Handling network operation")
         val action = EditAction(
                 player,
                 Box(intent.start, intent.end),
@@ -30,6 +29,7 @@ object WorldEditor {
         )
 
         try {
+            action.calcChangeSet()
             action.doApply()
         } catch (e: Exception) {
             e.printStackTrace()

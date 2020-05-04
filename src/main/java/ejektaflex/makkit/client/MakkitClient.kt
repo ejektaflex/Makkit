@@ -5,22 +5,16 @@ import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.event.Events
 import ejektaflex.makkit.client.keys.KeyRemapper
-import ejektaflex.makkit.client.network.EditIntentPacket
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
-import ejektaflex.makkit.common.network.EditIntentPacketHandler
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
-
 
     val region = EditRegion().apply {
         moveTo(4, 4, 4, 4, 3, 2)
@@ -30,9 +24,7 @@ class MakkitClient : ClientModInitializer {
 
         println("Hello Fabric world!")
 
-        ClientSidePacketRegistry.INSTANCE.register(EditIntentPacket.ID) { c, b ->
-            EditIntentPacketHandler.run(c, b)
-        }
+
 
         KeyBindingRegistry.INSTANCE.apply {
             addCategory("KEdit")

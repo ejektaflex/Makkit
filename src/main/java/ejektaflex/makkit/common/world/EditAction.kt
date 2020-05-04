@@ -30,8 +30,13 @@ data class EditAction(
         }
     }
 
-    fun doApply() {
+    // fun optimize() -> will remove changes which go from equal state to equal state
+
+    fun calcChangeSet() {
         operation.execute(this)
+    }
+
+    fun doApply() {
         for (entry in stateMap) {
             player.world.setBlockState(entry.key, entry.value.second)
         }

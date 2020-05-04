@@ -1,10 +1,14 @@
-package ejektaflex.makkit.client.network
+package ejektaflex.makkit.common.network.pakkits
 
 import ejektaflex.makkit.common.network.pakkit.ClientPakkit
+import ejektaflex.makkit.common.network.pakkit.ClientPakkitHandler
+import ejektaflex.makkit.common.world.WorldEditor
 import ejektaflex.makkit.common.world.WorldOperation
 import io.netty.buffer.Unpooled
+import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketByteBuf
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -51,8 +55,18 @@ class EditIntentPacket(
         }
     }
 
-    companion object {
+    companion object : ClientPakkitHandler {
         val ID = Identifier("makkit", "edit_intent")
+
+        override fun getId() = EditIntentPacket.ID
+
+        override fun run(context: PacketContext, buffer: PacketByteBuf) {
+            val intent = EditIntentPacket(buffer)
+            context.taskQueue.execute {
+                WorldEditor.handleNetworkOperation(context.player as ServerPlayerEntity, intent)
+            }
+        }
+
     }
 
 }
