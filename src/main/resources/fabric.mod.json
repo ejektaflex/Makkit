@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "kalpis",
+  "id": "makkit",
   "version": "${version}",
 
-  "name": "KEdit",
+  "name": "Makkit",
   "description": "Map Editor, Made Easy!",
   "authors": [
-    "Me!"
+    "Ejektaflex!"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -19,11 +19,14 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ejektaflex.kalpis.ExampleMod"
+      "ejektaflex.makkit.common.MakkitCommon"
+    ],
+    "client": [
+      "ejektaflex.makkit.client.MakkitClient"
     ]
   },
   "mixins": [
-    "kalpis.mixins.json"
+    "makkit.mixins.json"
   ],
 
   "depends": {

@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "ejektaflex.makkit.client.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+
+  ],
+  "client": [
+    "BoxMixin",
+    "MixinKeyDefaultRemapper",
+    "TextRendererMixin",
+    "WorldRendererMixin",
+    "MixinKeybindDefaultChanger",
+    "MouseScrollMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
