@@ -69,6 +69,7 @@ object RenderHelper : AbstractRenderHelper() {
         return dirs
     }
 
+    // Single block drawing
     fun drawBlockFaces(pos: BlockPos, color: RenderColor = RenderColor.WHITE, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
         drawBoxFilled(Box(pos.vec3d(), pos.vec3d().add(1.0, 1.0, 1.0)), color, layer)
     }

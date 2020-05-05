@@ -3,6 +3,7 @@ package ejektaflex.makkit.client.editor.drag.tools
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.DualAxisDragTools
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
+import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.round
 import net.minecraft.util.math.Box
 
@@ -10,7 +11,7 @@ internal class MoveToolDualAxis(region: EditRegion, binding: KeyStateHandler) : 
 
     override fun onDraw() {
         super.onDraw()
-        region.preview.draw()
+        region.preview.draw(edgeColor = RenderColor.ORANGE)
         val offset = getDrawOffset(plane.box)
         if (offset != null) {
             region.preview.drawNearAxisLabels(offset)

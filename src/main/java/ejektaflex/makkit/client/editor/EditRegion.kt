@@ -84,7 +84,7 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
                     BlockPos(area.pos),
                     BlockPos(area.end),
                     trace.dir,
-                    WorldOperation.FILL,
+                    operation,
                     listOf(MinecraftClient.getInstance().player!!.mainHandStack)
             ).sendToServer()
 

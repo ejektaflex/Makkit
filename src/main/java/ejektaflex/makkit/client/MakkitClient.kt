@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
 
-    val region = EditRegion().apply {
+    val region = EditRegion(smoothDrag = false).apply {
         moveTo(4, 4, 4, 4, 3, 2)
     }
 
@@ -37,6 +37,10 @@ class MakkitClient : ClientModInitializer {
 
         fillBinding.setKeyDown {
             region.doOperation(WorldOperation.FILL)
+        }
+
+        wallsBinding.setKeyDown {
+            region.doOperation(WorldOperation.WALLS)
         }
 
         undoButton.setKeyDown {
@@ -109,15 +113,6 @@ class MakkitClient : ClientModInitializer {
                 ).build()
         )
 
-        val resizeDualSideBinding = KeyStateHandler(
-                FabricKeyBinding.Builder.create(
-                        Identifier("kedit", "resize_dual_axis"),
-                        InputUtil.Type.KEYSYM,
-                        GLFW.GLFW_KEY_V,
-                        "KEdit"
-                ).build()
-        )
-
         val deleteBinding = KeyStateHandler(
                 FabricKeyBinding.Builder.create(
                         Identifier("kedit", "fill/delete"),
@@ -132,6 +127,15 @@ class MakkitClient : ClientModInitializer {
                         Identifier("kedit", "fill"),
                         InputUtil.Type.KEYSYM,
                         GLFW.GLFW_KEY_R,
+                        "KEdit"
+                ).build()
+        )
+
+        val wallsBinding = KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier("kedit", "fill_walls"),
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_V,
                         "KEdit"
                 ).build()
         )
@@ -180,6 +184,7 @@ class MakkitClient : ClientModInitializer {
                 //resizeDualSideBinding, // Awkward to use
                 deleteBinding,
                 fillBinding,
+                wallsBinding,
                 toggleBackBinding,
                 undoButton,
                 redoButton

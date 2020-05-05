@@ -3,6 +3,7 @@ package ejektaflex.makkit.client.editor.drag.tools
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
+import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -21,7 +22,7 @@ internal class ResizeToolSingleAxis(
 
     override fun onDraw() {
         super.onDraw()
-        region.preview.draw()
+        region.preview.draw(edgeColor = RenderColor.ORANGE)
 
         region.preview.drawTextOn(
                 start!!.dir,
