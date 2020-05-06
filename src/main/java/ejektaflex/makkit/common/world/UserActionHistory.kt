@@ -7,6 +7,12 @@ class UserActionHistory {
     private var undoHistory = ArrayDeque<EditAction>()
     private var redoHistory = ArrayDeque<EditAction>()
 
+    fun clear(): Boolean {
+        undoHistory.clear()
+        redoHistory.clear()
+        return true
+    }
+
     fun undo(): Boolean {
         return if (undoHistory.isEmpty()) {
             false

@@ -4,6 +4,7 @@ import ejektaflex.makkit.client.mixin.MixinKeybindDefaultChanger
 import net.minecraft.client.options.KeyBinding
 import net.minecraft.client.util.InputUtil
 
+
 object KeyRemapper {
 
     private val remaps = mutableMapOf<String, InputUtil.KeyCode>()

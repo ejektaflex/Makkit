@@ -1,14 +1,20 @@
 package ejektaflex.makkit.client.editor.input
 
 import ejektaflex.makkit.client.MakkitClient
+import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.util.InputUtil
+import net.minecraft.util.Identifier
+import org.lwjgl.glfw.GLFW
 
 object InputState {
+
+
 
     private val opts = MinecraftClient.getInstance().options
 
     init {
-        MakkitClient.toggleBackBinding.setKeyDown {
+        MakkitKeys.toggleBackBinding.setKeyDown {
             isBackSelecting = !isBackSelecting
         }
     }
@@ -19,5 +25,8 @@ object InputState {
     fun update() {
 
     }
+
+
+
 
 }

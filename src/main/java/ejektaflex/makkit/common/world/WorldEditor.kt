@@ -2,7 +2,7 @@ package ejektaflex.makkit.common.world
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.EditHistoryPacket
-import ejektaflex.makkit.common.network.pakkits.EditIntentPacket
+import ejektaflex.makkit.common.network.pakkits.EditWorldPacket
 import net.minecraft.block.Blocks
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Items
@@ -22,7 +22,7 @@ object WorldEditor {
         }
     }
 
-    fun handleNetworkOperation(player: ServerPlayerEntity, intent: EditIntentPacket) {
+    fun handleEdit(player: ServerPlayerEntity, intent: EditWorldPacket) {
         val action = EditAction(
                 player,
                 Box(intent.start, intent.end),
@@ -58,6 +58,7 @@ object WorldEditor {
         val result = when (pakkit.mode) {
             UndoRedoMode.UNDO -> history.undo()
             UndoRedoMode.REDO -> history.redo()
+            UndoRedoMode.CLEAR -> history.clear()
         }
 
         if (!result) {

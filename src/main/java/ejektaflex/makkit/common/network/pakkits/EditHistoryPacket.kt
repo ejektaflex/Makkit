@@ -1,8 +1,8 @@
 package ejektaflex.makkit.common.network.pakkits
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.network.pakkit.ClientPakkit
-import ejektaflex.makkit.common.network.pakkit.ClientPakkitHandler
+import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
+import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
 import ejektaflex.makkit.common.world.WorldEditor
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier
 
 class EditHistoryPacket(
         var mode: UndoRedoMode = UndoRedoMode.UNDO
-) : ClientPakkit {
+) : ServerBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
@@ -30,7 +30,7 @@ class EditHistoryPacket(
         mode = enumValues<UndoRedoMode>()[buf.readInt()]
     }
 
-    companion object : ClientPakkitHandler {
+    companion object : ServerSidePakkitHandler {
         val ID = Identifier("makkit", "edit_history")
 
         override fun getId() = ID

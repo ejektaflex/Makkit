@@ -1,7 +1,7 @@
 package ejektaflex.makkit.common.network.pakkits
 
-import ejektaflex.makkit.common.network.pakkit.ClientPakkit
-import ejektaflex.makkit.common.network.pakkit.ClientPakkitHandler
+import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
+import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
 import ejektaflex.makkit.common.world.WorldEditor
 import ejektaflex.makkit.common.world.WorldOperation
 import io.netty.buffer.Unpooled
@@ -13,13 +13,13 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 
-class EditIntentPacket(
+class EditWorldPacket(
         var start: BlockPos = BlockPos(0, 0, 0),
         var end: BlockPos = BlockPos(0, 0, 0),
         var side: Direction = Direction.NORTH,
         var op: WorldOperation = WorldOperation.FILL,
         var palette: List<ItemStack> = listOf()
-) : ClientPakkit {
+) : ServerBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
@@ -55,15 +55,15 @@ class EditIntentPacket(
         }
     }
 
-    companion object : ClientPakkitHandler {
+    companion object : ServerSidePakkitHandler {
         val ID = Identifier("makkit", "edit_intent")
 
         override fun getId() = ID
 
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
-            val intent = EditIntentPacket(buffer)
+            val intent = EditWorldPacket(buffer)
             context.taskQueue.execute {
-                WorldEditor.handleNetworkOperation(context.player as ServerPlayerEntity, intent)
+                WorldEditor.handleEdit(context.player as ServerPlayerEntity, intent)
             }
         }
 

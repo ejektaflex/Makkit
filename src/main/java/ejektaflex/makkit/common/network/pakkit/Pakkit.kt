@@ -12,6 +12,4 @@ interface Pakkit {
 
     fun write(): PacketByteBuf
 
-
-
 }
