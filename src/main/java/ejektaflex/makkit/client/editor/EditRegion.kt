@@ -13,13 +13,13 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
-class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = true) {
+class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = false) {
 
     val samplePlaneSize = 32.0
 
     val area = RenderBox().apply {
         fillColor = RenderColor.GREEN.toAlpha(.4f)
-        edgeColor = RenderColor.DARK_GREEN.toAlpha(.2f)
+        edgeColor = RenderColor.GREEN
     }
 
     val preview = RenderBox().apply {

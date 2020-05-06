@@ -54,7 +54,7 @@ class UserActionHistory {
     }
 
     companion object {
-        private const val maxHistLength = 5
+        private const val maxHistLength = 50
     }
 
 }

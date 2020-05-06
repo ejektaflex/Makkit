@@ -51,19 +51,23 @@ object WorldEditor {
 
     fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
 
-        println("Handling ${pakkit.mode} of ${player.displayName}")
+        if (player.isCreative) {
+            val history = getHistoryOf(player)
 
-        val history = getHistoryOf(player)
+            val result = when (pakkit.mode) {
+                UndoRedoMode.UNDO -> history.undo()
+                UndoRedoMode.REDO -> history.redo()
+                UndoRedoMode.CLEAR -> history.clear()
+            }
 
-        val result = when (pakkit.mode) {
-            UndoRedoMode.UNDO -> history.undo()
-            UndoRedoMode.REDO -> history.redo()
-            UndoRedoMode.CLEAR -> history.clear()
+            if (!result) {
+                player.sendMessage(LiteralText("Could not ${pakkit.mode}!"), true)
+            }
+        } else {
+            player.sendMessage(LiteralText("Must be in Creative Mode to use Makkit!"), true)
         }
 
-        if (!result) {
-            player.sendMessage(LiteralText("Could not ${pakkit.mode}!"), true)
-        }
+
 
     }
 

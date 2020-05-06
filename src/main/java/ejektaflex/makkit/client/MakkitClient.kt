@@ -19,13 +19,11 @@ import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
 
-    val region = EditRegion(smoothDrag = false).apply {
+    val region = EditRegion().apply {
         moveTo(4, 4, 4, 4, 3, 2)
     }
 
     override fun onInitializeClient() {
-
-        println("Hello Fabric world!")
 
         MakkitKeys.setup()
 
@@ -47,9 +45,6 @@ class MakkitClient : ClientModInitializer {
             }
         }
 
-
-
-
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
         // If they wish to see the new bindings.
         KeyRemapper.remap("key.saveToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET)
@@ -60,11 +55,8 @@ class MakkitClient : ClientModInitializer {
     }
 
     private fun onScroll(e: Events.MouseScrollEvent) {
-
         println("Scrolled: ${e.amount}!")
-
     }
-
 
     private fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
@@ -81,6 +73,5 @@ class MakkitClient : ClientModInitializer {
             region.draw()
         }
     }
-
 
 }

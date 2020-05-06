@@ -37,6 +37,8 @@ internal class ResizeToolSingleAxis(
             }
 
             if (offsets.isNotEmpty()) {
+
+                // Only use the offset of the closer of the two planes
                 val offsetToUse = offsets.minBy { it.distanceTo(start!!.start) }!!
 
                 val rounding = when (smooth) {
