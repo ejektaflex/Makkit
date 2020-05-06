@@ -1,5 +1,6 @@
 package ejektaflex.makkit.common.world
 
+import ejektaflex.makkit.common.enum.UndoRedoMode
 import java.util.*
 
 class UserActionHistory {
@@ -18,6 +19,7 @@ class UserActionHistory {
             false
         } else {
             undoHistory.pop().let {
+                it.syncToWorldState(UndoRedoMode.UNDO)
                 it.revertCommit()
                 redoHistory.push(it)
             }
@@ -30,6 +32,7 @@ class UserActionHistory {
             false
         } else {
             redoHistory.pop().let {
+                it.syncToWorldState(UndoRedoMode.REDO)
                 it.commit()
                 undoHistory.push(it)
             }
@@ -38,6 +41,11 @@ class UserActionHistory {
     }
 
     fun addToHistory(action: EditAction) {
+
+        if (undoHistory.isNotEmpty()) {
+            undoHistory.peek().syncToWorldState(UndoRedoMode.UNDO)
+        }
+
         undoHistory.push(action)
         if (undoHistory.size > maxHistLength) {
             undoHistory.removeLast()

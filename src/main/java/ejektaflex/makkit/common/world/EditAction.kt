@@ -1,5 +1,6 @@
 package ejektaflex.makkit.common.world
 
+import ejektaflex.makkit.common.enum.UndoRedoMode
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
@@ -32,6 +33,16 @@ data class EditAction(
     }
 
     // fun optimize() -> will remove changes which go from equal state to equal state
+
+    fun syncToWorldState(mode: UndoRedoMode) {
+        for (entry in stateMap) {
+            stateMap[entry.key] = when(mode) {
+                UndoRedoMode.UNDO -> entry.value.first to player.world.getBlockState(entry.key)
+                UndoRedoMode.REDO -> player.world.getBlockState(entry.key) to entry.value.second
+                else -> throw Exception("You cannot sync edit history to world state with a CLEAR mode!")
+            }
+        }
+    }
 
     fun calcChangeSet() {
         operation.execute(this)
