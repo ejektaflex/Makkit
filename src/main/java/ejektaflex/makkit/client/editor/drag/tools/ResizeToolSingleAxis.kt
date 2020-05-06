@@ -22,7 +22,7 @@ internal class ResizeToolSingleAxis(
 
     override fun onDraw() {
         super.onDraw()
-        region.preview.draw(edgeColor = RenderColor.ORANGE)
+        region.preview.draw()
 
         region.preview.drawTextOn(
                 start!!.dir,

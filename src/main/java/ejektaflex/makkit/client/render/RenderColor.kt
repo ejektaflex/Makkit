@@ -29,6 +29,7 @@ data class RenderColor(val value: Long) : Cloneable {
         val RED = RenderColor(0xe43b44)
         val ORANGE = RenderColor(0xfeae34)
         val GREEN = RenderColor(0x63c74d)
+        val DARK_GREEN = RenderColor(0x3e8948)
         val BLUE = RenderColor(0x0099db)
         val DARK_BLUE = RenderColor(0x124e89)
         val PINK = RenderColor(0xf6757a)

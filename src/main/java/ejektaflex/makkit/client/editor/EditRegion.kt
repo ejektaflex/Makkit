@@ -1,22 +1,15 @@
 package ejektaflex.makkit.client.editor
 
-import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.drag.tools.MoveToolDualAxis
-import ejektaflex.makkit.client.editor.drag.tools.MoveToolSingleAxis
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSingleAxis
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
-import ejektaflex.makkit.common.network.pakkits.EditWorldPacket
-import ejektaflex.makkit.common.world.WorldOperation
-import ejektaflex.makkit.client.render.MyLayers
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.client.render.RenderHelper
-import net.minecraft.block.Blocks
+import ejektaflex.makkit.common.network.pakkits.EditWorldPacket
+import ejektaflex.makkit.common.world.WorldOperation
 import net.minecraft.client.MinecraftClient
-import net.minecraft.item.AirBlockItem
-import net.minecraft.item.BlockItem
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
@@ -25,11 +18,13 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     val samplePlaneSize = 32.0
 
     val area = RenderBox().apply {
-        color = RenderColor.GREEN.toAlpha(0.4f)
+        fillColor = RenderColor.GREEN.toAlpha(.4f)
+        edgeColor = RenderColor.DARK_GREEN.toAlpha(.2f)
     }
 
     val preview = RenderBox().apply {
-        color = RenderColor.BLUE.toAlpha(0.4f)
+        fillColor = RenderColor.BLUE.toAlpha(.4f)
+        edgeColor = RenderColor.ORANGE.toAlpha(.2f)
     }
 
     private val moveToolDual = MoveToolDualAxis(this, MakkitKeys.moveDragBinding)
@@ -59,7 +54,6 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
     fun doOperation(operation: WorldOperation) {
         val trace = trace()
         if (trace != null) {
-
             EditWorldPacket(
                     BlockPos(area.pos),
                     BlockPos(area.end),
@@ -67,12 +61,10 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
                     operation,
                     listOf(MinecraftClient.getInstance().player!!.mainHandStack)
             ).sendToServer()
-
         }
     }
 
     fun draw() {
-
         area.draw()
 
         val anyToolsDragging = tools.any { it.isDragging() }
@@ -86,18 +78,10 @@ class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = t
             // default state when no drag tool is being used
             val hit = trace()
             hit?.let {
-                area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.4f))
+                area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.3f))
                 area.drawAxisSizes()
             }
-
-            for (pos in area.getBlockArray()) {
-                if (MinecraftClient.getInstance().world!!.getBlockState(pos).isAir) {
-                    RenderHelper.drawBlockFaces(pos, RenderColor.ORANGE.toAlpha(.2f), MyLayers.OVERLAY_QUADS_BEHIND)
-                }
-            }
-
         }
-
     }
 
 

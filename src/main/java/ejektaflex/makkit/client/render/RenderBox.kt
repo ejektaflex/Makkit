@@ -14,29 +14,13 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
     var box = Box(inPos, inPos2)
 
-    fun getBlockArray(): List<BlockPos> {
-        val buff = mutableListOf<BlockPos>()
-        val startPos = BlockPos(pos)
-        val endPos = BlockPos(end)
-        for (dx in startPos.x until endPos.x) {
-            for (dy in startPos.y until endPos.y) {
-                for (dz in startPos.z until endPos.z) {
-                    buff.add(BlockPos(dx, dy, dz))
-                }
-            }
-        }
-        return buff
-    }
-
     fun drawNearAxisLabels(func: () -> Vec3d) {
         val dirs = RenderHelper.getLookDirections()
 
         dirs.forEachIndexed { i, direction ->
             val shifted = dirs[(i + 1) % 3]
             val dirForLen = dirs[(i + 2) % 3]
-
             val pos = box.edgeCenterPos(direction, shifted)
-
             RenderHelper.drawText(pos, func().axisValue(dirForLen.axis).roundToInt().toString())
         }
     }
@@ -79,7 +63,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     }
 
     fun drawFace(dir: Direction, colorIn: RenderColor) {
-        RenderBox(getFacePlane(dir)).draw(colorIn)
+        RenderBox(getFacePlane(dir)).draw(colorIn, colorIn)
     }
 
     val pos: Vec3d
@@ -92,11 +76,12 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         get() = end.subtract(pos)
 
 
-    var color: RenderColor = RenderColor.WHITE
+    var fillColor: RenderColor = RenderColor.WHITE
+    var edgeColor: RenderColor = RenderColor.WHITE
 
-    fun draw(colorIn: RenderColor? = null, edgeColor: RenderColor? = null, offset: Vec3d = Vec3d.ZERO) {
-        RenderHelper.drawBoxFilled(box.offset(offset), colorIn ?: color)
-        RenderHelper.drawBoxEdges(box.offset(offset), edgeColor ?: colorIn ?: color)
+    fun draw(colorFill: RenderColor? = null, colorEdge: RenderColor? = null, offset: Vec3d = Vec3d.ZERO) {
+        RenderHelper.drawBoxFilled(box.offset(offset), colorFill ?: fillColor)
+        RenderHelper.drawBoxEdges(box.offset(offset), colorEdge ?: edgeColor)
     }
 
     fun trace(reverse: Boolean = false): BoxTraceResult? {
