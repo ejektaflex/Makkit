@@ -1,6 +1,6 @@
 package ejektaflex.makkit.client
 
-import ejektaflex.makkit.client.config.MakkitConfigHandler
+import ejektaflex.makkit.client.config.MakkitConfig
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
@@ -22,27 +22,10 @@ class MakkitClient : ClientModInitializer {
         // Clientbound
         FocusRegionPacket.registerS2C()
 
-        MakkitConfigHandler.load()
+        MakkitConfig.load()
 
         MakkitKeys.setup()
 
-        MakkitKeys.apply {
-            fillBinding.setKeyDown {
-                region?.doOperation(WorldOperation.SET)
-            }
-
-            wallsBinding.setKeyDown {
-                region?.doOperation(WorldOperation.WALLS)
-            }
-
-            undoButton.setKeyDown {
-                EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
-            }
-
-            redoButton.setKeyDown {
-                EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
-            }
-        }
 
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
         // If they wish to see the new bindings.
@@ -76,7 +59,7 @@ class MakkitClient : ClientModInitializer {
 
     companion object {
 
-        var config = MakkitConfigHandler.load()
+        var config = MakkitConfig.load()
 
         fun getOrCreateRegion(): EditRegion {
             if (region == null) {

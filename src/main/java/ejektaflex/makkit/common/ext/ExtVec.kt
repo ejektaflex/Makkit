@@ -3,7 +3,25 @@ package ejektaflex.makkit.common.ext
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
+import kotlin.math.max
+import kotlin.math.min
 
+fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
+    return Vec3d(
+            max(vecA.x, vecB.x),
+            max(vecA.y, vecB.y),
+            max(vecA.z, vecB.z)
+    )
+}
+/*
+fun min(vecA: Vec3d, vecB: Vec3d): Vec3d {
+    return Vec3d(
+            min(vecA.x, vecB.x),
+            min(vecA.y, vecB.y),
+            min(vecA.z, vecB.z)
+    )
+}
+ */
 
 val Vec3d.ZERO: Vec3d
     get() = Vec3d(0.0, 0.0, 0.0)
@@ -11,7 +29,6 @@ val Vec3d.ZERO: Vec3d
 fun Vec3d.ONE(): Vec3d {
     return Vec3d(1.0, 1.0, 1.0)
 }
-
 
 operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)

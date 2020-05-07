@@ -1,9 +1,16 @@
 package ejektaflex.makkit.client.editor.input
 
+import ejektaflex.makkit.client.MakkitClient
+import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
+import ejektaflex.makkit.common.world.WorldOperation
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
+import net.minecraft.util.hit.HitResult
+import net.minecraft.util.math.BlockPos
 import org.lwjgl.glfw.GLFW
 
 object MakkitKeys {
@@ -15,79 +22,55 @@ object MakkitKeys {
                 register(bindHandler.binding)
             }
         }
+
+        fillBinding.setKeyDown {
+            MakkitClient.region?.doOperation(WorldOperation.SET)
+        }
+
+        wallsBinding.setKeyDown {
+            MakkitClient.region?.doOperation(WorldOperation.WALLS)
+        }
+
+        undoButton.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+        }
+
+        redoButton.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+        }
+
+        centerRegionBinding.setKeyDown {
+            val btr = MinecraftClient.getInstance().crosshairTarget
+            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+                MakkitClient.getOrCreateRegion().centerOn(BlockPos(btr.pos))
+            }
+        }
+
     }
 
-    val moveDragBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "move_dual_axis"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_Z,
-                    "Makkit"
-            ).build()
-    )
+    private fun makkitKey(path: String, type: InputUtil.Type, code: Int): KeyStateHandler {
+        return KeyStateHandler(
+                FabricKeyBinding.Builder.create(
+                        Identifier(MakkitClient.ID, path),
+                        type,
+                        code,
+                        "Makkit"
+                ).build()
+        )
+    }
 
-    val resizeSideBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "resize_single_axis"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_C,
-                    "Makkit"
-            ).build()
-    )
+    val moveDragBinding = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
+    val resizeSideBinding = makkitKey("resize_single_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
+    val fillBinding = makkitKey("fill", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
+    val wallsBinding = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
 
-    val fillBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "fill"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_R,
-                    "Makkit"
-            ).build()
-    )
+    val toggleBackBinding = makkitKey("toggle_back_selection", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT)
+    val holdBackBinding = makkitKey("hold_back_selection", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5)
 
-    val wallsBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "fill_walls"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_V,
-                    "Makkit"
-            ).build()
-    )
+    val centerRegionBinding = makkitKey("center_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B)
 
-    val toggleBackBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "toggle_back_selection"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_LEFT_ALT,
-                    "Makkit"
-            ).build()
-    )
-
-    val holdBackBinding = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "hold_back_selection"),
-                    InputUtil.Type.MOUSE,
-                    GLFW.GLFW_MOUSE_BUTTON_5,
-                    "Makkit"
-            ).build()
-    )
-
-    val undoButton = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "undo"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_COMMA,
-                    "Makkit"
-            ).build()
-    )
-
-    val redoButton = KeyStateHandler(
-            FabricKeyBinding.Builder.create(
-                    Identifier("makkit", "redo"),
-                    InputUtil.Type.KEYSYM,
-                    GLFW.GLFW_KEY_PERIOD,
-                    "Makkit"
-            ).build()
-    )
+    val undoButton = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_COMMA)
+    val redoButton = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_PERIOD)
 
     val keyHandlers = listOf(
             moveDragBinding,
@@ -97,7 +80,8 @@ object MakkitKeys {
             toggleBackBinding,
             holdBackBinding,
             undoButton,
-            redoButton
+            redoButton,
+            centerRegionBinding
     )
 
 }

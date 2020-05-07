@@ -4,8 +4,6 @@ import net.minecraft.client.MinecraftClient
 
 object InputState {
 
-
-
     private val opts = MinecraftClient.getInstance().options
 
     init {
@@ -23,8 +21,5 @@ object InputState {
     fun update() {
 
     }
-
-
-
 
 }

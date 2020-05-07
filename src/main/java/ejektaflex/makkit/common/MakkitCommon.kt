@@ -8,7 +8,7 @@ import net.fabricmc.api.ModInitializer
 class MakkitCommon : ModInitializer {
     override fun onInitialize() {
 
-        // Serverbound
+        // Serverbound packets
         EditWorldPacket.registerC2S()
         EditHistoryPacket.registerC2S()
 

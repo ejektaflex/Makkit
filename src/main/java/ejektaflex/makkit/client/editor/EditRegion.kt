@@ -7,10 +7,7 @@ import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.common.ext.dirMask
-import ejektaflex.makkit.common.ext.otherAxisDirections
-import ejektaflex.makkit.common.ext.shrinkSide
-import ejektaflex.makkit.common.ext.vec3d
+import ejektaflex.makkit.common.ext.*
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import ejektaflex.makkit.common.world.WorldOperation
 import net.minecraft.client.MinecraftClient
@@ -48,8 +45,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         area.box = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
+    fun centerOn(pos: BlockPos) {
+        area.box = Box(pos, pos.add(1, 1, 1))
+    }
+
     fun tryScrollFace(amt: Double) {
-        if (MinecraftClient.getInstance().world != null) {
+        // TODO Make this less verbose
+        if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
             val result = trace() ?: return
 
             val others = result.dir.otherAxisDirections()
@@ -57,12 +59,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             var boxProto = area.box
 
             others.forEach { dir ->
-                println("Direction: $dir")
                 boxProto = boxProto.shrinkSide(
-                        Vec3d(-amt, -amt, -amt).dirMask(dir), dir)
+                        Vec3d(-amt, -amt, -amt).dirMask(dir),
+                        dir
+                )
             }
 
-            area.box = boxProto
+            area.box = boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0))
         }
     }
 

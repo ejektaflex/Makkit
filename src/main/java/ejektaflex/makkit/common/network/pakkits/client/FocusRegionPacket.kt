@@ -49,9 +49,7 @@ class FocusRegionPacket(
             val pakkit = FocusRegionPacket(buffer)
             context.taskQueue.execute {
                 if (MakkitClient.config.historyHighlighting) {
-                    val region = MakkitClient.getOrCreateRegion()
-
-                    region.apply {
+                    MakkitClient.getOrCreateRegion().apply {
                         area.box = Box(pakkit.start, pakkit.end)
                     }
                 }
