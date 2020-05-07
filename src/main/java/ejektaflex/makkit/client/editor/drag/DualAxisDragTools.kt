@@ -1,5 +1,6 @@
 package ejektaflex.makkit.client.editor.drag
 
+import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
@@ -34,8 +35,7 @@ internal abstract class DualAxisDragTools(region: EditRegion, binding: KeyStateH
 
     override fun onDraw() {
         if (isDragging()) {
-            region.preview.box = calcDragBox(region.smoothDrag) ?: region.preview.box
-
+            region.preview.box = calcDragBox(!MakkitClient.config.gridSnapping) ?: region.preview.box
             if (region.drawDragPlane) {
                 plane.draw(RenderColor.PINK.toAlpha(0.2f))
             }

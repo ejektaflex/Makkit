@@ -1,5 +1,6 @@
 package ejektaflex.makkit.client.editor.drag
 
+import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
@@ -44,16 +45,14 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
         box?.let { region.area.box = it }
     }
 
-     override fun onDraw() {
-         if (isDragging()) {
-             region.preview.box = calcDragBox(region.smoothDrag) ?: region.preview.box
-
-             if (region.drawDragPlane) {
-                 planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))
-                 planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
-             }
-
-         }
-     }
+    override fun onDraw() {
+        if (isDragging()) {
+            region.preview.box = calcDragBox(!MakkitClient.config.gridSnapping) ?: region.preview.box
+            if (region.drawDragPlane) {
+                planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))
+                planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
+            }
+        }
+    }
 
 }

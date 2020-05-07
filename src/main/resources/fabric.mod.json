@@ -4,13 +4,14 @@
   "version": "${version}",
 
   "name": "Makkit",
-  "description": "Map Editor, Made Easy!",
+  "description": "Creative Map Editor, Made Easy!",
   "authors": [
     "Ejektaflex!"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/makkit",
+    "sources": "https://github.com/ejektaflex/Makkit",
+    "issues": "https://github.com/ejektaflex/Makkit/issues"
   },
 
   "license": "CC0-1.0",
@@ -23,6 +24,9 @@
     ],
     "client": [
       "ejektaflex.makkit.client.MakkitClient"
+    ],
+    "modmenu": [
+      "ejektaflex.makkit.client.compat.MakkitModMenu"
     ]
   },
   "mixins": [

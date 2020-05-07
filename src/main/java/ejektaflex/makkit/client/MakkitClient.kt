@@ -1,8 +1,9 @@
 package ejektaflex.makkit.client
 
+import ejektaflex.makkit.client.config.MakkitConfigHandler
+import ejektaflex.makkit.client.config.MakkitConfig
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.InputState
-import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.editor.input.MakkitKeys
 import ejektaflex.makkit.client.event.Events
 import ejektaflex.makkit.client.keys.KeyRemapper
@@ -11,29 +12,26 @@ import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
-import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.util.InputUtil
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
 
-    val region = EditRegion().apply {
-        moveTo(4, 4, 4, 4, 3, 2)
-    }
-
     override fun onInitializeClient() {
+
+
+
+        MakkitConfigHandler.load()
 
         MakkitKeys.setup()
 
         MakkitKeys.apply {
             fillBinding.setKeyDown {
-                region.doOperation(WorldOperation.FILL)
+                region?.doOperation(WorldOperation.FILL)
             }
 
             wallsBinding.setKeyDown {
-                region.doOperation(WorldOperation.WALLS)
+                region?.doOperation(WorldOperation.WALLS)
             }
 
             undoButton.setKeyDown {
@@ -69,9 +67,20 @@ class MakkitClient : ClientModInitializer {
         InputState.update()
 
         RenderHelper.drawInWorld {
-            region.update()
-            region.draw()
+            region?.update()
+            region?.draw()
         }
+    }
+
+    companion object {
+
+        var config = MakkitConfigHandler.load()
+
+        var region: EditRegion? = EditRegion().apply {
+            moveTo(0, 0, 0, 2, 3, 4)
+        }
+
+        const val ID = "makkit"
     }
 
 }

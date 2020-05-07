@@ -13,7 +13,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
-class EditRegion(var drawDragPlane: Boolean = false, var smoothDrag: Boolean = false) {
+class EditRegion(var drawDragPlane: Boolean = false) {
 
     val samplePlaneSize = 32.0
 
