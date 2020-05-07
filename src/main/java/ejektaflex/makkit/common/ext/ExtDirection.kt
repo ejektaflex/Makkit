@@ -10,6 +10,12 @@ fun Direction.otherDirectionalAxes(): List<Direction> {
     }
 }
 
+fun Direction.otherAxisDirections(): List<Direction> {
+    return enumValues<Direction>().filter {
+        it.axis != this.axis
+    }
+}
+
 fun Direction.vec3d(): Vec3d {
     return Vec3d(unitVector)
 }

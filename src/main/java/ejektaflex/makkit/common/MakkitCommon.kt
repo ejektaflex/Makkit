@@ -7,8 +7,6 @@ import net.fabricmc.api.ModInitializer
 
 class MakkitCommon : ModInitializer {
     override fun onInitialize() {
-        // Clientbound
-        FocusRegionPacket.registerS2C()
 
         // Serverbound
         EditWorldPacket.registerC2S()

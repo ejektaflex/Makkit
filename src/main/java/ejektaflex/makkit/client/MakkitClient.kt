@@ -9,6 +9,7 @@ import ejektaflex.makkit.client.keys.KeyRemapper
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.util.InputUtil
@@ -18,7 +19,8 @@ class MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
-
+        // Clientbound
+        FocusRegionPacket.registerS2C()
 
         MakkitConfigHandler.load()
 
@@ -52,7 +54,8 @@ class MakkitClient : ClientModInitializer {
     }
 
     private fun onScroll(e: Events.MouseScrollEvent) {
-        println("Scrolled: ${e.amount}!")
+        val reg = getOrCreateRegion()
+        reg.tryScrollFace(e.amount)
     }
 
     private fun onDrawScreen(e: Events.DrawScreenEvent) {

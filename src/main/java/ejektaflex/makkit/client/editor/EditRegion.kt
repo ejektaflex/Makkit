@@ -7,11 +7,16 @@ import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
+import ejektaflex.makkit.common.ext.dirMask
+import ejektaflex.makkit.common.ext.otherAxisDirections
+import ejektaflex.makkit.common.ext.shrinkSide
+import ejektaflex.makkit.common.ext.vec3d
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import ejektaflex.makkit.common.world.WorldOperation
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
 
@@ -43,11 +48,29 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         area.box = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
+    fun tryScrollFace(amt: Double) {
+        if (MinecraftClient.getInstance().world != null) {
+            val result = trace() ?: return
+
+            val others = result.dir.otherAxisDirections()
+
+            var boxProto = area.box
+
+            others.forEach { dir ->
+                println("Direction: $dir")
+                boxProto = boxProto.shrinkSide(
+                        Vec3d(-amt, -amt, -amt).dirMask(dir), dir)
+            }
+
+            area.box = boxProto
+        }
+    }
+
     fun update() {
         tools.forEach { tool -> tool.update() }
     }
 
-    private fun trace(): BoxTraceResult? {
+    fun trace(): BoxTraceResult? {
         return area.trace(InputState.isBackSelecting)
     }
 
