@@ -14,7 +14,7 @@ class MakkitConfig() {
 
     var gridSnapping = false
 
-    var historyHighlighting = true
+    var historyHighlighting = false
 
     fun buildScreen(): Screen {
         val builder = ConfigBuilder.create()
@@ -34,6 +34,17 @@ class MakkitConfig() {
                         LiteralText("Whether or not the preview box will snap to the Minecraft block grid")
                 ).setSaveConsumer {
                     gridSnapping = it
+                }.build()
+        )
+
+        general.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("History Focus"),
+                        historyHighlighting
+                ).setDefaultValue(true).setTooltip(
+                        LiteralText("Whether the selection box should change when hitting undo/redo")
+                ).setSaveConsumer {
+                    historyHighlighting = it
                 }.build()
         )
 

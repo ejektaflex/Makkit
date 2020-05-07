@@ -1,6 +1,9 @@
 package ejektaflex.makkit.common.world
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.ext.getEnd
+import ejektaflex.makkit.common.ext.getStart
+import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
@@ -46,6 +49,13 @@ data class EditAction(
 
     fun calcChangeSet() {
         operation.execute(this)
+    }
+
+    fun select() {
+        FocusRegionPacket(
+                BlockPos(box.getStart()),
+                BlockPos(box.getEnd())
+        ).sendToClient(player)
     }
 
     fun commit() {

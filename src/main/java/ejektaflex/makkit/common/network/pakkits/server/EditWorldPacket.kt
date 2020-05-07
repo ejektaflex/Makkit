@@ -1,4 +1,4 @@
-package ejektaflex.makkit.common.network.pakkits
+package ejektaflex.makkit.common.network.pakkits.server
 
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
@@ -17,7 +17,7 @@ class EditWorldPacket(
         var start: BlockPos = BlockPos(0, 0, 0),
         var end: BlockPos = BlockPos(0, 0, 0),
         var side: Direction = Direction.NORTH,
-        var op: WorldOperation = WorldOperation.FILL,
+        var op: WorldOperation = WorldOperation.SET,
         var palette: List<ItemStack> = listOf()
 ) : ServerBoundPakkit {
 

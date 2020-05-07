@@ -5,7 +5,7 @@ import ejektaflex.makkit.common.ext.wallBlocks
 
 enum class WorldOperation(val execute: (it: EditAction) -> Unit) {
 
-    FILL({  fillBlocks(it)  }),
+    SET({  fillBlocks(it)  }),
     WALLS({ fillWalls(it) });
 
     private companion object {

@@ -1,7 +1,6 @@
 package ejektaflex.makkit.client
 
 import ejektaflex.makkit.client.config.MakkitConfigHandler
-import ejektaflex.makkit.client.config.MakkitConfig
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
@@ -10,7 +9,7 @@ import ejektaflex.makkit.client.keys.KeyRemapper
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.network.pakkits.EditHistoryPacket
+import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
@@ -27,7 +26,7 @@ class MakkitClient : ClientModInitializer {
 
         MakkitKeys.apply {
             fillBinding.setKeyDown {
-                region?.doOperation(WorldOperation.FILL)
+                region?.doOperation(WorldOperation.SET)
             }
 
             wallsBinding.setKeyDown {
@@ -75,6 +74,13 @@ class MakkitClient : ClientModInitializer {
     companion object {
 
         var config = MakkitConfigHandler.load()
+
+        fun getOrCreateRegion(): EditRegion {
+            if (region == null) {
+                region = EditRegion()
+            }
+            return region!!
+        }
 
         var region: EditRegion? = EditRegion().apply {
             moveTo(0, 0, 0, 2, 3, 4)

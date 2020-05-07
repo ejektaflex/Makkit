@@ -7,7 +7,7 @@ import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.common.network.pakkits.EditWorldPacket
+import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import ejektaflex.makkit.common.world.WorldOperation
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos

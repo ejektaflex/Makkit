@@ -1,4 +1,4 @@
-package ejektaflex.makkit.common.network.pakkits
+package ejektaflex.makkit.common.network.pakkits.server
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit

@@ -21,6 +21,7 @@ class UserActionHistory {
             undoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.UNDO)
                 it.revertCommit()
+                it.select()
                 redoHistory.push(it)
             }
             true
@@ -34,6 +35,7 @@ class UserActionHistory {
             redoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.REDO)
                 it.commit()
+                it.select()
                 undoHistory.push(it)
             }
             true
