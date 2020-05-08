@@ -6,9 +6,12 @@ import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
 import ejektaflex.makkit.client.event.Events
 import ejektaflex.makkit.client.keys.KeyRemapper
+import ejektaflex.makkit.client.render.RenderBox
+import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.client.BoxMovementRemoteUpdate
 import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
@@ -21,6 +24,7 @@ class MakkitClient : ClientModInitializer {
 
         // Clientbound
         FocusRegionPacket.registerS2C()
+        BoxMovementRemoteUpdate.registerS2C()
 
         MakkitConfig.load()
 
@@ -54,6 +58,9 @@ class MakkitClient : ClientModInitializer {
         RenderHelper.drawInWorld {
             region?.update()
             region?.draw()
+
+            drawRemoteRegions()
+
         }
     }
 
@@ -61,12 +68,23 @@ class MakkitClient : ClientModInitializer {
 
         var config = MakkitConfig.load()
 
+        fun drawRemoteRegions() {
+            for (entry in remoteBoxMap) {
+                entry.value.draw(
+                        colorFill = RenderColor.PINK.toAlpha(.2f),
+                        colorEdge = RenderColor.PINK.toAlpha(.2f)
+                )
+            }
+        }
+
         fun getOrCreateRegion(): EditRegion {
             if (region == null) {
                 region = EditRegion()
             }
             return region!!
         }
+
+        var remoteBoxMap = mutableMapOf<String, RenderBox>()
 
         var region: EditRegion? = EditRegion().apply {
             moveTo(0, 0, 0, 2, 3, 4)

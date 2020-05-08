@@ -3,7 +3,6 @@ package ejektaflex.makkit.client.editor.drag.tools
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.DualAxisDragTools
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
-import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.otherDirectionalAxes
 import ejektaflex.makkit.common.ext.round
 import ejektaflex.makkit.common.ext.shrinkSide
@@ -31,7 +30,7 @@ internal class ResizeToolDualAxis(region: EditRegion, binding: KeyStateHandler) 
                 }
 
                 val shrinkVec = rounding.multiply(-0.5)
-                val shrinkDirs = start!!.dir.otherDirectionalAxes()
+                val shrinkDirs = dragStart!!.dir.otherDirectionalAxes()
 
                 var proto = region.area.box
                 for (otherDir in shrinkDirs) {

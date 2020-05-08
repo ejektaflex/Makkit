@@ -24,6 +24,14 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     return Box(vecA, vecB)
 }
 
+fun Box.resizeBy(amt: Double, dir: Direction) {
+    shrinkSide(
+            Vec3d(-amt, -amt, -amt).dirMask(dir),
+            dir
+    )
+}
+
+
 fun Box.withMinSize(minSize: Vec3d): Box {
     val size = getSize()
     return Box(

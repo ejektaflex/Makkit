@@ -6,15 +6,19 @@ import ejektaflex.makkit.client.editor.IEditor
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.render.RenderHelper
+import ejektaflex.makkit.common.ext.getEnd
+import ejektaflex.makkit.common.ext.getStart
+import ejektaflex.makkit.common.network.pakkits.server.BoxMovementLocalUpdate
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
 internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStateHandler) : IEditor {
 
-    var start: BoxTraceResult? = null
+    var dragStart: BoxTraceResult? = null
 
     fun isDragging(): Boolean {
-        return start != null
+        return dragStart != null
     }
 
     override fun shouldDraw(): Boolean {
@@ -23,35 +27,42 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
 
     abstract fun onStartDragging(start: BoxTraceResult)
 
-    abstract fun onStopDragging(stop: BoxTraceResult)
-
     abstract fun calcDragBox(smooth: Boolean): Box?
+
+    fun onStopDragging(stop: BoxTraceResult) {
+        val box = calcDragBox(false)
+        box?.let {
+            region.area.box = it
+            BoxMovementLocalUpdate(
+                    BlockPos(it.getStart()),
+                    BlockPos(it.getEnd())
+            ).sendToServer()
+        }
+    }
 
     override fun update() {
         // Try to start dragging
-        if (start == null && keyHandler.isDown) {
-            start = region.area.trace(reverse = InputState.isBackSelecting)
-            if (start != null) {
-                onStartDragging(start!!)
+        if (dragStart == null && keyHandler.isDown) {
+            dragStart = region.area.trace(reverse = InputState.isBackSelecting)
+            if (dragStart != null) {
+                onStartDragging(dragStart!!)
             }
         }
 
         // Try to stop dragging
-        if (start != null && !keyHandler.isDown) {
-            onStopDragging(start!!)
-            start = null
+        if (dragStart != null && !keyHandler.isDown) {
+            onStopDragging(dragStart!!)
+            dragStart = null
         }
 
     }
 
     open fun getDrawOffset(box: Box): Vec3d? {
         val current = RenderHelper.boxTraceForSide(box)
-        if (start != null && current != null) {
-            return current.hit.subtract(start!!.hit)
+        if (dragStart != null && current != null) {
+            return current.hit.subtract(dragStart!!.hit)
         }
         return null
     }
-
-
 
 }

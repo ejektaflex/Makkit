@@ -1,6 +1,8 @@
 package ejektaflex.makkit.common.world
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
+import ejektaflex.makkit.common.network.pakkits.client.BoxMovementRemoteUpdate
+import ejektaflex.makkit.common.network.pakkits.server.BoxMovementLocalUpdate
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import net.minecraft.block.Blocks
@@ -22,6 +24,7 @@ object WorldEditor {
         }
     }
 
+    // TODO Sandbox this to creative mode
     fun handleEdit(player: ServerPlayerEntity, intent: EditWorldPacket) {
         val action = EditAction(
                 player,
@@ -49,6 +52,12 @@ object WorldEditor {
         }
     }
 
+    fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: BoxMovementLocalUpdate) {
+        for (otherPlayer in player.world.players.filter { it != player }) {
+            BoxMovementRemoteUpdate(pakkit.start, pakkit.end).sendToClient(otherPlayer)
+        }
+    }
+
     fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
 
         if (player.isCreative) {
@@ -66,8 +75,6 @@ object WorldEditor {
         } else {
             player.sendMessage(LiteralText("Must be in Creative Mode to use Makkit!"), true)
         }
-
-
 
     }
 
