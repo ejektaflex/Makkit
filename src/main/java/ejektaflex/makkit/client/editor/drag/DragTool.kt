@@ -15,10 +15,10 @@ import net.minecraft.util.math.Vec3d
 
 internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStateHandler) : IEditor {
 
-    var dragStart: BoxTraceResult? = null
+    var dragStart = BoxTraceResult.EMPTY
 
     fun isDragging(): Boolean {
-        return dragStart != null
+        return dragStart != BoxTraceResult.EMPTY
     }
 
     override fun shouldDraw(): Boolean {
@@ -42,27 +42,30 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
 
     override fun update() {
         // Try to start dragging
-        if (dragStart == null && keyHandler.isDown) {
+        if (dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
             dragStart = region.area.trace(reverse = InputState.isBackSelecting)
-            if (dragStart != null) {
-                onStartDragging(dragStart!!)
+            if (dragStart != BoxTraceResult.EMPTY) {
+                onStartDragging(dragStart)
             }
         }
 
         // Try to stop dragging
-        if (dragStart != null && !keyHandler.isDown) {
-            onStopDragging(dragStart!!)
-            dragStart = null
+        if (dragStart != BoxTraceResult.EMPTY && !keyHandler.isDown) {
+            onStopDragging(dragStart)
+            dragStart = BoxTraceResult.EMPTY
         }
-
     }
 
     open fun getDrawOffset(box: Box): Vec3d? {
         val current = RenderHelper.boxTrace(box)
-        if (dragStart != null && current != null) {
-            return current.hit.subtract(dragStart!!.hit)
+        if (dragStart != BoxTraceResult.EMPTY && current != BoxTraceResult.EMPTY) {
+            return current.hit.subtract(dragStart.hit)
         }
         return null
+    }
+
+    protected companion object {
+        const val DRAG_PLANE_SIZE = 32.0
     }
 
 }

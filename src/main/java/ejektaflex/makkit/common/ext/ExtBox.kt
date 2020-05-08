@@ -15,18 +15,18 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     var vecA = getStart()
     var vecB = getEnd()
 
-    if (dir.direction == Direction.AxisDirection.NEGATIVE) {
-        vecA = vecA.subtract(off)
-    } else {
-        vecB = vecB.subtract(off)
+    when (dir.direction) {
+        Direction.AxisDirection.NEGATIVE -> vecA = vecA.subtract(off)
+        Direction.AxisDirection.POSITIVE -> vecB = vecB.subtract(off)
+        else -> { throw Exception("This should never happen!") }
     }
 
     return Box(vecA, vecB)
 }
 
-fun Box.resizeBy(amt: Double, dir: Direction) {
-    shrinkSide(
-            Vec3d(-amt, -amt, -amt).dirMask(dir),
+fun Box.resizeBy(amt: Double, dir: Direction): Box {
+    return shrinkSide(
+            Vec3d(amt, amt, amt).axisMask(dir),
             dir
     )
 }

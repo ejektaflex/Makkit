@@ -39,8 +39,8 @@ internal class RepeatPatternTool(
         }
 
         // Only use the offset of the closer of the two planes
-        val offsetToUse = offsets.minBy { it.distanceTo(dragStart!!.source) }!!
-        val change = offsetToUse.multiply(dragStart!!.dir.vec3d().abs())
+        val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
+        val change = offsetToUse.multiply(dragStart.dir.vec3d().abs())
 
         val roundedChange = when (smooth) {
             true -> change

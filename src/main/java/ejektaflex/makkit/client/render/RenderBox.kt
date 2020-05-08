@@ -13,6 +13,15 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
     var box = Box(inPos, inPos2)
 
+    val pos: Vec3d
+        get() = Vec3d(box.x1, box.y1, box.z1)
+
+    val end: Vec3d
+        get() = Vec3d(box.x2, box.y2, box.z2)
+
+    val size: Vec3d
+        get() = end.subtract(pos)
+
     fun drawNearAxisLabels(func: () -> Vec3d) {
         val dirs = RenderHelper.getLookDirections()
 
@@ -56,7 +65,6 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
         return Box(
                 boxStart,
-                //sideSize
                 boxStart + faceSize
         )
     }
@@ -64,16 +72,6 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     fun drawFace(dir: Direction, colorIn: RenderColor) {
         RenderBox(getFacePlane(dir)).draw(colorIn, colorIn)
     }
-
-    val pos: Vec3d
-        get() = Vec3d(box.x1, box.y1, box.z1)
-
-    val end: Vec3d
-        get() = Vec3d(box.x2, box.y2, box.z2)
-
-    val size: Vec3d
-        get() = end.subtract(pos)
-
 
     var fillColor: RenderColor = RenderColor.WHITE
     var edgeColor: RenderColor = RenderColor.WHITE
@@ -83,7 +81,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         RenderHelper.drawBoxEdges(box.offset(offset), colorEdge ?: edgeColor)
     }
 
-    fun trace(reverse: Boolean = false): BoxTraceResult? {
+    fun trace(reverse: Boolean = false): BoxTraceResult {
         return RenderHelper.boxTrace(box, reverse = reverse)
     }
 

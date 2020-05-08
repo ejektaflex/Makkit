@@ -15,7 +15,7 @@ internal class MoveToolSingleAxis(
 
     // Constrain to direction
     override fun getDrawOffset(box: Box): Vec3d? {
-        return super.getDrawOffset(box)?.dirMask(dragStart!!.dir)
+        return super.getDrawOffset(box)?.dirMask(dragStart.dir)
     }
 
     override fun onDraw() {
@@ -23,8 +23,8 @@ internal class MoveToolSingleAxis(
         region.preview.draw()
 
         region.preview.drawTextOn(
-                dragStart!!.dir,
-                region.preview.box.positionOffsetInDirection(dragStart!!.dir, region.area.box).roundToInt().toString()
+                dragStart.dir,
+                region.preview.box.positionOffsetInDirection(dragStart.dir, region.area.box).roundToInt().toString()
         )
     }
 
@@ -35,7 +35,7 @@ internal class MoveToolSingleAxis(
             }
 
             if (offsets.isNotEmpty()) {
-                val offsetToUse = offsets.minBy { it.distanceTo(dragStart!!.source) }!!
+                val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
 
                 val rounding = when (smooth) {
                     true -> offsetToUse

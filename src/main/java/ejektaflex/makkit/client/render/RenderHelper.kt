@@ -111,7 +111,7 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult? {
+    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
@@ -119,7 +119,7 @@ object RenderHelper : AbstractRenderHelper() {
         return when (reverse) {
             false -> box.rayTraceForSide(vec1, vec3)
             true -> box.rayTraceForSide(vec3, vec1)
-        }
+        } ?: BoxTraceResult.EMPTY
     }
 
 

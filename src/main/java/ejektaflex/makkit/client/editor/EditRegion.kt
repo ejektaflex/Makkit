@@ -19,8 +19,6 @@ import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
 
-    val samplePlaneSize = 32.0
-
     val area = RenderBox().apply {
         fillColor = RenderColor.GREEN.toAlpha(.4f)
         edgeColor = RenderColor.GREEN
@@ -52,7 +50,6 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun tryScrollFace(amt: Double) {
-        // TODO Make this less verbose
         if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
             val result = trace() ?: return
 
@@ -61,10 +58,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             var boxProto = area.box
 
             others.forEach { dir ->
-                boxProto = boxProto.shrinkSide(
-                        Vec3d(-amt, -amt, -amt).dirMask(dir),
-                        dir
-                )
+                boxProto = boxProto.resizeBy(amt, dir)
             }
 
             area.box = boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0))

@@ -15,7 +15,7 @@ internal class ResizeToolSingleAxis(
 
     // Constrain to direction
     override fun getDrawOffset(box: Box): Vec3d? {
-        return super.getDrawOffset(box)?.dirMask(dragStart!!.dir)
+        return super.getDrawOffset(box)?.dirMask(dragStart.dir)
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {
@@ -24,23 +24,23 @@ internal class ResizeToolSingleAxis(
                 getDrawOffset(it.box)
             }
 
-            if (offsets.isNotEmpty()) {
-
-                // Only use the offset of the closer of the two planes
-                val offsetToUse = offsets.minBy { it.distanceTo(dragStart!!.source) }!!
-
-                val rounding = when (smooth) {
-                    true -> offsetToUse
-                    false -> offsetToUse.round()
-                }
-
-                val shrinkVec = rounding.multiply(dragStart!!.dir.opposite.vec3d())
-                val dir = dragStart!!.dir
-
-                return region.area.box.shrinkSide(shrinkVec, dir)
+            if (offsets.isEmpty()) {
+                return null
             }
-        }
 
+            // Only use the offset of the closer of the two planes
+            val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
+
+            val rounding = when (smooth) {
+                true -> offsetToUse
+                false -> offsetToUse.round()
+            }
+
+            val shrinkVec = rounding.multiply(dragStart.dir.opposite.vec3d())
+            val dir = dragStart.dir
+
+            return region.area.box.shrinkSide(shrinkVec, dir)
+        }
         return null
     }
 

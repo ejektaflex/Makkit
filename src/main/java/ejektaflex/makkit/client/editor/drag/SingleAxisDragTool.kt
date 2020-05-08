@@ -30,9 +30,9 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
 
         dirs.forEachIndexed { i, direction ->
             val areaSize = Vec3d(
-                    region.samplePlaneSize,
-                    region.samplePlaneSize,
-                    region.samplePlaneSize
+                    DRAG_PLANE_SIZE,
+                    DRAG_PLANE_SIZE,
+                    DRAG_PLANE_SIZE
             ).flipMask(direction)
             renderPlanes[i].box = Box(
                     start.hit.subtract(areaSize),
@@ -54,7 +54,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
 
         region.preview.drawTextOn(
                 dragStart!!.dir,
-                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
+                region.preview.box.sizeInDirection(dragStart.dir).roundToInt().toString()
         )
     }
 

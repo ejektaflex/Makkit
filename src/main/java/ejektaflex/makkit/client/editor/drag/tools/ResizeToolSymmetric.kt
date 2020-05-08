@@ -26,14 +26,14 @@ internal class ResizeToolSymmetric (
             return null
         }
 
-        val offsetToUse = offsets.minBy { it.distanceTo(dragStart!!.source) }!!
+        val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
         val roundedOffset = when (smooth) {
             true -> offsetToUse
             false -> offsetToUse.round()
         }
 
         // this locks to an axis and flips so that "positive" is in the direction direction
-        val change = roundedOffset.multiply(dragStart!!.dir.vec3d())
+        val change = roundedOffset.multiply(dragStart.dir.vec3d())
 
         val box = region.area.box
         return Box(box.getStart().subtract(change), box.getEnd().add(change))
@@ -44,8 +44,8 @@ internal class ResizeToolSymmetric (
         region.preview.draw()
 
         region.preview.drawTextOn(
-                dragStart!!.dir,
-                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
+                dragStart.dir,
+                region.preview.box.sizeInDirection(dragStart.dir).roundToInt().toString()
         )
     }
 
