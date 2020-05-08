@@ -3,6 +3,8 @@ package ejektaflex.makkit.client.editor.input
 import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
+import ejektaflex.makkit.common.world.FillBlocksOperation
+import ejektaflex.makkit.common.world.FillWallsOperation
 import ejektaflex.makkit.common.world.WorldOperation
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
@@ -24,11 +26,11 @@ object MakkitKeys {
         }
 
         fillBinding.setKeyDown {
-            MakkitClient.region?.doOperation(WorldOperation.SET)
+            MakkitClient.region?.doOperation(FillBlocksOperation())
         }
 
         wallsBinding.setKeyDown {
-            MakkitClient.region?.doOperation(WorldOperation.WALLS)
+            MakkitClient.region?.doOperation(FillWallsOperation())
         }
 
         undoButton.setKeyDown {

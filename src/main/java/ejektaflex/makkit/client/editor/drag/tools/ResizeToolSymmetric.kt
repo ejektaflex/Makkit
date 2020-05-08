@@ -12,6 +12,7 @@ internal class ResizeToolSymmetric (
         region: EditRegion,
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
+
     override fun calcDragBox(smooth: Boolean): Box? {
         if (!isDragging()) {
             return null
@@ -47,4 +48,5 @@ internal class ResizeToolSymmetric (
                 region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
         )
     }
+
 }
