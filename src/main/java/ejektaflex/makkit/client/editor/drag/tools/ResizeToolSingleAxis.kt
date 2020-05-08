@@ -3,7 +3,6 @@ package ejektaflex.makkit.client.editor.drag.tools
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
-import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -17,7 +16,7 @@ internal class ResizeToolSingleAxis(
 
     // Constrain to direction
     override fun getDrawOffset(box: Box): Vec3d? {
-        return super.getDrawOffset(box)?.dirMask(start!!.dir)
+        return super.getDrawOffset(box)?.dirMask(dragStart!!.dir)
     }
 
     override fun onDraw() {
@@ -25,8 +24,8 @@ internal class ResizeToolSingleAxis(
         region.preview.draw()
 
         region.preview.drawTextOn(
-                start!!.dir,
-                region.preview.box.sizeInDirection(start!!.dir).roundToInt().toString()
+                dragStart!!.dir,
+                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
         )
     }
 
@@ -39,15 +38,15 @@ internal class ResizeToolSingleAxis(
             if (offsets.isNotEmpty()) {
 
                 // Only use the offset of the closer of the two planes
-                val offsetToUse = offsets.minBy { it.distanceTo(start!!.start) }!!
+                val offsetToUse = offsets.minBy { it.distanceTo(dragStart!!.source) }!!
 
                 val rounding = when (smooth) {
                     true -> offsetToUse
                     false -> offsetToUse.round()
                 }
 
-                val shrinkVec = rounding.multiply(start!!.dir.opposite.vec3d())
-                val dir = start!!.dir
+                val shrinkVec = rounding.multiply(dragStart!!.dir.opposite.vec3d())
+                val dir = dragStart!!.dir
 
                 return when (opposite) {
                     false -> {

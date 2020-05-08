@@ -5,6 +5,7 @@ import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.abs
 
 fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
     return Vec3d(
@@ -70,4 +71,8 @@ fun Vec3d.arr(): DoubleArray {
 
 fun Vec3d.axisValue(axis: Direction.Axis): Double {
     return axis.choose(x, y, z)
+}
+
+fun Vec3d.abs(): Vec3d {
+    return Vec3d(abs(x), abs(y), abs(z))
 }
