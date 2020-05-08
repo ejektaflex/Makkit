@@ -1,9 +1,9 @@
 package ejektaflex.makkit.common.network.pakkits.server
 
+import com.google.gson.GsonBuilder
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
-import ejektaflex.makkit.common.world.WorldEditor
-import ejektaflex.makkit.common.world.WorldOperation
+import ejektaflex.makkit.common.world.*
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.item.ItemStack
@@ -17,7 +17,7 @@ class EditWorldPacket(
         var start: BlockPos = BlockPos(0, 0, 0),
         var end: BlockPos = BlockPos(0, 0, 0),
         var side: Direction = Direction.NORTH,
-        var op: WorldOperation = WorldOperation.SET,
+        var op: WorldOperation = FillBlocksOperation(),
         var palette: List<ItemStack> = listOf()
 ) : ServerBoundPakkit {
 
@@ -32,7 +32,8 @@ class EditWorldPacket(
             writeBlockPos(start)
             writeBlockPos(end)
             writeInt(side.ordinal)
-            writeInt(op.ordinal)
+            writeInt(op.getType().ordinal)
+            writeString(gson.toJson(op, op.getType().clazz.java))
             writeInt(palette.size)
             for (item in palette) {
                 writeItemStack(item)
@@ -44,7 +45,8 @@ class EditWorldPacket(
         start = buf.readBlockPos()
         end = buf.readBlockPos()
         side = enumValues<Direction>()[buf.readInt()]
-        op = enumValues<WorldOperation>()[buf.readInt()]
+        val opType = enumValues<WorldOperation.Companion.Type>()[buf.readInt()]
+        op = gson.fromJson(buf.readString(), opType.clazz.java)
         palette = mutableListOf<ItemStack>().apply {
             val paletteSize = buf.readInt()
             for (i in 0 until paletteSize) {
@@ -57,6 +59,8 @@ class EditWorldPacket(
 
     companion object : ServerSidePakkitHandler {
         val ID = Identifier("makkit", "edit_intent")
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
 
         override fun getId() = ID
 
