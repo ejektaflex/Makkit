@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.stream.JsonReader
 import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.editor.EditRegion
+import ejektaflex.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import me.shedaniel.clothconfig2.api.Modifier
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
@@ -67,7 +68,7 @@ class MakkitConfig() {
     }
 
     companion object {
-        val configPath = FabricLoader.INSTANCE.configDirectory.toPath().resolve(MakkitClient.ID + ".json")
+        val configPath = FabricLoader.INSTANCE.configDirectory.toPath().resolve(MakkitCommon.ID + ".json")
 
 
         private val GSON = GsonBuilder()

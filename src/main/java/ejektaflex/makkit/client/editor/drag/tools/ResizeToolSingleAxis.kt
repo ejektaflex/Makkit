@@ -10,8 +10,7 @@ import kotlin.math.roundToInt
 
 internal class ResizeToolSingleAxis(
         region: EditRegion,
-        binding: KeyStateHandler,
-        val opposite: Boolean = false
+        binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
     // Constrain to direction
@@ -48,14 +47,7 @@ internal class ResizeToolSingleAxis(
                 val shrinkVec = rounding.multiply(dragStart!!.dir.opposite.vec3d())
                 val dir = dragStart!!.dir
 
-                return when (opposite) {
-                    false -> {
-                        region.area.box.shrinkSide(shrinkVec, dir)
-                    }
-                    true -> {
-                        region.area.box.shrinkSide(shrinkVec, dir.opposite)
-                    }
-                }
+                return region.area.box.shrinkSide(shrinkVec, dir)
             }
         }
 

@@ -7,19 +7,14 @@ import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.common.ext.flipMask
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.common.ext.getEnd
-import ejektaflex.makkit.common.ext.getStart
-import ejektaflex.makkit.common.network.pakkits.server.BoxMovementLocalUpdate
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DualAxisDragTools(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
+internal abstract class DualAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
 
     protected val plane = RenderBox()
 
     override fun onStartDragging(start: BoxTraceResult) {
-        println("Dragging move")
         val areaSize = Vec3d(
                 region.samplePlaneSize,
                 region.samplePlaneSize,

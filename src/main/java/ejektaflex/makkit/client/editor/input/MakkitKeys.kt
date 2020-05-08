@@ -1,10 +1,11 @@
 package ejektaflex.makkit.client.editor.input
 
 import ejektaflex.makkit.client.MakkitClient
+import ejektaflex.makkit.common.MakkitCommon
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
-import ejektaflex.makkit.common.editor.FillBlocksOperation
-import ejektaflex.makkit.common.editor.FillWallsOperation
+import ejektaflex.makkit.common.editor.operations.FillBlocksOperation
+import ejektaflex.makkit.common.editor.operations.FillWallsOperation
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient
@@ -40,6 +41,7 @@ object MakkitKeys {
             EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
         }
 
+        // Putting a selection at the cursor position
         centerRegionBinding.setKeyDown {
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
@@ -49,15 +51,20 @@ object MakkitKeys {
 
     }
 
+    val keyHandlers = mutableListOf<KeyStateHandler>()
+
     private fun makkitKey(path: String, type: InputUtil.Type, code: Int): KeyStateHandler {
         return KeyStateHandler(
                 FabricKeyBinding.Builder.create(
-                        Identifier(MakkitClient.ID, path),
+                        Identifier(MakkitCommon.ID, path),
                         type,
                         code,
                         "Makkit"
                 ).build()
-        )
+        ).also {
+            // Auto register keyhandler
+            keyHandlers.add(it)
+        }
     }
 
     val moveDragBinding = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
@@ -75,18 +82,5 @@ object MakkitKeys {
     val undoButton = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_COMMA)
     val redoButton = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_PERIOD)
 
-    val keyHandlers = listOf(
-            moveDragBinding,
-            resizeSideBinding,
-            resizeSymmetricBinding,
-            repeatPatternBinding,
-            fillBinding,
-            wallsBinding,
-            toggleBackBinding,
-            holdBackBinding,
-            undoButton,
-            redoButton,
-            centerRegionBinding
-    )
 
 }

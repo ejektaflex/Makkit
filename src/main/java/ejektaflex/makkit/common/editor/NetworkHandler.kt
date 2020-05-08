@@ -1,8 +1,8 @@
 package ejektaflex.makkit.common.editor
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.network.pakkits.client.BoxMovementRemoteUpdate
-import ejektaflex.makkit.common.network.pakkits.server.BoxMovementLocalUpdate
+import ejektaflex.makkit.common.network.pakkits.client.BoxPreviewRemotePacket
+import ejektaflex.makkit.common.network.pakkits.server.BoxPreviewLocalPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import net.minecraft.block.Blocks
@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.Box
 
-object WorldEditor {
+object NetworkHandler {
 
     private val userHistories = mutableMapOf<String, UserActionHistory>()
 
@@ -24,7 +24,6 @@ object WorldEditor {
         }
     }
 
-    // TODO Sandbox this to creative mode
     fun handleEdit(player: ServerPlayerEntity, intent: EditWorldPacket) {
 
         if (!player.isCreative) {
@@ -48,7 +47,7 @@ object WorldEditor {
         )
 
         try {
-            action.doInitialCommit()
+            action.doInitialCommit(player)
             getHistoryOf(player).addToHistory(action)
 
         } catch (e: Exception) {
@@ -56,9 +55,9 @@ object WorldEditor {
         }
     }
 
-    fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: BoxMovementLocalUpdate) {
+    fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: BoxPreviewLocalPacket) {
         for (otherPlayer in player.world.players.filter { it != player }) {
-            BoxMovementRemoteUpdate(pakkit).sendToClient(otherPlayer)
+            BoxPreviewRemotePacket(pakkit).sendToClient(otherPlayer)
         }
     }
 
@@ -67,8 +66,8 @@ object WorldEditor {
             val history = getHistoryOf(player)
 
             val result = when (pakkit.mode) {
-                UndoRedoMode.UNDO -> history.undo()
-                UndoRedoMode.REDO -> history.redo()
+                UndoRedoMode.UNDO -> history.undo(player)
+                UndoRedoMode.REDO -> history.redo(player)
                 UndoRedoMode.CLEAR -> history.clear()
             }
 

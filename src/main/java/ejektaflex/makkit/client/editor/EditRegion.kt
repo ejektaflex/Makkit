@@ -35,16 +35,12 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     private val resizeTool = ResizeToolSingleAxis(this, MakkitKeys.resizeSideBinding)
     private val resizeToolSymmetric = ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding)
     private val repeatPatternTool = RepeatPatternTool(this, MakkitKeys.repeatPatternBinding)
-    //private val moveToolSingle = MoveToolSingleAxis(this, MakkitClient.moveDragSingleBinding)
-    //private val resizeToolDual = ResizeToolDualAxis(this, ExampleMod.resizeDualSideBinding)
 
     private val tools = listOf(
             moveToolDual,
             resizeTool,
             resizeToolSymmetric,
             repeatPatternTool
-            //moveToolSingle
-            //resizeToolDual
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {

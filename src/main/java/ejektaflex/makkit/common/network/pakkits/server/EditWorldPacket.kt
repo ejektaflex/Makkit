@@ -69,7 +69,7 @@ class EditWorldPacket(
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val intent = EditWorldPacket(buffer)
             context.taskQueue.execute {
-                WorldEditor.handleEdit(context.player as ServerPlayerEntity, intent)
+                NetworkHandler.handleEdit(context.player as ServerPlayerEntity, intent)
             }
         }
 

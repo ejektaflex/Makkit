@@ -14,13 +14,6 @@ abstract class BoxPacket(
 
     override fun getId() = packetId
 
-    /*
-    constructor(buffer: PacketByteBuf) : this(packetId) {
-        read(buffer)
-    }
-
-     */
-
     final override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {
             writeBlockPos(start)

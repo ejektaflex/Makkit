@@ -10,8 +10,8 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
+import net.minecraft.world.World
 
-// TODO lift player out of this and commit/revert in UserActionHistory
 data class EditAction(
         val player: ServerPlayerEntity,
         val box: Box,
@@ -19,13 +19,13 @@ data class EditAction(
         val operation: WorldOperation,
         val palette: List<BlockState>
 ) {
-    // Pos: BeforeState, AfterState
+    // Key: Position. Value: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()
 
-    fun doInitialCommit() {
-        calcChangeSet()
+    fun doInitialCommit(player: ServerPlayerEntity) {
+        calcChangeSet(player.world)
         optimize()
-        commit()
+        commit(player.world)
     }
 
     fun edit(pos: BlockPos, state: BlockState) {
@@ -42,20 +42,14 @@ data class EditAction(
         }
     }
 
-    fun optimize() {
-
-        val clearables = mutableListOf<BlockPos>()
-
-        for (state in stateMap) {
-            if (state.value.first == state.value.second) {
-                clearables.add(state.key)
-            }
+    private fun optimize() {
+        stateMap.filter {
+            it.value.first == it.value.second
+        }.map {
+            it.key
+        }.forEach { pos ->
+            clear(pos)
         }
-
-        for (clearablePos in clearables) {
-            clear(clearablePos)
-        }
-
     }
 
     fun syncToWorldState(mode: UndoRedoMode) {
@@ -68,26 +62,26 @@ data class EditAction(
         }
     }
 
-    fun calcChangeSet() {
-        operation.calculate(this, player.world) // TODO: please ejektaflex please
+    private fun calcChangeSet(world: World) {
+        operation.calculate(this, world)
     }
 
-    fun select() {
+    fun select(player: ServerPlayerEntity) {
         FocusRegionPacket(
                 BlockPos(box.getStart()),
                 BlockPos(box.getEnd())
         ).sendToClient(player)
     }
 
-    fun commit() {
+    fun commit(world: World) {
         for (entry in stateMap) {
-            player.world.setBlockState(entry.key, entry.value.second)
+            world.setBlockState(entry.key, entry.value.second)
         }
     }
 
-    fun revertCommit() {
+    fun revertCommit(world: World) {
         for (entry in stateMap) {
-            player.world.setBlockState(entry.key, entry.value.first)
+            world.setBlockState(entry.key, entry.value.first)
         }
     }
 

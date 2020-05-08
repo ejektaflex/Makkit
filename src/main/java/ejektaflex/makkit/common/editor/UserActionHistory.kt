@@ -1,6 +1,7 @@
 package ejektaflex.makkit.common.editor
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
+import net.minecraft.server.network.ServerPlayerEntity
 import java.util.*
 
 class UserActionHistory {
@@ -14,28 +15,28 @@ class UserActionHistory {
         return true
     }
 
-    fun undo(): Boolean {
+    fun undo(player: ServerPlayerEntity): Boolean {
         return if (undoHistory.isEmpty()) {
             false
         } else {
             undoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.UNDO)
-                it.revertCommit()
-                it.select()
+                it.revertCommit(player.world)
+                it.select(player)
                 redoHistory.push(it)
             }
             true
         }
     }
 
-    fun redo(): Boolean {
+    fun redo(player: ServerPlayerEntity): Boolean {
         return if (redoHistory.isEmpty()) {
             false
         } else {
             redoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.REDO)
-                it.commit()
-                it.select()
+                it.commit(player.world)
+                it.select(player)
                 undoHistory.push(it)
             }
             true

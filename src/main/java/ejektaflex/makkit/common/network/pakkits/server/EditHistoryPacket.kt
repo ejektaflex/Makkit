@@ -3,7 +3,7 @@ package ejektaflex.makkit.common.network.pakkits.server
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
-import ejektaflex.makkit.common.editor.WorldEditor
+import ejektaflex.makkit.common.editor.NetworkHandler
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
@@ -38,7 +38,7 @@ class EditHistoryPacket(
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val pakkit = EditHistoryPacket(buffer)
             context.taskQueue.execute {
-                WorldEditor.handleUndoRedo(context.player as ServerPlayerEntity, pakkit)
+                NetworkHandler.handleUndoRedo(context.player as ServerPlayerEntity, pakkit)
             }
         }
 

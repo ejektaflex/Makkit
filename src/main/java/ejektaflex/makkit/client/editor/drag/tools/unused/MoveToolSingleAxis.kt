@@ -1,4 +1,4 @@
-package ejektaflex.makkit.client.editor.drag.tools
+package ejektaflex.makkit.client.editor.drag.tools.unused
 
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
@@ -10,8 +10,7 @@ import kotlin.math.roundToInt
 
 internal class MoveToolSingleAxis(
         region: EditRegion,
-        binding: KeyStateHandler,
-        val opposite: Boolean = false
+        binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
     // Constrain to direction
