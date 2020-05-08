@@ -4,29 +4,36 @@ import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
-import ejektaflex.makkit.common.ext.abs
-import ejektaflex.makkit.common.ext.getBlockArray
-import ejektaflex.makkit.common.ext.round
-import ejektaflex.makkit.common.ext.vec3d
+import ejektaflex.makkit.common.ext.*
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import ejektaflex.makkit.common.world.RepeatOperation
-import ejektaflex.makkit.common.world.WorldOperation
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
+import kotlin.math.roundToInt
 
 internal class RepeatPatternTool(
         region: EditRegion,
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
-    var startBox: Box? = null
+    var beforeBox: Box? = null
+
+    override fun onDraw() {
+        super.onDraw()
+        region.preview.draw()
+
+        region.preview.drawTextOn(
+                dragStart!!.dir,
+                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
+        )
+    }
 
     override fun onStartDragging(start: BoxTraceResult) {
         super.onStartDragging(start)
 
-        startBox = region.area.box
+        beforeBox = region.area.box
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {
@@ -57,10 +64,10 @@ internal class RepeatPatternTool(
     override fun onStopDragging(stop: BoxTraceResult) {
         super.onStopDragging(stop)
 
-        if (startBox == null) {
+        if (beforeBox == null) {
             return
         }
-        val startBox = startBox!!
+        val startBox = beforeBox!!
 
         EditWorldPacket(
             BlockPos(region.area.pos),

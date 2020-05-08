@@ -2,6 +2,7 @@ package ejektaflex.makkit.client.editor
 
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.drag.tools.MoveToolDualAxis
+import ejektaflex.makkit.client.editor.drag.tools.RepeatPatternTool
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSingleAxis
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSymmetric
 import ejektaflex.makkit.client.editor.input.InputState
@@ -33,13 +34,15 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     private val moveToolDual = MoveToolDualAxis(this, MakkitKeys.moveDragBinding)
     private val resizeTool = ResizeToolSingleAxis(this, MakkitKeys.resizeSideBinding)
     private val resizeToolSymmetric = ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding)
+    private val repeatPatternTool = RepeatPatternTool(this, MakkitKeys.repeatPatternBinding)
     //private val moveToolSingle = MoveToolSingleAxis(this, MakkitClient.moveDragSingleBinding)
     //private val resizeToolDual = ResizeToolDualAxis(this, ExampleMod.resizeDualSideBinding)
 
     private val tools = listOf(
             moveToolDual,
             resizeTool,
-            resizeToolSymmetric
+            resizeToolSymmetric,
+            repeatPatternTool
             //moveToolSingle
             //resizeToolDual
     )

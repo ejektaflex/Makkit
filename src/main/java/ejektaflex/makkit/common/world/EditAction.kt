@@ -48,7 +48,7 @@ data class EditAction(
     }
 
     fun calcChangeSet() {
-        operation.execute(this)
+        operation.calculate(this, player.world) // TODO: please ejektaflex please
     }
 
     fun select() {

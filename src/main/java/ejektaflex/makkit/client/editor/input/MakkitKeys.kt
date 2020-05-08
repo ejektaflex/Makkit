@@ -64,6 +64,7 @@ object MakkitKeys {
     val moveDragBinding = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
     val resizeSideBinding = makkitKey("resize_single_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
     val resizeSymmetricBinding = makkitKey("resize_single_axis_symmetric", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
+    val repeatPatternBinding = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
     val fillBinding = makkitKey("fill", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
     val wallsBinding = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
 
@@ -79,6 +80,7 @@ object MakkitKeys {
             moveDragBinding,
             resizeSideBinding,
             resizeSymmetricBinding,
+            repeatPatternBinding,
             fillBinding,
             wallsBinding,
             toggleBackBinding,
