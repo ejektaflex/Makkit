@@ -2,7 +2,6 @@ package ejektaflex.makkit.client.render
 
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.common.ext.*
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
@@ -85,7 +84,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     }
 
     fun trace(reverse: Boolean = false): BoxTraceResult? {
-        return RenderHelper.boxTraceForSide(box, reverse = reverse)
+        return RenderHelper.boxTrace(box, reverse = reverse)
     }
 
 }

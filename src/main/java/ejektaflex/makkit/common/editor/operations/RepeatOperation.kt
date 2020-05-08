@@ -5,12 +5,12 @@ import ejektaflex.makkit.common.ext.getBlockArray
 import ejektaflex.makkit.common.ext.getStart
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.world.World
+import net.minecraft.world.BlockView
 
 class RepeatOperation(val boxBefore: Box) : WorldOperation() {
     override fun getType() = Companion.Type.REPEAT
 
-    override fun calculate(action: EditAction, world: World) {
+    override fun calculate(action: EditAction, view: BlockView) {
         val boxAfter = action.box
         val afterBlocks = action.box.getBlockArray()
 
@@ -31,7 +31,7 @@ class RepeatOperation(val boxBefore: Box) : WorldOperation() {
                         posRel.z % boxBefore.zLength
                 ))
 
-                action.edit(blockPos, world.getBlockState(copySourcePos))
+                action.edit(blockPos, view.getBlockState(copySourcePos))
             }
         } else {
 //            val startPos = BlockPos(boxBefore.getEnd())

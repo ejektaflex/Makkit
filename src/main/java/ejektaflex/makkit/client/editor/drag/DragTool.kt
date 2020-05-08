@@ -58,7 +58,7 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
     }
 
     open fun getDrawOffset(box: Box): Vec3d? {
-        val current = RenderHelper.boxTraceForSide(box)
+        val current = RenderHelper.boxTrace(box)
         if (dragStart != null && current != null) {
             return current.hit.subtract(dragStart!!.hit)
         }

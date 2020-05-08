@@ -18,16 +18,6 @@ internal class ResizeToolSingleAxis(
         return super.getDrawOffset(box)?.dirMask(dragStart!!.dir)
     }
 
-    override fun onDraw() {
-        super.onDraw()
-        region.preview.draw()
-
-        region.preview.drawTextOn(
-                dragStart!!.dir,
-                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
-        )
-    }
-
     override fun calcDragBox(smooth: Boolean): Box? {
         if (isDragging()) {
             val offsets = planes.mapNotNull {

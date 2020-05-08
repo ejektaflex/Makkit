@@ -83,6 +83,7 @@ object RenderHelper : AbstractRenderHelper() {
     ) {
         val colors = color.floats
 
+        // In front of ground
         WorldRenderer.drawBox(
                 matrices,
                 eVerts.getBuffer(layerFront),
@@ -90,6 +91,7 @@ object RenderHelper : AbstractRenderHelper() {
                 colors[0], colors[1], colors[2], colors[3]
         )
 
+        // Behind ground
         WorldRenderer.drawBox(
                 matrices,
                 eVerts.getBuffer(layerBack),
@@ -109,7 +111,7 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun boxTraceForSide(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult? {
+    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult? {
         val player = mc.player!!
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)
@@ -121,7 +123,7 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
 
-    object BoxData {
+    private object BoxData {
 
         fun getDrawFunc(side: Direction): Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit {
             return drawDirections[side] ?: error("Draw Func for direction ${side.name} does not exist!")

@@ -8,8 +8,10 @@ import ejektaflex.makkit.common.ext.flipMask
 import ejektaflex.makkit.common.ext.otherDirectionalAxes
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
+import ejektaflex.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import kotlin.math.roundToInt
 
 internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
 
@@ -47,6 +49,13 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
                 planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
             }
         }
+
+        region.preview.draw()
+
+        region.preview.drawTextOn(
+                dragStart!!.dir,
+                region.preview.box.sizeInDirection(dragStart!!.dir).roundToInt().toString()
+        )
     }
 
 }
