@@ -29,7 +29,7 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
 
     abstract fun calcDragBox(smooth: Boolean): Box?
 
-    fun onStopDragging(stop: BoxTraceResult) {
+    open fun onStopDragging(stop: BoxTraceResult) {
         val box = calcDragBox(false)
         box?.let {
             region.area.box = it

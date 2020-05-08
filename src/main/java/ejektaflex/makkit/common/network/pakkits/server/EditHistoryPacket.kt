@@ -3,7 +3,7 @@ package ejektaflex.makkit.common.network.pakkits.server
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
-import ejektaflex.makkit.common.world.WorldEditor
+import ejektaflex.makkit.common.editor.WorldEditor
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf

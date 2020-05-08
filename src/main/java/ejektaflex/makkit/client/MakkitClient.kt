@@ -8,12 +8,9 @@ import ejektaflex.makkit.client.event.Events
 import ejektaflex.makkit.client.keys.KeyRemapper
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.common.world.WorldOperation
 import ejektaflex.makkit.client.render.RenderHelper
-import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.client.BoxMovementRemoteUpdate
 import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
-import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
@@ -60,7 +57,6 @@ class MakkitClient : ClientModInitializer {
             region?.draw()
 
             drawRemoteRegions()
-
         }
     }
 

@@ -3,9 +3,8 @@ package ejektaflex.makkit.client.editor.input
 import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
-import ejektaflex.makkit.common.world.FillBlocksOperation
-import ejektaflex.makkit.common.world.FillWallsOperation
-import ejektaflex.makkit.common.world.WorldOperation
+import ejektaflex.makkit.common.editor.FillBlocksOperation
+import ejektaflex.makkit.common.editor.FillWallsOperation
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient

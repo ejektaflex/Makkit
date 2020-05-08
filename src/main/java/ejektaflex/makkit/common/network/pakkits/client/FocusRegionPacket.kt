@@ -1,22 +1,18 @@
 package ejektaflex.makkit.common.network.pakkits.client
 
 import ejektaflex.makkit.client.MakkitClient
-import ejektaflex.makkit.client.editor.EditRegion
-import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkit.ClientBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ClientSidePakkitHandler
-import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
-import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
-import ejektaflex.makkit.common.world.WorldEditor
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
-import net.minecraft.client.MinecraftClient
 import net.minecraft.network.PacketByteBuf
-import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 
+/*
+    Sent to a client when we want their editor area to focus on a certain region
+ */
 class FocusRegionPacket(
         var start: BlockPos = BlockPos(0, 0, 0),
         var end: BlockPos = BlockPos(1, 1, 1)

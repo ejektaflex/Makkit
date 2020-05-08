@@ -3,7 +3,9 @@ package ejektaflex.makkit.common.network.pakkits.server
 import com.google.gson.GsonBuilder
 import ejektaflex.makkit.common.network.pakkit.ServerBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
-import ejektaflex.makkit.common.world.*
+import ejektaflex.makkit.common.editor.*
+import ejektaflex.makkit.common.editor.operations.FillBlocksOperation
+import ejektaflex.makkit.common.editor.operations.WorldOperation
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.item.ItemStack

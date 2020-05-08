@@ -6,6 +6,7 @@ import net.minecraft.util.math.Vec3i
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.abs
+import kotlin.math.round
 
 fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
     return Vec3d(
@@ -24,24 +25,17 @@ fun min(vecA: Vec3d, vecB: Vec3d): Vec3d {
 }
  */
 
-val Vec3d.ZERO: Vec3d
-    get() = Vec3d(0.0, 0.0, 0.0)
-
-fun Vec3d.ONE(): Vec3d {
-    return Vec3d(1.0, 1.0, 1.0)
-}
-
 operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)
 }
 
 fun Vec3d.round(): Vec3d {
-    return Vec3d(kotlin.math.round(x), kotlin.math.round(y), kotlin.math.round(z))
+    return Vec3d(round(x), round(y), round(z))
 }
 
 // 1 -> 0, 0 -> 1
 private fun intSwitch(i: Int): Int {
-    return (kotlin.math.abs(i) - 1) * -1
+    return (abs(i) - 1) * -1
 }
 
 fun Vec3d.flipMask(dir: Direction): Vec3d {
@@ -55,6 +49,10 @@ fun Vec3d.dirMask(dir: Direction): Vec3d {
     return Vec3d(x * unit.x, y * unit.y, z * unit.z)
 }
 
+fun Vec3d.axisMask(dir: Direction): Vec3d {
+    return dir.vec3d().abs().multiply(this)
+}
+
 fun Vec3d.mapFunc(func: (it: Double) -> Double): Vec3d {
     return Vec3d(func(x), func(y), func(z))
 }
@@ -65,6 +63,7 @@ fun Vec3d.edgeLengthBetweenFaces(a: Direction, b: Direction): Double {
     }.ordinal]
 }
 
+// This is probably in bad taste
 fun Vec3d.arr(): DoubleArray {
     return doubleArrayOf(x, y, z)
 }

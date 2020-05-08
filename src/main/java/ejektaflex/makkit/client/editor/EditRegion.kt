@@ -11,7 +11,7 @@ import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.*
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
-import ejektaflex.makkit.common.world.WorldOperation
+import ejektaflex.makkit.common.editor.operations.WorldOperation
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box

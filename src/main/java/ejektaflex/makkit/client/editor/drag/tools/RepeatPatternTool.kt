@@ -6,7 +6,7 @@ import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.common.ext.*
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
-import ejektaflex.makkit.common.world.RepeatOperation
+import ejektaflex.makkit.common.editor.RepeatOperation
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box

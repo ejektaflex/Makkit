@@ -1,4 +1,4 @@
-package ejektaflex.makkit.common.world
+package ejektaflex.makkit.common.editor
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import java.util.*

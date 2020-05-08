@@ -1,5 +1,6 @@
-package ejektaflex.makkit.common.world
+package ejektaflex.makkit.common.editor
 
+import ejektaflex.makkit.common.editor.operations.WorldOperation
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.ext.getEnd
 import ejektaflex.makkit.common.ext.getStart
@@ -21,6 +22,12 @@ data class EditAction(
     // Pos: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()
 
+    fun doInitialCommit() {
+        calcChangeSet()
+        optimize()
+        commit()
+    }
+
     fun edit(pos: BlockPos, state: BlockState) {
         if (pos !in stateMap) {
             stateMap[pos] = player.world.getBlockState(pos) to state
@@ -35,7 +42,21 @@ data class EditAction(
         }
     }
 
-    // fun optimize() -> will remove changes which go from equal state to equal state
+    fun optimize() {
+
+        val clearables = mutableListOf<BlockPos>()
+
+        for (state in stateMap) {
+            if (state.value.first == state.value.second) {
+                clearables.add(state.key)
+            }
+        }
+
+        for (clearablePos in clearables) {
+            clear(clearablePos)
+        }
+
+    }
 
     fun syncToWorldState(mode: UndoRedoMode) {
         for (entry in stateMap) {
