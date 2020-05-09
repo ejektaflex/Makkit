@@ -7,34 +7,27 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.world.BlockView
 
+// Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.
+fun modNoNegative(a: Int, b: Int): Int {
+    return (a % b + b) % b
+}
+
 class RepeatOperation(val boxBefore: Box) : WorldOperation() {
     override fun getType() = Companion.Type.REPEAT
 
     override fun calculate(action: EditAction, view: BlockView) {
-        val boxAfter = action.box
+        val startPos = BlockPos(boxBefore.getStart())
         val afterBlocks = action.box.getBlockArray()
+        
+        for (blockPos in afterBlocks) {
+            val posRel = blockPos.subtract(startPos)
+            val copySourcePos = startPos.add(BlockPos(
+                    modNoNegative(posRel.x, boxBefore.xLength.toInt()),
+                    modNoNegative(posRel.y, boxBefore.yLength.toInt()),
+                    modNoNegative(posRel.z, boxBefore.zLength.toInt())
+            ))
 
-        val isPositive = !(
-                boxAfter.getStart().x < boxBefore.getStart().x
-                        || boxAfter.getStart().y < boxBefore.getStart().y
-                        || boxAfter.getStart().z < boxBefore.getStart().z
-                )
-
-        if (isPositive) {
-            val startPos = BlockPos(boxBefore.getStart())
-            for (blockPos in afterBlocks) {
-                val posRel = blockPos.subtract(startPos)
-
-                val copySourcePos = startPos.add(BlockPos(
-                        posRel.x % boxBefore.xLength,
-                        posRel.y % boxBefore.yLength,
-                        posRel.z % boxBefore.zLength
-                ))
-
-                action.edit(blockPos, view.getBlockState(copySourcePos))
-            }
-        } else {
-//            val startPos = BlockPos(boxBefore.getEnd())
+            action.edit(blockPos, view.getBlockState(copySourcePos))
         }
     }
 }
