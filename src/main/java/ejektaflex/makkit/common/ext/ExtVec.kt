@@ -37,6 +37,16 @@ fun Vec3d?.round(): Vec3d? {
     }
 }
 
+fun Vec3d.roundToVec3i(): Vec3i {
+    return Vec3i(x, y, z)
+}
+
+fun Vec3d.hasZeroAxis(): Boolean {
+    return enumValues<Direction.Axis>().any {
+        axisValue(it) == 0.0
+    }
+}
+
 // 1 -> 0, 0 -> 1
 private fun intSwitch(i: Int): Int {
     return (abs(i) - 1) * -1

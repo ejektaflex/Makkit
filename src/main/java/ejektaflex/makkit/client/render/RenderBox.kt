@@ -73,8 +73,8 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         RenderBox(getFacePlane(dir)).draw(colorIn, colorIn)
     }
 
-    var fillColor: RenderColor = RenderColor.WHITE
-    var edgeColor: RenderColor = RenderColor.WHITE
+    var fillColor: RenderColor = RenderColor.WHITE.toAlpha(.2f)
+    var edgeColor: RenderColor = RenderColor.WHITE.toAlpha(.2f)
 
     fun draw(colorFill: RenderColor? = null, colorEdge: RenderColor? = null, offset: Vec3d = Vec3d.ZERO) {
         RenderHelper.drawBoxFilled(box.offset(offset), colorFill ?: fillColor)
