@@ -16,6 +16,12 @@ abstract class WorldOperation {
             WALLS(FillWallsOperation::class),
             REPEAT(RepeatOperation::class)
         }
+
+        // Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.
+        fun modNoNegative(a: Int, b: Int): Int {
+            return (a % b + b) % b
+        }
+
     }
 
 }

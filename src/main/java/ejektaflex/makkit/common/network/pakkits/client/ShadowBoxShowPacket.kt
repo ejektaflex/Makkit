@@ -6,13 +6,13 @@ import ejektaflex.makkit.common.ext.vec3d
 import ejektaflex.makkit.common.network.pakkit.ClientBoundPakkit
 import ejektaflex.makkit.common.network.pakkit.ClientSidePakkitHandler
 import ejektaflex.makkit.common.network.pakkits.both.BoxPacket
-import ejektaflex.makkit.common.network.pakkits.server.BoxPreviewLocalPacket
+import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.util.Identifier
 
-class BoxPreviewRemotePacket(
-        localPacket: BoxPreviewLocalPacket = BoxPreviewLocalPacket()
+class ShadowBoxShowPacket(
+        localPacket: ShadowBoxUpdatePacket = ShadowBoxUpdatePacket()
 ) : BoxPacket(ID, localPacket.start, localPacket.end), ClientBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
@@ -25,7 +25,7 @@ class BoxPreviewRemotePacket(
         override fun getId() = ID
 
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
-            val pakkit = BoxPreviewRemotePacket(buffer)
+            val pakkit = ShadowBoxShowPacket(buffer)
             context.taskQueue.execute {
 
                 println("Adding remote box to draw map")

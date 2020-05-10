@@ -9,7 +9,7 @@ import ejektaflex.makkit.client.keys.KeyRemapper
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.client.render.RenderHelper
-import ejektaflex.makkit.common.network.pakkits.client.BoxPreviewRemotePacket
+import ejektaflex.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.util.InputUtil
@@ -21,7 +21,7 @@ class MakkitClient : ClientModInitializer {
 
         // Clientbound
         FocusRegionPacket.registerS2C()
-        BoxPreviewRemotePacket.registerS2C()
+        ShadowBoxShowPacket.registerS2C()
 
         MakkitConfig.load()
 

@@ -7,13 +7,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.world.BlockView
 
-// Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.
-fun modNoNegative(a: Int, b: Int): Int {
-    return (a % b + b) % b
-}
+
 
 class RepeatOperation(val boxBefore: Box) : WorldOperation() {
-    override fun getType() = Companion.Type.REPEAT
+    override fun getType() = WorldOperation.Companion.Type.REPEAT
 
     override fun calculate(action: EditAction, view: BlockView) {
         val startPos = BlockPos(boxBefore.getStart())

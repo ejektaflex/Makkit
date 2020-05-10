@@ -19,29 +19,14 @@ internal class ResizeToolSingleAxis(
     }
 
     override fun calcDragBox(smooth: Boolean): Box? {
-        if (isDragging()) {
-            val offsets = planes.mapNotNull {
-                getDrawOffset(it.box)
-            }
-
-            if (offsets.isEmpty()) {
-                return null
-            }
-
-            // Only use the offset of the closer of the two planes
-            val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
-
-            val rounding = when (smooth) {
-                true -> offsetToUse
-                false -> offsetToUse.round()
-            }
-
-            val shrinkVec = rounding.multiply(dragStart.dir.opposite.vec3d())
-            val dir = dragStart.dir
-
-            return region.area.box.shrinkSide(shrinkVec, dir)
+        if (!isDragging()) {
+            return null
         }
-        return null
+
+        val offset = nearestPlaneOffset(smooth) ?: return null
+        val shrinkVec = offset.dirMask(dragStart.dir.opposite)
+
+        return region.area.box.shrinkSide(shrinkVec, dragStart.dir)
     }
 
 }

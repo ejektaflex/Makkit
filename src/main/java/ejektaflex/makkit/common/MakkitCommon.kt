@@ -1,6 +1,6 @@
 package ejektaflex.makkit.common
 
-import ejektaflex.makkit.common.network.pakkits.server.BoxPreviewLocalPacket
+import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import net.fabricmc.api.ModInitializer
@@ -11,7 +11,7 @@ class MakkitCommon : ModInitializer {
         // Serverbound packets
         EditWorldPacket.registerC2S()
         EditHistoryPacket.registerC2S()
-        BoxPreviewLocalPacket.registerC2S()
+        ShadowBoxUpdatePacket.registerC2S()
 
         println("Common init")
     }

@@ -1,8 +1,8 @@
 package ejektaflex.makkit.common.editor
 
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.network.pakkits.client.BoxPreviewRemotePacket
-import ejektaflex.makkit.common.network.pakkits.server.BoxPreviewLocalPacket
+import ejektaflex.makkit.common.network.pakkits.client.ShadowBoxShowPacket
+import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
 import net.minecraft.block.Blocks
@@ -49,15 +49,14 @@ object NetworkHandler {
         try {
             action.doInitialCommit(player)
             getHistoryOf(player).addToHistory(action)
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: BoxPreviewLocalPacket) {
+    fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: ShadowBoxUpdatePacket) {
         for (otherPlayer in player.world.players.filter { it != player }) {
-            BoxPreviewRemotePacket(pakkit).sendToClient(otherPlayer)
+            ShadowBoxShowPacket(pakkit).sendToClient(otherPlayer)
         }
     }
 

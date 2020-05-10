@@ -29,8 +29,12 @@ operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)
 }
 
-fun Vec3d.round(): Vec3d {
-    return Vec3d(round(x), round(y), round(z))
+fun Vec3d?.round(): Vec3d? {
+    return if (this != null) {
+        Vec3d(round(x), round(y), round(z))
+    } else {
+        null
+    }
 }
 
 // 1 -> 0, 0 -> 1
@@ -44,13 +48,14 @@ fun Vec3d.flipMask(dir: Direction): Vec3d {
     return Vec3d(x * mask.x, y * mask.y, z * mask.z)
 }
 
+// Masks a vector with a direction's unit vector
 fun Vec3d.dirMask(dir: Direction): Vec3d {
-    val unit = dir.vector
-    return Vec3d(x * unit.x, y * unit.y, z * unit.z)
+    return multiply(dir.vec3d())
 }
 
+// Same as dirMask, but uses an absolute positive unit vector
 fun Vec3d.axisMask(dir: Direction): Vec3d {
-    return dir.vec3d().abs().multiply(this)
+    return multiply(dir.vec3d().abs())
 }
 
 fun Vec3d.mapFunc(func: (it: Double) -> Double): Vec3d {

@@ -17,7 +17,7 @@ internal class RepeatPatternTool(
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
-    var beforeBox: Box? = null
+    private var beforeBox: Box? = null
 
     override fun onStartDragging(start: BoxTraceResult) {
         super.onStartDragging(start)
@@ -30,41 +30,16 @@ internal class RepeatPatternTool(
             return null
         }
 
-        val offsets = planes.mapNotNull {
-            getDrawOffset(it.box)
-        }
+        val offset = nearestPlaneOffset(smooth) ?: return null
 
-        if (offsets.isEmpty()) {
-            return null
-        }
-
-        // Only use the offset of the closer of the two planes
-        val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) }!!
-        val change = offsetToUse.multiply(dragStart.dir.vec3d().abs())
-
-        val roundedChange = when (smooth) {
-            true -> change
-            false -> change.round()
-        }
-
-        return region.area.box.stretch(roundedChange)
+        return region.area.box.stretch(offset.axisMask(dragStart.dir))
     }
 
     override fun onStopDragging(stop: BoxTraceResult) {
         super.onStopDragging(stop)
-
-        if (beforeBox == null) {
-            return
+        beforeBox?.let {
+            region.doOperation(RepeatOperation(it))
         }
-        val startBox = beforeBox!!
-
-        EditWorldPacket(
-            BlockPos(region.area.pos),
-            BlockPos(region.area.end),
-            Direction.NORTH, // doesn't matter
-            RepeatOperation(startBox),
-            listOf(MinecraftClient.getInstance().player!!.mainHandStack)
-        ).sendToServer()
     }
 
 }

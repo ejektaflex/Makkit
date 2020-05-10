@@ -15,6 +15,8 @@ internal abstract class DualAxisDragTool(region: EditRegion, binding: KeyStateHa
     protected val plane = RenderBox()
 
     override fun onStartDragging(start: BoxTraceResult) {
+        super.onStartDragging(start)
+
         val areaSize = Vec3d(
                 DRAG_PLANE_SIZE,
                 DRAG_PLANE_SIZE,

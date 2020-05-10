@@ -12,7 +12,7 @@ abstract class BoxPacket(
         open var end: BlockPos = BlockPos(1, 1, 1)
 ) : Pakkit {
 
-    override fun getId() = packetId
+    final override fun getId() = packetId
 
     final override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {

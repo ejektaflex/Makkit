@@ -51,7 +51,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun tryScrollFace(amt: Double) {
         if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
-            val result = trace() ?: return
+            val result = trace()
+
+            if (result == BoxTraceResult.EMPTY) {
+                return
+            }
 
             val others = result.dir.otherAxisDirections()
 
@@ -69,13 +73,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         tools.forEach { tool -> tool.update() }
     }
 
-    fun trace(): BoxTraceResult? {
+    private fun trace(): BoxTraceResult {
         return area.trace(InputState.isBackSelecting)
     }
 
     fun doOperation(operation: WorldOperation) {
         val trace = trace()
-        if (trace != null) {
+        if (trace != BoxTraceResult.EMPTY) {
             EditWorldPacket(
                     BlockPos(area.pos),
                     BlockPos(area.end),
@@ -99,8 +103,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         } else {
             // default state when no drag tool is being used
             val hit = trace()
-            hit?.let {
-                area.drawFace(it.dir, RenderColor.YELLOW.toAlpha(.3f))
+            if (hit != BoxTraceResult.EMPTY) {
+                area.drawFace(hit.dir, RenderColor.YELLOW.toAlpha(.3f))
                 area.drawAxisSizes()
             }
         }

@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 
-class BoxPreviewLocalPacket(
+class ShadowBoxUpdatePacket(
         override var start: BlockPos = BlockPos(0, 0, 0),
         override var end: BlockPos = BlockPos(1, 1, 1)
 ) : BoxPacket(ID, start, end), ServerBoundPakkit {
@@ -26,7 +26,7 @@ class BoxPreviewLocalPacket(
         override fun getId() = ID
 
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
-            val pakkit = BoxPreviewLocalPacket(buffer)
+            val pakkit = ShadowBoxUpdatePacket(buffer)
             context.taskQueue.execute {
                 println("Sending remote block preview to other clients")
                 NetworkHandler.redirectRemoteBoxPreview(context.player as ServerPlayerEntity, pakkit)

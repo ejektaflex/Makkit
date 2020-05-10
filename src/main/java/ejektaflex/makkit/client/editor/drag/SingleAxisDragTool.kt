@@ -8,6 +8,7 @@ import ejektaflex.makkit.common.ext.flipMask
 import ejektaflex.makkit.common.ext.otherDirectionalAxes
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
+import ejektaflex.makkit.common.ext.round
 import ejektaflex.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -15,12 +16,24 @@ import kotlin.math.roundToInt
 
 internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
 
-    protected val planeAxis1 = RenderBox()
-    protected val planeAxis2 = RenderBox()
+    private val planeAxis1 = RenderBox()
+    private val planeAxis2 = RenderBox()
 
     val planes: List<RenderBox>
         get() = listOf(planeAxis1, planeAxis2)
 
+    fun nearestPlaneOffset(smoothing: Boolean): Vec3d? {
+        val offsets = planes.mapNotNull {
+            getDrawOffset(it.box)
+        }
+
+        val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) } ?: return null
+
+        return when (smoothing) {
+            true -> offsetToUse
+            false -> offsetToUse.round()
+        }
+    }
 
     override fun onStartDragging(start: BoxTraceResult) {
 

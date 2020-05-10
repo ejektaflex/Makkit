@@ -8,7 +8,7 @@ import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.getEnd
 import ejektaflex.makkit.common.ext.getStart
-import ejektaflex.makkit.common.network.pakkits.server.BoxPreviewLocalPacket
+import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -25,15 +25,17 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         return isDragging()
     }
 
-    abstract fun onStartDragging(start: BoxTraceResult)
-
     abstract fun calcDragBox(smooth: Boolean): Box?
+
+    open fun onStartDragging(start: BoxTraceResult) {
+
+    }
 
     open fun onStopDragging(stop: BoxTraceResult) {
         val box = calcDragBox(false)
         box?.let {
             region.area.box = it
-            BoxPreviewLocalPacket(
+            ShadowBoxUpdatePacket(
                     BlockPos(it.getStart()),
                     BlockPos(it.getEnd())
             ).sendToServer()
