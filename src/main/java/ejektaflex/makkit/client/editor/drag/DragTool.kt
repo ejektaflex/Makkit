@@ -5,6 +5,8 @@ import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.IEditor
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
+import ejektaflex.makkit.client.render.RenderBox
+import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.getEnd
 import ejektaflex.makkit.common.ext.getStart
@@ -14,6 +16,12 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
 internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStateHandler) : IEditor {
+
+    // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
+    open val preview = RenderBox().apply {
+        fillColor = RenderColor.BLUE.toAlpha(.4f)
+        edgeColor = RenderColor.ORANGE.toAlpha(.2f)
+    }
 
     var dragStart = BoxTraceResult.EMPTY
 
@@ -25,14 +33,14 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         return isDragging()
     }
 
-    abstract fun calcDragBox(smooth: Boolean): Box?
+    abstract fun calcSelectionBox(smooth: Boolean): Box?
 
     open fun onStartDragging(start: BoxTraceResult) {
-
+        // Do nothing by default
     }
 
     open fun onStopDragging(stop: BoxTraceResult) {
-        val box = calcDragBox(false)
+        val box = calcSelectionBox(false)
         box?.let {
             region.area.box = it
             ShadowBoxUpdatePacket(

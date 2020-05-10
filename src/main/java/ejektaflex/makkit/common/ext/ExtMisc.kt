@@ -12,6 +12,8 @@ fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: Re
     translate(pos.x, pos.y, pos.z)
 }
 
+// Inlining here may improve performance simply because this gets called very often
+
 inline fun VertexConsumer.vertex(mat: Matrix4f, x: Double, y: Double, z: Double): VertexConsumer {
     return vertex(mat, x.toFloat(), y.toFloat(), z.toFloat())
 }

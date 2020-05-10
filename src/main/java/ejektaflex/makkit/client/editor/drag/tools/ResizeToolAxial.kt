@@ -8,7 +8,7 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
 
-internal class ResizeToolSingleAxis(
+internal class ResizeToolAxial(
         region: EditRegion,
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
@@ -18,7 +18,7 @@ internal class ResizeToolSingleAxis(
         return super.getDrawOffset(box)?.dirMask(dragStart.dir)
     }
 
-    override fun calcDragBox(smooth: Boolean): Box? {
+    override fun calcSelectionBox(smooth: Boolean): Box? {
         if (!isDragging()) {
             return null
         }

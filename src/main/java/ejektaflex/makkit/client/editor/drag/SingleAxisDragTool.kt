@@ -7,7 +7,6 @@ import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.common.ext.flipMask
 import ejektaflex.makkit.common.ext.otherDirectionalAxes
 import ejektaflex.makkit.client.render.RenderBox
-import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.common.ext.round
 import ejektaflex.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
@@ -54,20 +53,16 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
         }
     }
 
-    override fun onDraw() {
+    override fun onDrawPreview() {
         if (isDragging()) {
-            region.preview.box = calcDragBox(!MakkitClient.config.gridSnapping) ?: region.preview.box
-            if (region.drawDragPlane) {
-                planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))
-                planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
-            }
+            preview.box = calcSelectionBox(!MakkitClient.config.gridSnapping) ?: preview.box
         }
 
-        region.preview.draw()
+        preview.draw()
 
-        region.preview.drawTextOn(
-                dragStart!!.dir,
-                region.preview.box.sizeInDirection(dragStart.dir).roundToInt().toString()
+        preview.drawTextOn(
+                dragStart.dir,
+                preview.box.sizeInDirection(dragStart.dir).roundToInt().toString()
         )
     }
 

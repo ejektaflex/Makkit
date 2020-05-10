@@ -8,13 +8,13 @@ interface IEditor {
         return true
     }
 
-    fun onDraw() {
+    fun onDrawPreview() {
 
     }
 
     fun tryDraw() {
         if (shouldDraw()) {
-            onDraw()
+            onDrawPreview()
         }
     }
 

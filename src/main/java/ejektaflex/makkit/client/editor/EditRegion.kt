@@ -1,9 +1,10 @@
 package ejektaflex.makkit.client.editor
 
 import ejektaflex.makkit.client.data.BoxTraceResult
-import ejektaflex.makkit.client.editor.drag.tools.MoveToolDualAxis
-import ejektaflex.makkit.client.editor.drag.tools.RepeatPatternTool
-import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSingleAxis
+import ejektaflex.makkit.client.editor.drag.DragTool
+import ejektaflex.makkit.client.editor.drag.tools.MoveToolPlanar
+import ejektaflex.makkit.client.editor.drag.tools.PatternToolAxial
+import ejektaflex.makkit.client.editor.drag.tools.ResizeToolAxial
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolSymmetric
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.MakkitKeys
@@ -24,21 +25,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         edgeColor = RenderColor.GREEN
     }
 
-    val preview = RenderBox().apply {
-        fillColor = RenderColor.BLUE.toAlpha(.4f)
-        edgeColor = RenderColor.ORANGE.toAlpha(.2f)
-    }
-
-    private val moveToolDual = MoveToolDualAxis(this, MakkitKeys.moveDragBinding)
-    private val resizeTool = ResizeToolSingleAxis(this, MakkitKeys.resizeSideBinding)
-    private val resizeToolSymmetric = ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding)
-    private val repeatPatternTool = RepeatPatternTool(this, MakkitKeys.repeatPatternBinding)
-
-    private val tools = listOf(
-            moveToolDual,
-            resizeTool,
-            resizeToolSymmetric,
-            repeatPatternTool
+    private var tools = mutableListOf(
+            MoveToolPlanar(this, MakkitKeys.moveDragBinding),
+            ResizeToolAxial(this, MakkitKeys.resizeSideBinding),
+            ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding),
+            PatternToolAxial(this, MakkitKeys.repeatPatternBinding)
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {

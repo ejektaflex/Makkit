@@ -6,18 +6,18 @@ import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.common.ext.round
 import net.minecraft.util.math.Box
 
-internal class MoveToolDualAxis(region: EditRegion, binding: KeyStateHandler) : DualAxisDragTool(region, binding) {
+internal class MoveToolPlanar(region: EditRegion, binding: KeyStateHandler) : DualAxisDragTool(region, binding) {
 
-    override fun onDraw() {
-        super.onDraw()
-        region.preview.draw()
+    override fun onDrawPreview() {
+        super.onDrawPreview()
+        preview.draw()
         val offset = getDrawOffset(plane.box)
         if (offset != null) {
-            region.preview.drawNearAxisLabels(offset)
+            preview.drawNearAxisLabels(offset)
         }
     }
 
-    override fun calcDragBox(smooth: Boolean): Box? {
+    override fun calcSelectionBox(smooth: Boolean): Box? {
         if (isDragging()) {
             val offset = getDrawOffset(plane.box)
 

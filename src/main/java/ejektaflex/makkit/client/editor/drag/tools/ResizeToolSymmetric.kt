@@ -13,7 +13,7 @@ internal class ResizeToolSymmetric (
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
-    override fun calcDragBox(smooth: Boolean): Box? {
+    override fun calcSelectionBox(smooth: Boolean): Box? {
         if (!isDragging()) {
             return null
         }
