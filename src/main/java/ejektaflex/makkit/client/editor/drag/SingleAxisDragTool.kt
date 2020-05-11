@@ -4,11 +4,8 @@ import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
-import ejektaflex.makkit.common.ext.flipMask
-import ejektaflex.makkit.common.ext.otherDirectionalAxes
 import ejektaflex.makkit.client.render.RenderBox
-import ejektaflex.makkit.common.ext.round
-import ejektaflex.makkit.common.ext.sizeInDirection
+import ejektaflex.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
@@ -21,17 +18,14 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
     val planes: List<RenderBox>
         get() = listOf(planeAxis1, planeAxis2)
 
-    fun nearestPlaneOffset(smoothing: Boolean): Vec3d? {
+    fun nearestPlaneOffset(snap: Boolean): Vec3d? {
         val offsets = planes.mapNotNull {
             getDrawOffset(it.box)
         }
 
         val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) } ?: return null
 
-        return when (smoothing) {
-            true -> offsetToUse
-            false -> offsetToUse.round()
-        }
+        return offsetToUse.snapped(snap)
     }
 
     override fun onStartDragging(start: BoxTraceResult) {
@@ -55,15 +49,11 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
 
     override fun onDrawPreview() {
         if (isDragging()) {
-            preview.box = calcSelectionBox(!MakkitClient.config.gridSnapping) ?: preview.box
+            preview.box = calcSelectionBox(MakkitClient.config.gridSnapping) ?: preview.box
         }
 
         preview.draw()
-
-        preview.drawTextOn(
-                dragStart.dir,
-                preview.box.sizeInDirection(dragStart.dir).roundToInt().toString()
-        )
+        preview.drawTextOn(dragStart.dir, preview.box.sizeOnAxis(dragStart.dir.axis).roundToInt().toString())
     }
 
 }

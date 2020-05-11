@@ -31,7 +31,7 @@ internal abstract class DualAxisDragTool(region: EditRegion, binding: KeyStateHa
 
     override fun onDrawPreview() {
         if (isDragging()) {
-            preview.box = calcSelectionBox(!MakkitClient.config.gridSnapping) ?: preview.box
+            preview.box = calcSelectionBox(MakkitClient.config.gridSnapping) ?: preview.box
             if (region.drawDragPlane) {
                 plane.draw(RenderColor.PINK.toAlpha(0.2f))
             }

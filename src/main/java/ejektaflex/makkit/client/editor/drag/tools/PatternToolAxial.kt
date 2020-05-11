@@ -24,14 +24,13 @@ internal class PatternToolAxial(
         beforeBox = region.area.box
     }
 
-    override fun calcSelectionBox(smooth: Boolean): Box? {
-        if (!isDragging()) {
-            return null
-        }
+    override fun calcSelectionBox(snap: Boolean): Box? {
 
-        val offset = nearestPlaneOffset(smooth) ?: return null
+        val offset = nearestPlaneOffset(snap) ?: return null
 
-        return region.area.box.stretch(offset.axisMask(dragStart.dir))
+        return region.area.box.stretch(
+                offset.axisMask(dragStart.dir)
+        )
     }
 
     override fun onStopDragging(stop: BoxTraceResult) {

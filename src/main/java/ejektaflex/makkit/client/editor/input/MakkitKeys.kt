@@ -73,6 +73,7 @@ object MakkitKeys {
     val repeatPatternBinding = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
     val fillBinding = makkitKey("fill", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
     val wallsBinding = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
+    val mirrorToolBinding = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
 
     val toggleBackBinding = makkitKey("toggle_back_selection", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT)
     val holdBackBinding = makkitKey("hold_back_selection", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5)

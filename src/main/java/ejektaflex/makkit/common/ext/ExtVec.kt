@@ -4,7 +4,6 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -29,11 +28,15 @@ operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)
 }
 
-fun Vec3d?.round(): Vec3d? {
-    return if (this != null) {
-        Vec3d(round(x), round(y), round(z))
-    } else {
-        null
+fun Vec3d.round(): Vec3d {
+    return Vec3d(round(x), round(y), round(z))
+}
+
+
+fun Vec3d.snapped(snap: Boolean): Vec3d {
+    return when (snap) {
+        true -> this.round()
+        false -> this
     }
 }
 

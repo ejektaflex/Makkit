@@ -2,6 +2,8 @@ package ejektaflex.makkit.client.editor
 
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.drag.DragTool
+import ejektaflex.makkit.client.editor.drag.tools.*
+import ejektaflex.makkit.client.editor.drag.tools.MirrorToolOpposite
 import ejektaflex.makkit.client.editor.drag.tools.MoveToolPlanar
 import ejektaflex.makkit.client.editor.drag.tools.PatternToolAxial
 import ejektaflex.makkit.client.editor.drag.tools.ResizeToolAxial
@@ -29,7 +31,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             MoveToolPlanar(this, MakkitKeys.moveDragBinding),
             ResizeToolAxial(this, MakkitKeys.resizeSideBinding),
             ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding),
-            PatternToolAxial(this, MakkitKeys.repeatPatternBinding)
+            PatternToolAxial(this, MakkitKeys.repeatPatternBinding),
+            MirrorToolOpposite(this, MakkitKeys.mirrorToolBinding)
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {

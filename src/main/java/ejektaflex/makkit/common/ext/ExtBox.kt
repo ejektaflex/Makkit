@@ -24,6 +24,14 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     return Box(vecA, vecB)
 }
 
+fun Box.offsetBy(vec3d: Vec3d, dir: Direction): Box {
+    return offset(vec3d.axisMask(dir))
+}
+
+fun Box.offsetBy(amt: Double, dir: Direction): Box {
+    return offset(Vec3d(amt, amt, amt).axisMask(dir))
+}
+
 fun Box.resizeBy(amt: Double, dir: Direction): Box {
     return shrinkSide(
             Vec3d(amt, amt, amt).axisMask(dir),
@@ -87,6 +95,10 @@ fun Box.faceCenterPos(dir: Direction): Vec3d {
                     .multiply(getSize())
                     .multiply(0.5)
     )
+}
+
+fun Box.sizeOnAxis(axis: Direction.Axis): Double {
+    return getSize().axisValue(axis)
 }
 
 fun Box.sizeInDirection(dir: Direction): Double {

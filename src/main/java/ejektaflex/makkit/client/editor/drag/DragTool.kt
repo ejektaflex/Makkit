@@ -33,20 +33,31 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         return isDragging()
     }
 
-    abstract fun calcSelectionBox(smooth: Boolean): Box?
+    abstract fun calcSelectionBox(snap: Boolean): Box?
 
     open fun onStartDragging(start: BoxTraceResult) {
         // Do nothing by default
     }
 
-    open fun onStopDragging(stop: BoxTraceResult) {
-        val box = calcSelectionBox(false)
+    fun setSelectionBox(): Box? {
+        val box = calcSelectionBox(true)
         box?.let {
             region.area.box = it
-            ShadowBoxUpdatePacket(
-                    BlockPos(it.getStart()),
-                    BlockPos(it.getEnd())
-            ).sendToServer()
+        }
+        return box
+    }
+
+    fun sendSelectionUpdate(box: Box) {
+        ShadowBoxUpdatePacket(
+                BlockPos(box.getStart()),
+                BlockPos(box.getEnd())
+        ).sendToServer()
+    }
+
+    open fun onStopDragging(stop: BoxTraceResult) {
+        val box = setSelectionBox()
+        box?.let {
+            sendSelectionUpdate(it)
         }
     }
 
