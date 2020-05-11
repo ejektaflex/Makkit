@@ -24,10 +24,7 @@ internal class PatternToolAxial(
         beforeBox = region.area.box
     }
 
-    override fun calcSelectionBox(snap: Boolean): Box? {
-
-        val offset = nearestPlaneOffset(snap) ?: return null
-
+    override fun calcSelectionBox(offset: Vec3d): Box {
         return region.area.box.stretch(
                 offset.axisMask(dragStart.dir)
         )
@@ -40,8 +37,8 @@ internal class PatternToolAxial(
         }
     }
 
-    override fun onDrawPreview() {
-        super.onDrawPreview()
+    override fun onDrawPreview(offset: Vec3d) {
+        super.onDrawPreview(offset)
 
         // If any of the size dimensions are 0, this will crash
         if (region.area.box.getSize().hasZeroAxis()) {
@@ -60,7 +57,6 @@ internal class PatternToolAxial(
                 preview.size.z / max(size.z, 1.0)
         ).roundToVec3i()
 
-
         for (x in 0 until tileVector.x) {
             for (y in 0 until tileVector.y) {
                 for (z in 0 until tileVector.z) {
@@ -77,7 +73,6 @@ internal class PatternToolAxial(
                 }
             }
         }
-
 
     }
 

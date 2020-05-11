@@ -1,8 +1,6 @@
 package ejektaflex.makkit.client.editor
 
 import ejektaflex.makkit.client.data.BoxTraceResult
-import ejektaflex.makkit.client.editor.drag.DragTool
-import ejektaflex.makkit.client.editor.drag.tools.*
 import ejektaflex.makkit.client.editor.drag.tools.MirrorToolOpposite
 import ejektaflex.makkit.client.editor.drag.tools.MoveToolPlanar
 import ejektaflex.makkit.client.editor.drag.tools.PatternToolAxial

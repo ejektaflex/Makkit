@@ -1,10 +1,10 @@
 package ejektaflex.makkit.client.editor.drag
 
-import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.render.RenderBox
+import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -15,17 +15,20 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
     private val planeAxis1 = RenderBox()
     private val planeAxis2 = RenderBox()
 
-    val planes: List<RenderBox>
+    private val planes: List<RenderBox>
         get() = listOf(planeAxis1, planeAxis2)
 
-    fun nearestPlaneOffset(snap: Boolean): Vec3d? {
+    override fun getDrawOffset(snapped: Boolean): Vec3d? {
         val offsets = planes.mapNotNull {
-            getDrawOffset(it.box)
+            val current = RenderHelper.boxTrace(it.box)
+            if (current != BoxTraceResult.EMPTY) {
+                current.hit.subtract(dragStart.hit)
+            } else {
+                null
+            }
         }
 
-        val offsetToUse = offsets.minBy { it.distanceTo(dragStart.source) } ?: return null
-
-        return offsetToUse.snapped(snap)
+        return (offsets.minBy { it.distanceTo(dragStart.source) } ?: return null).snapped(snapped)
     }
 
     override fun onStartDragging(start: BoxTraceResult) {
@@ -47,11 +50,8 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
         }
     }
 
-    override fun onDrawPreview() {
-        if (isDragging()) {
-            preview.box = calcSelectionBox(MakkitClient.config.gridSnapping) ?: preview.box
-        }
-
+    override fun onDrawPreview(offset: Vec3d) {
+        preview.box = calcSelectionBox(offset)
         preview.draw()
         preview.drawTextOn(dragStart.dir, preview.box.sizeOnAxis(dragStart.dir.axis).roundToInt().toString())
     }

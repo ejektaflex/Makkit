@@ -13,13 +13,11 @@ internal class ResizeToolAxial(
 ) : SingleAxisDragTool(region, binding) {
 
     // Constrain to direction
-    override fun getDrawOffset(box: Box): Vec3d? {
-        return super.getDrawOffset(box)?.dirMask(dragStart.dir)
+    override fun getDrawOffset(snapped: Boolean): Vec3d? {
+        return super.getDrawOffset(snapped)?.dirMask(dragStart.dir)
     }
 
-    override fun calcSelectionBox(snap: Boolean): Box? {
-
-        val offset = nearestPlaneOffset(snap) ?: return null
+    override fun calcSelectionBox(offset: Vec3d): Box {
         val shrinkVec = offset.dirMask(dragStart.dir.opposite)
 
         return region.area.box.shrinkSide(shrinkVec, dragStart.dir)

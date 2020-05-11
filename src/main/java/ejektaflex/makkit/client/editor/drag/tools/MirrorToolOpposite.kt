@@ -1,6 +1,5 @@
 package ejektaflex.makkit.client.editor.drag.tools
 
-import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.editor.EditRegion
 import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
@@ -21,16 +20,14 @@ internal class MirrorToolOpposite(
     }
 
     // Constrain to direction
-    override fun getDrawOffset(box: Box): Vec3d? {
-        return super.getDrawOffset(box)?.axisMask(dragStart.dir)
+    override fun getDrawOffset(snapped: Boolean): Vec3d? {
+        return super.getDrawOffset(snapped)?.axisMask(dragStart.dir)
     }
 
-    override fun calcSelectionBox(snap: Boolean): Box? {
-
-        val off = nearestPlaneOffset(snap) ?: return null
+    override fun calcSelectionBox(offset: Vec3d): Box {
 
         val planarOffset = region.area.pos.add(
-                off.multiply(2.0)
+                offset.multiply(2.0)
         )
 
         val boxProto = Box(
@@ -38,19 +35,16 @@ internal class MirrorToolOpposite(
                 planarOffset.add(region.area.box.getSize())
         )
 
-        return boxProto.offsetBy(off, dragStart.dir)
+        return boxProto.offsetBy(offset, dragStart.dir)
 
     }
 
-    override fun onDrawPreview() {
+    override fun onDrawPreview(offset: Vec3d) {
 
-        val off = nearestPlaneOffset(!MakkitClient.config.gridSnapping) ?: return
-
-        mirrorPlane.box = region.area.getFacePlane(dragStart.dir).offsetBy(off, dragStart.dir)
-
+        mirrorPlane.box = region.area.getFacePlane(dragStart.dir).offsetBy(offset, dragStart.dir)
         mirrorPlane.draw()
 
-        super.onDrawPreview()
+        super.onDrawPreview(offset)
 
     }
 
