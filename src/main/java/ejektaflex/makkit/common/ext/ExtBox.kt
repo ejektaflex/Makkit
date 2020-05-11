@@ -16,8 +16,12 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     var vecB = getEnd()
 
     when (dir.direction) {
-        Direction.AxisDirection.NEGATIVE -> vecA = vecA.subtract(off)
-        Direction.AxisDirection.POSITIVE -> vecB = vecB.subtract(off)
+        Direction.AxisDirection.NEGATIVE -> {
+            vecA = vecA.subtract(off)
+        }
+        Direction.AxisDirection.POSITIVE -> {
+            vecB = vecB.subtract(off)
+        }
         else -> { throw Exception("This should never happen!") }
     }
 
@@ -26,6 +30,23 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
 
 fun Box.offsetBy(vec3d: Vec3d, dir: Direction): Box {
     return offset(vec3d.axisMask(dir))
+}
+
+fun Box.getFacePlane(dir: Direction): Box {
+    val faceSize = getSize().flipMask(dir)
+
+    val width = getSize().dirMask(dir)
+
+    val boxStart = center.subtract(
+            faceSize.multiply(0.5)
+    ).add(
+            width.multiply(0.5)
+    )
+
+    return Box(
+            boxStart,
+            boxStart + faceSize
+    )
 }
 
 fun Box.offsetBy(amt: Double, dir: Direction): Box {

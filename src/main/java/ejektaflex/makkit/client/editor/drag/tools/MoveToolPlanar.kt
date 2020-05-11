@@ -8,8 +8,8 @@ import net.minecraft.util.math.Vec3d
 
 internal class MoveToolPlanar(region: EditRegion, binding: KeyStateHandler) : DualAxisDragTool(region, binding) {
 
-    override fun calcSelectionBox(offset: Vec3d): Box {
-        return region.area.box.offset(offset)
+    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
+        return box.offset(offset)
     }
 
     override fun onDrawPreview(offset: Vec3d) {

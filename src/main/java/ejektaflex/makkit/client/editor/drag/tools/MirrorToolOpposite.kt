@@ -20,28 +20,27 @@ internal class MirrorToolOpposite(
     }
 
     // Constrain to direction
-    override fun getDrawOffset(snapped: Boolean): Vec3d? {
-        return super.getDrawOffset(snapped)?.axisMask(dragStart.dir)
+    override fun getCursorOffset(snapped: Boolean): Vec3d? {
+        return super.getCursorOffset(snapped)?.dirMask(dragStart.dir)
     }
 
-    override fun calcSelectionBox(offset: Vec3d): Box {
+    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
 
-        val planarOffset = region.area.pos.add(
-                offset.multiply(2.0)
-        )
+        mirrorPlane.box = box.getFacePlane(dragStart.dir).offsetBy(offset, dragStart.dir)
+
+        val mirrorOff = box.getStart().add(offset)
 
         val boxProto = Box(
-                planarOffset,
-                planarOffset.add(region.area.box.getSize())
+                offset.add(mirrorOff),
+                offset.add(mirrorOff).add(box.getSize())
         )
 
-        return boxProto.offsetBy(offset, dragStart.dir)
+        return boxProto
 
     }
 
     override fun onDrawPreview(offset: Vec3d) {
 
-        mirrorPlane.box = region.area.getFacePlane(dragStart.dir).offsetBy(offset, dragStart.dir)
         mirrorPlane.draw()
 
         super.onDrawPreview(offset)

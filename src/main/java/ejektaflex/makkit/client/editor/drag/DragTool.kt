@@ -3,15 +3,12 @@ package ejektaflex.makkit.client.editor.drag
 import ejektaflex.makkit.client.MakkitClient
 import ejektaflex.makkit.client.data.BoxTraceResult
 import ejektaflex.makkit.client.editor.EditRegion
-import ejektaflex.makkit.client.editor.IEditor
 import ejektaflex.makkit.client.editor.input.InputState
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.getEnd
 import ejektaflex.makkit.common.ext.getStart
-import ejektaflex.makkit.common.ext.snapped
 import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -34,23 +31,29 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
     /**
      * Calculates a box shape for the tool, given a position
      * @param offset The position of the cursor
+     * @param box The starting box region
      */
-    abstract fun calcSelectionBox(offset: Vec3d): Box
+    abstract fun calcSelectionBox(offset: Vec3d, box: Box): Box
 
     /**
      * Calculates the position of the drag cursor. May also be snapped to a block grid
      * @param snapped Whether or not to snap the cursor to the block grid
      */
-    abstract fun getDrawOffset(snapped: Boolean = MakkitClient.config.gridSnapping): Vec3d?
+    abstract fun getCursorOffset(snapped: Boolean = MakkitClient.config.gridSnapping): Vec3d?
+
+    /**
+     * Draws the tool to the screen, with the given offset
+     */
+    abstract fun onDrawPreview(offset: Vec3d)
 
     open fun onStartDragging(start: BoxTraceResult) {
         // Do nothing by default
     }
 
     fun setSelectionBox(): Box? {
-        val offset = getDrawOffset(true)
+        val offset = getCursorOffset(true)
         return if (offset != null) {
-            val box = calcSelectionBox(offset)
+            val box = calcSelectionBox(offset, region.area.box)
             region.area.box = box
             box
         } else {
@@ -88,11 +91,9 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         }
     }
 
-    abstract fun onDrawPreview(offset: Vec3d)
-
     fun tryDraw() {
         if (isDragging()) {
-            val off = getDrawOffset()
+            val off = getCursorOffset()
             if (off != null) {
                 onDrawPreview(off)
             }
@@ -100,7 +101,7 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
     }
 
     protected companion object {
-        const val DRAG_PLANE_SIZE = 32.0
+        const val DRAG_PLANE_SIZE = 64.0
     }
 
 }

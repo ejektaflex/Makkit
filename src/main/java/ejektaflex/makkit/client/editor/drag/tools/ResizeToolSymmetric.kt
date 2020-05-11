@@ -12,12 +12,9 @@ internal class ResizeToolSymmetric (
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
-    override fun calcSelectionBox(offset: Vec3d): Box {
-
+    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
         // this locks to an axis and flips so that "positive" is in the direction direction
         val change = offset.dirMask(dragStart.dir)
-
-        val box = region.area.box
         return Box(box.getStart().subtract(change), box.getEnd().add(change))
     }
 

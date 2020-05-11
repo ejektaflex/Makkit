@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-class EditRegion(var drawDragPlane: Boolean = false) {
+class EditRegion(var drawDragPlane: Boolean = true) {
 
     val area = RenderBox().apply {
         fillColor = RenderColor.GREEN.toAlpha(.4f)

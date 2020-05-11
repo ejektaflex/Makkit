@@ -53,20 +53,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     }
 
     fun getFacePlane(dir: Direction): Box {
-        val faceSize = size.flipMask(dir)
-
-        val width = size.dirMask(dir)
-
-        val boxStart = box.center.subtract(
-                faceSize.multiply(0.5)
-        ).add(
-                width.multiply(0.5)
-        )
-
-        return Box(
-                boxStart,
-                boxStart + faceSize
-        )
+        return box.getFacePlane(dir)
     }
 
     fun drawFace(dir: Direction, colorIn: RenderColor) {

@@ -24,8 +24,8 @@ internal class PatternToolAxial(
         beforeBox = region.area.box
     }
 
-    override fun calcSelectionBox(offset: Vec3d): Box {
-        return region.area.box.stretch(
+    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
+        return box.stretch(
                 offset.axisMask(dragStart.dir)
         )
     }
