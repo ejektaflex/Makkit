@@ -111,6 +111,18 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
+    // hax, only use for debugging
+    fun drawPoint(point: Vec3d, color: RenderColor = RenderColor.WHITE, size: Double = 0.05) {
+        val off = Vec3d(size, size, size)
+        drawBoxFilled(
+                Box(
+                        point.subtract(off),
+                        point.add(off)
+                ),
+                color
+        )
+    }
+
     fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult {
         val player = mc.player!!
         // Camera position and rotation

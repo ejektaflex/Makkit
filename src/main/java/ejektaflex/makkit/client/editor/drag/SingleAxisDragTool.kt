@@ -7,9 +7,11 @@ import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
 import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.*
+import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
+import kotlin.random.Random
 
 internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
 
@@ -21,17 +23,17 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
 
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
         val offsets = planes.mapNotNull {
-            val current = RenderHelper.boxTrace(it.box, 100f)
+            val current = RenderHelper.boxTrace(it.box, 1000f)
             if (current != BoxTraceResult.EMPTY) {
-                current.hit.subtract(dragStart.hit)
+                current
             } else {
                 null
             }
         }
 
-        //println(offsets.toString())
-
-        return (offsets.minBy { it.distanceTo(dragStart.source) } ?: return null).snapped(snapped)
+        return (offsets.minBy {
+            it.hit.distanceTo(it.source)
+        } ?: return null).hit.subtract(dragStart.hit).snapped(snapped)
     }
 
     override fun onStartDragging(start: BoxTraceResult) {

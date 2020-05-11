@@ -24,6 +24,15 @@ fun min(vecA: Vec3d, vecB: Vec3d): Vec3d {
 }
  */
 
+fun List<Vec3d>.average(): Vec3d {
+    return if (isEmpty()) {
+        throw Exception("Cannot average an empty list of Vec3d! Must contain at least one element!")
+    } else {
+        val summed = this.reduce { a, b -> a.add(b) }
+        summed.multiply(1.0 / size)
+    }
+}
+
 operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)
 }
