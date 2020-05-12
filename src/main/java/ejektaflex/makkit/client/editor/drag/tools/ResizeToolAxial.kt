@@ -6,6 +6,7 @@ import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import kotlin.math.roundToInt
 
 internal class ResizeToolAxial(
         region: EditRegion,
@@ -20,6 +21,11 @@ internal class ResizeToolAxial(
     override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
         val shrinkVec = offset.dirMask(dragStart.dir.opposite)
         return box.shrinkSide(shrinkVec, dragStart.dir)
+    }
+
+    override fun onDrawPreview(offset: Vec3d) {
+        super.onDrawPreview(offset)
+        preview.drawSizeOnFace(dragStart.dir)
     }
 
 }

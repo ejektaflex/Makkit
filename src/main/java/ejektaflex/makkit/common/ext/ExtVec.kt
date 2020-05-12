@@ -102,3 +102,17 @@ fun Vec3d.axisValue(axis: Direction.Axis): Double {
 fun Vec3d.abs(): Vec3d {
     return Vec3d(abs(x), abs(y), abs(z))
 }
+
+// Simple rotation methods
+
+fun Vec3d.yRot90On(center: Vec3d): Vec3d {
+    return Vec3d(center.x + center.z - z, y, x + center.z - center.x)
+}
+
+fun Vec3i.yRot90On(center: Vec3i): Vec3i {
+    return Vec3i(center.x + center.z - z, y, x + center.z - center.x)
+}
+
+fun Vec3d.flipAround(center: Vec3d): Vec3d {
+    return subtract(center.multiply(2.0))
+}

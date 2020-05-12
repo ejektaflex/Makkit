@@ -45,11 +45,15 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         drawNearAxisLabels(pos)
     }
 
-    fun drawTextOn(face: Direction, text: String) {
+    fun drawTextOnFace(face: Direction, text: String) {
         RenderHelper.drawText(
                 box.faceCenterPos(face),
                 text
         )
+    }
+
+    fun drawSizeOnFace(face: Direction) {
+        drawTextOnFace(face, box.sizeOnAxis(face.axis).roundToInt().toString())
     }
 
     fun getFacePlane(dir: Direction): Box {

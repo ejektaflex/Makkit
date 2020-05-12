@@ -59,12 +59,11 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
         preview.box = calcSelectionBox(offset, region.area.box)
 
         preview.draw()
-        preview.drawTextOn(dragStart.dir, preview.box.sizeOnAxis(dragStart.dir.axis).roundToInt().toString())
+
         if (region.drawDragPlane) {
             planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))
             planeAxis2.draw(RenderColor.PINK.toAlpha(0.2f))
         }
-
     }
 
 }

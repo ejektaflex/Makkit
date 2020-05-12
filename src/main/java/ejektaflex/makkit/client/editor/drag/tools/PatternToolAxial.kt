@@ -10,6 +10,7 @@ import ejektaflex.makkit.common.editor.operations.RepeatOperation
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 internal class PatternToolAxial(
         region: EditRegion,
@@ -39,6 +40,7 @@ internal class PatternToolAxial(
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
+        preview.drawSizeOnFace(dragStart.dir)
 
         // If any of the size dimensions are 0, this will crash
         if (region.area.box.getSize().hasZeroAxis()) {
