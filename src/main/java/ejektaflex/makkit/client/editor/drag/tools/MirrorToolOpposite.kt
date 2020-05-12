@@ -9,8 +9,10 @@ import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.*
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 internal class MirrorToolOpposite(
@@ -18,7 +20,10 @@ internal class MirrorToolOpposite(
         binding: KeyStateHandler
 ) : SingleAxisDragTool(region, binding) {
 
-    val mirrorPlane = RenderBox().apply {
+    // The distance between the original selection and the mirrored section, for display
+    private var mirrorDist = 0
+
+    private val mirrorPlane = RenderBox().apply {
         fillColor = RenderColor.PURPLE.toAlpha(.2f)
         edgeColor = RenderColor.PINK.toAlpha(.3f)
     }
@@ -30,18 +35,17 @@ internal class MirrorToolOpposite(
 
     override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
 
-        mirrorPlane.box = box.getFacePlane(dragStart.dir).offsetBy(offset.multiply(0.5), dragStart.dir)
+        mirrorDist = offset.axisValue(dragStart.dir.axis).roundToInt().absoluteValue
 
-        val mirrorPos = box.getStart().add(
-                offset.multiply(1.0).add(box.getSize().dirMask(dragStart.dir))
-        )
+        mirrorPlane.box = box
+                .getFacePlane(dragStart.dir)
+                .offsetBy(offset.multiply(0.5), dragStart.dir)
 
-        mirrorPos
-
-        // If this condition is true, we shouldn't be returning a box.
-        if (offset.dirMask(dragStart.dir).axisValue(dragStart.dir.axis) < 0) {
-            RenderHelper.drawPoint(dragStart.hit, size = 0.25)
-        }
+        val mirrorPos = box
+                .getFacePlane(dragStart.dir)
+                .getStart()
+                .flipAround(mirrorPlane.box.getStart())
+                .fitForSize(box.getSize(), dragStart.dir)
 
         return Box(
                 mirrorPos,
@@ -53,20 +57,11 @@ internal class MirrorToolOpposite(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val absDist = abs(
-                preview.box.getStart()
-                        .subtract(region.area.box.getStart())
-                        .plus(region.area.box.getSize())
-                        .axisValue(dragStart.dir.axis)
-                        .roundToInt()
-        )
-
         mirrorPlane.draw()
         mirrorPlane.drawTextOnFace(
                 dragStart.dir,
-                absDist.toString()
+                mirrorDist.toString()
         )
-
     }
 
 }

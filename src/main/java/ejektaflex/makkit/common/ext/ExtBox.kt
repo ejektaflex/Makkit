@@ -45,7 +45,7 @@ fun Box.getFacePlane(dir: Direction): Box {
 
     return Box(
             boxStart,
-            boxStart + faceSize
+            boxStart.add(faceSize)
     )
 }
 

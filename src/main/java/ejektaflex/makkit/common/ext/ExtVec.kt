@@ -37,6 +37,18 @@ operator fun Vec3d.plus(other: Vec3d): Vec3d {
     return this.add(other)
 }
 
+operator fun Vec3d.minus(other: Vec3d): Vec3d {
+    return this.subtract(other)
+}
+
+operator fun Vec3d.times(other: Vec3d): Vec3d {
+    return this.multiply(other)
+}
+
+operator fun Vec3d.times(num: Double): Vec3d {
+    return multiply(num)
+}
+
 fun Vec3d.round(): Vec3d {
     return Vec3d(round(x), round(y), round(z))
 }
@@ -105,14 +117,26 @@ fun Vec3d.abs(): Vec3d {
 
 // Simple rotation methods
 
-fun Vec3d.yRot90On(center: Vec3d): Vec3d {
+fun Vec3d.rotateClockwise(center: Vec3d): Vec3d {
     return Vec3d(center.x + center.z - z, y, x + center.z - center.x)
 }
 
-fun Vec3i.yRot90On(center: Vec3i): Vec3i {
+fun Vec3i.rotateClockwise(center: Vec3i): Vec3i {
     return Vec3i(center.x + center.z - z, y, x + center.z - center.x)
 }
 
 fun Vec3d.flipAround(center: Vec3d): Vec3d {
-    return subtract(center.multiply(2.0))
+    return this - ((this - center) * 2.0)
+}
+
+/**
+ * Will offset a vector in a certain direction if it's on the negative axis.
+ * This is used for Box placement, because the start of a Box must always be
+ * a smaller vector than the end of said Box.
+ */
+fun Vec3d.fitForSize(size: Vec3d, dir: Direction): Vec3d {
+    return when (dir.direction) {
+        Direction.AxisDirection.POSITIVE -> this
+        Direction.AxisDirection.NEGATIVE -> this.subtract(size.axisMask(dir))
+    }
 }
