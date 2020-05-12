@@ -6,18 +6,21 @@ import ejektaflex.makkit.common.network.pakkit.ServerSidePakkitHandler
 import ejektaflex.makkit.common.editor.*
 import ejektaflex.makkit.common.editor.operations.FillBlocksOperation
 import ejektaflex.makkit.common.editor.operations.WorldOperation
+import ejektaflex.makkit.common.ext.readEnum
+import ejektaflex.makkit.common.ext.readIntBox
+import ejektaflex.makkit.common.ext.writeEnum
+import ejektaflex.makkit.common.ext.writeIntBox
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
 class EditWorldPacket(
-        var start: BlockPos = BlockPos(0, 0, 0),
-        var end: BlockPos = BlockPos(0, 0, 0),
+        var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
         var side: Direction = Direction.NORTH,
         var op: WorldOperation = FillBlocksOperation(),
         var palette: List<ItemStack> = listOf()
@@ -31,10 +34,9 @@ class EditWorldPacket(
 
     override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {
-            writeBlockPos(start)
-            writeBlockPos(end)
-            writeInt(side.ordinal)
-            writeInt(op.getType().ordinal)
+            writeIntBox(box)
+            writeEnum(side)
+            writeEnum(op.getType())
             writeString(gson.toJson(op, op.getType().clazz.java))
             writeInt(palette.size)
             for (item in palette) {
@@ -44,10 +46,9 @@ class EditWorldPacket(
     }
 
     override fun read(buf: PacketByteBuf) {
-        start = buf.readBlockPos()
-        end = buf.readBlockPos()
-        side = enumValues<Direction>()[buf.readInt()]
-        val opType = enumValues<WorldOperation.Companion.Type>()[buf.readInt()]
+        box = buf.readIntBox()
+        side = buf.readEnum()
+        val opType = buf.readEnum<WorldOperation.Companion.Type>()
         op = gson.fromJson(buf.readString(), opType.clazz.java)
         palette = mutableListOf<ItemStack>().apply {
             val paletteSize = buf.readInt()

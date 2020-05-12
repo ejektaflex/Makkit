@@ -15,9 +15,8 @@ import net.minecraft.util.math.Box
     Sent to a client when we want their editor area to focus on a certain region
  */
 class FocusRegionPacket(
-        override var start: BlockPos = BlockPos(0, 0, 0),
-        override var end: BlockPos = BlockPos(1, 1, 1)
-) : BoxPacket(ID, start, end), ClientBoundPakkit {
+        override var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+) : BoxPacket(ID, box), ClientBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
@@ -33,7 +32,7 @@ class FocusRegionPacket(
             context.taskQueue.execute {
                 if (MakkitClient.config.historyHighlighting) {
                     MakkitClient.getOrCreateRegion().apply {
-                        area.box = Box(pakkit.start, pakkit.end)
+                        area.box = pakkit.box
                     }
                 }
             }

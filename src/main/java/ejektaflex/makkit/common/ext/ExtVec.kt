@@ -134,7 +134,7 @@ fun Vec3d.flipAround(center: Vec3d): Vec3d {
  * This is used for Box placement, because the start of a Box must always be
  * a smaller vector than the end of said Box.
  */
-fun Vec3d.fitForSize(size: Vec3d, dir: Direction): Vec3d {
+fun Vec3d.refitForSize(size: Vec3d, dir: Direction): Vec3d {
     return when (dir.direction) {
         Direction.AxisDirection.POSITIVE -> this
         Direction.AxisDirection.NEGATIVE -> this.subtract(size.axisMask(dir))

@@ -62,10 +62,7 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
     }
 
     fun sendSelectionUpdate(box: Box) {
-        ShadowBoxUpdatePacket(
-                BlockPos(box.getStart()),
-                BlockPos(box.getEnd())
-        ).sendToServer()
+        ShadowBoxUpdatePacket(box).sendToServer()
     }
 
     open fun onStopDragging(stop: BoxTraceResult) {

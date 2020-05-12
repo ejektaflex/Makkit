@@ -11,9 +11,13 @@ import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.util.Identifier
 
+/*
+When received by the client, will add said box to the list of remote boxes that should be
+displayed from other players
+ */
 class ShadowBoxShowPacket(
         localPacket: ShadowBoxUpdatePacket = ShadowBoxUpdatePacket()
-) : BoxPacket(ID, localPacket.start, localPacket.end), ClientBoundPakkit {
+) : BoxPacket(ID, localPacket.box), ClientBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
@@ -31,8 +35,7 @@ class ShadowBoxShowPacket(
                 println("Adding remote box to draw map")
                 val uid = context.player.uuidAsString
                 MakkitClient.remoteBoxMap[uid] = RenderBox(
-                        pakkit.start.vec3d(),
-                        pakkit.end.vec3d()
+                        pakkit.box
                 )
 
             }

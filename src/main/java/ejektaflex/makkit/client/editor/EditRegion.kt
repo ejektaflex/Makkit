@@ -73,8 +73,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         val trace = trace()
         if (trace != BoxTraceResult.EMPTY) {
             EditWorldPacket(
-                    BlockPos(area.pos),
-                    BlockPos(area.end),
+                    area.box,
                     trace.dir,
                     operation,
                     listOf(MinecraftClient.getInstance().player!!.mainHandStack)

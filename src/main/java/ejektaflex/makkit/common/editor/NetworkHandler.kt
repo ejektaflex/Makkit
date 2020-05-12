@@ -33,7 +33,7 @@ object NetworkHandler {
 
         val action = EditAction(
                 player,
-                Box(intent.start, intent.end),
+                intent.box,
                 intent.side,
                 intent.op,
                 // will crash if item is not a BlockItem, change this eventually

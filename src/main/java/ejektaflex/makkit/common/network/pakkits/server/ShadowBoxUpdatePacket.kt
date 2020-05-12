@@ -9,11 +9,11 @@ import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 
 class ShadowBoxUpdatePacket(
-        override var start: BlockPos = BlockPos(0, 0, 0),
-        override var end: BlockPos = BlockPos(1, 1, 1)
-) : BoxPacket(ID, start, end), ServerBoundPakkit {
+        override var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+) : BoxPacket(ID, box), ServerBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)

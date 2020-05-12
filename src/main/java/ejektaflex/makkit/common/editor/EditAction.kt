@@ -67,10 +67,7 @@ data class EditAction(
     }
 
     fun select(player: ServerPlayerEntity) {
-        FocusRegionPacket(
-                BlockPos(box.getStart()),
-                BlockPos(box.getEnd())
-        ).sendToClient(player)
+        FocusRegionPacket(box).sendToClient(player)
     }
 
     fun commit(world: World) {

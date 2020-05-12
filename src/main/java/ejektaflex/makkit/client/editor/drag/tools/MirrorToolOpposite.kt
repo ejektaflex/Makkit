@@ -5,13 +5,9 @@ import ejektaflex.makkit.client.editor.drag.SingleAxisDragTool
 import ejektaflex.makkit.client.editor.input.KeyStateHandler
 import ejektaflex.makkit.client.render.RenderBox
 import ejektaflex.makkit.client.render.RenderColor
-import ejektaflex.makkit.client.render.RenderHelper
 import ejektaflex.makkit.common.ext.*
-import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -37,15 +33,15 @@ internal class MirrorToolOpposite(
 
         mirrorDist = offset.axisValue(dragStart.dir.axis).roundToInt().absoluteValue
 
-        mirrorPlane.box = box
-                .getFacePlane(dragStart.dir)
+        val selectedFace = box.getFacePlane(dragStart.dir)
+
+        mirrorPlane.box = selectedFace
                 .offsetBy(offset.multiply(0.5), dragStart.dir)
 
-        val mirrorPos = box
-                .getFacePlane(dragStart.dir)
+        val mirrorPos = selectedFace
                 .getStart()
                 .flipAround(mirrorPlane.box.getStart())
-                .fitForSize(box.getSize(), dragStart.dir)
+                .refitForSize(box.getSize(), dragStart.dir)
 
         return Box(
                 mirrorPos,
