@@ -14,7 +14,8 @@ abstract class WorldOperation {
         enum class Type(val clazz: KClass<out WorldOperation>) {
             SET(FillBlocksOperation::class),
             WALLS(FillWallsOperation::class),
-            REPEAT(RepeatOperation::class)
+            REPEAT(RepeatOperation::class),
+            PASTE(PasteOperation::class)
         }
 
         // Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.

@@ -1,16 +1,18 @@
 package ejektaflex.makkit.common.editor.data
 
+import ejektaflex.makkit.common.editor.operations.PasteOperation
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.ext.getBlockArray
 import ejektaflex.makkit.common.ext.getSize
-import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import java.util.*
 
+/**
+    Represents data about a player and their edits etc in the world
+ */
 class UserEditProfile {
 
     private var undoHistory = ArrayDeque<EditAction>()
@@ -18,13 +20,17 @@ class UserEditProfile {
 
     private var copyData: CopyData? = null
 
+
+    fun doAction(player: ServerPlayerEntity, action: EditAction) {
+        action.doInitialCommit(player)
+        addToHistory(action)
+    }
+
     fun clearHistory(): Boolean {
         undoHistory.clear()
         redoHistory.clear()
         return true
     }
-
-
 
     fun undo(player: ServerPlayerEntity): Boolean {
         return if (undoHistory.isEmpty()) {
@@ -73,22 +79,31 @@ class UserEditProfile {
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }
 
-    fun paste(player: ServerPlayerEntity, box: Box, face: Direction) {
+    fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
         if (copyData != null) {
             val data = copyData!!
 
-            if (box.getSize() == data.box.getSize()) {
-                data.pasteInto(player.world, box)
+            if (pasteBox.getSize() == data.box.getSize()) {
+                doAction(player, EditAction(
+                        player,
+                        pasteBox,
+                        face,
+                        PasteOperation(data),
+                        listOf()
+                ))
             } else {
                 player.sendMessage(LiteralText("wrong size"), true)
             }
 
         } else {
-            player.sendMessage(LiteralText("Can't paste, you haven't copy anything"), true)
+            player.sendMessage(LiteralText("Can't paste, you haven't copied anything"), true)
         }
 
+
+
     }
+
 
     companion object {
         private const val maxHistLength = 50

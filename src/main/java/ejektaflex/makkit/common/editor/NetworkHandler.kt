@@ -22,7 +22,7 @@ object NetworkHandler {
      */
     private val userProfiles = mutableMapOf<String, UserEditProfile>()
 
-    private fun getProfileOf(player: ServerPlayerEntity): UserEditProfile {
+    fun getProfileOf(player: ServerPlayerEntity): UserEditProfile {
         val uuid = player.uuidAsString
 
         return userProfiles.getOrPut(uuid) {
@@ -42,7 +42,7 @@ object NetworkHandler {
                 intent.box,
                 intent.side,
                 intent.op,
-                // will crash if item is not a BlockItem, change this eventually
+                // TODO will crash if item is not a BlockItem, change this eventually
                 intent.palette.map {
                     if (it.item == Items.AIR) {
                         Blocks.AIR.defaultState
@@ -53,8 +53,7 @@ object NetworkHandler {
         )
 
         try {
-            action.doInitialCommit(player)
-            getProfileOf(player).addToHistory(action)
+            getProfileOf(player).doAction(player, action)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -67,7 +66,6 @@ object NetworkHandler {
     }
 
     fun handleCopyPaste(player: ServerPlayerEntity, pakkit: ClipboardIntentPacket) {
-
         val profile = getProfileOf(player)
 
         when (pakkit.mode) {
@@ -75,8 +73,6 @@ object NetworkHandler {
             ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face)
             else -> throw Exception("Clipboard mode not implemented on server! ${pakkit.mode}")
         }
-
-        //getProfileOf(player)
     }
 
     fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
