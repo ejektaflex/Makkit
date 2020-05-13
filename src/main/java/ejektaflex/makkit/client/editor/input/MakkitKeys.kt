@@ -75,6 +75,10 @@ object MakkitKeys {
     val wallsBinding = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
     val mirrorToolBinding = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
 
+    val copyBinding = makkitKey("copy_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U)
+    val pasteBinding = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I)
+
+
     val toggleBackBinding = makkitKey("toggle_back_selection", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT)
     val holdBackBinding = makkitKey("hold_back_selection", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_5)
 

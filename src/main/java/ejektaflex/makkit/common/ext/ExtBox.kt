@@ -86,6 +86,10 @@ fun Box.getEnd(): Vec3d {
     return Vec3d(x2, y2, z2)
 }
 
+fun Box.startBlock(): BlockPos {
+    return BlockPos(getStart())
+}
+
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
     val ds = doubleArrayOf(1.0)
     val d = max.x - min.x

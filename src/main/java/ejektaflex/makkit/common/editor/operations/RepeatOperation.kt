@@ -1,6 +1,6 @@
 package ejektaflex.makkit.common.editor.operations
 
-import ejektaflex.makkit.common.editor.EditAction
+import ejektaflex.makkit.common.editor.data.EditAction
 import ejektaflex.makkit.common.ext.getBlockArray
 import ejektaflex.makkit.common.ext.getStart
 import net.minecraft.util.math.BlockPos
@@ -10,7 +10,7 @@ import net.minecraft.world.BlockView
 
 
 class RepeatOperation(val boxBefore: Box) : WorldOperation() {
-    override fun getType() = WorldOperation.Companion.Type.REPEAT
+    override fun getType() = Companion.Type.REPEAT
 
     override fun calculate(action: EditAction, view: BlockView) {
         val startPos = BlockPos(boxBefore.getStart())

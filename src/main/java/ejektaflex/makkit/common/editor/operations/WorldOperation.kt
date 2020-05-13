@@ -1,6 +1,6 @@
 package ejektaflex.makkit.common.editor.operations
 
-import ejektaflex.makkit.common.editor.EditAction
+import ejektaflex.makkit.common.editor.data.EditAction
 import net.minecraft.world.BlockView
 import kotlin.reflect.KClass
 

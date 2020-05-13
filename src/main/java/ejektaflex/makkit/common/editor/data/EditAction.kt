@@ -1,9 +1,7 @@
-package ejektaflex.makkit.common.editor
+package ejektaflex.makkit.common.editor.data
 
 import ejektaflex.makkit.common.editor.operations.WorldOperation
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.ext.getEnd
-import ejektaflex.makkit.common.ext.getStart
 import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity

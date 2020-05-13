@@ -1,7 +1,11 @@
 package ejektaflex.makkit.common.editor
 
+import ejektaflex.makkit.common.editor.data.EditAction
+import ejektaflex.makkit.common.editor.data.UserEditProfile
+import ejektaflex.makkit.common.enum.ClipboardMode
 import ejektaflex.makkit.common.enum.UndoRedoMode
 import ejektaflex.makkit.common.network.pakkits.client.ShadowBoxShowPacket
+import ejektaflex.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import ejektaflex.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import ejektaflex.makkit.common.network.pakkits.server.EditHistoryPacket
 import ejektaflex.makkit.common.network.pakkits.server.EditWorldPacket
@@ -10,17 +14,19 @@ import net.minecraft.item.BlockItem
 import net.minecraft.item.Items
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
-import net.minecraft.util.math.Box
 
 object NetworkHandler {
 
-    private val userHistories = mutableMapOf<String, UserActionHistory>()
+    /*
+        Contains edit data for individual users
+     */
+    private val userProfiles = mutableMapOf<String, UserEditProfile>()
 
-    fun getHistoryOf(player: ServerPlayerEntity): UserActionHistory {
+    private fun getProfileOf(player: ServerPlayerEntity): UserEditProfile {
         val uuid = player.uuidAsString
 
-        return userHistories.getOrPut(uuid) {
-            UserActionHistory()
+        return userProfiles.getOrPut(uuid) {
+            UserEditProfile()
         }
     }
 
@@ -48,7 +54,7 @@ object NetworkHandler {
 
         try {
             action.doInitialCommit(player)
-            getHistoryOf(player).addToHistory(action)
+            getProfileOf(player).addToHistory(action)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -60,14 +66,27 @@ object NetworkHandler {
         }
     }
 
+    fun handleCopyPaste(player: ServerPlayerEntity, pakkit: ClipboardIntentPacket) {
+
+        val profile = getProfileOf(player)
+
+        when (pakkit.mode) {
+            ClipboardMode.COPY -> profile.copy(player, pakkit.box, pakkit.face)
+            ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face)
+            else -> throw Exception("Clipboard mode not implemented on server! ${pakkit.mode}")
+        }
+
+        //getProfileOf(player)
+    }
+
     fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
         if (player.isCreative) {
-            val history = getHistoryOf(player)
+            val profile = getProfileOf(player)
 
             val result = when (pakkit.mode) {
-                UndoRedoMode.UNDO -> history.undo(player)
-                UndoRedoMode.REDO -> history.redo(player)
-                UndoRedoMode.CLEAR -> history.clear()
+                UndoRedoMode.UNDO -> profile.undo(player)
+                UndoRedoMode.REDO -> profile.redo(player)
+                UndoRedoMode.CLEAR -> profile.clearHistory()
             }
 
             if (!result) {

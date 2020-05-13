@@ -14,7 +14,7 @@ import net.minecraft.util.math.Box
 /*
     Sent to a client when we want their editor area to focus on a certain region
  */
-class FocusRegionPacket(
+data class FocusRegionPacket(
         override var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
 ) : BoxPacket(ID, box), ClientBoundPakkit {
 
