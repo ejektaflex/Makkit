@@ -125,6 +125,14 @@ fun Vec3i.rotateClockwise(center: Vec3i): Vec3i {
     return Vec3i(center.x + center.z - z, y, x + center.z - center.x)
 }
 
+fun Vec3i.rotateClockwise(times: Int): Vec3i {
+    var inVec = Vec3i(x, y, z)
+    for (i in 0 until times) {
+        inVec = inVec.rotateClockwise(Vec3i.ZERO)
+    }
+    return inVec
+}
+
 fun Vec3d.flipAround(center: Vec3d): Vec3d {
     return this - ((this - center) * 2.0)
 }

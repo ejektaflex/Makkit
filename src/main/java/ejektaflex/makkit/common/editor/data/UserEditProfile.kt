@@ -86,8 +86,14 @@ class UserEditProfile {
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
+
+
+
         if (copyData != null) {
             val copy = copyData!!
+
+            val oldSize = copy.box.getSize()
+            val rotatedSize = Vec3d(oldSize.z, oldSize.y, oldSize.x) // flip X and Z
 
             if (pasteBox.getSize() == copy.box.getSize()) { // size is the same, don't care about axis yet
 
@@ -97,12 +103,27 @@ class UserEditProfile {
                         player,
                         pasteBox,
                         face,
-                        PasteOperation(copy),
+                        PasteOperation(copy, otherAxis = false),
+                        listOf()
+                ))
+
+            } else if (pasteBox.getSize() == rotatedSize) {
+
+                println("Well it's rotated sideways alright")
+
+                doAction(player, EditAction(
+                        player,
+                        pasteBox,
+                        face,
+                        PasteOperation(copy, otherAxis = true),
                         listOf()
                 ))
 
             } else {
-                player.sendMessage(LiteralText("wrong size"), true)
+                FocusRegionPacket(Box(
+                        pasteBox.getStart(),
+                        pasteBox.getStart().add(rotatedSize)
+                )).sendToClient(player)
             }
 
         } else {
