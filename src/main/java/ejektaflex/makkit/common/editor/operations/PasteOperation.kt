@@ -3,7 +3,6 @@ package ejektaflex.makkit.common.editor.operations
 import ejektaflex.makkit.common.editor.data.CopyData
 import ejektaflex.makkit.common.editor.data.EditAction
 import ejektaflex.makkit.common.ext.startBlock
-import net.minecraft.util.math.Box
 import net.minecraft.world.BlockView
 
 class PasteOperation(val copy: CopyData) : WorldOperation() {
@@ -14,9 +13,8 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
         for (entry in copy.data) {
 
-            val oldOffset = entry.key.subtract(copy.box.startBlock())
 
-            val newPos = action.box.startBlock().add(oldOffset)
+            val newPos = action.box.startBlock().add(entry.key)
 
             action.edit(newPos, entry.value)
         }

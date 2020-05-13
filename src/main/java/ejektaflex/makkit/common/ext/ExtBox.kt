@@ -167,3 +167,9 @@ fun Box.wallBlocks(): List<BlockPos> {
     }
     return buff
 }
+
+fun Box.faceDimensions(side: Direction): List<Double> {
+    val sideSizeVec = getFacePlane(side).getSize()
+    val otherAxes = enumValues<Direction.Axis>().filter { it != side.axis }
+    return otherAxes.map { sideSizeVec.axisValue(it) }
+}

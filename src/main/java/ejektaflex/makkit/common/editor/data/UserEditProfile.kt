@@ -2,12 +2,13 @@ package ejektaflex.makkit.common.editor.data
 
 import ejektaflex.makkit.common.editor.operations.PasteOperation
 import ejektaflex.makkit.common.enum.UndoRedoMode
-import ejektaflex.makkit.common.ext.getBlockArray
-import ejektaflex.makkit.common.ext.getSize
+import ejektaflex.makkit.common.ext.*
+import ejektaflex.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 import java.util.*
 
 /**
@@ -73,25 +74,33 @@ class UserEditProfile {
         redoHistory.clear()
     }
 
-    fun copy(player: ServerPlayerEntity, box: Box, face: Direction) {
-        val stateMap = box.getBlockArray().map { it to player.world.getBlockState(it) }.toMap()
-        copyData = CopyData(stateMap, box, face)
+    /**
+     * Copied state is relative to box start
+     */
+    fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
+        val copyStart = copyBox.startBlock()
+        val stateMap = copyBox.getBlockArray().map { it.subtract(copyStart) to player.world.getBlockState(it) }.toMap()
+        copyData = CopyData(stateMap, copyBox, face)
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
         if (copyData != null) {
-            val data = copyData!!
+            val copy = copyData!!
 
-            if (pasteBox.getSize() == data.box.getSize()) {
+            if (pasteBox.getSize() == copy.box.getSize()) { // size is the same, don't care about axis yet
+
+                println("Pasting")
+
                 doAction(player, EditAction(
                         player,
                         pasteBox,
                         face,
-                        PasteOperation(data),
+                        PasteOperation(copy),
                         listOf()
                 ))
+
             } else {
                 player.sendMessage(LiteralText("wrong size"), true)
             }
@@ -99,8 +108,6 @@ class UserEditProfile {
         } else {
             player.sendMessage(LiteralText("Can't paste, you haven't copied anything"), true)
         }
-
-
 
     }
 

@@ -28,7 +28,7 @@ class ShadowBoxUpdatePacket(
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val pakkit = ShadowBoxUpdatePacket(buffer)
             context.taskQueue.execute {
-                println("Sending remote block preview to other clients")
+                //println("Sending remote block preview to other clients")
                 NetworkHandler.redirectRemoteBoxPreview(context.player as ServerPlayerEntity, pakkit)
             }
         }

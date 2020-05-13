@@ -51,7 +51,6 @@ data class ClipboardIntentPacket(
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val pakkit = ClipboardIntentPacket(buffer)
             context.taskQueue.execute {
-                println("Sending remote block preview to other clients")
                 NetworkHandler.handleCopyPaste(context.player as ServerPlayerEntity, pakkit)
             }
         }
