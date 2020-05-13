@@ -6,7 +6,7 @@
   "name": "Makkit",
   "description": "Creative Map Editor, Made Easy!",
   "authors": [
-    "Ejektaflex!"
+    "Ejektaflex"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/makkit",
@@ -20,13 +20,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "ejektaflex.makkit.common.MakkitCommon"
+      "io.ejekta.makkit.common.MakkitCommon"
     ],
     "client": [
-      "ejektaflex.makkit.client.MakkitClient"
+      "io.ejekta.makkit.client.MakkitClient"
     ],
     "modmenu": [
-      "ejektaflex.makkit.client.compat.MakkitModMenu"
+      "io.ejekta.makkit.client.compat.MakkitModMenu"
     ]
   },
   "mixins": [
