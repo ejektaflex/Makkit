@@ -18,7 +18,6 @@ internal abstract class ClipboardTool(region: EditRegion, binding: KeyStateHandl
     override fun calcSelectionBox(offset: Vec3d, box: Box) = box
 
     override fun onStartDragging(start: BoxTraceResult) {
-        println("Sending ${mode} at ${region.area.box}")
         super.onStartDragging(start)
         ClipboardIntentPacket(
                 mode,

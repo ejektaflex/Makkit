@@ -8,5 +8,6 @@ import net.minecraft.util.math.Direction
 data class CopyData(
         val data: Map<BlockPos, BlockState> = mapOf(),
         val box: Box,
+        val copySize: BlockPos,
         val dir: Direction
 )

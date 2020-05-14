@@ -1,14 +1,13 @@
 package io.ejekta.makkit.common.editor.data
 
-import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.editor.operations.PasteOperation
 import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
-import jdk.nashorn.internal.ir.Block
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
+import net.minecraft.util.BlockRotation
 import net.minecraft.util.math.*
 import kotlin.math.abs
 import java.util.*
@@ -90,23 +89,22 @@ class UserEditProfile {
      * Copied state is relative to box start
      */
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
-        val look: Vec3d = RenderHelper.getLookVector() // TODO: Actually get this
 
-        val lookDir = getLookCardinalDirection(look)
+        val lookDir = face.opposite
 
         val d1: Vec3i = lookDir.rotateYClockwise().vector
         val d2: Vec3i = Direction.UP.vector
         val d3: Vec3i = lookDir.vector
-        val copyBoxSize: Vec3i
-        val startPos: BlockPos
 
-        copyBoxSize = when (lookDir.axis) {
-            Direction.Axis.Z -> Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
-            Direction.Axis.X -> Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
+        println("COPIED SIZE: ${CopyHelper.getCopyBoxSize(copyBox, face)}")
+
+        val copyBoxSize: BlockPos = when (lookDir.axis) {
+            Direction.Axis.Z -> BlockPos(copyBox.xLength, copyBox.yLength, copyBox.zLength)
+            Direction.Axis.X -> BlockPos(copyBox.zLength, copyBox.yLength, copyBox.xLength)
             else -> throw Exception("This shouldn't happen!")
         }
 
-        startPos = when (lookDir) {
+        val startPos: BlockPos = when (lookDir) {
             Direction.NORTH -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
             Direction.EAST -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
             Direction.SOUTH -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
@@ -125,17 +123,69 @@ class UserEditProfile {
             )
         }
 
-        copyData = CopyData(stateMap, copyBox, face)
+        // Copy data is ALWAYS in, say, NORTH direction
+        copyData = CopyData(stateMap, copyBox, BlockPos(copyBoxSize), face)
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
+
+        // if we are looking north, the box is correct and we should just paste it
+        //
+
+        fun sizeRespectsDirection(size: Vec3d, forDir: Direction): Vec3d {
+            return Vec3d(
+                    size.axisValue(forDir.rotateYClockwise().axis),
+                    size.y,
+                    size.axisValue(forDir.axis)
+            )
+        }
+
+        //*
+        if (copyData != null) {
+            val cd = copyData!!
+
+            var ourSize = CopyHelper.getCopyBoxSize(pasteBox, face)
+
+            val supposedSize = CopyHelper.getCopyBoxSize(cd.box, cd.dir)
+
+            val flipped = BlockPos(supposedSize.z, supposedSize.y, supposedSize.x)
+
+            // width, Y, depth
+
+            if (ourSize != supposedSize) {
+                println("Incorrect size! us: $ourSize, copy: $supposedSize")
+
+                FocusRegionPacket(
+                        Box(
+                                pasteBox.startBlock(),
+                                pasteBox.startBlock().add(flipped)
+                        )
+                ).sendToClient(player)
+
+            }
+
+
+
+
+
+
+
+
+            //FocusRegionPacket(newBox).sendToClient(player)
+
+        }
+        return
+         //*/
 
 
 
 
         if (copyData != null) {
             val copy = copyData!!
+
+
+
 
             val oldSize = copy.box.getSize()
             val rotatedSize = Vec3d(oldSize.z, oldSize.y, oldSize.x) // flip X and Z
@@ -165,6 +215,9 @@ class UserEditProfile {
                 ))
 
             } else {
+
+                println("Incorrect rotation")
+
                 FocusRegionPacket(Box(
                         pasteBox.getStart(),
                         pasteBox.getStart().add(rotatedSize)
