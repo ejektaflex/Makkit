@@ -12,6 +12,7 @@ import net.minecraft.util.BlockRotation
 import net.minecraft.util.math.*
 import kotlin.math.abs
 import java.util.*
+import kotlin.math.absoluteValue
 import kotlin.math.sign
 
 /**
@@ -116,7 +117,7 @@ class UserEditProfile {
         val stateMap = mutableMapOf<BlockPos, BlockState>()
 
         Box(BlockPos(0, 0, 0), BlockPos(copyBoxSize)).forEachBlockCoord { x, y, z ->
-            stateMap[BlockPos(x, y, z)] = player.world.getBlockState(
+            stateMap[BlockPos(z, y, x)] = player.world.getBlockState(
                     startPos +
                             BlockPos(d1 * x) +
                             BlockPos(d2 * y) +
@@ -137,16 +138,28 @@ class UserEditProfile {
             val cd = copyData!!
 
 
+            // getCopyBox should become getLocalAxisSize
             var ourSize = CopyHelper.getCopyBoxSize(pasteBox, face)
 
             val supposedSize = CopyHelper.getCopyBoxSize(cd.box, cd.dir)
 
-            
+
             var toUse = if (face.axis == Direction.Axis.Z) {
                 ourSize
             } else {
                 supposedSize
             }
+
+            //val point = pasteBox.getFacePlane(face).resizeBy(toUse.vec3d().axisValue(face.axis).absoluteValue, face).center
+            val point = BlockPos(pasteBox.center)
+
+            val useLo = toUse.vec3d().multiply(0.5).floor()
+            val useHi = toUse.vec3d().multiply(0.5).ceil()
+
+            val newBox = Box(
+                    point.subtract(useLo),
+                    point.add(useHi)
+            )
 
 
             // width, Y, depth
@@ -156,14 +169,21 @@ class UserEditProfile {
 
                 //*
                 FocusRegionPacket(
-                        Box(
-                                pasteBox.startBlock(),
-                                pasteBox.startBlock().add(toUse)
-                        )
+                        newBox
                 ).sendToClient(player)
 
 
                  //*/
+
+            } else {
+
+                doAction(player, EditAction(
+                        player,
+                        pasteBox,
+                        face,
+                        PasteOperation(cd, otherAxis = false),
+                        listOf()
+                ))
 
             }
 

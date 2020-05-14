@@ -1,11 +1,13 @@
 package io.ejekta.makkit.common.ext
 
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
 import kotlin.math.max
 import kotlin.math.abs
 import kotlin.math.round
+import kotlin.math.ceil
 
 fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
     return Vec3d(
@@ -128,6 +130,14 @@ fun Vec3d.abs(): Vec3d {
 
 fun Vec3d.rotateClockwise(center: Vec3d): Vec3d {
     return Vec3d(center.x + center.z - z, y, x + center.z - center.x)
+}
+
+fun Vec3d.floor(): Vec3i {
+    return BlockPos(this)
+}
+
+fun Vec3d.ceil(): Vec3i {
+    return BlockPos(ceil(x), ceil(y), ceil(z))
 }
 
 fun Vec3i.rotateClockwise(center: Vec3i): Vec3i {
