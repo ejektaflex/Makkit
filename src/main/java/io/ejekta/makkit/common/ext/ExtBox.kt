@@ -26,6 +26,20 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     return Box(vecA, vecB)
 }
 
+fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
+    val start = getStart()
+    val size = getSize()
+
+    for (x in start.x.toInt() until (start.x + size.x).toInt()) {
+        for (y in start.y.toInt() until (start.y + size.y).toInt()) {
+            for (z in start.z.toInt() until (start.z + size.z).toInt()) {
+                func(x, y, z)
+            }
+        }
+    }
+
+}
+
 fun Box.offsetBy(vec3d: Vec3d, dir: Direction): Box {
     return offset(vec3d.axisMask(dir))
 }

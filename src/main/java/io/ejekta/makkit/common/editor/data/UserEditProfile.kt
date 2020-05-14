@@ -79,10 +79,10 @@ class UserEditProfile {
 
     fun getLookCardinalDirection(look: Vec3d): Direction {
         // we don't care about up or down.
-        if (abs(look.x) > abs(look.z)) {
-            return Direction.fromVector(sign(look.x).toInt(), 0, 0)!!
+        return if (abs(look.x) > abs(look.z)) {
+            Direction.fromVector(sign(look.x).toInt(), 0, 0)!!
         } else {
-            return Direction.fromVector(0, 0, sign(look.z).toInt())!!
+            Direction.fromVector(0, 0, sign(look.z).toInt())!!
         }
     }
 
@@ -92,47 +92,37 @@ class UserEditProfile {
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
         val look: Vec3d = RenderHelper.getLookVector() // TODO: Actually get this
 
-        val d1: Vec3i
+        val lookDir = getLookCardinalDirection(look)
+
+        val d1: Vec3i = lookDir.rotateYClockwise().vector
         val d2: Vec3i = Direction.UP.vector
-        val d3: Vec3i
+        val d3: Vec3i = lookDir.vector
         val copyBoxSize: Vec3i
         val startPos: BlockPos
 
-        val lookDir = getLookCardinalDirection(look)
-        when (lookDir) {
-            Direction.NORTH -> {
-                d1 = Direction.EAST.vector
-                d3 = Direction.NORTH.vector
-                copyBoxSize = Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
-                startPos = BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
-            }
-            Direction.EAST -> {
-                d1 = Direction.SOUTH.vector
-                d3 = Direction.EAST.vector
-                copyBoxSize = Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
-                startPos = BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
-            }
-            Direction.SOUTH -> {
-                d1 = Direction.WEST.vector
-                d3 = Direction.SOUTH.vector
-                copyBoxSize = Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
-                startPos = BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
-            }
-            else -> {
-                d1 = Direction.NORTH.vector
-                d3 = Direction.WEST.vector
-                copyBoxSize = Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
-                startPos = BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z2 - 1)
-            }
+        copyBoxSize = when (lookDir.axis) {
+            Direction.Axis.Z -> Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
+            Direction.Axis.X -> Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
+            else -> throw Exception("This shouldn't happen!")
+        }
+
+        startPos = when (lookDir) {
+            Direction.NORTH -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
+            Direction.EAST -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
+            Direction.SOUTH -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
+            Direction.WEST -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z2 - 1)
+            else -> throw Exception("Cannot paste when look vector is up or down")
         }
 
         val stateMap = mutableMapOf<BlockPos, BlockState>()
-        for (i in 0 until copyBoxSize.x) {
-            for (j in 0 until copyBoxSize.y) {
-                for (k in 0 until copyBoxSize.z) {
-                    stateMap[BlockPos(i, j, k)] = player.world.getBlockState(startPos + BlockPos(d1 * i) + BlockPos(d2 * j) + BlockPos(d3 * k))
-                }
-            }
+
+        Box(BlockPos(0, 0, 0), BlockPos(copyBoxSize)).forEachBlockCoord { x, y, z ->
+            stateMap[BlockPos(x, y, z)] = player.world.getBlockState(
+                    startPos +
+                            BlockPos(d1 * x) +
+                            BlockPos(d2 * y) +
+                            BlockPos(d3 * z)
+            )
         }
 
         copyData = CopyData(stateMap, copyBox, face)

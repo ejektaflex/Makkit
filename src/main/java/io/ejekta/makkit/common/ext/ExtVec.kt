@@ -41,8 +41,13 @@ operator fun Vec3d.minus(other: Vec3d): Vec3d {
     return this.subtract(other)
 }
 
+
 operator fun Vec3d.times(other: Vec3d): Vec3d {
     return this.multiply(other)
+}
+
+operator fun Vec3i.times(other: Vec3i): Vec3i {
+    return Vec3i(x * other.x, y * other.y, z * other.z)
 }
 
 operator fun Vec3d.times(num: Double): Vec3d {
