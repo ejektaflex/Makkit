@@ -5,7 +5,7 @@ import net.minecraft.util.math.*
 object CopyHelper {
 
     fun getCopyBoxSize(copyBox: Box, face: Direction): BlockPos {
-        return when (face.opposite.axis) {
+        return when (face.axis) {
             Direction.Axis.X -> BlockPos(copyBox.xLength, copyBox.yLength, copyBox.zLength)
             Direction.Axis.Z -> BlockPos(copyBox.zLength, copyBox.yLength, copyBox.xLength)
             else -> throw Exception("This shouldn't happen!")

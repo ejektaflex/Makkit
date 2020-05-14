@@ -1,5 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
+import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.editor.operations.PasteOperation
 import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.ext.*
@@ -130,43 +131,63 @@ class UserEditProfile {
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
-        // if we are looking north, the box is correct and we should just paste it
-        //
-
-        fun sizeRespectsDirection(size: Vec3d, forDir: Direction): Vec3d {
-            return Vec3d(
-                    size.axisValue(forDir.rotateYClockwise().axis),
-                    size.y,
-                    size.axisValue(forDir.axis)
-            )
-        }
 
         //*
         if (copyData != null) {
             val cd = copyData!!
 
+
             var ourSize = CopyHelper.getCopyBoxSize(pasteBox, face)
 
             val supposedSize = CopyHelper.getCopyBoxSize(cd.box, cd.dir)
 
-            val flipped = BlockPos(supposedSize.z, supposedSize.y, supposedSize.x)
+            
+            var toUse = if (face.axis == Direction.Axis.Z) {
+                ourSize
+            } else {
+                supposedSize
+            }
+
 
             // width, Y, depth
 
             if (ourSize != supposedSize) {
                 println("Incorrect size! us: $ourSize, copy: $supposedSize")
 
+                //*
                 FocusRegionPacket(
                         Box(
                                 pasteBox.startBlock(),
-                                pasteBox.startBlock().add(flipped)
+                                pasteBox.startBlock().add(toUse)
                         )
                 ).sendToClient(player)
 
+
+                 //*/
+
             }
 
+            /*
+            doAction(player, EditAction(
+                    player,
+                    pasteBox,
+                    face,
+                    PasteOperation(cd, otherAxis = false),
+                    listOf()
+            ))
+
+             */
+
+            /*
+            FocusRegionPacket(
+                    Box(
+                            pasteBox.startBlock(),
+                            pasteBox.startBlock().add(size)
+                    )
+            ).sendToClient(player)
 
 
+             */
 
 
 

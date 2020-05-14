@@ -22,17 +22,22 @@ class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() 
                 Direction.WEST
         )
 
+        println("Copy dir: ${copy.dir}, action dir: ${action.direction}")
 
 
         for (entry in copy.data) {
 
             var rotPos = entry.key
 
-            for (i in 0 until dirs.indexOf(action.direction) - dirs.indexOf(copy.dir)) {
-                rotPos = BlockPos(rotPos.rotateClockwise(1))
+            var rot = action.direction
+            var times = 0
+
+            while (rot != copy.dir) {
+                rot = rot.rotateYClockwise()
+                //times++
             }
 
-            rotPos = BlockPos(rotPos.rotateClockwise(1))
+            rotPos = BlockPos(rotPos.rotateClockwise(times))
 
             action.edit(action.box.startBlock().add(rotPos), entry.value)
         }
