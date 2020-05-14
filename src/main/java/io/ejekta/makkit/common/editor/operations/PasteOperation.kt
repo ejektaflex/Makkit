@@ -15,7 +15,6 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
     override fun calculate(action: EditAction, view: BlockView) {
 
-
         val dirs = listOf(
                 Direction.WEST,
                 Direction.NORTH,
@@ -27,23 +26,7 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
         for (entry in copy.data) {
 
-            var rotPos = entry.key
-
-            var numRots = 0
-
-            // offset by difference between picked face and copy face
-            var pickDir = action.direction
-            while (pickDir != copy.dir) {
-                pickDir = pickDir.rotateYCounterclockwise()
-                numRots++
-            }
-
-            // offset by current direction also
-            numRots += dirs.indexOf(pickDir)
-
-            for (i in 0 until numRots) {
-                rotPos = BlockPos(rotPos.rotateClockwise(Vec3i.ZERO))
-            }
+            val rotPos = BlockPos(entry.key.rotateClockwise(dirs.indexOf(action.direction)))
 
             val start = CopyHelper.getLocalAxisStartPos(action.box, action.direction)
 

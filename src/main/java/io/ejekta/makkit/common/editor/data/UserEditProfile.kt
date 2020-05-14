@@ -123,23 +123,24 @@ class UserEditProfile {
 
             val copiedSize = CopyHelper.getLocalAxisSize(cd.box, cd.dir)
 
-            val toUse = if (face.axis == Direction.Axis.Z) {
-                ourSize
-            } else {
-                copiedSize
-            }
-
-            val point = BlockPos(pasteBox.center)
-
-            val useLo = toUse.vec3d().multiply(0.5).floor()
-            val useHi = toUse.vec3d().multiply(0.5).ceil()
-
-            val newBox = Box(
-                    point.subtract(useLo),
-                    point.add(useHi)
-            )
 
             if (ourSize != copiedSize) {
+
+                val toUse = if (face.axis == Direction.Axis.Z) {
+                    ourSize
+                } else {
+                    copiedSize
+                }
+
+                val point = BlockPos(pasteBox.center)
+
+                val useLo = toUse.vec3d().multiply(0.5).floor()
+                val useHi = toUse.vec3d().multiply(0.5).ceil()
+
+                val newBox = Box(
+                        point.subtract(useLo),
+                        point.add(useHi)
+                )
                 println("Incorrect size! us: $ourSize, copy: $copiedSize")
 
                 FocusRegionPacket(
