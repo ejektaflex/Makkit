@@ -4,13 +4,12 @@ import io.ejekta.makkit.common.editor.data.CopyData
 import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.ext.rotateClockwise
-import io.ejekta.makkit.common.ext.startBlock
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3i
 import net.minecraft.world.BlockView
 
-class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() {
+class PasteOperation(val copy: CopyData) : WorldOperation() {
 
     override fun getType() = Companion.Type.PASTE
 
@@ -46,7 +45,7 @@ class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() 
                 rotPos = BlockPos(rotPos.rotateClockwise(Vec3i.ZERO))
             }
 
-            val start = CopyHelper.getCopyBoxPos(action.box, action.direction.opposite)
+            val start = CopyHelper.getLocalAxisStartPos(action.box, action.direction)
 
             action.edit(start.add(rotPos), entry.value)
         }
