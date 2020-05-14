@@ -105,7 +105,7 @@ class UserEditProfile {
             stateMap[BlockPos(x, y, z)] = player.world.getBlockState(
                     startPos +
                             BlockPos(d1 * -z) +
-                            BlockPos(d2 * -y) +
+                            BlockPos(d2 * y) +
                             BlockPos(d3 * -x)
             )
         }
