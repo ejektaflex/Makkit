@@ -25,7 +25,7 @@ class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() 
         )
 
         println("Copy dir: ${copy.dir}, action dir: ${action.direction}")
-        
+
         for (entry in copy.data) {
 
             var rotPos = entry.key
@@ -46,8 +46,7 @@ class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() 
                 rotPos = BlockPos(rotPos.rotateClockwise(Vec3i.ZERO))
             }
 
-
-            val start = CopyHelper.getCopyBoxPos(action.box, action.direction)
+            val start = CopyHelper.getCopyBoxPos(action.box, action.direction.opposite)
 
             action.edit(start.add(rotPos), entry.value)
         }

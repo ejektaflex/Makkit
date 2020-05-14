@@ -13,8 +13,7 @@ object CopyHelper {
     }
 
     fun getCopyBoxPos(copyBox: Box, face: Direction): BlockPos {
-
-        return when (face.opposite) {
+        return when (face) {
             Direction.NORTH -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
             Direction.EAST -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
             Direction.SOUTH -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
@@ -22,14 +21,5 @@ object CopyHelper {
             else -> throw Exception("Cannot paste when look vector is up or down")
         }
     }
-
-    fun getNewCopyBox(copyBox: Box, face: Direction): Box {
-        val pos = getCopyBoxPos(copyBox, face)
-        return Box(
-                pos,
-                pos.add(getCopyBoxSize(copyBox, face))
-        )
-    }
-
 
 }
