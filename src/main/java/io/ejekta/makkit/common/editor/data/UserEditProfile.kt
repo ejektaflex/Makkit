@@ -1,15 +1,18 @@
 package io.ejekta.makkit.common.editor.data
 
+import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.editor.operations.PasteOperation
 import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
+import jdk.nashorn.internal.ir.Block
+import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.*
+import kotlin.math.abs
 import java.util.*
+import kotlin.math.sign
 
 /**
     Represents data about a player and their edits etc in the world
@@ -74,12 +77,64 @@ class UserEditProfile {
         redoHistory.clear()
     }
 
+    fun getLookCardinalDirection(look: Vec3d): Direction {
+        // we don't care about up or down.
+        if (abs(look.x) > abs(look.z)) {
+            return Direction.fromVector(sign(look.x).toInt(), 0, 0)!!
+        } else {
+            return Direction.fromVector(0, 0, sign(look.z).toInt())!!
+        }
+    }
+
     /**
      * Copied state is relative to box start
      */
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
-        val copyStart = copyBox.startBlock()
-        val stateMap = copyBox.getBlockArray().map { it.subtract(copyStart) to player.world.getBlockState(it) }.toMap()
+        val look: Vec3d = RenderHelper.getLookVector() // TODO: Actually get this
+
+        val d1: Vec3i
+        val d2: Vec3i = Direction.UP.vector
+        val d3: Vec3i
+        val copyBoxSize: Vec3i
+        val startPos: BlockPos
+
+        val lookDir = getLookCardinalDirection(look)
+        when (lookDir) {
+            Direction.NORTH -> {
+                d1 = Direction.EAST.vector
+                d3 = Direction.NORTH.vector
+                copyBoxSize = Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
+                startPos = BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
+            }
+            Direction.EAST -> {
+                d1 = Direction.SOUTH.vector
+                d3 = Direction.EAST.vector
+                copyBoxSize = Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
+                startPos = BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
+            }
+            Direction.SOUTH -> {
+                d1 = Direction.WEST.vector
+                d3 = Direction.SOUTH.vector
+                copyBoxSize = Vec3i(copyBox.xLength, copyBox.yLength, copyBox.zLength)
+                startPos = BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
+            }
+            else -> {
+                d1 = Direction.NORTH.vector
+                d3 = Direction.WEST.vector
+                copyBoxSize = Vec3i(copyBox.zLength, copyBox.yLength, copyBox.xLength)
+                startPos = BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z2 - 1)
+            }
+        }
+
+        val stateMap = mutableMapOf<BlockPos, BlockState>()
+        for (i in 0 until copyBoxSize.x) {
+            for (j in 0 until copyBoxSize.y) {
+                for (k in 0 until copyBoxSize.z) {
+                    stateMap[BlockPos(i, j, k)] = player.world.getBlockState(startPos + BlockPos(d1 * i) + BlockPos(d2 * j) + BlockPos(d3 * k))
+                }
+            }
+        }
+
         copyData = CopyData(stateMap, copyBox, face)
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }

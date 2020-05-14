@@ -13,27 +13,27 @@ class PasteOperation(val copy: CopyData, otherAxis: Boolean) : WorldOperation() 
 
     override fun calculate(action: EditAction, view: BlockView) {
 
-        println("${action.direction}, ${copy.dir}")
+//        println("${action.direction}, ${copy.dir}")
+//
+//        var currFace = action.direction
+//
+//        var timesToRotate = 0
+//        while (currFace != copy.dir) {
+//            currFace = currFace.rotateYClockwise()
+//            timesToRotate++
+//        }
+//
+//        val copyMap = copy.data.map {
+//            println("I: ${it.key}, ${it.key.rotateClockwise(timesToRotate)}")
+//            BlockPos(it.key.rotateClockwise(timesToRotate)) to it.value
+//        }.toMap()
 
-        var currFace = action.direction
 
-        var timesToRotate = 0
-        while (currFace != copy.dir) {
-            currFace = currFace.rotateYClockwise()
-            timesToRotate++
-        }
+        for (entry in copy.data) {
 
-        val copyMap = copy.data.map {
-            println("I: ${it.key}, ${it.key.rotateClockwise(timesToRotate)}")
-            BlockPos(it.key.rotateClockwise(timesToRotate)) to it.value
-        }.toMap()
+//            val newPos = action.box.startBlock().add(entry.key)
 
-
-        for (entry in copyMap) {
-
-            val newPos = action.box.startBlock().add(entry.key)
-
-            action.edit(newPos, entry.value)
+            action.edit(entry.key, entry.value)
         }
 
     }

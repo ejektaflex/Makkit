@@ -49,6 +49,10 @@ operator fun Vec3d.times(num: Double): Vec3d {
     return multiply(num)
 }
 
+operator fun Vec3i.times(num: Int): Vec3i {
+    return Vec3i(x * num, y * num, z * num)
+}
+
 fun Vec3d.round(): Vec3d {
     return Vec3d(round(x), round(y), round(z))
 }
