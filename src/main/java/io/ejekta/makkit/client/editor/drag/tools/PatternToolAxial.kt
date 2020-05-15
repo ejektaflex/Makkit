@@ -35,7 +35,7 @@ internal class PatternToolAxial(
     override fun onStopDragging(stop: BoxTraceResult) {
         val chosen = updateState(updateSelection = false)
         if (chosen != null) {
-            region.doOperation(PatternOperation(), chosen, region.selection, stop)
+            region.doOperation(PatternOperation(region.selection, chosen), chosen, chosen, stop)
             region.selection = chosen
         }
     }

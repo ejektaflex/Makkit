@@ -40,6 +40,11 @@ class UserEditProfile {
                 it.syncToWorldState(UndoRedoMode.UNDO)
                 it.revertCommit(player.world)
                 it.select(player, UndoRedoMode.UNDO)
+                /*
+                if (undoHistory.isNotEmpty()) {
+                    FocusRegionPacket(undoHistory.peek().box).sendToClient(player)
+                }
+                 */
                 redoHistory.push(it)
             }
             true
