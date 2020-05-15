@@ -19,22 +19,13 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
             return Direction.fromHorizontal((this.horizontal + times))
         }
 
-        val dirs = listOf(
-                Direction.WEST,
-                Direction.NORTH,
-                Direction.EAST,
-                Direction.SOUTH
-        )
-
-        println("Copy dir: ${copy.dir}, action dir: ${action.direction}")
-
         for (entry in copy.data) {
-            
-            val timesToRotateClockwise = dirs.indexOf(action.direction) - 1
+
+            val timesToRotateClockwise = (action.direction.horizontal + 3) % 4
 
             // Handle block position rotation
 
-            val rotPos = BlockPos(entry.key.rotateClockwise(timesToRotateClockwise + 1))
+            val rotPos = BlockPos(entry.key.rotateClockwise(timesToRotateClockwise))
 
             val boxStartPos = CopyHelper.getLocalAxisStartPos(action.box, action.direction)
 
@@ -42,18 +33,21 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
             var state = entry.value
 
+
+            var stateRotate = timesToRotateClockwise // this is wrong
+
             if (state.contains(Properties.FACING)) {
                 state = state.with(
                         Properties.FACING,
                         state.get(Properties.FACING)
-                                .rotatedClockwise(timesToRotateClockwise))
+                                .rotatedClockwise(stateRotate))
             }
 
             if (state.contains(Properties.HORIZONTAL_FACING)) {
                 state = state.with(
                         Properties.HORIZONTAL_FACING,
                         state.get(Properties.HORIZONTAL_FACING)
-                                .rotatedClockwise(timesToRotateClockwise)
+                                .rotatedClockwise(stateRotate)
                 )
             }
 

@@ -75,19 +75,15 @@ class UserEditProfile {
         redoHistory.clear()
     }
 
-    fun getLookCardinalDirection(look: Vec3d): Direction {
-        // we don't care about up or down.
-        return if (abs(look.x) > abs(look.z)) {
-            Direction.fromVector(sign(look.x).toInt(), 0, 0)!!
-        } else {
-            Direction.fromVector(0, 0, sign(look.z).toInt())!!
-        }
-    }
-
     /**
      * Copied state is relative to box start
      */
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
+
+        if (face.axis == Direction.Axis.Y) {
+            player.sendMessage(LiteralText("You have to look at a side face to copy a selection!"), true)
+            return
+        }
 
         val d1: Vec3i = face.rotateYClockwise().vector
         val d2: Vec3i = Direction.UP.vector
@@ -116,13 +112,17 @@ class UserEditProfile {
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
+        if (face.axis == Direction.Axis.Y) {
+            player.sendMessage(LiteralText("You have to look at a side face to paste a selection!"), true)
+            return
+        }
+
         if (copyData != null) {
             val cd = copyData!!
 
             val ourSize = CopyHelper.getLocalAxisSize(pasteBox, face)
 
             val copiedSize = CopyHelper.getLocalAxisSize(cd.box, cd.dir)
-
 
             if (ourSize != copiedSize) {
 
