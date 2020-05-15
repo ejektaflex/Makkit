@@ -6,7 +6,7 @@ import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.common.ext.*
-import io.ejekta.makkit.common.editor.operations.RepeatOperation
+import io.ejekta.makkit.common.editor.operations.PatternOperation
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
@@ -34,11 +34,9 @@ internal class PatternToolAxial(
 
     override fun onStopDragging(stop: BoxTraceResult) {
         val chosen = updateState(updateSelection = false)
-
-        println("Chosen is ${chosen?.getSize()}, region is ${region.selection.getSize()}")
         if (chosen != null) {
-            println("Doing operation repeat")
-            region.doOperation(RepeatOperation(region.selection, chosen), chosen, region.selection)
+            region.doOperation(PatternOperation(), chosen, region.selection)
+            region.selection = chosen
         }
     }
 

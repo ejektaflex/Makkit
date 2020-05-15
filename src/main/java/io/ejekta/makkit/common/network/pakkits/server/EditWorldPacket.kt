@@ -20,10 +20,15 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
 class EditWorldPacket(
-        var selectionBox: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        // The box that we want to edit
+        var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        // The box that we should highlight when moving backwards in history
         var undoBox: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        // The side of the edit box that we are selecting
         var side: Direction = Direction.NORTH,
+        // Which operation we are calling on the selection
         var op: WorldOperation = FillBlocksOperation(),
+        // Which items we are using for the operation
         var palette: List<ItemStack> = listOf()
 ) : ServerBoundPakkit {
 
@@ -35,7 +40,7 @@ class EditWorldPacket(
 
     override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {
-            writeIntBox(selectionBox)
+            writeIntBox(box)
             writeIntBox(undoBox)
             writeEnum(side)
             writeEnum(op.getType())
@@ -48,7 +53,7 @@ class EditWorldPacket(
     }
 
     override fun read(buf: PacketByteBuf) {
-        selectionBox = buf.readIntBox()
+        box = buf.readIntBox()
         undoBox = buf.readIntBox()
         side = buf.readEnum()
         val opType = buf.readEnum<WorldOperation.Companion.Type>()

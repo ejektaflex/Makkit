@@ -15,7 +15,7 @@ abstract class WorldOperation {
         enum class Type(val clazz: KClass<out WorldOperation>) {
             SET(FillBlocksOperation::class),
             WALLS(FillWallsOperation::class),
-            REPEAT(RepeatOperation::class),
+            PATTERN(PatternOperation::class),
             PASTE(PasteOperation::class)
         }
 

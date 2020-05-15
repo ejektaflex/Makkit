@@ -12,7 +12,7 @@ import net.minecraft.world.World
 
 data class EditAction(
         val player: ServerPlayerEntity,
-        val selectionBox: Box,
+        val box: Box,
         val undoBox: Box,
         val direction: Direction,
         val operation: WorldOperation,
@@ -68,7 +68,7 @@ data class EditAction(
     fun select(player: ServerPlayerEntity, mode: UndoRedoMode) {
         val boxToUse = when(mode) {
             UndoRedoMode.UNDO -> undoBox
-            else -> selectionBox
+            else -> box
         }
         FocusRegionPacket(boxToUse).sendToClient(player)
     }

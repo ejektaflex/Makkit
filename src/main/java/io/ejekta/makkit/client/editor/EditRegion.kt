@@ -81,12 +81,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
 
-    fun doOperation(operation: WorldOperation, selectionBox: Box = selection, undoBox: Box = selectionBox) {
-        val trace = selectionBox.trace()
+    fun doOperation(operation: WorldOperation, editBox: Box = selection, undoBox: Box = editBox) {
+        val trace = editBox.trace()
         if (trace != BoxTraceResult.EMPTY) {
-            println("Sending packet ${trace}")
             EditWorldPacket(
-                    selectionBox,
+                    editBox,
                     undoBox,
                     trace.dir,
                     operation,

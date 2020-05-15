@@ -23,9 +23,7 @@ object NetworkHandler {
     private val userProfiles = mutableMapOf<String, UserEditProfile>()
 
     fun getProfileOf(player: ServerPlayerEntity): UserEditProfile {
-        val uuid = player.uuidAsString
-
-        return userProfiles.getOrPut(uuid) {
+        return userProfiles.getOrPut(player.uuidAsString) {
             UserEditProfile()
         }
     }
@@ -39,7 +37,7 @@ object NetworkHandler {
 
         val action = EditAction(
                 player,
-                intent.selectionBox,
+                intent.box,
                 intent.undoBox,
                 intent.side,
                 intent.op,
