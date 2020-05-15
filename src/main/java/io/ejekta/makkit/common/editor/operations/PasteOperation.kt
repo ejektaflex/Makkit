@@ -33,8 +33,9 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
             var state = entry.value
 
-
-            var stateRotate = timesToRotateClockwise // this is wrong
+            // Amount of rotation to blockstates is modified by copy direction
+            // since we never put blockstate rotation into a common format
+            val stateRotate = timesToRotateClockwise  + copy.dir.horizontal - 1
 
             if (state.contains(Properties.FACING)) {
                 state = state.with(
