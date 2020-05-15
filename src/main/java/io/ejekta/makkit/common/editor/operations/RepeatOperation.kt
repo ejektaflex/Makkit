@@ -2,6 +2,7 @@ package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.ext.getBlockArray
+import io.ejekta.makkit.common.ext.getSize
 import io.ejekta.makkit.common.ext.getStart
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -9,12 +10,16 @@ import net.minecraft.world.BlockView
 
 
 
-class RepeatOperation(val boxBefore: Box) : WorldOperation() {
+class RepeatOperation(val boxBefore: Box, val afterBox: Box) : WorldOperation() {
     override fun getType() = Companion.Type.REPEAT
 
     override fun calculate(action: EditAction, view: BlockView) {
         val startPos = BlockPos(boxBefore.getStart())
-        val afterBlocks = action.box.getBlockArray()
+        val afterBlocks = afterBox.getBlockArray()
+
+        println("Edit Action took in selection with ${action.selectionBox.getSize()}")
+
+        println("Operating on this many blocks: ${boxBefore.getBlockArray().size}, ${afterBlocks.size}")
         
         for (blockPos in afterBlocks) {
             val posRel = blockPos.subtract(startPos)

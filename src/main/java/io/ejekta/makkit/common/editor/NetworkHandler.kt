@@ -39,7 +39,8 @@ object NetworkHandler {
 
         val action = EditAction(
                 player,
-                intent.box,
+                intent.selectionBox,
+                intent.undoBox,
                 intent.side,
                 intent.op,
                 // TODO will crash if item is not a BlockItem, change this eventually

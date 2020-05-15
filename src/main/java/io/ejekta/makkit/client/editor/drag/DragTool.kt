@@ -7,7 +7,7 @@ import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
-import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
+import io.ejekta.makkit.common.ext.trace
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
@@ -30,7 +30,9 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
      * @param offset The position of the cursor
      * @param box The starting box region
      */
-    abstract fun calcSelectionBox(offset: Vec3d, box: Box): Box
+    abstract fun getPreviewBox(offset: Vec3d, box: Box): Box
+
+    abstract fun getSelectionBox(offset: Vec3d, oldSelection: Box, preview: Box): Box
 
     /**
      * Calculates the position of the drag cursor. May also be snapped to a block grid
@@ -47,25 +49,26 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         // Do nothing by default
     }
 
-    fun setSelectionBox(): Box? {
-        val offset = getCursorOffset(true)
-        return if (offset != null) {
-            val box = calcSelectionBox(offset, region.area.box)
-            region.setArea(box)
-            box
-        } else {
-            null
+    fun updateState(updateSelection: Boolean = true): Box? {
+        return getCursorOffset(true)?.let {
+            val preview = getPreviewBox(it, region.selection)
+            if (updateSelection) {
+                region.selection = getSelectionBox(it, region.selection, preview)
+            }
+            preview
         }
     }
 
+
+
     open fun onStopDragging(stop: BoxTraceResult) {
-        val box = setSelectionBox()
+        val box = updateState(updateSelection = true)
     }
 
     fun update() {
         // Try to start dragging
         if (dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
-            dragStart = region.area.trace(reverse = InputState.isBackSelecting)
+            dragStart = region.selection.trace(reverse = InputState.isBackSelecting)
             if (dragStart != BoxTraceResult.EMPTY) {
                 onStartDragging(dragStart)
             }

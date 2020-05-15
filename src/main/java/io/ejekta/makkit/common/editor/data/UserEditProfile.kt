@@ -39,7 +39,7 @@ class UserEditProfile {
             undoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.UNDO)
                 it.revertCommit(player.world)
-                it.select(player)
+                it.select(player, UndoRedoMode.UNDO)
                 redoHistory.push(it)
             }
             true
@@ -53,7 +53,7 @@ class UserEditProfile {
             redoHistory.pop().let {
                 it.syncToWorldState(UndoRedoMode.REDO)
                 it.commit(player.world)
-                it.select(player)
+                it.select(player, UndoRedoMode.REDO)
                 undoHistory.push(it)
             }
             true
@@ -148,6 +148,7 @@ class UserEditProfile {
             } else {
                 doAction(player, EditAction(
                         player,
+                        pasteBox,
                         pasteBox,
                         face,
                         PasteOperation(cd),

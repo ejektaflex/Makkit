@@ -52,8 +52,12 @@ internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyState
         }
     }
 
+    override fun getSelectionBox(offset: Vec3d, oldSelection: Box, preview: Box): Box {
+        return preview
+    }
+
     override fun onDrawPreview(offset: Vec3d) {
-        preview.box = calcSelectionBox(offset, region.area.box)
+        preview.box = getPreviewBox(offset, region.selection)
 
         preview.draw()
 

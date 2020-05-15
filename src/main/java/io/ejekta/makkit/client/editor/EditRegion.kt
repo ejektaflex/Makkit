@@ -8,7 +8,6 @@ import io.ejekta.makkit.client.editor.drag.tools.ResizeToolAxial
 import io.ejekta.makkit.client.editor.drag.tools.ResizeToolSymmetric
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
-import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
@@ -23,14 +22,20 @@ import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
 
-    val area = RenderBox().apply {
+    var selection: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+        set(value) {
+            field = value
+            ShadowBoxUpdatePacket(value).sendToServer()
+        }
+
+    private val selectionRenderer = RenderBox().apply {
         fillColor = RenderColor.GREEN.toAlpha(.4f)
         edgeColor = RenderColor.GREEN
     }
 
-    fun setArea(box: Box) {
-        area.box = box
-        ShadowBoxUpdatePacket(box).sendToServer()
+    fun renderSelection() {
+        selectionRenderer.box = selection
+        selectionRenderer.draw()
     }
 
     private var tools = mutableListOf(
@@ -44,16 +49,16 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
-        setArea(Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz)))
+        selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
     fun centerOn(pos: BlockPos) {
-        setArea(Box(pos, pos.add(1, 1, 1)))
+        selection = Box(pos, pos.add(1, 1, 1))
     }
 
     fun tryScrollFace(amt: Double) {
         if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
-            val result = trace()
+            val result = selection.trace()
 
             if (result == BoxTraceResult.EMPTY) {
                 return
@@ -61,13 +66,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             val others = result.dir.otherAxisDirections()
 
-            var boxProto = area.box
+            var boxProto = selection
 
             others.forEach { dir ->
                 boxProto = boxProto.resizeBy(amt, dir)
             }
 
-            setArea(boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0)))
+            selection = boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0))
         }
     }
 
@@ -75,15 +80,14 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         tools.forEach { tool -> tool.update() }
     }
 
-    private fun trace(): BoxTraceResult {
-        return area.trace(InputState.isBackSelecting)
-    }
 
-    fun doOperation(operation: WorldOperation) {
-        val trace = trace()
+    fun doOperation(operation: WorldOperation, selectionBox: Box = selection, undoBox: Box = selectionBox) {
+        val trace = selectionBox.trace()
         if (trace != BoxTraceResult.EMPTY) {
+            println("Sending packet ${trace}")
             EditWorldPacket(
-                    area.box,
+                    selectionBox,
+                    undoBox,
                     trace.dir,
                     operation,
                     listOf(MinecraftClient.getInstance().player!!.mainHandStack)
@@ -92,7 +96,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun draw() {
-        area.draw()
+        renderSelection()
 
         val anyToolsDragging = tools.any { it.isDragging() }
 
@@ -103,10 +107,10 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             }
         } else {
             // default state when no drag tool is being used
-            val hit = trace()
+            val hit = selection.trace()
             if (hit != BoxTraceResult.EMPTY) {
-                area.drawFace(hit.dir, RenderColor.YELLOW.toAlpha(.3f))
-                area.drawAxisSizes()
+                selectionRenderer.drawFace(hit.dir, RenderColor.YELLOW.toAlpha(.3f))
+                selectionRenderer.drawAxisSizes()
             }
         }
     }

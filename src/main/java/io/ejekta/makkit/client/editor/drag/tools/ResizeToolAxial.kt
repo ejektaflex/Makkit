@@ -17,7 +17,7 @@ internal class ResizeToolAxial(
         return super.getCursorOffset(snapped)?.dirMask(dragStart.dir)
     }
 
-    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
+    override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         val shrinkVec = offset.dirMask(dragStart.dir.opposite)
         return box.shrinkSide(shrinkVec, dragStart.dir)
     }

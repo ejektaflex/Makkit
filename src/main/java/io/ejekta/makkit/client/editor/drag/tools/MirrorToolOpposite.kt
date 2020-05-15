@@ -29,7 +29,7 @@ internal class MirrorToolOpposite(
         return super.getCursorOffset(snapped)?.axisMask(dragStart.dir)
     }
 
-    override fun calcSelectionBox(offset: Vec3d, box: Box): Box {
+    override fun getPreviewBox(offset: Vec3d, box: Box): Box {
 
         mirrorDist = offset.axisValue(dragStart.dir.axis).roundToInt().absoluteValue
 

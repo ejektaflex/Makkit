@@ -39,8 +39,12 @@ internal abstract class DualAxisDragTool(region: EditRegion, binding: KeyStateHa
         )
     }
 
+    override fun getSelectionBox(offset: Vec3d, oldSelection: Box, preview: Box): Box {
+        return preview
+    }
+
     override fun onDrawPreview(offset: Vec3d) {
-        preview.box = calcSelectionBox(offset, region.area.box)
+        preview.box = getPreviewBox(offset, region.selection)
         if (region.drawDragPlane) {
             plane.draw(RenderColor.PINK.toAlpha(0.2f))
         }

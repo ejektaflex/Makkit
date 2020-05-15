@@ -20,7 +20,8 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
 class EditWorldPacket(
-        var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        var selectionBox: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        var undoBox: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
         var side: Direction = Direction.NORTH,
         var op: WorldOperation = FillBlocksOperation(),
         var palette: List<ItemStack> = listOf()
@@ -34,7 +35,8 @@ class EditWorldPacket(
 
     override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {
-            writeIntBox(box)
+            writeIntBox(selectionBox)
+            writeIntBox(undoBox)
             writeEnum(side)
             writeEnum(op.getType())
             writeString(gson.toJson(op, op.getType().clazz.java))
@@ -46,7 +48,8 @@ class EditWorldPacket(
     }
 
     override fun read(buf: PacketByteBuf) {
-        box = buf.readIntBox()
+        selectionBox = buf.readIntBox()
+        undoBox = buf.readIntBox()
         side = buf.readEnum()
         val opType = buf.readEnum<WorldOperation.Companion.Type>()
         op = gson.fromJson(buf.readString(), opType.clazz.java)

@@ -8,7 +8,7 @@ class FillBlocksOperation() : WorldOperation() {
     override fun getType() = Companion.Type.SET
 
     override fun calculate(action: EditAction, view: BlockView) {
-        for (pos in action.box.getBlockArray()) {
+        for (pos in action.selectionBox.getBlockArray()) {
             action.edit(pos, action.palette.random())
         }
     }

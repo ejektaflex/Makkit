@@ -24,7 +24,7 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
             val rotPos = BlockPos(entry.key.rotateClockwise(timesToRotateClockwise))
 
-            val boxStartPos = CopyHelper.getLocalAxisStartPos(action.box, action.direction)
+            val boxStartPos = CopyHelper.getLocalAxisStartPos(action.selectionBox, action.direction)
 
             // Handle block state rotation
 

@@ -15,21 +15,21 @@ internal abstract class ClipboardTool(region: EditRegion, binding: KeyStateHandl
 
     abstract val mode: ClipboardMode
 
-    override fun calcSelectionBox(offset: Vec3d, box: Box) = box
+    override fun getPreviewBox(offset: Vec3d, box: Box) = box
 
     override fun onStartDragging(start: BoxTraceResult) {
         super.onStartDragging(start)
         ClipboardIntentPacket(
                 mode,
                 dragStart.dir,
-                region.area.box
+                region.selection
         ).sendToServer()
     }
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
         preview.draw()
-        preview.drawNearAxisLabels(region.area.box.getStart())
+        preview.drawNearAxisLabels(region.selection.getStart())
     }
 
 }
