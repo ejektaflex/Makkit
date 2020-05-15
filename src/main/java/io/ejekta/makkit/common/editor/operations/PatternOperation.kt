@@ -9,7 +9,7 @@ import net.minecraft.world.BlockView
 
 
 
-class PatternOperation() : WorldOperation() {
+class PatternOperation : WorldOperation() {
     override fun getType() = Companion.Type.PATTERN
 
     override fun calculate(action: EditAction, view: BlockView) {
