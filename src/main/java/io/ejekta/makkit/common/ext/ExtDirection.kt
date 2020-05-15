@@ -16,6 +16,10 @@ fun Direction.otherAxisDirections(): List<Direction> {
     }
 }
 
+fun Direction.rotatedClockwise(times: Int): Direction {
+    return Direction.fromHorizontal((this.horizontal + times))
+}
+
 fun Direction.vec3d(): Vec3d {
     return Vec3d(unitVector)
 }

@@ -75,9 +75,7 @@ class UserEditProfile {
         redoHistory.clear()
     }
 
-    /**
-     * Copied state is relative to box start
-     */
+
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
 
         if (face.axis == Direction.Axis.Y) {
@@ -110,6 +108,7 @@ class UserEditProfile {
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }
 
+    
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
         if (face.axis == Direction.Axis.Y) {
@@ -141,6 +140,7 @@ class UserEditProfile {
                         point.subtract(useLo),
                         point.add(useHi)
                 )
+
                 println("Incorrect size! us: $ourSize, copy: $copiedSize")
 
                 FocusRegionPacket(
@@ -148,7 +148,6 @@ class UserEditProfile {
                 ).sendToClient(player)
 
             } else {
-
                 doAction(player, EditAction(
                         player,
                         pasteBox,
