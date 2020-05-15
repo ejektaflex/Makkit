@@ -1,6 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
-import io.ejekta.makkit.common.editor.operations.PasteOperation
+import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
 import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
@@ -8,9 +8,7 @@ import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.*
-import kotlin.math.abs
 import java.util.*
-import kotlin.math.sign
 
 /**
     Represents data about a player and their edits etc in the world
@@ -108,7 +106,7 @@ class UserEditProfile {
         player.sendMessage(LiteralText("Copied data to clipboard!"), true)
     }
 
-    
+
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
 
         if (face.axis == Direction.Axis.Y) {

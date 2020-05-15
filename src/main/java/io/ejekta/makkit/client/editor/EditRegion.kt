@@ -15,6 +15,7 @@ import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.editor.operations.WorldOperation
+import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -25,6 +26,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     val area = RenderBox().apply {
         fillColor = RenderColor.GREEN.toAlpha(.4f)
         edgeColor = RenderColor.GREEN
+    }
+
+    fun setArea(box: Box) {
+        area.box = box
+        ShadowBoxUpdatePacket(box).sendToServer()
     }
 
     private var tools = mutableListOf(
@@ -38,11 +44,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
-        area.box = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
+        setArea(Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz)))
     }
 
     fun centerOn(pos: BlockPos) {
-        area.box = Box(pos, pos.add(1, 1, 1))
+        setArea(Box(pos, pos.add(1, 1, 1)))
     }
 
     fun tryScrollFace(amt: Double) {
@@ -61,7 +67,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 boxProto = boxProto.resizeBy(amt, dir)
             }
 
-            area.box = boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0))
+            setArea(boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0)))
         }
     }
 

@@ -1,15 +1,14 @@
-package io.ejekta.makkit.common.editor.operations
+package io.ejekta.makkit.common.editor.operations.serverside
 
 import io.ejekta.makkit.common.editor.data.CopyData
 import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.editor.data.EditAction
+import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.rotateClockwise
 import io.ejekta.makkit.common.ext.rotatedClockwise
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Direction
 import net.minecraft.world.BlockView
-import kotlin.math.max
 
 class PasteOperation(val copy: CopyData) : WorldOperation() {
 

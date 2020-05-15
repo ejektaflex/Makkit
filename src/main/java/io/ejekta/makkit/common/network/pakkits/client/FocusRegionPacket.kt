@@ -30,7 +30,7 @@ data class FocusRegionPacket(
             context.taskQueue.execute {
                 if (MakkitClient.config.historyHighlighting) {
                     MakkitClient.getOrCreateRegion().apply {
-                        area.box = pakkit.box
+                        setArea(pakkit.box)
                     }
                 }
             }

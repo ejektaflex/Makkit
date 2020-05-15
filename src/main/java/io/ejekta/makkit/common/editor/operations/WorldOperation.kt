@@ -1,6 +1,7 @@
 package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
+import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
 import net.minecraft.world.BlockView
 import kotlin.reflect.KClass
 

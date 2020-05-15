@@ -51,22 +51,15 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
         val offset = getCursorOffset(true)
         return if (offset != null) {
             val box = calcSelectionBox(offset, region.area.box)
-            region.area.box = box
+            region.setArea(box)
             box
         } else {
             null
         }
     }
 
-    fun sendSelectionUpdate(box: Box) {
-        ShadowBoxUpdatePacket(box).sendToServer()
-    }
-
     open fun onStopDragging(stop: BoxTraceResult) {
         val box = setSelectionBox()
-        box?.let {
-            sendSelectionUpdate(it)
-        }
     }
 
     fun update() {
