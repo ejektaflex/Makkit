@@ -16,7 +16,7 @@ data class EditAction(
         val undoBox: Box,
         val direction: Direction,
         val operation: WorldOperation,
-        val palette: List<BlockState>
+        val palette: BlockPalette
 ) {
     // Key: Position. Value: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()

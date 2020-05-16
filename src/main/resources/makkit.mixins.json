@@ -4,6 +4,7 @@
   "package": "io.ejekta.makkit.client.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ItemBucketAccessor"
   ],
   "client": [
     "BoxMixin",

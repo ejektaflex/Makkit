@@ -50,8 +50,9 @@ object MakkitKeys {
         }
 
         multiPalette.setKeyDown {
-            val holding = MinecraftClient.getInstance().player?.mainHandStack
-            holding?.let { ItemPalette.addToPalette(it) }
+            val inv = MinecraftClient.getInstance().player?.inventory
+            val slot = inv?.selectedSlot
+            slot?.let { ClientPalette.addToPalette(inv.mainHandStack, it) }
         }
 
     }

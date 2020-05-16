@@ -157,7 +157,7 @@ class UserEditProfile {
                         pasteBox,
                         face,
                         PasteOperation(cd),
-                        listOf()
+                        BlockPalette(listOf(), weighted = false, randomRotate = false, defaultDir = Direction.UP)
                 ))
             }
 

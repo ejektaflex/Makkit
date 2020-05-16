@@ -28,6 +28,10 @@ class EditWorldPacket(
         var side: Direction = Direction.NORTH,
         // Which operation we are calling on the selection
         var op: WorldOperation = FillBlocksOperation(),
+        // Whether items in a palette should be weighted based on their stack sizes
+        var weightedPalette: Boolean = false,
+        // Whether rotatable blocks should be randomly rotated
+        var randomRotate: Boolean = false,
         // Which items we are using for the operation
         var palette: List<ItemStack> = listOf()
 ) : ServerBoundPakkit {
@@ -45,6 +49,8 @@ class EditWorldPacket(
             writeEnum(side)
             writeEnum(op.getType())
             writeString(gson.toJson(op, op.getType().clazz.java))
+            writeBoolean(weightedPalette)
+            writeBoolean(randomRotate)
             writeInt(palette.size)
             for (item in palette) {
                 writeItemStack(item)
@@ -58,6 +64,8 @@ class EditWorldPacket(
         side = buf.readEnum()
         val opType = buf.readEnum<WorldOperation.Companion.Type>()
         op = gson.fromJson(buf.readString(), opType.clazz.java)
+        weightedPalette = buf.readBoolean()
+        randomRotate = buf.readBoolean()
         palette = mutableListOf<ItemStack>().apply {
             val paletteSize = buf.readInt()
             for (i in 0 until paletteSize) {

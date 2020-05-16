@@ -3,7 +3,7 @@ package io.ejekta.makkit.client
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.InputState
-import io.ejekta.makkit.client.editor.input.ItemPalette
+import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.keys.KeyRemapper
@@ -45,15 +45,16 @@ class MakkitClient : ClientModInitializer {
 
         if (MakkitKeys.multiPalette.isDown) {
             val holding = MinecraftClient.getInstance().player?.mainHandStack
+            val slot = MinecraftClient.getInstance().player?.inventory?.selectedSlot
 
-            if (holding != null) {
-                ItemPalette.addToPalette(holding)
+            if (holding != null && slot != null) {
+                ClientPalette.addToPalette(holding, slot)
             } else {
-                ItemPalette.clearPalette()
+                ClientPalette.clearPalette()
             }
 
         } else {
-            ItemPalette.clearPalette()
+            ClientPalette.clearPalette()
         }
 
 

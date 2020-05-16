@@ -6,17 +6,18 @@ import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemStack
 
-object ItemPalette {
+object ClientPalette {
 
-    private val stacks = mutableMapOf<String, ItemStack>()
+    private val stacks = mutableMapOf<Int, ItemStack>()
 
-    fun addToPalette(stack: ItemStack) {
+    fun addToPalette(stack: ItemStack, slot: Int) {
         println("Adding to palette: $stack")
-        stacks[stack.identifier.toString()] = stack
+        stacks[slot] = stack
     }
 
-    fun hasStack(stack: ItemStack): Boolean {
-        return stack.identifier.toString() in stacks.keys
+
+    fun hasStack(slot: Int): Boolean {
+        return slot in stacks.keys
     }
 
     fun getSafePalette(): List<ItemStack> {

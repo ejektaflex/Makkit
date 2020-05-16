@@ -22,6 +22,25 @@ val ItemStack.identifier: Identifier
 val ItemStack.id: Identifier
     get() = identifier
 
+fun <T : Any> List<T>.weightedRandomBy(func: T.() -> Int): T {
+    val mapped = map { it to func(it) }.toMap()
+    return mapped.weightedRandom()
+}
+
+fun <T : Any> Map<T, Int>.weightedRandom(): T {
+    val sum = values.sum()
+
+    var point = (0..sum).random()
+
+    for ((item, weight) in this) {
+        if (point <= weight) {
+            return item
+        }
+        point -= weight
+    }
+    return keys.last()
+}
+
 
 // Inlining here may improve performance simply because this gets called very often
 

@@ -17,13 +17,19 @@ class MakkitConfig() {
 
     var historyHighlighting = false
 
+    var weightedPalette = false
+
+    var randomRotate = false
+
     fun buildScreen(): Screen {
         val builder = ConfigBuilder.create()
                 //.setParentScreen(MinecraftClient.getInstance().currentScreen)
                 .setTitle(LiteralText("Makkit"))
                 .setSavingRunnable(::onSave)
 
-        val general = builder.getOrCreateCategory(LiteralText("Makkit"))
+        val general = builder.getOrCreateCategory(LiteralText("General"))
+
+        val operations = builder.getOrCreateCategory(LiteralText("Operations"))
 
         val entryBuilder = builder.entryBuilder()
 
@@ -49,6 +55,30 @@ class MakkitConfig() {
                 }.build()
         )
 
+
+
+        operations.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Palette Weighting"),
+                        weightedPalette
+                ).setDefaultValue(false).setTooltip(
+                        LiteralText("If true, fill operations will be weighted based on the size of the stacks in your palette")
+                ).setSaveConsumer {
+                    weightedPalette = it
+                }.build()
+        )
+
+        operations.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Random Rotation"),
+                        randomRotate
+                ).setDefaultValue(false).setTooltip(
+                        LiteralText("If true, fill operations will rotate blocks randomly, if possible")
+                ).setSaveConsumer {
+                    randomRotate = it
+                }.build()
+        )
+
         return builder.build()
     }
 
@@ -59,7 +89,6 @@ class MakkitConfig() {
     companion object {
         val configPath = FabricLoader.INSTANCE.configDirectory.toPath().resolve(MakkitCommon.ID + ".json")
 
-
         private val GSON = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .setPrettyPrinting()
@@ -67,10 +96,13 @@ class MakkitConfig() {
 
         fun load(): MakkitConfig {
 
+            /*
             if (!Files.exists(configPath)) {
                 println("Oh no")
                 save()
             }
+
+             */
 
             return try {
                 GSON.fromJson(
@@ -80,6 +112,7 @@ class MakkitConfig() {
             } catch (e: Exception) {
                 println("Could not load MakkitConfig, using a default config..")
                 e.printStackTrace()
+                save()
                 MakkitConfig()
             }
 
@@ -89,7 +122,7 @@ class MakkitConfig() {
             configPath.toFile().writeText(
                     GSON.toJson(MakkitClient.config, MakkitConfig::class.java)
             )
-            MakkitClient.config = load()
+            //MakkitClient.config = load()
         }
     }
 

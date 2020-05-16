@@ -1,5 +1,7 @@
 package io.ejekta.makkit.client.editor
 
+import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.tools.MirrorToolOpposite
 import io.ejekta.makkit.client.editor.drag.tools.MoveToolPlanar
@@ -8,7 +10,7 @@ import io.ejekta.makkit.client.editor.drag.tools.ResizeToolAxial
 import io.ejekta.makkit.client.editor.drag.tools.ResizeToolSymmetric
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
-import io.ejekta.makkit.client.editor.input.ItemPalette
+import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
@@ -93,7 +95,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     undoBox,
                     trace.dir,
                     operation,
-                    ItemPalette.getSafePalette()
+                    MakkitClient.config.weightedPalette,
+                    MakkitClient.config.randomRotate,
+                    ClientPalette.getSafePalette()
             ).sendToServer()
         }
     }

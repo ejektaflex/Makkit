@@ -4,7 +4,7 @@ An in-world editor for Minecraft.
 
 Makkit (pronounced Make-it) is a lightweight creative mod world
 editing tool, made for Fabric on Minecraft v1.16+. It's meant to make
-a lot of simple operations quicker, while being easy to use.
+a lot of simple operations quicker, while being easy to use!
 
 
 ### Features
@@ -28,3 +28,16 @@ in a certain direction
 Makkit is still in Beta, so there might be some niche bugs. I try to test
 everything extensively before each release, so releases should be quite
 stable. Even if something does go wrong, you can always press undo!
+
+
+### What about "X"?
+
+While Makkit intends to make creative mode editing easier, it can't do
+everything. It tries to do most common world editing features in a very
+intuitive way, but it isn't a replacement for other creative mods like 
+[WorldEdit](https://www.curseforge.com/minecraft/mc-mods/worldedit).
+Rather, you should use them both together!
+
+In the future, I plan on adding some compatibility with WorldEdit (e.g. 
+letting your selection box act as a WorldEdit selection box). Stay tuned!
+

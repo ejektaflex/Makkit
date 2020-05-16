@@ -1,5 +1,6 @@
 package io.ejekta.makkit.common.editor
 
+import io.ejekta.makkit.common.editor.data.BlockPalette
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.data.UserEditProfile
 import io.ejekta.makkit.common.enum.ClipboardMode
@@ -41,14 +42,7 @@ object NetworkHandler {
                 intent.undoBox,
                 intent.side,
                 intent.op,
-                // TODO will crash if item is not a BlockItem, change this eventually
-                intent.palette.map {
-                    if (it.item == Items.AIR) {
-                        Blocks.AIR.defaultState
-                    } else {
-                        (it.item as BlockItem).block.defaultState
-                    }
-                }
+                BlockPalette(intent.palette, intent.weightedPalette, intent.randomRotate, intent.side)
         )
 
         try {

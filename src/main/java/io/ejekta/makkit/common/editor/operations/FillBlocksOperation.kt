@@ -9,7 +9,7 @@ class FillBlocksOperation() : WorldOperation() {
 
     override fun calculate(action: EditAction, view: BlockView) {
         for (pos in action.box.getBlockArray()) {
-            action.edit(pos, action.palette.random())
+            action.edit(pos, action.palette.getRandom())
         }
     }
 }
