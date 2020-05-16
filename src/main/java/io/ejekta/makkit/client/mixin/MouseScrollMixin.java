@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MouseScrollMixin {
 
     @Environment(EnvType.CLIENT)
-    @Inject(method = "onMouseScroll", at = @At(value = "HEAD"))
+    @Inject(method = "onMouseScroll", at = @At(value = "TAIL"))
     private void onMouseScroll(long window, double d, double e, CallbackInfo ci) {
         double f = (MinecraftClient.getInstance().options.discreteMouseScroll ? Math.signum(e) : e);
         Events.MouseScrollEvent.Companion.getDispatcher().invoker().invoke(

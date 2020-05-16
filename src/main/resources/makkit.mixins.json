@@ -4,15 +4,15 @@
   "package": "io.ejekta.makkit.client.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-
   ],
   "client": [
     "BoxMixin",
-    "MixinKeyDefaultRemapper",
-    "TextRendererMixin",
-    "WorldRendererMixin",
+    "ItemHotbarRenderMixin",
     "MixinKeybindDefaultChanger",
-    "MouseScrollMixin"
+    "MixinKeyDefaultRemapper",
+    "MouseScrollMixin",
+    "TextRendererMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -16,7 +16,9 @@ object KeyRemapper {
     fun process(binds: Array<KeyBinding>) {
         for (bind in binds) {
             if (bind.id in remaps) {
-                (bind as MixinKeybindDefaultChanger).setDefaultKeyCode(remaps[bind.id])
+                (bind as MixinKeybindDefaultChanger).apply {
+                    setDefaultKeyCode(remaps[bind.id])
+                }
             }
         }
     }

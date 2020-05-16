@@ -3,6 +3,7 @@ package io.ejekta.makkit.client
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.InputState
+import io.ejekta.makkit.client.editor.input.ItemPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.keys.KeyRemapper
@@ -12,6 +13,7 @@ import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.fabricmc.api.ClientModInitializer
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
 
@@ -40,6 +42,21 @@ class MakkitClient : ClientModInitializer {
     private fun onScroll(e: Events.MouseScrollEvent) {
         val reg = getOrCreateRegion()
         reg.tryScrollFace(e.amount)
+
+        if (MakkitKeys.multiPalette.isDown) {
+            val holding = MinecraftClient.getInstance().player?.mainHandStack
+
+            if (holding != null) {
+                ItemPalette.addToPalette(holding)
+            } else {
+                ItemPalette.clearPalette()
+            }
+
+        } else {
+            ItemPalette.clearPalette()
+        }
+
+
     }
 
     private fun onDrawScreen(e: Events.DrawScreenEvent) {

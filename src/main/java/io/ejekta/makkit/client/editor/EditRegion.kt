@@ -8,6 +8,7 @@ import io.ejekta.makkit.client.editor.drag.tools.ResizeToolAxial
 import io.ejekta.makkit.client.editor.drag.tools.ResizeToolSymmetric
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
+import io.ejekta.makkit.client.editor.input.ItemPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
@@ -80,7 +81,6 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         tools.forEach { tool -> tool.update() }
     }
 
-
     fun doOperation(
             operation: WorldOperation,
             editBox: Box = selection,
@@ -93,7 +93,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     undoBox,
                     trace.dir,
                     operation,
-                    listOf(MinecraftClient.getInstance().player!!.mainHandStack)
+                    ItemPalette.getSafePalette()
             ).sendToServer()
         }
     }

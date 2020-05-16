@@ -49,6 +49,11 @@ object MakkitKeys {
             }
         }
 
+        multiPalette.setKeyDown {
+            val holding = MinecraftClient.getInstance().player?.mainHandStack
+            holding?.let { ItemPalette.addToPalette(it) }
+        }
+
     }
 
     val keyHandlers = mutableListOf<KeyStateHandler>()
@@ -86,6 +91,9 @@ object MakkitKeys {
 
     val undoButton = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_COMMA)
     val redoButton = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_PERIOD)
+
+
+    val multiPalette = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y)
 
 
 }

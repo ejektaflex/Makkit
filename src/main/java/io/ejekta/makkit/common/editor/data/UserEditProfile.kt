@@ -44,7 +44,7 @@ class UserEditProfile {
                 if (undoHistory.isNotEmpty()) {
                     FocusRegionPacket(undoHistory.peek().box).sendToClient(player)
                 }
-                 */
+                */
                 redoHistory.push(it)
             }
             true
