@@ -3,23 +3,40 @@ package io.ejekta.makkit.client.config
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ConfigBuilder
+import me.shedaniel.math.Color
 import net.fabricmc.loader.FabricLoader
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.LiteralText
+import net.minecraft.text.TextColor
 import java.nio.file.Files
 
 
 class MakkitConfig() {
 
-    var gridSnapping = false
+    // General
 
-    var historyHighlighting = false
+    var gridSnapping = true
+
+    var historyHighlighting = true
+
+    // Operations
 
     var weightedPalette = false
 
     var randomRotate = false
+
+    // Visuals
+
+    var axialTextSize = 1f
+
+    var selectionBoxColor = RenderColor.GREEN
+
+    var selectionFaceColor = RenderColor.YELLOW
+
+    var multiplayerBoxColor = RenderColor.PINK
 
     fun buildScreen(): Screen {
         val builder = ConfigBuilder.create()
@@ -31,7 +48,11 @@ class MakkitConfig() {
 
         val operations = builder.getOrCreateCategory(LiteralText("Operations"))
 
+        val visuals = builder.getOrCreateCategory(LiteralText("Visuals"))
+
         val entryBuilder = builder.entryBuilder()
+
+        // General
 
         general.addEntry(
                 entryBuilder.startBooleanToggle(
@@ -55,14 +76,15 @@ class MakkitConfig() {
                 }.build()
         )
 
-
+        // Operations
 
         operations.addEntry(
                 entryBuilder.startBooleanToggle(
                         LiteralText("Palette Weighting"),
                         weightedPalette
                 ).setDefaultValue(false).setTooltip(
-                        LiteralText("If true, fill operations will be weighted based on the size of the stacks in your palette")
+                        LiteralText("If true, fill operations will be weighted"),
+                        LiteralText("based on the size of the stacks in your palette")
                 ).setSaveConsumer {
                     weightedPalette = it
                 }.build()
@@ -79,6 +101,56 @@ class MakkitConfig() {
                 }.build()
         )
 
+        // Visuals
+
+        visuals.addEntry(
+                entryBuilder.startFloatField(
+                        LiteralText("3D Text Size Scale"),
+                        axialTextSize
+                ).setDefaultValue(1f).setTooltip(
+                        LiteralText("The size of text in the 3D world")
+                ).setSaveConsumer {
+                    axialTextSize = it
+                }.build()
+        )
+
+        visuals.addEntry(
+                entryBuilder.startColorField(
+                        LiteralText("Selection Box Color"),
+                        (selectionBoxColor.intValue - 0xFF000000).toInt()
+                ).setDefaultValue((RenderColor.GREEN.intValue - 0xFF000000).toInt()).setTooltip(
+                        LiteralText("The color of the selection box")
+                ).setSaveConsumer {
+                    selectionBoxColor = RenderColor(it)
+                    MakkitClient.region?.selectionRenderer?.apply {
+                        fillColor = selectionBoxColor.toAlpha(.4f)
+                        edgeColor = selectionBoxColor.toAlpha(.4f)
+                    }
+                }.build()
+        )
+
+        visuals.addEntry(
+                entryBuilder.startColorField(
+                        LiteralText("Selection Face Color"),
+                        (selectionFaceColor.intValue - 0xFF000000).toInt()
+                ).setDefaultValue((RenderColor.YELLOW.intValue - 0xFF000000).toInt()).setTooltip(
+                        LiteralText("The color of the selected face")
+                ).setSaveConsumer {
+                    selectionFaceColor = RenderColor(it)
+                }.build()
+        )
+
+        visuals.addEntry(
+                entryBuilder.startColorField(
+                        LiteralText("Multiplayer Box Color"),
+                        (multiplayerBoxColor.intValue - 0xFF000000).toInt()
+                ).setDefaultValue((RenderColor.PINK.intValue - 0xFF000000).toInt()).setTooltip(
+                        LiteralText("The color of the selection boxes of other players")
+                ).setSaveConsumer {
+                    multiplayerBoxColor = RenderColor(it)
+                }.build()
+        )
+
         return builder.build()
     }
 
@@ -92,6 +164,7 @@ class MakkitConfig() {
         private val GSON = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .setPrettyPrinting()
+                .registerTypeAdapter(RenderColor::class.java, RenderColor.typeAdapter)
                 .create()
 
         fun load(): MakkitConfig {

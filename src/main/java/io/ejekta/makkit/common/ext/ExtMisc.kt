@@ -27,6 +27,7 @@ fun <T : Any> List<T>.weightedRandomBy(func: T.() -> Int): T {
     return mapped.weightedRandom()
 }
 
+
 fun <T : Any> Map<T, Int>.weightedRandom(): T {
     val sum = values.sum()
 

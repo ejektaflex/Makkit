@@ -31,9 +31,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             ShadowBoxUpdatePacket(value).sendToServer()
         }
 
-    private val selectionRenderer = RenderBox().apply {
-        fillColor = RenderColor.GREEN.toAlpha(.4f)
-        edgeColor = RenderColor.GREEN
+    val selectionRenderer = RenderBox().apply {
+        fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+        edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
 
     fun renderSelection() {
@@ -116,7 +116,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             // default state when no drag tool is being used
             val hit = selection.trace()
             if (hit != BoxTraceResult.EMPTY) {
-                selectionRenderer.drawFace(hit.dir, RenderColor.YELLOW.toAlpha(.3f))
+                selectionRenderer.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
                 selectionRenderer.drawAxisSizes()
             }
         }

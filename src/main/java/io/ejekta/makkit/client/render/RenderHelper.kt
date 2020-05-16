@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.render
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.client.mixin.TextRendererMixin
@@ -21,7 +22,8 @@ object RenderHelper : AbstractRenderHelper() {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
         matrices.multiply(camera.rotation)
-        matrices.scale(-textSize/32, -textSize/32, -textSize/32)
+        var newTextSize = -(textSize * MakkitClient.config.axialTextSize)/32
+        matrices.scale(newTextSize, newTextSize, newTextSize)
 
         val centerDiv = if (center) 2 else 1
 

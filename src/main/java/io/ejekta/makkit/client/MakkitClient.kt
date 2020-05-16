@@ -85,8 +85,8 @@ class MakkitClient : ClientModInitializer {
         fun drawRemoteRegions() {
             for (entry in remoteBoxMap) {
                 entry.value.draw(
-                        colorFill = RenderColor.PINK.toAlpha(.2f),
-                        colorEdge = RenderColor.PINK.toAlpha(.2f)
+                        colorFill = config.multiplayerBoxColor.toAlpha(.2f),
+                        colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
                 )
             }
         }

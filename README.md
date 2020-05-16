@@ -22,15 +22,14 @@ to easily create roofing and other symmetric structures
 in a certain direction
 * Edit history, letting you **undo** and **redo** at will!
 
-
-#### Beta
+### Beta
 
 Makkit is still in Beta, so there might be some niche bugs. I try to test
 everything extensively before each release, so releases should be quite
 stable. Even if something does go wrong, you can always press undo!
 
 
-### What about "X"?
+### What about Feature "X"?
 
 While Makkit intends to make creative mode editing easier, it can't do
 everything. It tries to do most common world editing features in a very
@@ -40,4 +39,14 @@ Rather, you should use them both together!
 
 In the future, I plan on adding some compatibility with WorldEdit (e.g. 
 letting your selection box act as a WorldEdit selection box). Stay tuned!
+
+
+### Fabric?
+
+Yes, this mod is for Fabric & Fabric API. I don't intend or have
+time to maintain a version for both Forge and Fabric, but if someone
+would like to do a pull request with their own implementation
+(written in Kotlin) in a separate branch, I'd be willing
+to release a Forge version!
+
 

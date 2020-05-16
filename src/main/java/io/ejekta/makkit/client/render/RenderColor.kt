@@ -1,5 +1,9 @@
 package io.ejekta.makkit.client.render
 
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+
 data class RenderColor(val value: Long) : Cloneable {
 
     var a = (value shr 24 and 255).toFloat() / 255.0f
@@ -36,6 +40,17 @@ data class RenderColor(val value: Long) : Cloneable {
         val YELLOW = RenderColor(0xfee761)
         val PURPLE = RenderColor(0xb55088)
         val DARK_PURPLE = RenderColor(0x68386c)
+
+        val typeAdapter = object : TypeAdapter<RenderColor>() {
+            override fun write(out: JsonWriter?, value: RenderColor?) {
+                out?.value(value!!.value) // gross!
+            }
+
+            override fun read(`in`: JsonReader?): RenderColor {
+                return RenderColor(`in`!!.nextLong())
+            }
+        }
+
     }
 
 
