@@ -24,7 +24,7 @@ object ItemPalette {
             true -> stacks.values.filter {
                 it.item is BlockItem || it.item is AirBlockItem
             }
-            else -> listOf(MinecraftClient.getInstance().player.mainHandStack)
+            else -> listOf(MinecraftClient.getInstance().player!!.mainHandStack)
         }
     }
 
