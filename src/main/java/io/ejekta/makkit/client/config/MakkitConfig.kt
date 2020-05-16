@@ -3,6 +3,7 @@ package io.ejekta.makkit.client.config
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ConfigBuilder
@@ -21,6 +22,8 @@ class MakkitConfig() {
     var gridSnapping = true
 
     var historyHighlighting = true
+
+    var sideSelectionStyle = SideSelectionStyle.SIMPLE
 
     // Operations
 
@@ -73,6 +76,21 @@ class MakkitConfig() {
                         LiteralText("Whether the selection box should change when hitting undo/redo")
                 ).setSaveConsumer {
                     historyHighlighting = it
+                }.build()
+        )
+
+        general.addEntry(
+                entryBuilder.startEnumSelector(
+                        LiteralText("Side Selection Method"),
+                        SideSelectionStyle::class.java,
+                        sideSelectionStyle
+                ).setDefaultValue(SideSelectionStyle.SIMPLE).setTooltip(
+                        LiteralText("When set to SIMPLE, you must press a key to switch between"),
+                        LiteralText("front and back face selection. When set to SMART, Makkit will"),
+                        LiteralText("figure out which face you want to select based on which"),
+                        LiteralText("direction you are looking.")
+                ).setSaveConsumer {
+                    sideSelectionStyle = it
                 }.build()
         )
 

@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.tools.MirrorToolOpposite
 import io.ejekta.makkit.client.editor.drag.tools.MoveToolPlanar
@@ -12,8 +11,9 @@ import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
+import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderBox
-import io.ejekta.makkit.client.render.RenderColor
+import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.editor.operations.WorldOperation
@@ -61,7 +61,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun tryScrollFace(amt: Double) {
         if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
-            val result = selection.trace()
+            val result = selection.autoTrace()
 
             if (result == BoxTraceResult.EMPTY) {
                 return
@@ -87,7 +87,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             operation: WorldOperation,
             editBox: Box = selection,
             undoBox: Box = editBox,
-            trace: BoxTraceResult = editBox.trace()
+            trace: BoxTraceResult = editBox.autoTrace()
     ) {
         if (trace != BoxTraceResult.EMPTY) {
             EditWorldPacket(
@@ -113,8 +113,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 tool.tryDraw()
             }
         } else {
+
             // default state when no drag tool is being used
-            val hit = selection.trace()
+            val hit = selection.autoTrace()
             if (hit != BoxTraceResult.EMPTY) {
                 selectionRenderer.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
                 selectionRenderer.drawAxisSizes()

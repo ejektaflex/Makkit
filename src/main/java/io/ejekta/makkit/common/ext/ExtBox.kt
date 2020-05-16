@@ -1,7 +1,9 @@
 package io.ejekta.makkit.common.ext
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.input.InputState
+import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.mixin.BoxMixin
 import io.ejekta.makkit.client.render.RenderHelper
 import net.minecraft.util.math.BlockPos
@@ -9,7 +11,7 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
-fun Box.trace(reverse: Boolean = InputState.isBackSelecting): BoxTraceResult {
+private fun Box.trace(reverse: Boolean = InputState.isBackSelecting): BoxTraceResult {
     return RenderHelper.boxTrace(this, reverse = reverse)
 }
 
@@ -189,4 +191,33 @@ fun Box.faceDimensions(side: Direction): List<Double> {
     val sideSizeVec = getFacePlane(side).getSize()
     val otherAxes = enumValues<Direction.Axis>().filter { it != side.axis }
     return otherAxes.map { sideSizeVec.axisValue(it) }
+}
+
+fun Box.autoTrace(): BoxTraceResult {
+    return when (MakkitClient.config.sideSelectionStyle) {
+        SideSelectionStyle.SIMPLE -> simpleTrace()
+        SideSelectionStyle.SMART -> smartTrace()
+    }
+}
+
+private fun Box.simpleTrace(): BoxTraceResult {
+    return trace()
+}
+
+private fun Box.smartTrace(): BoxTraceResult {
+    val front = trace(reverse = false)
+    val back = trace(reverse = true)
+    val nonEmpty = listOf(front, back).filter { it != BoxTraceResult.EMPTY }
+
+    return when {
+        nonEmpty.isEmpty() -> {
+            BoxTraceResult.EMPTY
+        }
+        nonEmpty.size == 1 -> {
+            nonEmpty.first()
+        }
+        else -> {
+            nonEmpty.minBy { faceCenterPos(it.dir).squaredDistanceTo(it.hit) }!!
+        }
+    }
 }

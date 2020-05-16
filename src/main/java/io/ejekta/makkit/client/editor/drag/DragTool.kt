@@ -7,6 +7,7 @@ import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
+import io.ejekta.makkit.common.ext.autoTrace
 import io.ejekta.makkit.common.ext.trace
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -68,7 +69,7 @@ internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStat
     fun update() {
         // Try to start dragging
         if (dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
-            dragStart = region.selection.trace(reverse = InputState.isBackSelecting)
+            dragStart = region.selection.autoTrace()
             if (dragStart != BoxTraceResult.EMPTY) {
                 onStartDragging(dragStart)
             }
