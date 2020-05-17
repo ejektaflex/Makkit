@@ -7,29 +7,33 @@ import net.minecraft.item.ItemStack
 
 object ClientPalette {
 
-    private val stacks = mutableMapOf<Int, ItemStack>()
+    private val stacks = mutableSetOf<Int>()
 
-    fun addToPalette(stack: ItemStack, slot: Int) {
-        println("Adding to palette: $stack")
-        stacks[slot] = stack
+    fun addToPalette(slot: Int) {
+        //println("Adding to palette: $stack")
+        stacks.add(slot)
     }
 
 
     fun hasStack(slot: Int): Boolean {
-        return slot in stacks.keys
+        return slot in stacks
+    }
+
+    private fun getStacks(): List<ItemStack> {
+        return stacks.mapNotNull {
+            MinecraftClient.getInstance().player?.inventory?.getStack(it)
+        }
     }
 
     fun getSafePalette(): List<ItemStack> {
         return when (hasAnyItems()) {
-            true -> stacks.values.filter {
-                it.item is BlockItem || it.item is AirBlockItem
-            }
+            true -> getStacks()
             else -> listOf(MinecraftClient.getInstance().player!!.mainHandStack)
         }
     }
 
     fun hasAnyItems(): Boolean {
-        return stacks.values.isNotEmpty()
+        return getStacks().isNotEmpty()
     }
 
     fun clearPalette() {

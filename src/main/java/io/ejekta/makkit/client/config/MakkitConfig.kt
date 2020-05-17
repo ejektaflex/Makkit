@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.LiteralText
 
 
-class MakkitConfig() {
+class MakkitConfig {
 
     // General
 

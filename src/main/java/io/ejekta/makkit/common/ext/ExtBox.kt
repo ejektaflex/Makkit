@@ -222,7 +222,7 @@ private fun Box.smartTrace(): BoxTraceResult {
             nonEmpty.first()
         }
         else -> {
-            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit).pow(0.5) }!!
+            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit).pow(0.1) }!!
         }
     }
 }

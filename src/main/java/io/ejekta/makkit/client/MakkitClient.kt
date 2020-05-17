@@ -47,7 +47,7 @@ class MakkitClient : ClientModInitializer {
             val slot = MinecraftClient.getInstance().player?.inventory?.selectedSlot
 
             if (holding != null && slot != null) {
-                ClientPalette.addToPalette(holding, slot)
+                ClientPalette.addToPalette(slot)
             } else {
                 ClientPalette.clearPalette()
             }
@@ -99,9 +99,7 @@ class MakkitClient : ClientModInitializer {
 
         var remoteBoxMap = mutableMapOf<String, RenderBox>()
 
-        var region: EditRegion? = EditRegion().apply {
-            moveTo(0, 0, 0, 2, 3, 4)
-        }
+        var region: EditRegion? = null
 
     }
 
