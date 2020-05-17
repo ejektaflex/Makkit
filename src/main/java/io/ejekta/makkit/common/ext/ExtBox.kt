@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import kotlin.math.pow
 
 private fun Box.trace(reverse: Boolean = InputState.isBackSelecting): BoxTraceResult {
     return RenderHelper.boxTrace(this, reverse = reverse)
@@ -99,6 +100,10 @@ fun Box.getStart(): Vec3d {
 
 fun Box.getSize(): Vec3d {
     return Vec3d(x2 - x1, y2 - y1, z2 - z1)
+}
+
+fun Box.blockSize(): BlockPos {
+    return BlockPos(getSize())
 }
 
 fun Box.getEnd(): Vec3d {
@@ -217,7 +222,7 @@ private fun Box.smartTrace(): BoxTraceResult {
             nonEmpty.first()
         }
         else -> {
-            nonEmpty.minBy { faceCenterPos(it.dir).squaredDistanceTo(it.hit) }!!
+            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit).pow(0.5) }!!
         }
     }
 }

@@ -87,8 +87,8 @@ class MakkitConfig() {
                 ).setDefaultValue(SideSelectionStyle.SIMPLE).setTooltip(
                         LiteralText("When set to SIMPLE, you must press a key to switch between"),
                         LiteralText("front and back face selection. When set to SMART, Makkit will"),
-                        LiteralText("figure out which face you want to select based on which"),
-                        LiteralText("direction you are looking.")
+                        LiteralText("figure out which face you want to select based on which face"),
+                        LiteralText("is closest to your cursor.")
                 ).setSaveConsumer {
                     sideSelectionStyle = it
                 }.build()
@@ -123,7 +123,7 @@ class MakkitConfig() {
 
         visuals.addEntry(
                 entryBuilder.startFloatField(
-                        LiteralText("3D Text Size Scale"),
+                        LiteralText("3D Text Size Scaling"),
                         axialTextSize
                 ).setDefaultValue(1f).setTooltip(
                         LiteralText("The size of text in the 3D world")

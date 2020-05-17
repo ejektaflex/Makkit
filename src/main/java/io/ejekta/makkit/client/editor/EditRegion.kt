@@ -13,7 +13,9 @@ import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderBox
+import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.editor.operations.WorldOperation
@@ -21,9 +23,12 @@ import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
+
+    var copyBox: Box? = null
 
     var selection: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
         set(value) {
@@ -38,6 +43,17 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun renderSelection() {
         selectionRenderer.box = selection
+        if (copyBox != null) {
+            if (selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.NORTH)
+                    || selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.EAST)) {
+                selectionRenderer.edgeColor = RenderColor.PURPLE.toAlpha(.4f)
+            } else {
+                selectionRenderer.edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+            }
+        } else {
+            selectionRenderer.edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+        }
+
         selectionRenderer.draw()
     }
 

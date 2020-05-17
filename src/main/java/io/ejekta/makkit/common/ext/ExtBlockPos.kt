@@ -16,3 +16,7 @@ fun BlockPos.toBox(): Box {
 operator fun BlockPos.plus(other: BlockPos): BlockPos {
     return add(other.x, other.y, other.z)
 }
+
+fun BlockPos.prettyString(): String {
+    return "${x}x${y}x${z}"
+}

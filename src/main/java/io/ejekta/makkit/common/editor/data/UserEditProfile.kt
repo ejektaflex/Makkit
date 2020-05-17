@@ -90,8 +90,6 @@ class UserEditProfile {
         val d2: Vec3i = Direction.UP.vector
         val d3: Vec3i = face.vector
 
-        println("COPIED SIZE: ${CopyHelper.getLocalAxisSize(copyBox, face)}")
-
         val copyBoxSize: BlockPos = CopyHelper.getLocalAxisSize(copyBox, face)
 
         val startPos: BlockPos = CopyHelper.getLocalAxisStartPos(copyBox, face)
@@ -128,27 +126,10 @@ class UserEditProfile {
 
             if (ourSize != copiedSize) {
 
-                val toUse = if (face.axis == Direction.Axis.Z) {
-                    ourSize
-                } else {
-                    copiedSize
-                }
-
-                val point = BlockPos(pasteBox.center)
-
-                val useLo = toUse.vec3d().multiply(0.5).floor()
-                val useHi = toUse.vec3d().multiply(0.5).ceil()
-
-                val newBox = Box(
-                        point.subtract(useLo),
-                        point.add(useHi)
-                )
-
                 println("Incorrect size! us: $ourSize, copy: $copiedSize")
 
-                FocusRegionPacket(
-                        newBox
-                ).sendToClient(player)
+                player.sendMessage(LiteralText("Incorrect Size! To Paste, it must be: ${copiedSize.prettyString()}"), true)
+
 
             } else {
                 doAction(player, EditAction(
