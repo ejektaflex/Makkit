@@ -2,12 +2,17 @@ package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
 import io.ejekta.makkit.common.enum.UndoRedoMode
-import io.ejekta.makkit.common.ext.*
-import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
+import io.ejekta.makkit.common.ext.forEachBlockCoord
+import io.ejekta.makkit.common.ext.plus
+import io.ejekta.makkit.common.ext.prettyString
+import io.ejekta.makkit.common.ext.times
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
-import net.minecraft.util.math.*
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3i
 import java.util.*
 
 /**

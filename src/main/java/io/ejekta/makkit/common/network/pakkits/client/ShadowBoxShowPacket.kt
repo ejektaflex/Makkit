@@ -2,6 +2,7 @@ package io.ejekta.makkit.common.network.pakkits.client
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.render.RenderBox
+import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.network.pakkit.ClientBoundPakkit
 import io.ejekta.makkit.common.network.pakkit.ClientSidePakkitHandler
 import io.ejekta.makkit.common.network.pakkits.both.BoxPacket
@@ -23,7 +24,7 @@ class ShadowBoxShowPacket(
     }
 
     companion object : ClientSidePakkitHandler {
-        val ID = Identifier("makkit", "remote_movement")
+        val ID = Identifier(MakkitCommon.ID, "remote_movement")
 
         override fun getId() = ID
 

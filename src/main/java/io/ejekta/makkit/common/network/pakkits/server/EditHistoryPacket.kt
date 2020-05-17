@@ -1,11 +1,12 @@
 package io.ejekta.makkit.common.network.pakkits.server
 
-import io.ejekta.makkit.common.enum.UndoRedoMode
-import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit
-import io.ejekta.makkit.common.network.pakkit.ServerSidePakkitHandler
+import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.NetworkHandler
+import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.ext.readEnum
 import io.ejekta.makkit.common.ext.writeEnum
+import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit
+import io.ejekta.makkit.common.network.pakkit.ServerSidePakkitHandler
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
@@ -33,7 +34,7 @@ class EditHistoryPacket(
     }
 
     companion object : ServerSidePakkitHandler {
-        val ID = Identifier("makkit", "edit_history")
+        val ID = Identifier(MakkitCommon.ID, "edit_history")
 
         override fun getId() = ID
 

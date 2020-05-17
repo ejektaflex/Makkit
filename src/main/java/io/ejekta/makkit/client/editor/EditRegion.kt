@@ -2,23 +2,17 @@ package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.drag.tools.MirrorToolOpposite
-import io.ejekta.makkit.client.editor.drag.tools.MoveToolPlanar
-import io.ejekta.makkit.client.editor.drag.tools.PatternToolAxial
-import io.ejekta.makkit.client.editor.drag.tools.ResizeToolAxial
-import io.ejekta.makkit.client.editor.drag.tools.ResizeToolSymmetric
+import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.MakkitKeys
-import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
-import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.editor.data.CopyHelper
+import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
-import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos

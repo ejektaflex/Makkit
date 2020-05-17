@@ -1,6 +1,8 @@
 package io.ejekta.makkit.common.editor.data
 
-import net.minecraft.util.math.*
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 
 object CopyHelper {
 

@@ -7,12 +7,9 @@ import io.ejekta.makkit.common.enum.ClipboardMode
 import io.ejekta.makkit.common.enum.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
-import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
-import net.minecraft.block.Blocks
-import net.minecraft.item.BlockItem
-import net.minecraft.item.Items
+import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 

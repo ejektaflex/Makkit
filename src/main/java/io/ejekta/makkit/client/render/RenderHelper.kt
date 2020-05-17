@@ -2,9 +2,14 @@ package io.ejekta.makkit.client.render
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.client.mixin.TextRendererMixin
-import net.minecraft.client.render.*
+import io.ejekta.makkit.common.ext.color
+import io.ejekta.makkit.common.ext.rayTraceForSide
+import io.ejekta.makkit.common.ext.vec3d
+import io.ejekta.makkit.common.ext.vertex
+import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.VertexConsumer
+import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
 import net.minecraft.util.math.*
 import kotlin.math.abs

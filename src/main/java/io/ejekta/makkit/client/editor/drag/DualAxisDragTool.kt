@@ -3,11 +3,10 @@ package io.ejekta.makkit.client.editor.drag
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.common.ext.flipMask
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
-import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.autoTrace
+import io.ejekta.makkit.common.ext.flipMask
 import io.ejekta.makkit.common.ext.snapped
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d

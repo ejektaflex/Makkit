@@ -2,10 +2,10 @@ package io.ejekta.makkit.client.editor.input
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.MakkitCommon
-import io.ejekta.makkit.common.enum.UndoRedoMode
-import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
+import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient

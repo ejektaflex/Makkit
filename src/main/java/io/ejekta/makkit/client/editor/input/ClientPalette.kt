@@ -1,6 +1,5 @@
 package io.ejekta.makkit.client.editor.input
 
-import io.ejekta.makkit.common.ext.identifier
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.AirBlockItem
 import net.minecraft.item.BlockItem

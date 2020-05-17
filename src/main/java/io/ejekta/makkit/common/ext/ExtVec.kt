@@ -4,10 +4,10 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
-import kotlin.math.max
 import kotlin.math.abs
-import kotlin.math.round
 import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.round
 
 fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
     return Vec3d(
@@ -162,7 +162,7 @@ fun Vec3d.flipAround(center: Vec3d): Vec3d {
  * a smaller vector than the end of said Box.
  */
 fun Vec3d.refitForSize(size: Vec3d, dir: Direction): Vec3d {
-    return when (dir.direction) {
+    return when (dir.direction!!) {
         Direction.AxisDirection.POSITIVE -> this
         Direction.AxisDirection.NEGATIVE -> this.subtract(size.axisMask(dir))
     }

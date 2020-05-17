@@ -3,7 +3,9 @@ package io.ejekta.makkit.client.editor.drag.tools
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.common.ext.*
+import io.ejekta.makkit.common.ext.dirMask
+import io.ejekta.makkit.common.ext.getEnd
+import io.ejekta.makkit.common.ext.getStart
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 

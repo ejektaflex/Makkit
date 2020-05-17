@@ -1,15 +1,16 @@
 package io.ejekta.makkit.common.network.pakkits.server
 
 import com.google.gson.GsonBuilder
-import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit
-import io.ejekta.makkit.common.network.pakkit.ServerSidePakkitHandler
-import io.ejekta.makkit.common.editor.*
+import io.ejekta.makkit.common.MakkitCommon
+import io.ejekta.makkit.common.editor.NetworkHandler
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.readEnum
 import io.ejekta.makkit.common.ext.readIntBox
 import io.ejekta.makkit.common.ext.writeEnum
 import io.ejekta.makkit.common.ext.writeIntBox
+import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit
+import io.ejekta.makkit.common.network.pakkit.ServerSidePakkitHandler
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.item.ItemStack
@@ -77,7 +78,7 @@ class EditWorldPacket(
     }
 
     companion object : ServerSidePakkitHandler {
-        val ID = Identifier("makkit", "edit_intent")
+        val ID = Identifier(MakkitCommon.ID, "edit_intent")
 
         val gson = GsonBuilder().setPrettyPrinting().create()
 

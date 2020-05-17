@@ -1,9 +1,9 @@
 package io.ejekta.makkit.common
 
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
-import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
+import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ModInitializer
 
 class MakkitCommon : ModInitializer {

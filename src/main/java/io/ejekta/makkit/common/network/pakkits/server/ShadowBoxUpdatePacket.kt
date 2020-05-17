@@ -1,9 +1,10 @@
 package io.ejekta.makkit.common.network.pakkits.server
 
+import io.ejekta.makkit.common.MakkitCommon
+import io.ejekta.makkit.common.editor.NetworkHandler
 import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit
 import io.ejekta.makkit.common.network.pakkit.ServerSidePakkitHandler
 import io.ejekta.makkit.common.network.pakkits.both.BoxPacket
-import io.ejekta.makkit.common.editor.NetworkHandler
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.server.network.ServerPlayerEntity
@@ -20,7 +21,7 @@ class ShadowBoxUpdatePacket(
 
     companion object : ServerSidePakkitHandler {
 
-        val ID = Identifier("makkit", "local_movement")
+        val ID = Identifier(MakkitCommon.ID, "local_movement")
 
         override fun getId() = ID
 

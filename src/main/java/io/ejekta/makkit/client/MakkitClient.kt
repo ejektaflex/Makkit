@@ -2,16 +2,15 @@ package io.ejekta.makkit.client
 
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.client.editor.input.ClientPalette
+import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.keys.KeyRemapper
 import io.ejekta.makkit.client.render.RenderBox
-import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
+import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil

@@ -1,6 +1,5 @@
 package io.ejekta.makkit.client.mixin;
 
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import org.spongepowered.asm.mixin.Mixin;

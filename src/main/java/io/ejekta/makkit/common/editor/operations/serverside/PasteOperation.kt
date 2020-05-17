@@ -6,8 +6,6 @@ import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.rotateClockwise
 import io.ejekta.makkit.common.ext.rotated
-import io.ejekta.makkit.common.ext.rotatedClockwise
-import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.BlockView
 

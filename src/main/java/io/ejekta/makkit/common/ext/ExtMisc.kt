@@ -6,7 +6,8 @@ import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.*
+import net.minecraft.util.math.Matrix4f
+import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.Registry
 
 fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {

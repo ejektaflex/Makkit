@@ -1,6 +1,7 @@
 package io.ejekta.makkit.client.mixin;
 
 import io.ejekta.makkit.client.editor.input.ClientPalette;
+import io.ejekta.makkit.common.MakkitCommon;
 import io.ejekta.makkit.common.editor.data.BlockPalette;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,7 +37,7 @@ public abstract class ItemHotbarRenderMixin {
 
     @Shadow public abstract TextRenderer getFontRenderer();
 
-    Identifier SELECTION = new Identifier("makkit", "textures/misc/palette_select.png");
+    Identifier SELECTION = new Identifier(MakkitCommon.ID, "textures/misc/palette_select.png");
 
     @Environment(EnvType.CLIENT)
     @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1), cancellable = true)

@@ -7,12 +7,9 @@ import io.ejekta.makkit.client.enum.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ConfigBuilder
-import me.shedaniel.math.Color
 import net.fabricmc.loader.FabricLoader
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.LiteralText
-import net.minecraft.text.TextColor
-import java.nio.file.Files
 
 
 class MakkitConfig() {
