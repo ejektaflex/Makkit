@@ -11,7 +11,7 @@ import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class ClipboardTool(region: EditRegion, binding: KeyStateHandler) : DualAxisDragTool(region, binding) {
+internal abstract class ClipboardTool(region: EditRegion) : DualAxisDragTool(region) {
 
     abstract val mode: ClipboardMode
 

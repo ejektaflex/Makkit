@@ -53,13 +53,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     private var tools = mutableListOf(
-            MoveToolPlanar(this, MakkitKeys.moveDragBinding),
-            ResizeToolAxial(this, MakkitKeys.resizeSideBinding),
-            ResizeToolSymmetric(this, MakkitKeys.resizeSymmetricBinding),
-            PatternToolAxial(this, MakkitKeys.repeatPatternBinding),
-            MirrorToolOpposite(this, MakkitKeys.mirrorToolBinding),
-            CopyTool(this, MakkitKeys.copyBinding),
-            PasteTool(this, MakkitKeys.pasteBinding)
+            MoveToolPlanar(this),
+            ResizeToolAxial(this),
+            ResizeToolSymmetric(this),
+            PatternToolAxial(this),
+            MirrorToolOpposite(this),
+            CopyTool(this),
+            PasteTool(this)
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {

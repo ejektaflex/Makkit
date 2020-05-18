@@ -12,7 +12,7 @@ import io.ejekta.makkit.common.ext.snapped
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class SingleAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
+internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region) {
 
     protected val planeAxis1 = RenderBox()
     protected val planeAxis2 = RenderBox()

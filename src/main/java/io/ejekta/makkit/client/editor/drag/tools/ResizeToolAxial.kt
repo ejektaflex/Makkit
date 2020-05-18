@@ -1,5 +1,7 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
@@ -9,9 +11,11 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
 internal class ResizeToolAxial(
-        region: EditRegion,
-        binding: KeyStateHandler
-) : SingleAxisDragTool(region, binding) {
+        region: EditRegion
+) : SingleAxisDragTool(region) {
+
+    override val keyHandler: KeyStateHandler
+        get() = MakkitClient.config.resizeSideKey
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {

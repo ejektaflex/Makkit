@@ -1,9 +1,13 @@
 package io.ejekta.makkit.client
 
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.InputState
+import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.keys.KeyRemapper
@@ -26,7 +30,9 @@ class MakkitClient : ClientModInitializer {
 
         MakkitConfig.load()
 
-        MakkitKeys.setup()
+        //MakkitKeys.setup()
+
+        config.assignKeybinds()
 
 
         // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
@@ -63,8 +69,8 @@ class MakkitClient : ClientModInitializer {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
 
-        for (handler in MakkitKeys.keyHandlers) {
-            handler.update()
+        for (key in config.keys) {
+            key.update()
         }
 
         InputState.update()
@@ -99,7 +105,8 @@ class MakkitClient : ClientModInitializer {
 
         var remoteBoxMap = mutableMapOf<String, RenderBox>()
 
-        var region: EditRegion? = null
+        // TODO set back to null
+        var region: EditRegion? = EditRegion()
 
     }
 

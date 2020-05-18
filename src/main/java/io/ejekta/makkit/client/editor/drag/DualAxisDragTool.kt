@@ -11,7 +11,7 @@ import io.ejekta.makkit.common.ext.snapped
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DualAxisDragTool(region: EditRegion, binding: KeyStateHandler) : DragTool(region, binding) {
+internal abstract class DualAxisDragTool(region: EditRegion) : DragTool(region) {
 
     private val plane = RenderBox()
 

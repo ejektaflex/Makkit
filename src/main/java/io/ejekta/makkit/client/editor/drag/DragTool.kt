@@ -10,7 +10,9 @@ import io.ejekta.makkit.common.ext.autoTrace
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DragTool(val region: EditRegion, val keyHandler: KeyStateHandler) {
+internal abstract class DragTool(val region: EditRegion) {
+
+    abstract val keyHandler: KeyStateHandler
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
     open val preview = RenderBox().apply {

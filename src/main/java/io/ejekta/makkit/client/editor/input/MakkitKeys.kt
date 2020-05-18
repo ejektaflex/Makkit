@@ -6,6 +6,8 @@ import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
+import me.shedaniel.clothconfig2.api.Modifier
+import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
 import net.minecraft.client.MinecraftClient
@@ -18,22 +20,10 @@ import org.lwjgl.glfw.GLFW
 object MakkitKeys {
 
     fun setup() {
-        KeyBindingRegistry.INSTANCE.apply {
-            addCategory("Makkit")
-            for (bindHandler in keyHandlers) {
-                register(bindHandler.binding)
-            }
-        }
-
-        fillBinding.setKeyDown {
-            MakkitClient.region?.doOperation(FillBlocksOperation())
-        }
-
-        wallsBinding.setKeyDown {
-            MakkitClient.region?.doOperation(FillWallsOperation())
-        }
 
         undoButton.setKeyDown {
+
+
             EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
         }
 
@@ -77,29 +67,21 @@ object MakkitKeys {
 
     }
 
-    val keyHandlers = mutableListOf<KeyStateHandler>()
-
-    private fun makkitKey(path: String, type: InputUtil.Type, code: Int): KeyStateHandler {
-        return KeyStateHandler(
-                FabricKeyBinding.Builder.create(
-                        Identifier(MakkitCommon.ID, path),
-                        type,
-                        code,
-                        "Makkit"
-                ).build()
-        ).also {
-            // Auto register keyhandler
-            keyHandlers.add(it)
-        }
+    private fun makkitKey(path: String, type: InputUtil.Type, code: Int, ctrl: Boolean = false): KeyStateHandler {
+        return KeyStateHandler(path,
+                ModifierKeyCode.of(
+                        type.createFromCode(code),
+                        Modifier.of(false, true, false)
+                )
+        )
     }
 
-    val moveDragBinding = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
-    val resizeSideBinding = makkitKey("resize_single_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
-    val resizeSymmetricBinding = makkitKey("resize_single_axis_symmetric", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
-    val repeatPatternBinding = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
-    val fillBinding = makkitKey("fill", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
-    val wallsBinding = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
-    val mirrorToolBinding = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
+    //val moveDragBinding = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
+    //val resizeSideBinding = makkitKey("resize_single_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
+    //val resizeSymmetricBinding = makkitKey("resize_single_axis_symmetric", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
+    //val repeatPatternBinding = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
+
+    //val mirrorToolBinding = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
 
     val copyBinding = makkitKey("copy_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U)
     val pasteBinding = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I)
