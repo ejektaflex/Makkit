@@ -1,14 +1,8 @@
 package io.ejekta.makkit.client
 
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
-import io.ejekta.makkit.client.editor.input.InputState
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.keys.KeyRemapper
 import io.ejekta.makkit.client.render.RenderBox
@@ -48,7 +42,7 @@ class MakkitClient : ClientModInitializer {
         val reg = getOrCreateRegion()
         reg.tryScrollFace(e.amount)
 
-        if (MakkitKeys.multiPalette.isDown) {
+        if (config.multiPalette.isDown) {
             val holding = MinecraftClient.getInstance().player?.mainHandStack
             val slot = MinecraftClient.getInstance().player?.inventory?.selectedSlot
 
@@ -73,7 +67,6 @@ class MakkitClient : ClientModInitializer {
             key.update()
         }
 
-        InputState.update()
 
         RenderHelper.drawInWorld {
             region?.update()

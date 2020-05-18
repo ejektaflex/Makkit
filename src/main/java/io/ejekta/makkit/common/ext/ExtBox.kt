@@ -2,7 +2,6 @@ package io.ejekta.makkit.common.ext
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.input.InputState
 import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.mixin.BoxMixin
 import io.ejekta.makkit.client.render.RenderHelper
@@ -12,7 +11,9 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import kotlin.math.pow
 
-private fun Box.trace(reverse: Boolean = InputState.isBackSelecting): BoxTraceResult {
+private fun Box.trace(
+        reverse: Boolean = false // TODO re implement back selecting toggle
+): BoxTraceResult {
     return RenderHelper.boxTrace(this, reverse = reverse)
 }
 

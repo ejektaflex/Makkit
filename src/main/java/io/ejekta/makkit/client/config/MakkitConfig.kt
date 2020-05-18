@@ -6,20 +6,25 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
+import io.ejekta.makkit.common.enums.UndoRedoMode
+import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import me.shedaniel.clothconfig2.api.Modifier
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.fabricmc.loader.FabricLoader
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
 import net.minecraft.text.LiteralText
+import net.minecraft.util.hit.HitResult
+import net.minecraft.util.math.BlockPos
 import org.lwjgl.glfw.GLFW
 
 
@@ -60,6 +65,12 @@ class MakkitConfig {
     var resizeSymmetricBinding = Default.RESIDE_SIDE_SYMMETRIC
     var repeatPatternBinding = Default.REPEAT_PATTERN
     var mirrorToolBinding = Default.MIRROR_TOOL
+    var copyKey = Default.COPY_KEY
+    var pasteKey = Default.PASTE_KEY
+    var newBoxKey = Default.NEW_BOX
+    var undoKey = Default.UNDO
+    var redoKey = Default.REDO
+    var multiPalette = Default.MULTIPALETTE
 
     val keys: Set<KeyStateHandler>
         get() = setOf(
@@ -69,7 +80,13 @@ class MakkitConfig {
                 resizeSideKey,
                 resizeSymmetricBinding,
                 repeatPatternBinding,
-                mirrorToolBinding
+                mirrorToolBinding,
+                copyKey,
+                pasteKey,
+                newBoxKey,
+                undoKey,
+                redoKey,
+                multiPalette
         )
 
 
@@ -216,10 +233,16 @@ class MakkitConfig {
         addKeybindEntry("Move Tool", Default.MOVE_DRAG, moveDragKey)
         addKeybindEntry("Fill Area Tool", Default.FILL_AREA, fillKey)
         addKeybindEntry("Fill Walls Tool", Default.FILL_WALL, wallsKey)
-        addKeybindEntry("Reside Side Tool", Default.RESIZE_SIDE, resizeSideKey)
-        addKeybindEntry("Reside Side (Symmetric)", Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricBinding)
+        addKeybindEntry("Reside Face Tool", Default.RESIZE_SIDE, resizeSideKey)
+        addKeybindEntry("Reside Face (Symmetric)", Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricBinding)
         addKeybindEntry("Repeat Pattern Tool", Default.REPEAT_PATTERN, repeatPatternBinding)
         addKeybindEntry("Mirror Tool", Default.MIRROR_TOOL, mirrorToolBinding)
+        addKeybindEntry("Copy", Default.COPY_KEY, copyKey)
+        addKeybindEntry("Paste", Default.PASTE_KEY, pasteKey)
+        addKeybindEntry("Create New Box", Default.NEW_BOX, newBoxKey)
+        addKeybindEntry("Undo Operation", Default.UNDO, undoKey)
+        addKeybindEntry("Redo Operation", Default.REDO, redoKey)
+        addKeybindEntry("Palette Selection", Default.MULTIPALETTE, multiPalette)
 
 
         return builder.build()
@@ -233,6 +256,27 @@ class MakkitConfig {
         wallsKey.setKeyDown {
             MakkitClient.region?.doOperation(FillWallsOperation())
         }
+
+        undoKey.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+        }
+
+        redoKey.setKeyDown {
+            EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+        }
+
+        newBoxKey.setKeyDown {
+            val btr = MinecraftClient.getInstance().crosshairTarget
+            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+                MakkitClient.getOrCreateRegion().centerOn(BlockPos(btr.pos))
+            }
+        }
+
+        multiPalette.setKeyDown {
+            val inv = MinecraftClient.getInstance().player?.inventory
+            val slot = inv?.selectedSlot
+            slot?.let { ClientPalette.addToPalette(it) }
+        }
     }
 
     fun onSave() {
@@ -242,17 +286,26 @@ class MakkitConfig {
 
     companion object {
 
-        private fun makkitKey(path: String, type: InputUtil.Type, code: Int, ctrl: Boolean = false): KeyStateHandler {
+        private fun makkitKey(
+                path: String,
+                type: InputUtil.Type,
+                code: Int,
+                ctrl: Boolean = false,
+                shift: Boolean = false,
+                alt: Boolean = false
+        ): KeyStateHandler {
             println("Creating key $path")
             return KeyStateHandler(path,
                     ModifierKeyCode.of(
                             type.createFromCode(code),
-                            Modifier.of(false, ctrl, false)
+                            Modifier.of(alt, ctrl, shift)
                     )
             )
         }
 
+        // So many key binds!
         object Default {
+            // Tool Keys
             val MOVE_DRAG: KeyStateHandler
                 get() = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
             val FILL_AREA: KeyStateHandler
@@ -268,6 +321,19 @@ class MakkitConfig {
             val MIRROR_TOOL: KeyStateHandler
                 get() = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
 
+            // Non-Tool Keys
+            val COPY_KEY: KeyStateHandler
+                get() = makkitKey("copy_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C, true)
+            val PASTE_KEY: KeyStateHandler
+                get() = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, true)
+            val NEW_BOX: KeyStateHandler
+                get() = makkitKey("center_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B)
+            val UNDO: KeyStateHandler
+                get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
+            val REDO: KeyStateHandler
+                get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true, shift = true)
+            val MULTIPALETTE: KeyStateHandler
+                get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y)
 
             val CHANGE_ME: KeyStateHandler = makkitKey("change_me", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_L)
 
@@ -289,14 +355,18 @@ class MakkitConfig {
             override fun read(`in`: JsonReader): KeyStateHandler {
                 `in`.apply {
                     beginArray()
-                    var id = nextString()
-                    var type = if (nextBoolean()) InputUtil.Type.KEYSYM else InputUtil.Type.MOUSE
-                    var code = nextInt()
-                    var alt = nextBoolean()
-                    var ctrl = nextBoolean()
-                    var shift = nextBoolean()
+                    val id = nextString()
+                    val type = if (nextBoolean()) InputUtil.Type.KEYSYM else InputUtil.Type.MOUSE
+                    val code = nextInt()
+                    val alt = nextBoolean()
+                    val ctrl = nextBoolean()
+                    val shift = nextBoolean()
                     endArray()
-                    return makkitKey(id, type, code, ctrl = ctrl)
+                    return makkitKey(id, type, code,
+                            ctrl = ctrl,
+                            shift = shift,
+                            alt = alt
+                    )
                 }
             }
 

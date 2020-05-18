@@ -6,7 +6,6 @@ import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
-import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.data.CopyHelper
