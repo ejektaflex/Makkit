@@ -142,9 +142,7 @@ class UserEditProfile {
                         pasteBox,
                         pasteBox,
                         face,
-                        PasteOperation(cd),
-                        EditWorldOptions(),
-                        BlockPalette()
+                        PasteOperation(cd)
                 ))
             }
 

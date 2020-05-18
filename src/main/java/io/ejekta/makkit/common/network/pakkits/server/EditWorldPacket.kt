@@ -30,7 +30,7 @@ class EditWorldPacket(
         // The side of the edit box that we are selecting
         var side: Direction = Direction.NORTH,
         // Which operation we are calling on the selection
-        var worldOpCode: WorldOperation = FillBlocksOperation(),
+        var operation: WorldOperation = FillBlocksOperation(),
         // Packet options
         var options: EditWorldOptions = EditWorldOptions(),
         // Which items we are using for the operation
@@ -56,8 +56,8 @@ class EditWorldPacket(
             writeIntBox(box)
             writeIntBox(undoBox)
             writeEnum(side)
-            writeEnum(worldOpCode.getType())
-            writeObject(worldOpCode, worldOpCode.getType().clazz)
+            writeEnum(operation.getType())
+            writeObject(operation, operation.getType().clazz)
             writeObject(options)
             writeInt(palette.size)
             for (item in palette) {
@@ -72,7 +72,7 @@ class EditWorldPacket(
         side = buf.readEnum()
 
         val opType = buf.readEnum<WorldOperation.Companion.Type>()
-        worldOpCode = buf.readObject(opType.clazz)
+        operation = buf.readObject(opType.clazz)
 
         options = buf.readObject()
 

@@ -38,9 +38,9 @@ object NetworkHandler {
                 intent.box,
                 intent.undoBox,
                 intent.side,
-                intent.worldOpCode,
-                intent.options,
-                BlockPalette(intent.palette, intent.options, intent.side)
+                intent.operation,
+                intent.palette,
+                intent.options
         )
 
         try {

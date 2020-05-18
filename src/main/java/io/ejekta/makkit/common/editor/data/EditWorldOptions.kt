@@ -1,6 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
-import io.ejekta.makkit.common.enums.OperationOptions
+import io.ejekta.makkit.common.enums.AirFillOption
 
 class EditWorldOptions {
     // Whether items in a palette should be weighted based on their stack sizes
@@ -8,6 +8,6 @@ class EditWorldOptions {
     // Whether rotatable blocks should be randomly rotated
     var randomRotate: Boolean = false
     // How the operation should interact with air blocks
-    var airFillOption = OperationOptions.ALL_BLOCKS
+    var airFillOption = AirFillOption.ALL_BLOCKS
 
 }

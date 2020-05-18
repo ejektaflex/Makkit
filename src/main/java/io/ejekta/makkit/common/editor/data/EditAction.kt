@@ -1,9 +1,13 @@
 package io.ejekta.makkit.common.editor.data
 
+import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.WorldOperation
+import io.ejekta.makkit.common.enums.AirFillOption
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
+import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -15,12 +19,14 @@ data class EditAction(
         val box: Box,
         val undoBox: Box,
         val direction: Direction,
-        val operation: WorldOperation,
-        val options: EditWorldOptions,
-        val palette: BlockPalette
+        val operation: WorldOperation = FillBlocksOperation(),
+        val stacks: List<ItemStack> = listOf(),
+        val options: EditWorldOptions = EditWorldOptions()
 ) {
     // Key: Position. Value: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()
+
+    val palette = BlockPalette(this)
 
     fun doInitialCommit(player: ServerPlayerEntity) {
         calcChangeSet(player.world)
@@ -29,6 +35,19 @@ data class EditAction(
     }
 
     fun edit(pos: BlockPos, state: BlockState) {
+        val block = state.block
+        when (options.airFillOption) {
+            AirFillOption.ALL_BLOCKS -> doEdit(pos, state)
+            AirFillOption.EXCLUDE_AIR -> if (block != Blocks.AIR) {
+                doEdit(pos, state)
+            }
+            AirFillOption.ONLY_AIR -> if (block == Blocks.AIR) {
+                doEdit(pos, state)
+            }
+        }
+    }
+
+    private fun doEdit(pos: BlockPos, state: BlockState) {
         if (pos !in stateMap) {
             stateMap[pos] = player.world.getBlockState(pos) to state
         } else {
