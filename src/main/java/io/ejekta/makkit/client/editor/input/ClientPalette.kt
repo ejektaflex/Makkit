@@ -14,16 +14,16 @@ object ClientPalette {
         stacks.add(slot)
     }
 
-
-    fun hasStack(slot: Int): Boolean {
-        return slot in stacks
-    }
-
     private fun getStacks(): List<ItemStack> {
         return stacks.mapNotNull {
             MinecraftClient.getInstance().player?.inventory?.getStack(it)
         }
     }
+
+    fun hasStack(slot: Int): Boolean {
+        return slot in stacks
+    }
+
 
     fun getSafePalette(): List<ItemStack> {
         return when (hasAnyItems()) {
@@ -37,7 +37,6 @@ object ClientPalette {
     }
 
     fun clearPalette() {
-        println("Clearing stack")
         stacks.clear()
     }
 

@@ -28,15 +28,15 @@ fun BlockState.rotated(times: Int): BlockState {
 fun BlockState.inDirection(dir: Direction): BlockState {
     var state = this
 
-    if (state.contains(Properties.FACING)) {
+    if (state.contains(Properties.FACING) && dir.horizontal != -1) {
         state = state.with(
-                Properties.FACING, dir
+                Properties.FACING, dir.opposite
         )
     }
 
-    if (state.contains(Properties.HORIZONTAL_FACING)) {
+    if (state.contains(Properties.HORIZONTAL_FACING) && dir.horizontal != -1) {
         state = state.with(
-                Properties.HORIZONTAL_FACING, dir
+                Properties.HORIZONTAL_FACING, dir.opposite
         )
     }
 

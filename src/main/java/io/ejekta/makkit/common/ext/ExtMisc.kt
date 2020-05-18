@@ -9,6 +9,8 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Matrix4f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.Registry
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {
     translate(-pos.x, -pos.y, -pos.z)
@@ -28,11 +30,20 @@ fun <T : Any> List<T>.weightedRandomBy(func: T.() -> Int): T {
     return mapped.weightedRandom()
 }
 
+// 1, 1
+// sum = 2
+// when point = 1
+// gold, 1
+// RETURN
 
 fun <T : Any> Map<T, Int>.weightedRandom(): T {
     val sum = values.sum()
 
-    var point = (0..sum).random()
+    if (sum == 0) {
+        throw Exception("Weighted Random List should not have a sum of 0!")
+    }
+
+    var point = (1..sum).random()
 
     for ((item, weight) in this) {
         if (point <= weight) {
