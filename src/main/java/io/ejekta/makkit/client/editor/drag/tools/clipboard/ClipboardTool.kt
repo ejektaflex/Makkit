@@ -5,7 +5,7 @@ import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.common.enum.ClipboardMode
+import io.ejekta.makkit.common.enums.ClipboardMode
 import io.ejekta.makkit.common.ext.getStart
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import net.minecraft.util.math.Box

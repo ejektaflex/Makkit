@@ -2,7 +2,7 @@ package io.ejekta.makkit.common.network.pakkits.server
 
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.NetworkHandler
-import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.readEnum
 import io.ejekta.makkit.common.ext.writeEnum
 import io.ejekta.makkit.common.network.pakkit.ServerBoundPakkit

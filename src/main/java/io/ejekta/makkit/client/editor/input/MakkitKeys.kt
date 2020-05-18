@@ -4,7 +4,7 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
-import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding
 import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry
@@ -43,10 +43,30 @@ object MakkitKeys {
 
         // Putting a selection at the cursor position
         centerRegionBinding.setKeyDown {
+            /*
+            var pos: BlockPos? = null
+
+            val btr = MinecraftClient.getInstance().crosshairTarget
+            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+                pos = BlockPos(btr.pos)
+            }
+            if (pos == null && MinecraftClient.getInstance().cameraEntity != null) {
+                pos = BlockPos(
+                        MinecraftClient.getInstance().cameraEntity!!.pos.add(
+                                RenderHelper.getLookVector().multiply(6.0).add(0.0, 2.0, 0.0).round()
+                        )
+                )
+            }
+
+            pos?.let { MakkitClient.getOrCreateRegion().centerOn(it) }
+
+             */
+
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 MakkitClient.getOrCreateRegion().centerOn(BlockPos(btr.pos))
             }
+
         }
 
         multiPalette.setKeyDown {

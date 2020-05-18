@@ -1,4 +1,4 @@
-package io.ejekta.makkit.common.enum
+package io.ejekta.makkit.common.enums
 
 enum class UndoRedoMode {
     UNDO,

@@ -10,6 +10,7 @@ import io.ejekta.makkit.client.editor.input.MakkitKeys
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.data.CopyHelper
+import io.ejekta.makkit.common.editor.data.EditWorldOptions
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
@@ -105,8 +106,10 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     undoBox,
                     trace.dir,
                     operation,
-                    MakkitClient.config.weightedPalette,
-                    MakkitClient.config.randomRotate,
+                    EditWorldOptions().apply {
+                        randomRotate = MakkitClient.config.randomRotate
+                        weightedPalette = MakkitClient.config.weightedPalette
+                    },
                     ClientPalette.getSafePalette()
             ).sendToServer()
         }

@@ -13,7 +13,11 @@ import net.minecraft.util.math.Direction
 import java.util.*
 import kotlin.math.max
 
-class BlockPalette(inItems: List<ItemStack>, val weighted: Boolean, val randomRotate: Boolean, val defaultDir: Direction) {
+class BlockPalette(
+        inItems: List<ItemStack> = listOf(),
+        val options: EditWorldOptions = EditWorldOptions(),
+        val defaultDir: Direction = Direction.UP
+) {
 
     fun isEmpty(): Boolean {
         return blocks.isEmpty()
@@ -41,13 +45,13 @@ class BlockPalette(inItems: List<ItemStack>, val weighted: Boolean, val randomRo
 
     fun getRandom(): BlockState {
 
-        val pickedBlock = when (weighted) {
+        val pickedBlock = when (options.weightedPalette) {
             true -> blocks.weightedRandom()
             else -> blocks.keys.random()
         }
 
         return getDefaultState(pickedBlock).inDirection(
-                if (randomRotate) Direction.random(random) else defaultDir
+                if (options.randomRotate) Direction.random(random) else defaultDir
         )
     }
 

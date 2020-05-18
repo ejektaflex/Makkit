@@ -3,7 +3,7 @@ package io.ejekta.makkit.client.config
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.enum.SideSelectionStyle
+import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ConfigBuilder

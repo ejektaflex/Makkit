@@ -3,7 +3,7 @@ package io.ejekta.makkit.common.ext
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.input.InputState
-import io.ejekta.makkit.client.enum.SideSelectionStyle
+import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.mixin.BoxMixin
 import io.ejekta.makkit.client.render.RenderHelper
 import net.minecraft.util.math.BlockPos

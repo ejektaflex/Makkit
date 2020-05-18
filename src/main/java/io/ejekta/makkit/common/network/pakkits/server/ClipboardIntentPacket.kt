@@ -2,7 +2,7 @@ package io.ejekta.makkit.common.network.pakkits.server
 
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.NetworkHandler
-import io.ejekta.makkit.common.enum.ClipboardMode
+import io.ejekta.makkit.common.enums.ClipboardMode
 import io.ejekta.makkit.common.ext.readEnum
 import io.ejekta.makkit.common.ext.readIntBox
 import io.ejekta.makkit.common.ext.writeEnum

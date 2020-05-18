@@ -1,7 +1,7 @@
 package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.common.editor.operations.WorldOperation
-import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
@@ -16,6 +16,7 @@ data class EditAction(
         val undoBox: Box,
         val direction: Direction,
         val operation: WorldOperation,
+        val options: EditWorldOptions,
         val palette: BlockPalette
 ) {
     // Key: Position. Value: BeforeState, AfterState

@@ -141,7 +141,7 @@ object RenderHelper : AbstractRenderHelper() {
         )
     }
 
-    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 6, reverse: Boolean = false): BoxTraceResult {
+    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 15, reverse: Boolean = false): BoxTraceResult {
         val player = mc.player!!
         // Camera position and rotation
         val vec1 = player.getCameraPosVec(tickDelta)

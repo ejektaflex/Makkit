@@ -1,7 +1,7 @@
 package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
-import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.forEachBlockCoord
 import io.ejekta.makkit.common.ext.plus
 import io.ejekta.makkit.common.ext.prettyString
@@ -143,7 +143,8 @@ class UserEditProfile {
                         pasteBox,
                         face,
                         PasteOperation(cd),
-                        BlockPalette(listOf(), weighted = false, randomRotate = false, defaultDir = Direction.UP)
+                        EditWorldOptions(),
+                        BlockPalette()
                 ))
             }
 

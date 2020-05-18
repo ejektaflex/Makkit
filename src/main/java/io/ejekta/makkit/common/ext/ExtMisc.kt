@@ -30,17 +30,11 @@ fun <T : Any> List<T>.weightedRandomBy(func: T.() -> Int): T {
     return mapped.weightedRandom()
 }
 
-// 1, 1
-// sum = 2
-// when point = 1
-// gold, 1
-// RETURN
-
 fun <T : Any> Map<T, Int>.weightedRandom(): T {
     val sum = values.sum()
 
     if (sum == 0) {
-        throw Exception("Weighted Random List should not have a sum of 0!")
+        return keys.random()
     }
 
     var point = (1..sum).random()

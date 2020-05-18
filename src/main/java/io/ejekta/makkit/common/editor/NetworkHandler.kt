@@ -3,8 +3,8 @@ package io.ejekta.makkit.common.editor
 import io.ejekta.makkit.common.editor.data.BlockPalette
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.data.UserEditProfile
-import io.ejekta.makkit.common.enum.ClipboardMode
-import io.ejekta.makkit.common.enum.UndoRedoMode
+import io.ejekta.makkit.common.enums.ClipboardMode
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
@@ -38,8 +38,9 @@ object NetworkHandler {
                 intent.box,
                 intent.undoBox,
                 intent.side,
-                intent.op,
-                BlockPalette(intent.palette, intent.weightedPalette, intent.randomRotate, intent.side)
+                intent.worldOpCode,
+                intent.options,
+                BlockPalette(intent.palette, intent.options, intent.side)
         )
 
         try {

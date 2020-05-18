@@ -1,4 +1,4 @@
-package io.ejekta.makkit.client.enum
+package io.ejekta.makkit.common.enums
 
 enum class SideSelectionStyle {
     SIMPLE,

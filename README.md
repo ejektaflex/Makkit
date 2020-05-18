@@ -44,7 +44,9 @@ letting your selection box act as a WorldEdit selection box). Stay tuned!
 ### Fabric?
 
 Yes, this mod is for Fabric & Fabric API. I don't intend or have
-time to maintain a version for both Forge and Fabric, but if someone
+time to maintain a version for both Forge and Fabric. This mod
+also does some things that would be hard to do with Forge. 
+However, if someone
 would like to do a pull request with their own implementation
 (written in Kotlin) in a separate branch, I'd be willing
 to release a Forge version!
