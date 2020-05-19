@@ -233,8 +233,8 @@ class MakkitConfig {
         addKeybindEntry("Move Tool", Default.MOVE_DRAG, moveDragKey)
         addKeybindEntry("Fill Area Tool", Default.FILL_AREA, fillKey)
         addKeybindEntry("Fill Walls Tool", Default.FILL_WALL, wallsKey)
-        addKeybindEntry("Reside Face Tool", Default.RESIZE_SIDE, resizeSideKey)
-        addKeybindEntry("Reside Face (Symmetric)", Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricBinding)
+        addKeybindEntry("Resize Face Tool", Default.RESIZE_SIDE, resizeSideKey)
+        addKeybindEntry("Resize Face (Symmetric)", Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricBinding)
         addKeybindEntry("Repeat Pattern Tool", Default.REPEAT_PATTERN, repeatPatternBinding)
         addKeybindEntry("Mirror Tool", Default.MIRROR_TOOL, mirrorToolBinding)
         addKeybindEntry("Copy", Default.COPY_KEY, copyKey)
@@ -307,15 +307,15 @@ class MakkitConfig {
         object Default {
             // Tool Keys
             val MOVE_DRAG: KeyStateHandler
-                get() = makkitKey("move_dual_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
+                get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
             val FILL_AREA: KeyStateHandler
                 get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
             val FILL_WALL: KeyStateHandler
                 get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
             val RESIZE_SIDE: KeyStateHandler
-                get() = makkitKey("resize_single_axis", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
+                get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val RESIDE_SIDE_SYMMETRIC: KeyStateHandler
-                get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
+                get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
             val REPEAT_PATTERN: KeyStateHandler
                 get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
             val MIRROR_TOOL: KeyStateHandler
@@ -331,11 +331,9 @@ class MakkitConfig {
             val UNDO: KeyStateHandler
                 get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
             val REDO: KeyStateHandler
-                get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true, shift = true)
+                get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, ctrl = true)
             val MULTIPALETTE: KeyStateHandler
                 get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y)
-
-            val CHANGE_ME: KeyStateHandler = makkitKey("change_me", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_L)
 
         }
 

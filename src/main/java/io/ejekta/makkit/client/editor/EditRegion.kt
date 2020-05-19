@@ -35,6 +35,14 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
 
+    fun isBeingUsed(): Boolean {
+        return tools.any { it.isDragging() }
+    }
+
+    fun isBeingHovered(): Boolean {
+        return selection.autoTrace() != BoxTraceResult.EMPTY
+    }
+
     fun renderSelection() {
         selectionRenderer.box = selection
         if (copyBox != null) {
@@ -119,7 +127,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         val anyToolsDragging = tools.any { it.isDragging() }
 
-        if (anyToolsDragging) {
+        if (isBeingUsed()) {
             tools.forEach { tool ->
                 tool.update()
                 tool.tryDraw()

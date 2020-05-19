@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
@@ -16,7 +17,7 @@ internal class PatternToolAxial(
 ) : SingleAxisDragTool(region) {
 
     override val keyHandler: KeyStateHandler
-        get() = MakkitConfig.Companion.Default.CHANGE_ME
+        get() = MakkitClient.config.repeatPatternBinding
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.stretch(

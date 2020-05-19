@@ -23,19 +23,11 @@ class MakkitClient : ClientModInitializer {
         ShadowBoxShowPacket.registerS2C()
 
         MakkitConfig.load()
-
-        //MakkitKeys.setup()
-
         config.assignKeybinds()
-
-
-        // Remap toolbar activators to '[' and ']'. These are rarely used and the player can view the controls
-        // If they wish to see the new bindings.
-        KeyRemapper.remap("key.saveToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_BRACKET)
-        KeyRemapper.remap("key.loadToolbarActivator", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_BRACKET)
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
         Events.MouseScrollEvent.Dispatcher.register(::onScroll)
+        Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
     }
 
     private fun onScroll(e: Events.MouseScrollEvent) {
@@ -56,13 +48,23 @@ class MakkitClient : ClientModInitializer {
             ClientPalette.clearPalette()
         }
 
+    }
 
+    // Return true if we want to cancel game interaction
+    private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
+        region?.let {
+            if (it.isBeingUsed() || it.isBeingHovered()) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
 
+        // Maybe don't tie this to draw calls, but why fix what isn't broken?
         for (key in config.keys) {
             key.update()
         }

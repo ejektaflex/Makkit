@@ -13,7 +13,8 @@
     "MixinKeyDefaultRemapper",
     "MouseScrollMixin",
     "TextRendererMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "MouseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

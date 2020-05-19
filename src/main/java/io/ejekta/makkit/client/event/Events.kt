@@ -6,6 +6,7 @@ import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.util.ActionResult
 import net.minecraft.util.math.Matrix4f
 
 object Events {
@@ -20,9 +21,30 @@ object Events {
         }
     }
 
+    /**
+     * If any listener returns true, this cancels the method
+     */
+    private fun <E : Any> createCancellableEvent(): Event<(E) -> Boolean> {
+        return EventFactory.createArrayBacked<(E) -> Boolean>(Function1::class.java) { listeners ->
+            { evt ->
+                var cancelled = false
+                for (listener in listeners) {
+                    cancelled = cancelled || listener(evt)
+                }
+                cancelled
+            }
+        }
+    }
+
     data class MouseScrollEvent(val amount: Double) {
         companion object {
             val Dispatcher = createSimpleEvent<MouseScrollEvent>()
+        }
+    }
+
+    data class MouseClickedEvent(val button: Int) {
+        companion object {
+            val Dispatcher = createCancellableEvent<MouseClickedEvent>()
         }
     }
 

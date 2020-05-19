@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools.clipboard
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
@@ -10,7 +11,7 @@ import net.minecraft.util.math.BlockPos
 internal class CopyTool(region: EditRegion) : ClipboardTool(region) {
 
     override val keyHandler: KeyStateHandler
-        get() = MakkitConfig.Companion.Default.CHANGE_ME
+        get() = MakkitClient.config.copyKey
 
     override val mode = ClipboardMode.COPY
 

@@ -30,6 +30,9 @@ dependencies {
 	modApi "me.shedaniel.cloth:config-2:4.1.0-unstable"
 	include "me.shedaniel.cloth:config-2:4.1.0-unstable"
 
+	//modApi "me.shedaniel.cloth:cloth-events:2.2.0-unstable"
+	//include "me.shedaniel.cloth:cloth-events:2.2.0-unstable"
+
 	modImplementation "io.github.prospector:modmenu:1.11.4+build.9"
 
 }
