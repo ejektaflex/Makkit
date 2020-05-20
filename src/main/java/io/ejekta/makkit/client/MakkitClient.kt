@@ -1,20 +1,22 @@
 package io.ejekta.makkit.client
 
 import io.ejekta.makkit.client.config.MakkitConfig
+import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
-import io.ejekta.makkit.client.keys.KeyRemapper
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.util.InputUtil
-import org.lwjgl.glfw.GLFW
+import net.minecraft.client.util.math.MatrixStack
 
 class MakkitClient : ClientModInitializer {
+
+    val mc = MinecraftClient.getInstance()
 
     override fun onInitializeClient() {
 
@@ -28,7 +30,17 @@ class MakkitClient : ClientModInitializer {
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
         Events.MouseScrollEvent.Dispatcher.register(::onScroll)
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
+
+        HudRenderCallback.EVENT.register(HudRenderCallback(::onHudRender))
+
     }
+
+    fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
+        if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
+            EditLegend.draw(matrixStack)
+        }
+    }
+
 
     private fun onScroll(e: Events.MouseScrollEvent) {
         val reg = getOrCreateRegion()
@@ -53,7 +65,7 @@ class MakkitClient : ClientModInitializer {
     // Return true if we want to cancel game interaction
     private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
         region?.let {
-            if (it.isBeingUsed() || it.isBeingHovered()) {
+            if (it.isBeingInteractedWith()) {
                 return true
             }
         }

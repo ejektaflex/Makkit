@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
@@ -18,7 +17,7 @@ internal class MirrorToolOpposite(
 ) : SingleAxisDragTool(region) {
 
     override val keyHandler: KeyStateHandler
-        get() = MakkitClient.config.mirrorToolBinding
+        get() = MakkitClient.config.mirrorToolKey
 
     // The distance between the original selection and the mirrored section, for display
     private var mirrorDist = 0

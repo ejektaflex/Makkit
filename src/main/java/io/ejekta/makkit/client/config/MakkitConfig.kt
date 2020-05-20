@@ -33,6 +33,8 @@ class MakkitConfig {
 
     // General
 
+    var legend = true
+
     var gridSnapping = true
 
     var historyHighlighting = true
@@ -44,6 +46,19 @@ class MakkitConfig {
     var weightedPalette = false
 
     var randomRotate = false
+
+    // Legend
+
+    var showLegend = true
+
+    var showUtility = false
+
+    var showBasic = true
+
+    var showSystem = false
+
+    var showAdvanced = true
+
 
     // Visuals
 
@@ -62,9 +77,9 @@ class MakkitConfig {
     var fillKey = Default.FILL_AREA
     var wallsKey = Default.FILL_WALL
     var resizeSideKey = Default.RESIZE_SIDE
-    var resizeSymmetricBinding = Default.RESIDE_SIDE_SYMMETRIC
-    var repeatPatternBinding = Default.REPEAT_PATTERN
-    var mirrorToolBinding = Default.MIRROR_TOOL
+    var resizeSymmetricKey = Default.RESIDE_SIDE_SYMMETRIC
+    var repeatPatternKey = Default.REPEAT_PATTERN
+    var mirrorToolKey = Default.MIRROR_TOOL
     var copyKey = Default.COPY_KEY
     var pasteKey = Default.PASTE_KEY
     var newBoxKey = Default.NEW_BOX
@@ -78,9 +93,9 @@ class MakkitConfig {
                 fillKey,
                 wallsKey,
                 resizeSideKey,
-                resizeSymmetricBinding,
-                repeatPatternBinding,
-                mirrorToolBinding,
+                resizeSymmetricKey,
+                repeatPatternKey,
+                mirrorToolKey,
                 copyKey,
                 pasteKey,
                 newBoxKey,
@@ -107,6 +122,18 @@ class MakkitConfig {
         val entryBuilder = builder.entryBuilder()
 
         // General
+
+        general.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Key Legend"),
+                        legend
+                ).setDefaultValue(true).setTooltip(
+                        LiteralText("Set to false if you don't want a keybinding legend to show up in"),
+                        LiteralText("the corner when using Makkit")
+                ).setSaveConsumer {
+                    legend = it
+                }.build()
+        )
 
         general.addEntry(
                 entryBuilder.startBooleanToggle(
@@ -222,27 +249,27 @@ class MakkitConfig {
 
         // Keybinds
 
-        fun addKeybindEntry(name: String, default: KeyStateHandler, current: KeyStateHandler) {
+        fun addKeybindEntry(default: KeyStateHandler, current: KeyStateHandler) {
             keybinds.addEntry(entryBuilder.startModifierKeyCodeField(
-                    LiteralText(name), current.binding
+                    default.name, current.binding
             ).setDefaultValue(default.binding).setModifierSaveConsumer {
                 current.binding = it
             }.build())
         }
 
-        addKeybindEntry("Move Tool", Default.MOVE_DRAG, moveDragKey)
-        addKeybindEntry("Fill Area Tool", Default.FILL_AREA, fillKey)
-        addKeybindEntry("Fill Walls Tool", Default.FILL_WALL, wallsKey)
-        addKeybindEntry("Resize Face Tool", Default.RESIZE_SIDE, resizeSideKey)
-        addKeybindEntry("Resize Face (Symmetric)", Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricBinding)
-        addKeybindEntry("Repeat Pattern Tool", Default.REPEAT_PATTERN, repeatPatternBinding)
-        addKeybindEntry("Mirror Tool", Default.MIRROR_TOOL, mirrorToolBinding)
-        addKeybindEntry("Copy", Default.COPY_KEY, copyKey)
-        addKeybindEntry("Paste", Default.PASTE_KEY, pasteKey)
-        addKeybindEntry("Create New Box", Default.NEW_BOX, newBoxKey)
-        addKeybindEntry("Undo Operation", Default.UNDO, undoKey)
-        addKeybindEntry("Redo Operation", Default.REDO, redoKey)
-        addKeybindEntry("Palette Selection", Default.MULTIPALETTE, multiPalette)
+        addKeybindEntry(Default.MOVE_DRAG, moveDragKey)
+        addKeybindEntry(Default.FILL_AREA, fillKey)
+        addKeybindEntry(Default.FILL_WALL, wallsKey)
+        addKeybindEntry(Default.RESIZE_SIDE, resizeSideKey)
+        addKeybindEntry(Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricKey)
+        addKeybindEntry(Default.REPEAT_PATTERN, repeatPatternKey)
+        addKeybindEntry(Default.MIRROR_TOOL, mirrorToolKey)
+        addKeybindEntry(Default.COPY_KEY, copyKey)
+        addKeybindEntry(Default.PASTE_KEY, pasteKey)
+        addKeybindEntry(Default.NEW_BOX, newBoxKey)
+        addKeybindEntry(Default.UNDO, undoKey)
+        addKeybindEntry(Default.REDO, redoKey)
+        addKeybindEntry(Default.MULTIPALETTE, multiPalette)
 
 
         return builder.build()
@@ -287,15 +314,15 @@ class MakkitConfig {
     companion object {
 
         private fun makkitKey(
-                path: String,
+                id: String,
                 type: InputUtil.Type,
                 code: Int,
                 ctrl: Boolean = false,
                 shift: Boolean = false,
                 alt: Boolean = false
         ): KeyStateHandler {
-            println("Creating key $path")
-            return KeyStateHandler(path,
+            println("Creating key $id")
+            return KeyStateHandler(id,
                     ModifierKeyCode.of(
                             type.createFromCode(code),
                             Modifier.of(alt, ctrl, shift)
@@ -305,21 +332,28 @@ class MakkitConfig {
 
         // So many key binds!
         object Default {
+
             // Tool Keys
             val MOVE_DRAG: KeyStateHandler
                 get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
             val FILL_AREA: KeyStateHandler
                 get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
             val FILL_WALL: KeyStateHandler
-                get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
+                get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
             val RESIZE_SIDE: KeyStateHandler
                 get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val RESIDE_SIDE_SYMMETRIC: KeyStateHandler
                 get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
             val REPEAT_PATTERN: KeyStateHandler
-                get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
+                get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
             val MIRROR_TOOL: KeyStateHandler
                 get() = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
+
+            // Special Keys
+            val MULTIPALETTE: KeyStateHandler
+                get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
+
+            // Z Key should be Toggle Air Mode
 
             // Non-Tool Keys
             val COPY_KEY: KeyStateHandler
@@ -332,8 +366,6 @@ class MakkitConfig {
                 get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
             val REDO: KeyStateHandler
                 get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, ctrl = true)
-            val MULTIPALETTE: KeyStateHandler
-                get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y)
 
         }
 

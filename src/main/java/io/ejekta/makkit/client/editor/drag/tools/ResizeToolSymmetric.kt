@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
@@ -16,7 +15,7 @@ internal class ResizeToolSymmetric (
 ) : SingleAxisDragTool(region) {
 
     override val keyHandler: KeyStateHandler
-        get() = MakkitClient.config.resizeSymmetricBinding
+        get() = MakkitClient.config.resizeSymmetricKey
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         // this locks to an axis and flips so that "positive" is in the direction direction
