@@ -33,9 +33,6 @@ object EditLegend {
         addText(LiteralText("Makkit Key Legend: "))
         addText(LiteralText("============"))
 
-
-
-
         MakkitClient.config.run {
             if (showUtility) {
                 drawKeybinds(
@@ -67,9 +64,6 @@ object EditLegend {
 
         }
 
-        MakkitClient.config.run {
-
-        }
 
         drawAllText()
     }
@@ -85,7 +79,7 @@ object EditLegend {
         handlers.forEachIndexed { i, handler ->
             text.add(Triple(
                     handler.shortName,
-                    renderer.getStringWidth(longestName.name) + 0,
+                    renderer.getStringWidth(longestName.name) + 5,
                     handler.binding.localizedName
             ))
         }
@@ -103,7 +97,7 @@ object EditLegend {
 
     private fun drawTextOn(line: Int, text: Text, offset: Int) {
 
-        val enum = GuiCorner.TOP_LEFT
+        val enum = MakkitClient.config.legendCorner
         val padding = 2f
 
         val lx = padding + offset
@@ -114,8 +108,8 @@ object EditLegend {
         val corner = when (enum) {
             GuiCorner.TOP_LEFT -> lx to ty
             GuiCorner.TOP_RIGHT -> rx to ty
-            GuiCorner.BOTTOM_RIGHT -> lx to by
-            GuiCorner.BOTTOM_LEFT -> padding + offset to by
+            GuiCorner.BOTTOM_RIGHT -> rx to by
+            GuiCorner.BOTTOM_LEFT -> lx to by
         }
         drawText(text, corner.first, corner.second)
     }

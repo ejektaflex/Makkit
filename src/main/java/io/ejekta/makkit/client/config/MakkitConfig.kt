@@ -13,6 +13,7 @@ import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
+import io.ejekta.makkit.common.enums.GuiCorner
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import me.shedaniel.clothconfig2.api.ConfigBuilder
@@ -51,13 +52,15 @@ class MakkitConfig {
 
     var showLegend = true
 
+    var legendCorner = GuiCorner.BOTTOM_LEFT
+
     var showUtility = false
 
     var showBasic = true
 
     var showSystem = false
 
-    var showAdvanced = true
+    //var showAdvanced = true
 
 
     // Visuals
@@ -113,6 +116,8 @@ class MakkitConfig {
 
         val general = builder.getOrCreateCategory(LiteralText("General"))
 
+        val legend = builder.getOrCreateCategory(LiteralText("Legend"))
+
         val operations = builder.getOrCreateCategory(LiteralText("Operations"))
 
         val visuals = builder.getOrCreateCategory(LiteralText("Visuals"))
@@ -122,18 +127,6 @@ class MakkitConfig {
         val entryBuilder = builder.entryBuilder()
 
         // General
-
-        general.addEntry(
-                entryBuilder.startBooleanToggle(
-                        LiteralText("Key Legend"),
-                        legend
-                ).setDefaultValue(true).setTooltip(
-                        LiteralText("Set to false if you don't want a keybinding legend to show up in"),
-                        LiteralText("the corner when using Makkit")
-                ).setSaveConsumer {
-                    legend = it
-                }.build()
-        )
 
         general.addEntry(
                 entryBuilder.startBooleanToggle(
@@ -171,6 +164,69 @@ class MakkitConfig {
                     sideSelectionStyle = it
                 }.build()
         )
+
+        // Legend
+
+        legend.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Show Legend"),
+                        showLegend
+                ).setDefaultValue(true).setTooltip(
+                        LiteralText("Set to false if you don't want a keybinding legend to show up in"),
+                        LiteralText("the corner when using Makkit")
+                ).setSaveConsumer {
+                    showLegend = it
+                }.build()
+        )
+
+        legend.addEntry(
+                entryBuilder.startEnumSelector(
+                        LiteralText("Legend Corner"),
+                        GuiCorner::class.java,
+                        legendCorner
+                ).setDefaultValue(GuiCorner.BOTTOM_LEFT).setTooltip(
+                        LiteralText("Which corner the legend GUI should show up in")
+                ).setSaveConsumer {
+                    legendCorner = it
+                }.build()
+        )
+
+        legend.addEntry(
+                entryBuilder.startSubCategory(LiteralText("Categories to Show"),
+                listOf(
+                        entryBuilder.startBooleanToggle(
+                                LiteralText("Utility Keys"),
+                                showUtility
+                        ).setDefaultValue(false).setTooltip(
+                                LiteralText("Whether or not to show utility based keybinds in the legend"),
+                                LiteralText("(move, resize, create new selection box)")
+                        ).setSaveConsumer {
+                            showUtility = it
+                        }.build(),
+
+                        entryBuilder.startBooleanToggle(
+                                LiteralText("Basic Keys"),
+                                showBasic
+                        ).setDefaultValue(true).setTooltip(
+                                LiteralText("Whether or not to show basic editor keybinds in the legend"),
+                                LiteralText("(fill area / walls, repeat, mirror, palette tool)")
+                        ).setSaveConsumer {
+                            showBasic = it
+                        }.build(),
+
+                        entryBuilder.startBooleanToggle(
+                                LiteralText("System Keys"),
+                                showSystem
+                        ).setDefaultValue(false).setTooltip(
+                                LiteralText("Whether or not to show system-level editor keybinds"),
+                                LiteralText("in the legend (copy/paste, undo/redo)")
+                        ).setSaveConsumer {
+                            showSystem = it
+                        }.build()
+
+                )).setExpanded(true).build()
+        )
+
 
         // Operations
 
