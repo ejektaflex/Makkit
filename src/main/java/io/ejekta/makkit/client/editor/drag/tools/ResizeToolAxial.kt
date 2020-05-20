@@ -1,11 +1,13 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
+import io.ejekta.makkit.client.render.RenderColor
+import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.dirMask
+import io.ejekta.makkit.common.ext.projectedIn
 import io.ejekta.makkit.common.ext.shrinkSide
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -29,6 +31,13 @@ internal class ResizeToolAxial(
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
+
+        val faceCenter = preview.box.center
+        val length = getPreviewSizeIn(dragStart.dir) / 2 + 0.5
+        val lineStart = faceCenter.projectedIn(dragStart.dir, length)
+        val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
+        RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
+
         preview.drawSizeOnFace(dragStart.dir)
     }
 

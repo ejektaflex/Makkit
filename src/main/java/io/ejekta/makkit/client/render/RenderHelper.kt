@@ -144,6 +144,14 @@ object RenderHelper : AbstractRenderHelper() {
         )
     }
 
+    fun drawLine(start: Vec3d, end: Vec3d, color: RenderColor = RenderColor.WHITE, layer: RenderLayer = MyLayers.OVERLAY_LINES_BOTH) {
+        val vert = eVerts.getBuffer(layer)
+        val mat = RenderHelper.matrices.peek().model
+
+        vert.vertex(mat, start.x, start.y, start.z).color(color).next()
+        vert.vertex(mat, end.x, end.y, end.z).color(color).next()
+    }
+
     fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 15, reverse: Boolean = false): BoxTraceResult {
         val player = mc.player!!
         // Camera position and rotation

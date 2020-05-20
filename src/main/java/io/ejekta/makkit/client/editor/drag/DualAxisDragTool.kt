@@ -2,7 +2,6 @@ package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
@@ -44,7 +43,6 @@ internal abstract class DualAxisDragTool(region: EditRegion) : DragTool(region) 
     }
 
     override fun onDrawPreview(offset: Vec3d) {
-        preview.box = getPreviewBox(offset, region.selection)
         if (region.drawDragPlane) {
             plane.draw(RenderColor.PINK.toAlpha(0.2f))
         }

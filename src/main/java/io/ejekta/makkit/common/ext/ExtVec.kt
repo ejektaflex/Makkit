@@ -72,6 +72,10 @@ fun Vec3d.snapped(snap: Boolean): Vec3d {
     }
 }
 
+fun Vec3d.projectedIn(dir: Direction, amt: Double): Vec3d {
+    return add(Vec3d(amt, amt, amt).dirMask(dir))
+}
+
 fun Vec3d.roundToVec3i(): Vec3i {
     return Vec3i(x, y, z)
 }

@@ -7,7 +7,10 @@ import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
+import io.ejekta.makkit.common.ext.getFacePlane
+import io.ejekta.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 internal abstract class DragTool(val region: EditRegion) {
@@ -25,6 +28,35 @@ internal abstract class DragTool(val region: EditRegion) {
     fun isDragging(): Boolean {
         return dragStart != BoxTraceResult.EMPTY
     }
+
+    protected fun getSelectedFacePlane(): Box {
+        return preview.box.getFacePlane(dragStart.dir)
+    }
+
+    protected fun getCenterOfSelectedFace(): Vec3d {
+        return getSelectedFacePlane().center
+    }
+
+    protected fun getMainAxis(): Direction.Axis {
+        return dragStart.dir.axis
+    }
+
+    protected fun getAlternateAxesDirections(): List<Direction> {
+        return enumValues<Direction>().filter { it.axis != dragStart.dir.axis }
+    }
+
+    protected fun getAlternateAxes(): List<Direction.Axis> {
+        return enumValues<Direction.Axis>().filter { it != dragStart.dir.axis }
+    }
+
+    protected fun getSelectionSizeIn(direction: Direction): Double {
+        return region.selection.sizeInDirection(direction)
+    }
+
+    protected fun getPreviewSizeIn(direction: Direction): Double {
+        return preview.box.sizeInDirection(direction)
+    }
+
 
     /**
      * Calculates a box shape for the tool, given a position
@@ -86,6 +118,8 @@ internal abstract class DragTool(val region: EditRegion) {
         if (isDragging()) {
             val off = getCursorOffset()
             if (off != null) {
+                val prevBox = getPreviewBox(off, region.selection)
+                preview.box = prevBox
                 onDrawPreview(off)
             }
         }
