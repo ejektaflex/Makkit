@@ -78,6 +78,7 @@ class MakkitConfig {
     // Keybinds
 
     var moveDragKey = Default.MOVE_DRAG
+    var movePushKey = Default.MOVE_PUSH
     var fillKey = Default.FILL_AREA
     var wallsKey = Default.FILL_WALL
     var resizeSideKey = Default.RESIZE_SIDE
@@ -91,11 +92,12 @@ class MakkitConfig {
     var redoKey = Default.REDO
     var multiPalette = Default.MULTIPALETTE
     var airMode = Default.AIR_MODE
-    var editMode = Default.EDIT_MODE
+    var placeMode = Default.PLACE_MODE
 
     val keys: Set<KeyStateHandler>
         get() = setOf(
                 moveDragKey,
+                movePushKey,
                 fillKey,
                 wallsKey,
                 resizeSideKey,
@@ -109,7 +111,7 @@ class MakkitConfig {
                 redoKey,
                 multiPalette,
                 airMode,
-                editMode
+                placeMode
         )
 
 
@@ -319,6 +321,7 @@ class MakkitConfig {
         }
 
         addKeybindEntry(Default.MOVE_DRAG, moveDragKey)
+        addKeybindEntry(Default.MOVE_PUSH, movePushKey)
         addKeybindEntry(Default.FILL_AREA, fillKey)
         addKeybindEntry(Default.FILL_WALL, wallsKey)
         addKeybindEntry(Default.RESIZE_SIDE, resizeSideKey)
@@ -331,6 +334,7 @@ class MakkitConfig {
         addKeybindEntry(Default.UNDO, undoKey)
         addKeybindEntry(Default.REDO, redoKey)
         addKeybindEntry(Default.MULTIPALETTE, multiPalette)
+        addKeybindEntry(Default.PLACE_MODE, placeMode)
 
 
         return builder.build()
@@ -366,7 +370,7 @@ class MakkitConfig {
             slot?.let { ClientPalette.addToPalette(it) }
         }
 
-        editMode.setKeyDown {
+        placeMode.setKeyDown {
             MakkitClient.isInEditMode = !MakkitClient.isInEditMode
         }
 
@@ -406,6 +410,8 @@ class MakkitConfig {
             // Tool Keys
             val MOVE_DRAG: KeyStateHandler
                 get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
+            val MOVE_PUSH: KeyStateHandler
+                get() = makkitKey("move_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
             val FILL_AREA: KeyStateHandler
                 get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
             val FILL_WALL: KeyStateHandler
@@ -424,8 +430,8 @@ class MakkitConfig {
                 get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
             val AIR_MODE: KeyStateHandler
                 get() = makkitKey("air_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
-            val EDIT_MODE: KeyStateHandler
-                get() = makkitKey("edit_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
+            val PLACE_MODE: KeyStateHandler
+                get() = makkitKey("place_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
 
             // Z Key should be Toggle Air Mode
 

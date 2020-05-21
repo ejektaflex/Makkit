@@ -42,8 +42,8 @@
   "makkit.air_mode": "Air Mode Toggle",
   "makkit.air_mode.short": "Air Mode",
 
-  "makkit.edit_mode": "Edit Mode",
-  "makkit.edit_mode.short": "Edit Mode"
+  "makkit.place_mode": "Block Placement Mode",
+  "makkit.place_mode.short": "Place Mode"
 
 
 }

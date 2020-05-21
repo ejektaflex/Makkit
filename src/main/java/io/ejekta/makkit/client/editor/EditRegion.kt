@@ -75,6 +75,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     private var tools = mutableListOf(
             MoveToolPlanar(this),
+            MoveToolAxial(this),
             ResizeToolAxial(this),
             ResizeToolSymmetric(this),
             PatternToolAxial(this),

@@ -45,7 +45,7 @@ object EditLegend {
 
             if (showBasic) {
                 drawKeybinds(
-                        editMode,
+                        placeMode,
                         fillKey,
                         wallsKey,
                         repeatPatternKey,
