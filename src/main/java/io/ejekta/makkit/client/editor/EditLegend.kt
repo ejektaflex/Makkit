@@ -38,6 +38,7 @@ object EditLegend {
                 drawKeybinds(
                         newBoxKey,
                         moveDragKey,
+                        movePushKey,
                         resizeSideKey,
                         resizeSymmetricKey
                 )

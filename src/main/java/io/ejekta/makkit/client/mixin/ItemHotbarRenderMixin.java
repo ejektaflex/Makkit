@@ -2,6 +2,7 @@ package io.ejekta.makkit.client.mixin;
 
 import io.ejekta.makkit.client.MakkitClient;
 import io.ejekta.makkit.client.editor.input.ClientPalette;
+import io.ejekta.makkit.client.render.RenderTextHelper;
 import io.ejekta.makkit.common.MakkitCommon;
 import io.ejekta.makkit.common.editor.data.BlockPalette;
 import io.ejekta.makkit.common.enums.AirFillOption;
@@ -13,6 +14,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,8 +57,8 @@ public abstract class ItemHotbarRenderMixin {
 
                 MinecraftClient.getInstance().inGameHud.drawTexture(
                         matrixStack,
-                        i - 91 - 1 + hotNum * 20,
-                        this.scaledHeight - 22 - 1,
+                        i - 92 + hotNum * 20,
+                        this.scaledHeight - 23,
                         0,
                         0,
                         24,
@@ -67,8 +69,8 @@ public abstract class ItemHotbarRenderMixin {
                 if (BlockPalette.Companion.test(stack) == null) {
                     MinecraftClient.getInstance().inGameHud.drawTexture(
                             matrixStack,
-                            i - 91 - 1 + hotNum * 20,
-                            this.scaledHeight - 22 - 1,
+                            i - 92 + hotNum * 20,
+                            this.scaledHeight - 23,
                             0,
                             44,
                             24,
@@ -86,7 +88,7 @@ public abstract class ItemHotbarRenderMixin {
                     .drawTexture(
                             matrixStack,
                             i - 91 - 1 + playerEntity.inventory.selectedSlot * 20,
-                            this.scaledHeight - 22 - 1,
+                            this.scaledHeight - 23,
                             0,
                             22,
                             24,
@@ -95,29 +97,37 @@ public abstract class ItemHotbarRenderMixin {
         }
 
         AirFillOption opt = MakkitClient.Companion.getAirModeOption();
+        int airPos = 4;
 
         if (opt == AirFillOption.ONLY_AIR) {
             MinecraftClient.getInstance().inGameHud
                     .drawTexture(
                             matrixStack,
-                            i - 91 - 1 + 11 * 20,
-                            this.scaledHeight - 22 - 1,
+                            i - 12,
+                            6,
                             24,
                             0,
                             24,
                             22
                     );
+
+            LiteralText text = new LiteralText("Only Affect Air");
+            RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, text, i, 2, 0xFFFFFF);
+
         } else if(opt == AirFillOption.EXCLUDE_AIR) {
             MinecraftClient.getInstance().inGameHud
                     .drawTexture(
                             matrixStack,
-                            i - 91 - 1 + 11 * 20,
-                            this.scaledHeight - 22 - 1,
+                            i - 12,
+                            6,
                             48,
                             0,
                             24,
                             22
                     );
+
+            LiteralText text = new LiteralText("Don't Affect Air");
+            RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, text, i, 2, 0xFFFFFF);
         }
 
 

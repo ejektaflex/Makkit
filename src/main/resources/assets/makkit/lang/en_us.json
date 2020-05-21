@@ -3,6 +3,9 @@
   "makkit.move_dual_axis": "Move Tool (2 Axis)",
   "makkit.move_dual_axis.short": "Move (2 Axis, Drag)",
 
+  "makkit.move_single_axis": "Move Tool (1 Axis)",
+  "makkit.move_single_axis.short": "Move (1 Axis, Drag)",
+
   "makkit.resize_single_axis": "Resize Tool (1 Axis)",
   "makkit.resize_single_axis.short": "Resize (1 Axis, Drag))",
 
