@@ -1,8 +1,10 @@
 package io.ejekta.makkit.client.mixin;
 
+import io.ejekta.makkit.client.MakkitClient;
 import io.ejekta.makkit.client.editor.input.ClientPalette;
 import io.ejekta.makkit.common.MakkitCommon;
 import io.ejekta.makkit.common.editor.data.BlockPalette;
+import io.ejekta.makkit.common.enums.AirFillOption;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -91,6 +93,34 @@ public abstract class ItemHotbarRenderMixin {
                             22
                     );
         }
+
+        AirFillOption opt = MakkitClient.Companion.getAirModeOption();
+
+        if (opt == AirFillOption.ONLY_AIR) {
+            MinecraftClient.getInstance().inGameHud
+                    .drawTexture(
+                            matrixStack,
+                            i - 91 - 1 + 11 * 20,
+                            this.scaledHeight - 22 - 1,
+                            24,
+                            0,
+                            24,
+                            22
+                    );
+        } else if(opt == AirFillOption.EXCLUDE_AIR) {
+            MinecraftClient.getInstance().inGameHud
+                    .drawTexture(
+                            matrixStack,
+                            i - 91 - 1 + 11 * 20,
+                            this.scaledHeight - 22 - 1,
+                            48,
+                            0,
+                            24,
+                            22
+                    );
+        }
+
+
 
         // Bind back to widgets texture
         client.getTextureManager().bindTexture(WIDGETS_TEX);

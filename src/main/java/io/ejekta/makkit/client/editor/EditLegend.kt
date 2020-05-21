@@ -32,8 +32,6 @@ object EditLegend {
 
         addText(LiteralText("Makkit Key Legend: "))
         addText(LiteralText("============"))
-        addText(LiteralText("Air Mode: ${MakkitClient.airModeOption}"))
-        addText(LiteralText("============"))
 
         MakkitClient.config.run {
             if (showUtility) {
