@@ -32,6 +32,8 @@ object EditLegend {
 
         addText(LiteralText("Makkit Key Legend: "))
         addText(LiteralText("============"))
+        addText(LiteralText("Air Mode: ${MakkitClient.airModeOption}"))
+        addText(LiteralText("============"))
 
         MakkitClient.config.run {
             if (showUtility) {
@@ -117,7 +119,11 @@ object EditLegend {
     }
 
     private fun drawText(text: Text, x: Float, y: Float) {
-        renderer.draw(stack, text, x, y, 0xFFFFFF )
+        val color = when (MakkitClient.isInEditMode) {
+            true -> 0xFFFFFF
+            false -> 0xAAAAAA
+        }
+        renderer.draw(stack, text, x, y, color )
     }
 
 

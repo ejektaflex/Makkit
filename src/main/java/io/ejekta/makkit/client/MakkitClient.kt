@@ -7,6 +7,7 @@ import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.enums.AirFillOption
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
@@ -93,6 +94,8 @@ class MakkitClient : ClientModInitializer {
     companion object {
 
         var isInEditMode = true
+
+        var airModeOption = AirFillOption.ALL_BLOCKS
 
         var config = MakkitConfig.load()
 

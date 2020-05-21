@@ -13,6 +13,7 @@ import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
+import io.ejekta.makkit.common.enums.AirFillOption
 import io.ejekta.makkit.common.enums.GuiCorner
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
@@ -367,6 +368,11 @@ class MakkitConfig {
 
         editMode.setKeyDown {
             MakkitClient.isInEditMode = !MakkitClient.isInEditMode
+        }
+
+        airMode.setKeyDown {
+            val modeInd = MakkitClient.airModeOption.ordinal
+            MakkitClient.airModeOption = enumValues<AirFillOption>()[(modeInd + 1) % enumValues<AirFillOption>().size]
         }
     }
 
