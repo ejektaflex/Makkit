@@ -2,7 +2,6 @@ package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.ext.getBlockArray
-import io.ejekta.makkit.common.ext.getSize
 import io.ejekta.makkit.common.ext.getStart
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box

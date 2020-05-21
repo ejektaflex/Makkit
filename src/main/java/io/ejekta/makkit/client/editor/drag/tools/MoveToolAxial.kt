@@ -6,7 +6,10 @@ import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.ext.*
+import io.ejekta.makkit.common.ext.axisMask
+import io.ejekta.makkit.common.ext.axisValue
+import io.ejekta.makkit.common.ext.getStart
+import io.ejekta.makkit.common.ext.projectedIn
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt

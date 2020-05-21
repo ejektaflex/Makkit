@@ -8,13 +8,13 @@ import com.google.gson.stream.JsonWriter
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
-import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
 import io.ejekta.makkit.common.enums.AirFillOption
 import io.ejekta.makkit.common.enums.GuiCorner
+import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import me.shedaniel.clothconfig2.api.ConfigBuilder

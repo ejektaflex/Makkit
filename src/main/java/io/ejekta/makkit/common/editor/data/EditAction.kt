@@ -5,7 +5,6 @@ import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.enums.AirFillOption
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
-import net.minecraft.block.AirBlock
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.item.ItemStack

@@ -1,6 +1,5 @@
 package io.ejekta.makkit.common
 
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket

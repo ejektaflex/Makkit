@@ -2,9 +2,9 @@ package io.ejekta.makkit.common.ext
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.client.mixin.BoxMixin
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.enums.SideSelectionStyle
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction

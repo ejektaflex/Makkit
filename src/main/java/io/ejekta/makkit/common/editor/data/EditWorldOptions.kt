@@ -1,7 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.common.enums.AirFillOption
 
 class EditWorldOptions {
     // Whether items in a palette should be weighted based on their stack sizes

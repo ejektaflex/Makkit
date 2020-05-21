@@ -1,8 +1,6 @@
 package io.ejekta.makkit.client.editor.input
 
 import net.minecraft.client.MinecraftClient
-import net.minecraft.item.AirBlockItem
-import net.minecraft.item.BlockItem
 import net.minecraft.item.ItemStack
 
 object ClientPalette {

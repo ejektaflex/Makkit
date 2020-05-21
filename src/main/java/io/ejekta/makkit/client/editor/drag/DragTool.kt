@@ -7,7 +7,6 @@ import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
-import io.ejekta.makkit.common.ext.getFacePlane
 import io.ejekta.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
