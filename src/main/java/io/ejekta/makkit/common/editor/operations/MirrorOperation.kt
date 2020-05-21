@@ -21,7 +21,11 @@ class MirrorOperation(val flipCenter: Vec3d) : WorldOperation() {
             val vec = block.vec3d()
 
             // We add the direction vector to make up for slight loss after flipping a block pos
-            val newPosUnconstrained = vec.subtract(vec.add(action.direction.vec3d()).flipAround(flipCenter))
+            val newPosUnconstrained = vec.subtract(
+                    vec.flipAround(
+                            flipCenter.subtract(action.direction.vec3d().multiply(0.5))
+                    )
+            )
 
             val newPos = vec
                     .add(
