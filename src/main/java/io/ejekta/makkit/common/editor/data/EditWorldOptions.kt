@@ -9,5 +9,4 @@ class EditWorldOptions {
     var randomRotate: Boolean = false
     // How the operation should interact with air blocks
     var airFillOption = AirFillOption.ALL_BLOCKS
-
 }

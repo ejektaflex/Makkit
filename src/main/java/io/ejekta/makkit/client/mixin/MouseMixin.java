@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.mixin;
 
+import io.ejekta.makkit.client.MakkitClient;
 import io.ejekta.makkit.client.event.Events;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
@@ -24,12 +25,16 @@ abstract class MouseMixin {
             int mods,
             CallbackInfo ci
     ) {
-        Boolean cancelled = Events.MouseClickedEvent.Companion.getDispatcher().invoker().invoke(
-                new Events.MouseClickedEvent(button)
-        );
 
-        if (cancelled) {
-            ci.cancel();
+        if (MakkitClient.Companion.isInEditMode()) {
+            Boolean cancelled = Events.MouseClickedEvent.Companion.getDispatcher().invoker().invoke(
+                    new Events.MouseClickedEvent(button)
+            );
+
+            if (cancelled) {
+                ci.cancel();
+            }
         }
+
     }
 }

@@ -89,6 +89,8 @@ class MakkitConfig {
     var undoKey = Default.UNDO
     var redoKey = Default.REDO
     var multiPalette = Default.MULTIPALETTE
+    var airMode = Default.AIR_MODE
+    var editMode = Default.EDIT_MODE
 
     val keys: Set<KeyStateHandler>
         get() = setOf(
@@ -104,7 +106,9 @@ class MakkitConfig {
                 newBoxKey,
                 undoKey,
                 redoKey,
-                multiPalette
+                multiPalette,
+                airMode,
+                editMode
         )
 
 
@@ -360,6 +364,10 @@ class MakkitConfig {
             val slot = inv?.selectedSlot
             slot?.let { ClientPalette.addToPalette(it) }
         }
+
+        editMode.setKeyDown {
+            MakkitClient.isInEditMode = !MakkitClient.isInEditMode
+        }
     }
 
     fun onSave() {
@@ -408,6 +416,10 @@ class MakkitConfig {
             // Special Keys
             val MULTIPALETTE: KeyStateHandler
                 get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
+            val AIR_MODE: KeyStateHandler
+                get() = makkitKey("air_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
+            val EDIT_MODE: KeyStateHandler
+                get() = makkitKey("edit_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
 
             // Z Key should be Toggle Air Mode
 

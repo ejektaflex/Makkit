@@ -92,9 +92,9 @@ internal abstract class DragTool(val region: EditRegion) {
 
     fun update() {
         // Try to start dragging
-        if (dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
+        if (MakkitClient.isInEditMode && dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
             dragStart = region.selection.autoTrace()
-            if (dragStart != BoxTraceResult.EMPTY) {
+            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
                 onStartDragging(dragStart)
             }
         }

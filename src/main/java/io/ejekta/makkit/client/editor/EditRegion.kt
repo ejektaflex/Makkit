@@ -45,18 +45,32 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun renderSelection() {
         selectionRenderer.box = selection
-        if (copyBox != null) {
-            if (selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.NORTH)
-                    || selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.EAST)) {
-                selectionRenderer.edgeColor = RenderColor.PURPLE.toAlpha(.4f)
+
+        val configColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+
+        selectionRenderer.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
+
+    }
+
+    fun getSelectionColor(): RenderColor {
+
+        val default = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+
+        return if (MakkitClient.isInEditMode) {
+            if (copyBox == null) {
+                default
             } else {
-                selectionRenderer.edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+                val isPasteSize = selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.NORTH)
+                        || selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.EAST)
+                if (isPasteSize) {
+                    RenderColor.PURPLE.toAlpha(.4f)
+                } else {
+                    default
+                }
             }
         } else {
-            selectionRenderer.edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+            RenderColor.WHITE.toAlpha(.1f)
         }
-
-        selectionRenderer.draw()
     }
 
     private var tools = mutableListOf(
@@ -125,20 +139,24 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     fun draw() {
         renderSelection()
 
-        if (isAnyToolBeingUsed()) {
-            tools.forEach { tool ->
-                tool.update()
-                tool.tryDraw()
-            }
-        } else {
+        if (MakkitClient.isInEditMode) {
+            if (isAnyToolBeingUsed()) {
+                tools.forEach { tool ->
+                    tool.update()
+                    tool.tryDraw()
+                }
+            } else {
 
-            // default state when no drag tool is being used
-            val hit = selection.autoTrace()
-            if (hit != BoxTraceResult.EMPTY) {
-                selectionRenderer.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
-                selectionRenderer.drawAxisSizes()
+                // default state when no drag tool is being used
+                val hit = selection.autoTrace()
+                if (hit != BoxTraceResult.EMPTY) {
+                    selectionRenderer.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
+                    selectionRenderer.drawAxisSizes()
+                }
             }
         }
+
+
     }
 
 

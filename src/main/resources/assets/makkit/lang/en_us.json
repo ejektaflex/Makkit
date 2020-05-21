@@ -37,7 +37,13 @@
   "makkit.repeat_pattern.short": "Drag Pattern",
 
   "makkit.mirror_tool": "Mirror Tool",
-  "makkit.mirror_tool.short": "Mirror"
+  "makkit.mirror_tool.short": "Mirror",
+
+  "makkit.air_mode": "Air Mode Toggle",
+  "makkit.air_mode.short": "Air Mode",
+
+  "makkit.edit_mode": "Edit Mode",
+  "makkit.edit_mode.short": "Edit Mode"
 
 
 }

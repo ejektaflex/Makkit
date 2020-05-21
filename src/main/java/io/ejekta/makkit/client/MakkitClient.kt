@@ -92,6 +92,8 @@ class MakkitClient : ClientModInitializer {
 
     companion object {
 
+        var isInEditMode = true
+
         var config = MakkitConfig.load()
 
         fun drawRemoteRegions() {

@@ -45,11 +45,13 @@ object EditLegend {
 
             if (showBasic) {
                 drawKeybinds(
+                        editMode,
                         fillKey,
                         wallsKey,
                         repeatPatternKey,
                         multiPalette,
-                        mirrorToolKey
+                        mirrorToolKey,
+                        airMode
                 )
             }
 
