@@ -29,13 +29,11 @@ internal class ResizeToolSymmetric (
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = getCenterOfSelectedFace()
-        for (axisDir in getAlternateAxesDirections()) {
-            val length = getSelectionSizeIn(axisDir) / 2 - 0.25
-            val lineStart = faceCenter.projectedIn(axisDir, length)
-            val lineEnd = faceCenter.projectedIn(axisDir, -length)
-            RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
-        }
+        val faceCenter = preview.box.center
+        val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
+        val lineStart = faceCenter.projectedIn(dragStart.dir, length)
+        val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
+        RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
         preview.drawSizeOnFace(dragStart.dir)
     }

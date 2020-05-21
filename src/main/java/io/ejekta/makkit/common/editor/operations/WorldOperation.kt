@@ -16,7 +16,8 @@ abstract class WorldOperation {
             SET(FillBlocksOperation::class),
             WALLS(FillWallsOperation::class),
             PATTERN(PatternOperation::class),
-            PASTE(PasteOperation::class)
+            PASTE(PasteOperation::class),
+            MIRROR(MirrorOperation::class)
         }
 
         // Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.

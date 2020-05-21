@@ -29,14 +29,6 @@ internal abstract class DragTool(val region: EditRegion) {
         return dragStart != BoxTraceResult.EMPTY
     }
 
-    protected fun getSelectedFacePlane(): Box {
-        return preview.box.getFacePlane(dragStart.dir)
-    }
-
-    protected fun getCenterOfSelectedFace(): Vec3d {
-        return getSelectedFacePlane().center
-    }
-
     protected fun getMainAxis(): Direction.Axis {
         return dragStart.dir.axis
     }

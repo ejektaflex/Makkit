@@ -38,7 +38,6 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
 fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
     val start = getStart()
     val size = getSize()
-
     for (x in start.x.toInt() until (start.x + size.x).toInt()) {
         for (y in start.y.toInt() until (start.y + size.y).toInt()) {
             for (z in start.z.toInt() until (start.z + size.z).toInt()) {
@@ -46,11 +45,11 @@ fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
             }
         }
     }
-
 }
 
-fun Box.offsetBy(vec3d: Vec3d, dir: Direction): Box {
-    return offset(vec3d.axisMask(dir))
+fun Box.projectedIn(dir: Direction, amt: Double): Box {
+    return offset(Vec3d(amt, amt, amt).axisMask(dir))
+    //return add(Vec3d(amt, amt, amt).dirMask(dir))
 }
 
 fun Box.getFacePlane(dir: Direction): Box {

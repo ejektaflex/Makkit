@@ -33,7 +33,7 @@ internal class ResizeToolAxial(
         super.onDrawPreview(offset)
 
         val faceCenter = preview.box.center
-        val length = getPreviewSizeIn(dragStart.dir) / 2 + 0.5
+        val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)

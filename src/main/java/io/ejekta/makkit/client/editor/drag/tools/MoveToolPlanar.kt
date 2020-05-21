@@ -6,6 +6,7 @@ import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.ext.getFacePlane
 import io.ejekta.makkit.common.ext.projectedIn
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -23,7 +24,7 @@ internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
         super.onDrawPreview(offset)
         preview.draw()
 
-        val faceCenter = getCenterOfSelectedFace()
+        val faceCenter = preview.box.getFacePlane(dragStart.dir).center
         for (axisDir in getAlternateAxesDirections()) {
             val length = getSelectionSizeIn(axisDir) / 2 - 0.25
             val lineStart = faceCenter.projectedIn(axisDir, length)

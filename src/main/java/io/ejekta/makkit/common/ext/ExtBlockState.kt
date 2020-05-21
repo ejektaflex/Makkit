@@ -43,4 +43,22 @@ fun BlockState.inDirection(dir: Direction): BlockState {
     return state
 }
 
+fun BlockState.flippedOn(axis: Direction.Axis): BlockState {
+    var state = this
+
+    if (state.contains(Properties.FACING) && state.get(Properties.FACING).axis == axis) {
+        state = state.with(
+                Properties.FACING, state.get(Properties.FACING).opposite
+        )
+    }
+
+    if (state.contains(Properties.HORIZONTAL_FACING) && state.get(Properties.HORIZONTAL_FACING).axis == axis) {
+        state = state.with(
+                Properties.HORIZONTAL_FACING, state.get(Properties.HORIZONTAL_FACING).opposite
+        )
+    }
+
+    return state
+}
+
 
