@@ -1,6 +1,5 @@
 package io.ejekta.makkit.common.editor
 
-import io.ejekta.makkit.common.editor.data.BlockPalette
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.data.UserEditProfile
 import io.ejekta.makkit.common.enums.ClipboardMode

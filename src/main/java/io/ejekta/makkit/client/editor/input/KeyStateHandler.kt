@@ -4,9 +4,7 @@ import io.ejekta.makkit.client.editor.IEditor
 import io.ejekta.makkit.common.MakkitCommon
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
 import net.minecraft.text.MutableText
-import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 
 class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {

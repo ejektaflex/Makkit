@@ -9,8 +9,6 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Matrix4f
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.Registry
-import kotlin.random.Random
-import kotlin.random.nextInt
 
 fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {
     translate(-pos.x, -pos.y, -pos.z)
