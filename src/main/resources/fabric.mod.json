@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Makkit",
-  "description": "Creative Map Editor, Made Easy!",
+  "description": "A Creative Map Editor, Made Easy! \n\nMakkit is world editor for Fabric. To start using it, look at the ground and press the New Box button (default: B). This will create a new Selection Box for you to edit the world with. To move it around, click and drag on a face with your mouse (default: LMB). To resize it, right click and drag on a face (default: RMB). A legend should show up in the corner telling you which keybinds you can use. You can change how verbose the legend is with the config menu. \n\nMakkit requires Mod Menu in order to change it's settings! You can change everything from keybinds to visuals to what shows up in the legend, as well as change some of the mod's own functionality.",
   "authors": [
     "Ejektaflex"
   ],
@@ -14,8 +14,8 @@
     "issues": "https://github.com/ejektaflex/Makkit/issues"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "GPL 3.0",
+  "icon": "assets/makkit/icon.png",
 
   "environment": "*",
   "entrypoints": {

@@ -20,13 +20,13 @@ import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import me.shedaniel.clothconfig2.api.Modifier
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
-import net.fabricmc.loader.FabricLoader
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
 import net.minecraft.text.LiteralText
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
-import net.minecraft.util.math.BlockPos
 import org.lwjgl.glfw.GLFW
 
 
@@ -322,19 +322,19 @@ class MakkitConfig {
 
         addKeybindEntry(Default.MOVE_DRAG, moveDragKey)
         addKeybindEntry(Default.MOVE_PUSH, movePushKey)
-        addKeybindEntry(Default.FILL_AREA, fillKey)
-        addKeybindEntry(Default.FILL_WALL, wallsKey)
         addKeybindEntry(Default.RESIZE_SIDE, resizeSideKey)
         addKeybindEntry(Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricKey)
+        addKeybindEntry(Default.MULTIPALETTE, multiPalette)
+        addKeybindEntry(Default.NEW_BOX, newBoxKey)
+        addKeybindEntry(Default.PLACE_MODE, placeMode)
+        addKeybindEntry(Default.FILL_AREA, fillKey)
+        addKeybindEntry(Default.FILL_WALL, wallsKey)
         addKeybindEntry(Default.REPEAT_PATTERN, repeatPatternKey)
         addKeybindEntry(Default.MIRROR_TOOL, mirrorToolKey)
         addKeybindEntry(Default.COPY_KEY, copyKey)
         addKeybindEntry(Default.PASTE_KEY, pasteKey)
-        addKeybindEntry(Default.NEW_BOX, newBoxKey)
         addKeybindEntry(Default.UNDO, undoKey)
         addKeybindEntry(Default.REDO, redoKey)
-        addKeybindEntry(Default.MULTIPALETTE, multiPalette)
-        addKeybindEntry(Default.PLACE_MODE, placeMode)
 
 
         return builder.build()
@@ -360,7 +360,8 @@ class MakkitConfig {
         newBoxKey.setKeyDown {
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
-                MakkitClient.getOrCreateRegion().centerOn(BlockPos(btr.pos))
+                val bhr = btr as BlockHitResult
+                MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos.offset(bhr.side))
             }
         }
 
@@ -481,7 +482,7 @@ class MakkitConfig {
 
         }
 
-        val configPath = FabricLoader.INSTANCE.configDirectory.toPath().resolve(MakkitCommon.ID + ".json")
+        val configPath = FabricLoader.getInstance().configDirectory.toPath().resolve(MakkitCommon.ID + ".json")
 
 
         private val GSON = GsonBuilder()

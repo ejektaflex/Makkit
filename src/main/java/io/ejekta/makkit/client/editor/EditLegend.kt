@@ -28,6 +28,11 @@ object EditLegend {
 
 
     fun draw(inStack: MatrixStack) {
+
+        if (!MakkitClient.config.showLegend) {
+            return
+        }
+
         setupDraw(inStack)
 
         addText(LiteralText("Makkit Key Legend: "))

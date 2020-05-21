@@ -42,8 +42,8 @@
   "makkit.mirror_tool": "Mirror Tool",
   "makkit.mirror_tool.short": "Mirror",
 
-  "makkit.air_mode": "Air Mode Toggle",
-  "makkit.air_mode.short": "Air Mode",
+  "makkit.air_mode": "Air Mask Toggle",
+  "makkit.air_mode.short": "Air Mask",
 
   "makkit.place_mode": "Block Placement Mode",
   "makkit.place_mode.short": "Place Mode"
