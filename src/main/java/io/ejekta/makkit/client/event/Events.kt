@@ -6,7 +6,7 @@ import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.ActionResult
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.Matrix4f
 
 object Events {
@@ -45,6 +45,12 @@ object Events {
     data class MouseClickedEvent(val button: Int) {
         companion object {
             val Dispatcher = createCancellableEvent<MouseClickedEvent>()
+        }
+    }
+
+    data class ServerDisconnectEvent(val player: PlayerEntity) {
+        companion object {
+            val Dispatcher = createSimpleEvent<ServerDisconnectEvent>()
         }
     }
 

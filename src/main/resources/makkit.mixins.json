@@ -11,10 +11,11 @@
     "ItemHotbarRenderMixin",
     "MixinKeybindDefaultChanger",
     "MixinKeyDefaultRemapper",
+    "MouseMixin",
     "MouseScrollMixin",
     "TextRendererMixin",
     "WorldRendererMixin",
-    "MouseMixin"
+    "ServersideDisconnect"
   ],
   "injectors": {
     "defaultRequire": 1

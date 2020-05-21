@@ -15,13 +15,13 @@ abstract class BoxPacket(
 
     final override fun getId() = packetId
 
-    final override fun write(): PacketByteBuf {
+    override fun write(): PacketByteBuf {
         return PacketByteBuf(Unpooled.buffer()).apply {
             writeIntBox(box)
         }
     }
 
-    final override fun read(buf: PacketByteBuf) {
+    override fun read(buf: PacketByteBuf) {
         box = buf.readIntBox()
     }
 

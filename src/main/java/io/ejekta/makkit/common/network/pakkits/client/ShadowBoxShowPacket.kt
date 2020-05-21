@@ -16,11 +16,24 @@ When received by the client, will add said box to the list of remote boxes that 
 displayed from other players
  */
 class ShadowBoxShowPacket(
-        localPacket: ShadowBoxUpdatePacket = ShadowBoxUpdatePacket()
+        val localPacket: ShadowBoxUpdatePacket = ShadowBoxUpdatePacket(),
+        var uid: String = "",
+        var disconnect: Boolean = false
 ) : BoxPacket(ID, localPacket.box), ClientBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
+    }
+
+    override fun write(): PacketByteBuf {
+        return super.write().apply {
+            writeString(uid)
+        }
+    }
+
+    override fun read(buf: PacketByteBuf) {
+        super.read(buf)
+        uid = buf.readString()
     }
 
     companion object : ClientSidePakkitHandler {
@@ -32,11 +45,18 @@ class ShadowBoxShowPacket(
             val pakkit = ShadowBoxShowPacket(buffer)
             context.taskQueue.execute {
 
-                println("Adding remote box to draw map")
-                val uid = context.player.uuidAsString
-                MakkitClient.remoteBoxMap[uid] = RenderBox(
-                        pakkit.box
-                )
+                if (pakkit.disconnect) {
+                    if (pakkit.uid in MakkitClient.remoteBoxMap) {
+                        MakkitClient.remoteBoxMap.remove(pakkit.uid)
+                    }
+                } else {
+                    println("Adding remote box w/id ${pakkit.uid} to draw map")
+                    MakkitClient.remoteBoxMap[pakkit.uid] = RenderBox(
+                            pakkit.box
+                    )
+                }
+
+
 
             }
         }

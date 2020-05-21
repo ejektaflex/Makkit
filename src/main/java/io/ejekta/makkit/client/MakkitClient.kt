@@ -43,6 +43,7 @@ class MakkitClient : ClientModInitializer {
     }
 
 
+
     private fun onScroll(e: Events.MouseScrollEvent) {
         val reg = getOrCreateRegion()
         reg.tryScrollFace(e.amount)
@@ -117,8 +118,7 @@ class MakkitClient : ClientModInitializer {
 
         var remoteBoxMap = mutableMapOf<String, RenderBox>()
 
-        // TODO set back to null
-        var region: EditRegion? = EditRegion()
+        var region: EditRegion? = null
 
     }
 
