@@ -14,8 +14,6 @@ class FillBlocksOperation : WorldOperation() {
             return
         }
 
-        println(action.options.airFillOption)
-
         for (pos in action.box.getBlockArray()) {
             action.edit(pos, action.palette.getRandom())
         }

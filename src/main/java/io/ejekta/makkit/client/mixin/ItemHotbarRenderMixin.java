@@ -78,8 +78,6 @@ public abstract class ItemHotbarRenderMixin {
                     );
                 }
 
-
-
             }
         }
 
@@ -100,43 +98,19 @@ public abstract class ItemHotbarRenderMixin {
         int airPos = 4;
 
         if (opt == AirFillOption.ONLY_AIR) {
-            MinecraftClient.getInstance().inGameHud
-                    .drawTexture(
-                            matrixStack,
-                            i - 12,
-                            6,
-                            24,
-                            0,
-                            24,
-                            22
-                    );
-
+            MinecraftClient.getInstance().inGameHud.drawTexture(matrixStack, i - 12, 6, 24, 0, 24, 22);
             LiteralText text = new LiteralText("Only Affect Air");
             RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, text, i, 2, 0xFFFFFF);
 
         } else if(opt == AirFillOption.EXCLUDE_AIR) {
-            MinecraftClient.getInstance().inGameHud
-                    .drawTexture(
-                            matrixStack,
-                            i - 12,
-                            6,
-                            48,
-                            0,
-                            24,
-                            22
-                    );
-
+            MinecraftClient.getInstance().inGameHud.drawTexture(matrixStack, i - 12, 6, 48, 0, 24, 22);
             LiteralText text = new LiteralText("Don't Affect Air");
             RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, text, i, 2, 0xFFFFFF);
         }
 
-
-
         // Bind back to widgets texture
         client.getTextureManager().bindTexture(WIDGETS_TEX);
 
-
-        //System.out.println("Yeah!!");
     }
 
 

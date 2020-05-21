@@ -395,7 +395,6 @@ class MakkitConfig {
                 shift: Boolean = false,
                 alt: Boolean = false
         ): KeyStateHandler {
-            println("Creating key $id")
             return KeyStateHandler(id,
                     ModifierKeyCode.of(
                             type.createFromCode(code),
@@ -504,9 +503,15 @@ class MakkitConfig {
                     it.assignKeybinds()
                 }
             } catch (e: Exception) {
-                println("Could not load MakkitConfig, using a default config..")
-                e.printStackTrace()
-                save()
+                // If no file exists, just silently save
+                if (!configPath.toFile().exists()) {
+                    save()
+                } else {
+                    println("Could not load MakkitConfig, using a default config..")
+                    e.printStackTrace()
+                    save()
+                }
+
                 MakkitConfig()
             }
 

@@ -10,7 +10,6 @@ object ClientPalette {
     private val stacks = mutableSetOf<Int>()
 
     fun addToPalette(slot: Int) {
-        //println("Adding to palette: $stack")
         stacks.add(slot)
     }
 

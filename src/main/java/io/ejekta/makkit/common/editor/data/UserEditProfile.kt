@@ -131,10 +131,7 @@ class UserEditProfile {
 
             if (ourSize != copiedSize) {
 
-                println("Incorrect size! us: $ourSize, copy: $copiedSize")
-
                 player.sendMessage(LiteralText("Incorrect Size! To Paste, it must be: ${copiedSize.prettyString()}"), true)
-
 
             } else {
                 doAction(player, EditAction(

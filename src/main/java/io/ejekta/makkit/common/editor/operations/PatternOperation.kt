@@ -17,10 +17,6 @@ class PatternOperation(val boxBefore: Box, val afterBox: Box) : WorldOperation()
         val startPos = BlockPos(boxBefore.getStart())
         val afterBlocks = afterBox.getBlockArray()
 
-        println("Edit Action took in selection with ${action.box.getSize()}")
-
-        println("Operating on this many blocks: ${boxBefore.getBlockArray().size}, ${afterBlocks.size}")
-        
         for (blockPos in afterBlocks) {
             val posRel = blockPos.subtract(startPos)
             val copySourcePos = startPos.add(BlockPos(

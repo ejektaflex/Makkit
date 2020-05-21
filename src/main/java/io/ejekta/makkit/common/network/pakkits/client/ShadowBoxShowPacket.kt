@@ -50,7 +50,7 @@ class ShadowBoxShowPacket(
                         MakkitClient.remoteBoxMap.remove(pakkit.uid)
                     }
                 } else {
-                    println("Adding remote box w/id ${pakkit.uid} to draw map")
+                    //println("Adding remote box w/id ${pakkit.uid} to draw map")
                     MakkitClient.remoteBoxMap[pakkit.uid] = RenderBox(
                             pakkit.box
                     )

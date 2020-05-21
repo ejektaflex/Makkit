@@ -7,7 +7,6 @@ import java.util.*
 
 object MixinUtil {
     fun getLocalPlayerById(id: UUID): PlayerEntity? {
-        println(MakkitClient.remoteBoxMap.keys)
         return MinecraftClient.getInstance().world?.players?.firstOrNull { it.uuidAsString == id.toString() }
     }
 }
