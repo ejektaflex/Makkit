@@ -1,6 +1,7 @@
 package io.ejekta.makkit.client.mixin;
 
 import io.ejekta.makkit.client.MakkitClient;
+import io.ejekta.makkit.client.editor.MakkitGui;
 import io.ejekta.makkit.client.editor.input.ClientPalette;
 import io.ejekta.makkit.client.render.RenderTextHelper;
 import io.ejekta.makkit.common.MakkitCommon;
@@ -45,63 +46,10 @@ public abstract class ItemHotbarRenderMixin {
     @Environment(EnvType.CLIENT)
     @Inject(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;setZOffset(I)V", ordinal = 1), cancellable = true)
     private void renderHotbar(float f, MatrixStack matrixStack, CallbackInfo ci) {
-        PlayerEntity playerEntity = getCameraPlayer();
-        client.getTextureManager().bindTexture(SELECTION);
 
-        int i = scaledWidth / 2;
+        MakkitGui.INSTANCE.renderHotbarChanges(matrixStack, scaledWidth, scaledHeight);
 
-        for (int hotNum = 0; hotNum < 9; hotNum++) {
-            ItemStack stack = playerEntity.inventory.getStack(hotNum);
-            if (ClientPalette.INSTANCE.hasStack(hotNum)) {
-
-                MinecraftClient.getInstance().inGameHud.drawTexture(
-                        matrixStack,
-                        i - 92 + hotNum * 20,
-                        this.scaledHeight - 23,
-                        0,
-                        0,
-                        24,
-                        22
-                );
-
-                // If test fails, add a red background
-                if (BlockPalette.Companion.test(stack) == null) {
-                    MinecraftClient.getInstance().inGameHud.drawTexture(
-                            matrixStack,
-                            i - 92 + hotNum * 20,
-                            this.scaledHeight - 23,
-                            0,
-                            44,
-                            24,
-                            22
-                    );
-                }
-
-            }
-        }
-
-        if (ClientPalette.INSTANCE.hasAnyItems()) {
-            MinecraftClient.getInstance().inGameHud
-                    .drawTexture(
-                            matrixStack,
-                            i - 91 - 1 + playerEntity.inventory.selectedSlot * 20,
-                            this.scaledHeight - 23,
-                            0,
-                            22,
-                            24,
-                            22
-                    );
-        }
-
-        BlockMask opt = MakkitClient.Companion.getAirModeOption();
-
-        if (opt == BlockMask.ONLY_AIR) {
-            MinecraftClient.getInstance().inGameHud.drawTexture(matrixStack, i - 12, 6, 24, 0, 24, 22);
-            RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, opt.getText(), i, 2, 0xFFFFFF);
-        } else if(opt == BlockMask.NON_AIR) {
-            MinecraftClient.getInstance().inGameHud.drawTexture(matrixStack, i - 12, 6, 48, 0, 24, 22);
-            RenderTextHelper.INSTANCE.drawTextCentered(matrixStack, opt.getText(), i, 2, 0xFFFFFF);
-        }
+        MakkitGui.INSTANCE.renderBlockMaskGui(matrixStack, scaledWidth, scaledHeight);
 
         // Bind back to widgets texture
         client.getTextureManager().bindTexture(WIDGETS_TEX);

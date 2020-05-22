@@ -44,6 +44,9 @@ data class EditAction(
             BlockMask.ONLY_AIR -> if (block == Blocks.AIR) {
                 doEdit(pos, state)
             }
+            BlockMask.OFFHAND -> if (block == BlockPalette.test(player.offHandStack) && block != Blocks.AIR) {
+                doEdit(pos, state)
+            }
         }
     }
 

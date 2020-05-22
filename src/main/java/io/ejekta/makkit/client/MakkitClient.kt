@@ -95,7 +95,7 @@ class MakkitClient : ClientModInitializer {
 
         var isInEditMode = true
 
-        var airModeOption = BlockMask.ALL_BLOCKS
+        var blockMask = BlockMask.ALL_BLOCKS
 
         var config = MakkitConfig.load()
 

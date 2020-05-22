@@ -9,5 +9,5 @@ class EditWorldOptions {
     // Whether rotatable blocks should be randomly rotated
     var randomRotate: Boolean = false
     // How the operation should interact with air blocks
-    var blockMask: BlockMask = MakkitClient.airModeOption
+    var blockMask: BlockMask = MakkitClient.blockMask
 }

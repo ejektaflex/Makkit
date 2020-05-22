@@ -390,8 +390,8 @@ class MakkitConfig {
         }
 
         airMode.setKeyDown {
-            val modeInd = MakkitClient.airModeOption.ordinal
-            MakkitClient.airModeOption = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
+            val modeInd = MakkitClient.blockMask.ordinal
+            MakkitClient.blockMask = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
         }
     }
 
