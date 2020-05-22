@@ -1,6 +1,7 @@
 package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
+import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.forEachBlockCoord
 import io.ejekta.makkit.common.ext.plus
@@ -115,7 +116,7 @@ class UserEditProfile {
     }
 
 
-    fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction) {
+    fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction, mask: BlockMask) {
 
         if (face.axis == Direction.Axis.Y) {
             player.sendMessage(LiteralText("You have to look at a side face to paste a selection!"), true)
@@ -139,7 +140,8 @@ class UserEditProfile {
                         pasteBox,
                         pasteBox,
                         face,
-                        PasteOperation(cd)
+                        PasteOperation(cd),
+                        options = EditWorldOptions().apply { blockMask = mask }
                 ))
             }
 

@@ -2,7 +2,7 @@ package io.ejekta.makkit.common.editor.data
 
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.WorldOperation
-import io.ejekta.makkit.common.enums.AirFillOption
+import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import net.minecraft.block.BlockState
@@ -36,12 +36,12 @@ data class EditAction(
 
     fun edit(pos: BlockPos, state: BlockState) {
         val block = player.world.getBlockState(pos).block
-        when (options.airFillOption) {
-            AirFillOption.ALL_BLOCKS -> doEdit(pos, state)
-            AirFillOption.EXCLUDE_AIR -> if (block != Blocks.AIR) {
+        when (options.blockMask) {
+            BlockMask.ALL_BLOCKS -> doEdit(pos, state)
+            BlockMask.NON_AIR -> if (block != Blocks.AIR) {
                 doEdit(pos, state)
             }
-            AirFillOption.ONLY_AIR -> if (block == Blocks.AIR) {
+            BlockMask.ONLY_AIR -> if (block == Blocks.AIR) {
                 doEdit(pos, state)
             }
         }

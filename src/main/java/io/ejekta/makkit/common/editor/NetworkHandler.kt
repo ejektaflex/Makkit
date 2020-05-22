@@ -60,7 +60,7 @@ object NetworkHandler {
 
         when (pakkit.mode) {
             ClipboardMode.COPY -> profile.copy(player, pakkit.box, pakkit.face)
-            ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face)
+            ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face, pakkit.mask)
             else -> throw Exception("Clipboard mode not implemented on server! ${pakkit.mode}")
         }
     }

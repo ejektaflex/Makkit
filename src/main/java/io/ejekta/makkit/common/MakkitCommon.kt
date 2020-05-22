@@ -17,7 +17,6 @@ class MakkitCommon : ModInitializer {
         ShadowBoxUpdatePacket.registerC2S()
         ClipboardIntentPacket.registerC2S()
 
-
         Events.ServerDisconnectEvent.Dispatcher.register(::onServerPlayerDisconnect)
 
         println("Common init")

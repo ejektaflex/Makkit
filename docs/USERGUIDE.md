@@ -115,24 +115,24 @@ the config.
 * Water and Lava buckets count as Water and Lava fluid blocks.
 * All items without a block equivalent will be skipped (e.g. Swords)
 
-## Air Masks
+## Block Masks
 
 Sometimes, you need a little bit more flexibility when deciding which blocks
-you want to be affected by different tools. Air Masks help solve this problem.
+you want to be affected by different tools. Block Masks help solve this problem.
 By default, whenever you use a tool, it affects all blocks in the selection.
-If you switch the current Air Mask (default: `G`), it will change which blocks 
+If you switch the current Block Mask (default: `G`), it will change which blocks 
 get affected.
 
-Air Mask options:
-* All Blocks - the default air mask, your tools affect all blocks.
-* Only Air - your tools will only affect air blocks.
-* Exclude Air - your tools will affect all blocks, EXCEPT air blocks.
+Block Mask options:
+* All Blocks - the default block mask, your tools affect all blocks.
+* Only Modify Air - your tools will only affect air blocks.
+* Only Modify Non-Air - your tools will affect all blocks, EXCEPT air blocks.
 
 So, for example, you could create a new box in an empty area and use
 Fill Walls to create walls made out of Stone Bricks, and then switch
-the Air Mask to "Only Air" and fill the area with Cobwebs - this would
+the Block Mask to "Only Air" and fill the area with Cobwebs - this would
 only fill the area inside of the walls with Cobwebs!
 
-When the Air Mask is changed from the default setting, it will show up
+When the Block Mask is changed from the default setting, it will show up
 at the top of the screen to remind you how your selections are being
 masked.

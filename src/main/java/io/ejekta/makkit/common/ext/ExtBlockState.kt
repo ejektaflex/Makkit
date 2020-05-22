@@ -9,16 +9,13 @@ import net.minecraft.util.BlockRotation
 import net.minecraft.util.math.Direction
 
 fun BlockState.rotated(times: Int): BlockState {
-    var state = this
-
     var rot = BlockRotation.NONE
 
     for (i in 0 until times) {
         rot = rot.rotate(BlockRotation.CLOCKWISE_90)
     }
 
-    return state.rotate(rot)
-
+    return rotate(rot)
 }
 
 fun BlockState.inDirection(dir: Direction): BlockState {

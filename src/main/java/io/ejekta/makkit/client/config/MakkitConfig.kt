@@ -12,7 +12,7 @@ import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
-import io.ejekta.makkit.common.enums.AirFillOption
+import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.GuiCorner
 import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.common.enums.UndoRedoMode
@@ -391,7 +391,7 @@ class MakkitConfig {
 
         airMode.setKeyDown {
             val modeInd = MakkitClient.airModeOption.ordinal
-            MakkitClient.airModeOption = enumValues<AirFillOption>()[(modeInd + 1) % enumValues<AirFillOption>().size]
+            MakkitClient.airModeOption = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
         }
     }
 

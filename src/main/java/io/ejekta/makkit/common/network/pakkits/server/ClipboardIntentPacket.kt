@@ -2,6 +2,7 @@ package io.ejekta.makkit.common.network.pakkits.server
 
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.NetworkHandler
+import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.ClipboardMode
 import io.ejekta.makkit.common.ext.readEnum
 import io.ejekta.makkit.common.ext.readIntBox
@@ -20,7 +21,8 @@ import net.minecraft.util.math.Direction
 data class ClipboardIntentPacket(
         var mode: ClipboardMode = ClipboardMode.CUT,
         var face: Direction = Direction.UP,
-        var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+        var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        var mask: BlockMask = BlockMask.ALL_BLOCKS
 ) : ServerBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
@@ -33,6 +35,7 @@ data class ClipboardIntentPacket(
         mode = buf.readEnum()
         face = buf.readEnum()
         box = buf.readIntBox()
+        mask = buf.readEnum()
     }
 
     override fun write(): PacketByteBuf {
@@ -40,6 +43,7 @@ data class ClipboardIntentPacket(
             writeEnum(mode)
             writeEnum(face)
             writeIntBox(box)
+            writeEnum(mask)
         }
     }
 

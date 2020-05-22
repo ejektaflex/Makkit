@@ -1,4 +1,4 @@
-package io.ejekta.makkit.client.keys
+package io.ejekta.makkit.client.editor.input
 
 import io.ejekta.makkit.client.mixin.MixinKeybindDefaultChanger
 import net.minecraft.client.options.KeyBinding

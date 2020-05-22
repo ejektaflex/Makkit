@@ -1,6 +1,6 @@
 package io.ejekta.makkit.client.mixin;
 
-import io.ejekta.makkit.client.keys.KeyRemapper;
+import io.ejekta.makkit.client.editor.input.KeyRemapper;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
