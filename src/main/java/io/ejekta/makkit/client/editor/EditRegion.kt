@@ -63,7 +63,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 val isPasteSize = selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.NORTH)
                         || selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.EAST)
                 if (isPasteSize) {
-                    RenderColor.PURPLE.toAlpha(.4f)
+                    MakkitClient.config.pasteBoxColor.toAlpha(.4f)
                 } else {
                     default
                 }

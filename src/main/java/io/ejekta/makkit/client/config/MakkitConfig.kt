@@ -74,6 +74,8 @@ class MakkitConfig {
 
     var multiplayerBoxColor = RenderColor.PINK
 
+    var pasteBoxColor = RenderColor.PURPLE
+
 
     // Keybinds
 
@@ -308,6 +310,17 @@ class MakkitConfig {
                         LiteralText("The color of the selection boxes of other players")
                 ).setSaveConsumer {
                     multiplayerBoxColor = RenderColor(it)
+                }.build()
+        )
+
+        visuals.addEntry(
+                entryBuilder.startColorField(
+                        LiteralText("Selection Face Color"),
+                        (pasteBoxColor.intValue - 0xFF000000).toInt()
+                ).setDefaultValue((RenderColor.PURPLE.intValue - 0xFF000000).toInt()).setTooltip(
+                        LiteralText("The color of the selected face")
+                ).setSaveConsumer {
+                    pasteBoxColor = RenderColor(it)
                 }.build()
         )
 
