@@ -9,7 +9,7 @@ near you. This should create a Selection Box that we can edit the world
 with.
 
 From there, you should be able to easily move and resize the box (defaults: 
-*Left Click* (`LMB`) and *Right Click* (`RMB`)). 
+*Right Click* (`RMB`) and *Left Click* (`LMB`)). 
 
 
 
