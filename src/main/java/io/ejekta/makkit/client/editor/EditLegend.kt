@@ -38,19 +38,21 @@ object EditLegend {
         addText(LiteralText("Makkit Key Legend: "))
         addText(LiteralText("============"))
 
+        val keysToUse = mutableListOf<KeyStateHandler>()
+
         MakkitClient.config.run {
             if (showUtility) {
-                drawKeybinds(
+                keysToUse.addAll(listOf(
                         newBoxKey,
                         moveDragKey,
                         movePushKey,
                         resizeSideKey,
                         resizeSymmetricKey
-                )
+                ))
             }
 
             if (showBasic) {
-                drawKeybinds(
+                keysToUse.addAll(listOf(
                         placeMode,
                         fillKey,
                         wallsKey,
@@ -58,20 +60,23 @@ object EditLegend {
                         multiPalette,
                         mirrorToolKey,
                         airMode
-                )
+                ))
             }
 
             if (showSystem) {
-                drawKeybinds(
+                keysToUse.addAll(listOf(
                         copyKey,
                         pasteKey,
                         undoKey,
                         redoKey
-                )
+                ))
             }
 
         }
 
+        if (keysToUse.isNotEmpty()) {
+            drawKeybinds(*keysToUse.toTypedArray())
+        }
 
         drawAllText()
     }

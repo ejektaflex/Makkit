@@ -375,7 +375,7 @@ class MakkitConfig {
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
-                MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos.offset(bhr.side))
+                MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos)
             }
         }
 
