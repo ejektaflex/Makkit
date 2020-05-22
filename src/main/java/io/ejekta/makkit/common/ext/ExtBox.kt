@@ -254,7 +254,7 @@ private fun Box.geniusTrace(): BoxTraceResult {
         else -> {
             nonEmpty
                     .mapIndexed { i, btr -> i to btr }
-                    .minBy { faceCenterPos(it.second.dir).distanceTo(it.second.hit) * (it.first + 1) }!!.second
+                    .minBy { faceCenterPos(it.second.dir).distanceTo(it.second.hit) * (it.first + 2) }!!.second
         }
     }
 }
