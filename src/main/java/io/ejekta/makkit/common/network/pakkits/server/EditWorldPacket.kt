@@ -48,7 +48,7 @@ class EditWorldPacket(
     }
 
     inline fun <reified T : Any> PacketByteBuf.readObject(clazz: KClass<out T> = T::class): T {
-        return gson.fromJson(readString(), clazz.java)
+        return gson.fromJson(readString(32767), clazz.java)
     }
 
     override fun write(): PacketByteBuf {

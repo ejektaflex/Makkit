@@ -131,6 +131,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     EditWorldOptions().apply {
                         randomRotate = MakkitClient.config.randomRotate
                         weightedPalette = MakkitClient.config.weightedPalette
+                        blockMask = MakkitClient.blockMask
                     },
                     ClientPalette.getSafePalette()
             ).sendToServer()

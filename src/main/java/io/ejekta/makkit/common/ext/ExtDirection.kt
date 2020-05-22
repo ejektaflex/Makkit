@@ -21,6 +21,6 @@ fun Direction.rotatedClockwise(times: Int): Direction {
 }
 
 fun Direction.vec3d(): Vec3d {
-    return Vec3d(unitVector)
+    return Vec3d(vector.x.toDouble(), vector.y.toDouble(), vector.z.toDouble())
 }
 
