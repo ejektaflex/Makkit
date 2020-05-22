@@ -410,17 +410,17 @@ class MakkitConfig {
 
             // Tool Keys
             val MOVE_DRAG: KeyStateHandler
-                get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
+                get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val MOVE_PUSH: KeyStateHandler
-                get() = makkitKey("move_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
+                get() = makkitKey("move_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
             val FILL_AREA: KeyStateHandler
                 get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
             val FILL_WALL: KeyStateHandler
                 get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
             val RESIZE_SIDE: KeyStateHandler
-                get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
+                get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
             val RESIDE_SIDE_SYMMETRIC: KeyStateHandler
-                get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
+                get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
             val REPEAT_PATTERN: KeyStateHandler
                 get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
             val MIRROR_TOOL: KeyStateHandler
