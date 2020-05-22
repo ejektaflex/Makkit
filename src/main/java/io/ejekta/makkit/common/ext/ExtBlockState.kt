@@ -44,7 +44,6 @@ fun BlockState.flippedOn(axis: Direction.Axis): BlockState {
 
 
     fun flipBoolProp(prop: BooleanProperty, opposite: BooleanProperty): BlockState {
-
         if (prop in state && opposite in state) {
             if ((state[prop] && !state[opposite]) || (!state[prop] && state[opposite])) {
                 val newProp = !state[prop]
@@ -52,23 +51,17 @@ fun BlockState.flippedOn(axis: Direction.Axis): BlockState {
                 return state.with(prop, newProp).with(opposite, newOpp)
             }
         }
-
         return state
     }
 
     // Fences & Walls & Other Stuff
-    when (axis) {
-        Direction.Axis.X -> {
-            state = flipBoolProp(Properties.EAST, Properties.WEST)
-        }
-        Direction.Axis.Y -> {
-            state = flipBoolProp(Properties.UP, Properties.DOWN)
-        }
-        Direction.Axis.Z -> {
-            state = flipBoolProp(Properties.NORTH, Properties.SOUTH)
-        }
+    state = when (axis) {
+        Direction.Axis.X -> flipBoolProp(Properties.EAST, Properties.WEST)
+        Direction.Axis.Y -> flipBoolProp(Properties.UP, Properties.DOWN)
+        Direction.Axis.Z -> flipBoolProp(Properties.NORTH, Properties.SOUTH)
     }
 
+    // Flipping on Y axis specifically
     if (axis == Direction.Axis.Y) {
 
         // Slabs

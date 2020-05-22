@@ -42,11 +42,7 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-
-
     private fun onScroll(e: Events.MouseScrollEvent) {
-        val reg = getOrCreateRegion()
-        reg.tryScrollFace(e.amount)
 
         if (config.multiPalette.isDown) {
             val holding = MinecraftClient.getInstance().player?.mainHandStack
@@ -67,7 +63,7 @@ class MakkitClient : ClientModInitializer {
     // Return true if we want to cancel game interaction
     private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
         region?.let {
-            if (it.isBeingInteractedWith()) {
+            if (isInEditMode && it.isBeingInteractedWith()) {
                 return true
             }
         }
@@ -78,11 +74,14 @@ class MakkitClient : ClientModInitializer {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
 
+        if (mc.player?.isCreative == false) {
+            return
+        }
+
         // Maybe don't tie this to draw calls, but why fix what isn't broken?
         for (key in config.keys) {
             key.update()
         }
-
 
         RenderHelper.drawInWorld {
             region?.update()

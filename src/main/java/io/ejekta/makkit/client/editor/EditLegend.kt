@@ -36,7 +36,7 @@ object EditLegend {
         setupDraw(inStack)
 
         addText(LiteralText("Makkit Key Legend: "))
-        addText(LiteralText("============"))
+        addText(LiteralText("==============="))
 
         val keysToUse = mutableListOf<KeyStateHandler>()
 
@@ -116,7 +116,7 @@ object EditLegend {
         val lx = padding + offset
         val rx = width - (renderer.getStringWidth(text) + padding + offset)
         val ty = (fontSize * (this.text.size - line))
-        val by = height - (fontSize * (line + 1))
+        val by = height - (fontSize * (line + 2.5f))
 
         val corner = when (enum) {
             GuiCorner.TOP_LEFT -> lx to ty

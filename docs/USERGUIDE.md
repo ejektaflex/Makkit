@@ -21,7 +21,7 @@ toggle your placement mode by hitting the Placement Mode key (default: `Z`)!*
 
 ### Fill Area Tool
 
-The Fill Area tool (default: R) is used to fill a selection box with blocks.
+The Fill Area tool (default: `R`) is used to fill a selection box with blocks.
 With this tool, you can set an entire selection to be whichever block you have
 in your hand! If you aren't holding anything in your hand, then it sets the entire
 selection to Air.
@@ -49,7 +49,7 @@ a roof. Simply create a slice of the roof on the end and select it. Then,
 you can hold down on the Pattern key and drag. Letting go will
 repeat the pattern in the specified direction, therefore completing the roof.
 
-![pattern](docs/pattern.png)
+![pattern](pattern.png)
 
 This can tile blocks in any direction. You can even build the walls
 one block high and then select them and repeat them upwards to form the
@@ -65,7 +65,7 @@ away the mirrored blocks should be placed,
 This can again be used to easily create roofs and other symmetric
 structures.
 
-![mirror](docs/mirror.png)
+![mirror](mirror.png)
 
 
 ### Copy & Paste
