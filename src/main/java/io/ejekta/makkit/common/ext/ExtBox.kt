@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import kotlin.math.pow
 
 private fun Box.trace(
         reverse: Boolean = false // TODO re implement back selecting toggle
@@ -198,10 +197,23 @@ fun Box.faceDimensions(side: Direction): List<Double> {
     return otherAxes.map { sideSizeVec.axisValue(it) }
 }
 
+fun Box.faceSqArea(side: Direction): Double {
+    val dims = faceDimensions(side)
+    return dims[0] * dims[1]
+}
+
+fun Box.longestAxisLength(): Double {
+    val size = getSize()
+    return enumValues<Direction.Axis>().maxBy {
+        size.getComponentAlongAxis(it)
+    }!!.let { size.getComponentAlongAxis(it) }
+}
+
 fun Box.autoTrace(): BoxTraceResult {
     return when (MakkitClient.config.sideSelectionStyle) {
         SideSelectionStyle.SIMPLE -> simpleTrace()
         SideSelectionStyle.SMART -> smartTrace()
+        SideSelectionStyle.EXPERIMENTAL -> geniusTrace()
     }
 }
 
@@ -222,7 +234,27 @@ private fun Box.smartTrace(): BoxTraceResult {
             nonEmpty.first()
         }
         else -> {
-            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit).pow(0.1) }!!
+            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit) }!!
+        }
+    }
+}
+
+private fun Box.geniusTrace(): BoxTraceResult {
+    val front = trace(reverse = false)
+    val back = trace(reverse = true)
+    val nonEmpty = listOf(front, back).filter { it != BoxTraceResult.EMPTY }
+
+    return when {
+        nonEmpty.isEmpty() -> {
+            BoxTraceResult.EMPTY
+        }
+        nonEmpty.size == 1 -> {
+            nonEmpty.first()
+        }
+        else -> {
+            nonEmpty
+                    .mapIndexed { i, btr -> i to btr }
+                    .minBy { faceCenterPos(it.second.dir).distanceTo(it.second.hit) * (it.first + 1) }!!.second
         }
     }
 }

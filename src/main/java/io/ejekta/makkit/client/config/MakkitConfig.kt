@@ -166,7 +166,8 @@ class MakkitConfig {
                         LiteralText("When set to SIMPLE, you must press a key to switch between"),
                         LiteralText("front and back face selection. When set to SMART, Makkit will"),
                         LiteralText("figure out which face you want to select based on which face"),
-                        LiteralText("is closest to your cursor.")
+                        LiteralText("is closest to your cursor. EXPERIMENTAL is like SMART, but"),
+                        LiteralText("prefers to select front faces over back faces.")
                 ).setSaveConsumer {
                     sideSelectionStyle = it
                 }.build()

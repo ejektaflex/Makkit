@@ -76,7 +76,7 @@ object EditLegend {
         drawAllText()
     }
 
-    private fun addText(newText: Text, offset: Int = 0) {
+    private fun addText(newText: Text) {
         text.add(Triple(newText, null, null))
     }
 
@@ -84,7 +84,7 @@ object EditLegend {
         val longestName = handlers.maxBy {
             renderer.getStringWidth(it.name)
         }!!
-        handlers.forEachIndexed { i, handler ->
+        handlers.forEachIndexed { _, handler ->
             text.add(Triple(
                     handler.shortName,
                     renderer.getStringWidth(longestName.name) + 5,

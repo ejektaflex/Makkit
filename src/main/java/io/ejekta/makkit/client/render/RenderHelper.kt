@@ -53,7 +53,7 @@ object RenderHelper : AbstractRenderHelper() {
         return mc.player!!.getRotationVec(tickDelta)
     }
 
-    fun getLookCardinalDirection(look: Vec3d): Direction {
+    fun getLookCardinalDirection(look: Vec3d = getLookVector()): Direction {
         // we don't care about up or down.
         return if (abs(look.x) > abs(look.z)) {
             Direction.fromVector(sign(look.x).toInt(), 0, 0)!!

@@ -11,6 +11,8 @@ with.
 From there, you should be able to easily move and resize the box (defaults: 
 *Left Click* (`LMB`) and *Right Click* (`RMB`)). 
 
+
+
 **Note**: *If you want to edit the blocks inside of the Selection Box, you can
 toggle your placement mode by hitting the Placement Mode key (default: `Z`)!*
 
