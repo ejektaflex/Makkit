@@ -8,11 +8,10 @@ import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.MutableText
 import net.minecraft.text.TranslatableText
-import kotlin.math.abs
 
 class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {
 
-    var lastReleased = -1L
+    private var wasJustReleased = false
 
     val isScreenOpen: Boolean
         get() = MinecraftClient.getInstance().currentScreen != null
@@ -34,13 +33,16 @@ class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {
         onKeyUp = func
     }
 
-    // Picks up any other keys that got released <500ms ago
     fun recentlyMatchedOtherKeys(): Boolean {
         val matchedKeys = MakkitClient.config.keys.filter {
-            it.binding.keyCode.equals(binding.keyCode)
+            it.binding.keyCode == binding.keyCode
         }
         return matchedKeys.any {
-            (it.isDown && it != this) || abs(System.currentTimeMillis() - it.lastReleased) < 200L
+            val passes = (it.isDown && it != this) || it.wasJustReleased
+            if (passes) {
+                it.wasJustReleased = false
+            }
+            passes
         }
     }
 
@@ -65,7 +67,7 @@ class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {
                         && !fakeKey.matchesCurrentKey()
                         && !binding.matchesCurrentMouse())
         ) {
-            lastReleased = System.currentTimeMillis()
+            wasJustReleased = true
             onKeyUp()
             isDown = false
         }
