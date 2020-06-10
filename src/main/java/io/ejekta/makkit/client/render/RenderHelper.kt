@@ -36,7 +36,7 @@ object RenderHelper : AbstractRenderHelper() {
         textRenderer.draw(
                 LiteralText(text),
                 // x offset to center text
-                -textRenderer.getStringWidth(LiteralText(text)).toFloat() / 2,
+                -textRenderer.getWidth(LiteralText(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
                 0xFFFFFF,
                 false,
@@ -171,45 +171,45 @@ object RenderHelper : AbstractRenderHelper() {
         }
 
         private val drawDown: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x2, y1, z2).color(color).next()
-            vert.vertex(mat, x1, y1, z2).color(color).next()
-            vert.vertex(mat, x1, y1, z1).color(color).next()
-            vert.vertex(mat, x2, y1, z1).color(color).next()
+            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
+            vert.vertex(mat, minX, minY, maxZ).color(color).next()
+            vert.vertex(mat, minX, minY, minZ).color(color).next()
+            vert.vertex(mat, maxX, minY, minZ).color(color).next()
         }
 
         private val drawUp: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x1, y2, z2).color(color).next()
-            vert.vertex(mat, x2, y2, z2).color(color).next()
-            vert.vertex(mat, x2, y2, z1).color(color).next()
-            vert.vertex(mat, x1, y2, z1).color(color).next()
+            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
+            vert.vertex(mat, minX, maxY, minZ).color(color).next()
         }
 
         private val drawNorth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x2, y1, z1).color(color).next()
-            vert.vertex(mat, x1, y1, z1).color(color).next()
-            vert.vertex(mat, x1, y2, z1).color(color).next()
-            vert.vertex(mat, x2, y2, z1).color(color).next()
+            vert.vertex(mat, maxX, minY, minZ).color(color).next()
+            vert.vertex(mat, minX, minY, minZ).color(color).next()
+            vert.vertex(mat, minX, maxY, minZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
         }
 
         private val drawSouth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x1, y1, z2).color(color).next()
-            vert.vertex(mat, x2, y1, z2).color(color).next()
-            vert.vertex(mat, x2, y2, z2).color(color).next()
-            vert.vertex(mat, x1, y2, z2).color(color).next()
+            vert.vertex(mat, minX, minY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
         }
 
         private val drawWest: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x1, y1, z1).color(color).next()
-            vert.vertex(mat, x1, y1, z2).color(color).next()
-            vert.vertex(mat, x1, y2, z2).color(color).next()
-            vert.vertex(mat, x1, y2, z1).color(color).next()
+            vert.vertex(mat, minX, minY, minZ).color(color).next()
+            vert.vertex(mat, minX, minY, maxZ).color(color).next()
+            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, minX, maxY, minZ).color(color).next()
         }
 
         private val drawEast: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, x2, y1, z2).color(color).next()
-            vert.vertex(mat, x2, y1, z1).color(color).next()
-            vert.vertex(mat, x2, y2, z1).color(color).next()
-            vert.vertex(mat, x2, y2, z2).color(color).next()
+            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, minY, minZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
+            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
         }
 
         val drawDirections = mapOf(

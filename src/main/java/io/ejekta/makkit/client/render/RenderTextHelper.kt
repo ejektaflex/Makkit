@@ -18,8 +18,6 @@ object RenderTextHelper {
     }
 
     fun drawTextCentered(stack: MatrixStack, text: Text, x: Float, y: Float, color: Int = 0xFFFFFF) {
-        renderer.draw(stack, text, x - renderer.getStringWidth(text) / 2, y , color)
+        renderer.draw(stack, text, x - renderer.getWidth(text) / 2, y , color)
     }
-
-
 }

@@ -16,7 +16,7 @@ abstract class MouseMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method = "onMouseButton", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/options/KeyBinding;setKeyPressed(Lnet/minecraft/client/util/InputUtil$KeyCode;Z)V",
+            target = "Lnet/minecraft/client/options/KeyBinding;setKeyPressed(Lnet/minecraft/client/util/InputUtil$Key;Z)V",
             ordinal = 0), cancellable = true)
     public void onMouseClicked(
             long window,

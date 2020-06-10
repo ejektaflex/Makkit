@@ -14,10 +14,10 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
     var box = Box(inPos, inPos2)
 
     val pos: Vec3d
-        get() = Vec3d(box.x1, box.y1, box.z1)
+        get() = Vec3d(box.minX, box.minY, box.minZ)
 
     val end: Vec3d
-        get() = Vec3d(box.x2, box.y2, box.z2)
+        get() = Vec3d(box.maxX, box.maxY, box.maxZ)
 
     val size: Vec3d
         get() = end.subtract(pos)

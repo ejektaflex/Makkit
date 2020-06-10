@@ -85,7 +85,7 @@ object MakkitGui {
                 drawTextCentered(matrixStack, opt.text, i.toFloat(), 2f)
 
                 if (block != null && block != Blocks.AIR) {
-                    mc.itemRenderer.renderGuiItem(playerEntity.offHandStack, i - 8, 12)
+                    mc.itemRenderer.renderGuiItemIcon(playerEntity.offHandStack, i - 8, 12)
                 } else {
                     val invalidText = LiteralText("(Invalid Offhand Item)").styled {
                         it.withColor(TextColor.fromFormatting(Formatting.RED))

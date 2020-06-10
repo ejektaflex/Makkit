@@ -94,11 +94,11 @@ fun Box.withMinSize(minSize: Vec3d): Box {
 }
 
 fun Box.getStart(): Vec3d {
-    return Vec3d(x1, y1, z1)
+    return Vec3d(minX, minY, minZ)
 }
 
 fun Box.getSize(): Vec3d {
-    return Vec3d(x2 - x1, y2 - y1, z2 - z1)
+    return Vec3d(maxX - minX, maxY - minY, maxZ - minZ)
 }
 
 fun Box.blockSize(): BlockPos {
@@ -106,7 +106,7 @@ fun Box.blockSize(): BlockPos {
 }
 
 fun Box.getEnd(): Vec3d {
-    return Vec3d(x2, y2, z2)
+    return Vec3d(maxX, maxY, maxZ)
 }
 
 fun Box.startBlock(): BlockPos {
@@ -163,8 +163,8 @@ fun Box.positionOffsetInDirection(dir: Direction, other: Box): Double {
 
 fun Box.getBlockArray(): List<BlockPos> {
     val buff = mutableListOf<BlockPos>()
-    val startPos = BlockPos(x1, y1, z1)
-    val endPos = BlockPos(x2, y2, z2)
+    val startPos = BlockPos(minX, minY, minZ)
+    val endPos = BlockPos(maxX, maxY, maxZ)
     for (dx in startPos.x until endPos.x) {
         for (dy in startPos.y until endPos.y) {
             for (dz in startPos.z until endPos.z) {
@@ -177,8 +177,8 @@ fun Box.getBlockArray(): List<BlockPos> {
 
 fun Box.wallBlocks(): List<BlockPos> {
     val buff = mutableListOf<BlockPos>()
-    val startPos = BlockPos(x1, y1, z1)
-    val endPos = BlockPos(x2, y2, z2)
+    val startPos = BlockPos(minX, minY, minZ)
+    val endPos = BlockPos(maxX, maxY, maxZ)
     for (dx in startPos.x until endPos.x) {
         for (dy in startPos.y until endPos.y) {
             for (dz in startPos.z until endPos.z) {

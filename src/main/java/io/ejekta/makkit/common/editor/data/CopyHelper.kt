@@ -16,10 +16,10 @@ object CopyHelper {
 
     fun getLocalAxisStartPos(copyBox: Box, face: Direction): BlockPos {
         return when (face) {
-            Direction.NORTH -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z1)
-            Direction.EAST -> BlockPos(copyBox.x2 - 1, copyBox.y1, copyBox.z2 - 1)
-            Direction.SOUTH -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z2 - 1)
-            Direction.WEST -> BlockPos(copyBox.x1, copyBox.y1, copyBox.z1)
+            Direction.NORTH -> BlockPos(copyBox.maxX - 1, copyBox.minY, copyBox.minZ)
+            Direction.EAST -> BlockPos(copyBox.maxX - 1, copyBox.minY, copyBox.maxZ - 1)
+            Direction.SOUTH -> BlockPos(copyBox.minX, copyBox.minY, copyBox.maxZ - 1)
+            Direction.WEST -> BlockPos(copyBox.minX, copyBox.minY, copyBox.minZ)
             else -> throw Exception("Cannot paste when look vector is up or down")
         }
     }

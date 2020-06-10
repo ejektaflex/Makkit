@@ -469,7 +469,7 @@ class MakkitConfig {
                 out.value(value.id)
                 val bool = value.binding.type == InputUtil.Type.KEYSYM
                 out.value(bool)
-                out.value(value.binding.keyCode.keyCode)
+                out.value(value.binding.keyCode.code)
                 out.value(value.binding.modifier.hasAlt())
                 out.value(value.binding.modifier.hasControl())
                 out.value(value.binding.modifier.hasShift())

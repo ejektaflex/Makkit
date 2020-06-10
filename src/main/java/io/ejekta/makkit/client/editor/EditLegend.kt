@@ -87,12 +87,12 @@ object EditLegend {
 
     private fun drawKeybinds(vararg handlers: KeyStateHandler) {
         val longestName = handlers.maxBy {
-            renderer.getStringWidth(it.name)
+            renderer.getWidth(it.name)
         }!!
         handlers.forEachIndexed { _, handler ->
             text.add(Triple(
                     handler.shortName,
-                    renderer.getStringWidth(longestName.name) + 5,
+                    renderer.getWidth(longestName.name) + 5,
                     handler.binding.localizedName
             ))
         }
@@ -114,7 +114,7 @@ object EditLegend {
         val padding = 2f
 
         val lx = padding + offset
-        val rx = width - (renderer.getStringWidth(text) + padding + offset)
+        val rx = width - (renderer.getWidth(text) + padding + offset)
         val ty = (fontSize * (this.text.size - line))
         val by = height - (fontSize * (line + 2.5f))
 
