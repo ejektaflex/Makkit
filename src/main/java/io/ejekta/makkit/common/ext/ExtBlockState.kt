@@ -5,6 +5,7 @@ import net.minecraft.block.enums.BlockHalf
 import net.minecraft.block.enums.SlabType
 import net.minecraft.state.property.BooleanProperty
 import net.minecraft.state.property.Properties
+import net.minecraft.util.BlockMirror
 import net.minecraft.util.BlockRotation
 import net.minecraft.util.math.Direction
 
@@ -39,24 +40,13 @@ fun BlockState.inDirection(dir: Direction): BlockState {
 fun BlockState.flippedOn(axis: Direction.Axis): BlockState {
     var state = this
 
-
-    fun flipBoolProp(prop: BooleanProperty, opposite: BooleanProperty): BlockState {
-        if (prop in state && opposite in state) {
-            if ((state[prop] && !state[opposite]) || (!state[prop] && state[opposite])) {
-                val newProp = !state[prop]
-                val newOpp = !state[opposite]
-                return state.with(prop, newProp).with(opposite, newOpp)
-            }
-        }
-        return state
+    val mirror = when (axis) {
+        Direction.Axis.X -> BlockMirror.FRONT_BACK
+        Direction.Axis.Z -> BlockMirror.LEFT_RIGHT
+        Direction.Axis.Y -> BlockMirror.NONE
     }
 
-    // Fences & Walls & Other Stuff
-    state = when (axis) {
-        Direction.Axis.X -> flipBoolProp(Properties.EAST, Properties.WEST)
-        Direction.Axis.Y -> flipBoolProp(Properties.UP, Properties.DOWN)
-        Direction.Axis.Z -> flipBoolProp(Properties.NORTH, Properties.SOUTH)
-    }
+    state = state.mirror(mirror)
 
     // Flipping on Y axis specifically
     if (axis == Direction.Axis.Y) {
@@ -82,18 +72,6 @@ fun BlockState.flippedOn(axis: Direction.Axis): BlockState {
             state = state.with(Properties.BLOCK_HALF, type)
         }
 
-    }
-
-    if (Properties.FACING in state && state[Properties.FACING].axis == axis) {
-        state = state.with(
-                Properties.FACING, state[Properties.FACING].opposite
-        )
-    }
-
-    if (Properties.HORIZONTAL_FACING in state && state[Properties.HORIZONTAL_FACING].axis == axis) {
-        state = state.with(
-                Properties.HORIZONTAL_FACING, state[Properties.HORIZONTAL_FACING].opposite
-        )
     }
 
     return state

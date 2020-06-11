@@ -28,7 +28,7 @@ object RenderHelper : AbstractRenderHelper() {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
         matrices.multiply(camera.rotation)
-        var newTextSize = -(textSize * MakkitClient.config.axialTextSize)/32
+        val newTextSize = -(textSize * MakkitClient.config.axialTextSize)/32
         matrices.scale(newTextSize, newTextSize, newTextSize)
 
         val centerDiv = if (center) 2 else 1

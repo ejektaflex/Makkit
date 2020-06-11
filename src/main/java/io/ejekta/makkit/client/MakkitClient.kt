@@ -21,7 +21,6 @@ object MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
-
         // Clientbound
         FocusRegionPacket.registerS2C()
         ShadowBoxShowPacket.registerS2C()

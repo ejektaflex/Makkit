@@ -45,8 +45,8 @@
   "makkit.air_mode": "Air Mask Toggle",
   "makkit.air_mode.short": "Air Mask",
 
-  "makkit.place_mode": "Block Placement Mode",
-  "makkit.place_mode.short": "Place Mode"
+  "makkit.place_mode": "Toggle Interaction",
+  "makkit.place_mode.short": "Toggle Interaction"
 
 
 }
