@@ -20,10 +20,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.ejekta.makkit.common.MakkitCommon"
+      "io.ejekta.makkit.common.MakkitCommon::INSTANCE"
     ],
     "client": [
-      "io.ejekta.makkit.client.MakkitClient"
+      "io.ejekta.makkit.client.MakkitClient::INSTANCE"
     ],
     "modmenu": [
       "io.ejekta.makkit.client.compat.MakkitModMenu"

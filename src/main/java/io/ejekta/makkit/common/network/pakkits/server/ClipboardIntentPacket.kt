@@ -56,6 +56,7 @@ data class ClipboardIntentPacket(
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val pakkit = ClipboardIntentPacket(buffer)
             context.taskQueue.execute {
+                println("Handling clipboard on other end")
                 NetworkHandler.handleCopyPaste(context.player as ServerPlayerEntity, pakkit)
             }
         }

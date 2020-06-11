@@ -8,7 +8,9 @@ import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ModInitializer
 
-class MakkitCommon : ModInitializer {
+object MakkitCommon : ModInitializer {
+    const val ID = "makkit"
+
     override fun onInitialize() {
 
         // Serverbound packets
@@ -26,9 +28,5 @@ class MakkitCommon : ModInitializer {
         for (player in e.player.world.players) {
             ShadowBoxShowPacket(uid = e.player.uuidAsString, disconnect = true).sendToClient(player)
         }
-    }
-
-    companion object {
-        const val ID = "makkit"
     }
 }

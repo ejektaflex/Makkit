@@ -15,11 +15,12 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
 
-class MakkitClient : ClientModInitializer {
+object MakkitClient : ClientModInitializer {
 
     val mc = MinecraftClient.getInstance()
 
     override fun onInitializeClient() {
+
 
         // Clientbound
         FocusRegionPacket.registerS2C()
@@ -91,34 +92,30 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-    companion object {
+    var isInEditMode = true
 
-        var isInEditMode = true
+    var blockMask = BlockMask.ALL_BLOCKS
 
-        var blockMask = BlockMask.ALL_BLOCKS
+    var config = MakkitConfig.load()
 
-        var config = MakkitConfig.load()
-
-        fun drawRemoteRegions() {
-            for (entry in remoteBoxMap) {
-                entry.value.draw(
-                        colorFill = config.multiplayerBoxColor.toAlpha(.2f),
-                        colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
-                )
-            }
+    fun drawRemoteRegions() {
+        for (entry in remoteBoxMap) {
+            entry.value.draw(
+                    colorFill = config.multiplayerBoxColor.toAlpha(.2f),
+                    colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
+            )
         }
-
-        fun getOrCreateRegion(): EditRegion {
-            if (region == null) {
-                region = EditRegion()
-            }
-            return region!!
-        }
-
-        var remoteBoxMap = mutableMapOf<String, RenderBox>()
-
-        var region: EditRegion? = null
-
     }
+
+    fun getOrCreateRegion(): EditRegion {
+        if (region == null) {
+            region = EditRegion()
+        }
+        return region!!
+    }
+
+    var remoteBoxMap = mutableMapOf<String, RenderBox>()
+
+    var region: EditRegion? = null
 
 }

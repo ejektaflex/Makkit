@@ -26,7 +26,7 @@ abstract class MouseMixin {
             CallbackInfo ci
     ) {
 
-        if (MakkitClient.Companion.isInEditMode()) {
+        if (MakkitClient.INSTANCE.isInEditMode()) {
             Boolean cancelled = Events.MouseClickedEvent.Companion.getDispatcher().invoker().invoke(
                     new Events.MouseClickedEvent(button)
             );

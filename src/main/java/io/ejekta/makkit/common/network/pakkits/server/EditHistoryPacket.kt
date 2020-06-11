@@ -40,7 +40,9 @@ class EditHistoryPacket(
 
         override fun run(context: PacketContext, buffer: PacketByteBuf) {
             val pakkit = EditHistoryPacket(buffer)
+            println("Edit history request on IO")
             context.taskQueue.execute {
+                println("Got edit history request")
                 NetworkHandler.handleUndoRedo(context.player as ServerPlayerEntity, pakkit)
             }
         }
