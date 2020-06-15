@@ -3,10 +3,7 @@ package io.ejekta.makkit.client.render
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
-import io.ejekta.makkit.common.ext.color
-import io.ejekta.makkit.common.ext.rayTraceForSide
-import io.ejekta.makkit.common.ext.vec3d
-import io.ejekta.makkit.common.ext.vertex
+import io.ejekta.makkit.common.ext.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
@@ -121,7 +118,12 @@ object RenderHelper : AbstractRenderHelper() {
     }
 
     fun drawFaceFilled(box: Box, side: Direction, color: RenderColor, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
-        BoxData.getDrawFunc(side).invoke(box, eVerts.getBuffer(layer), RenderHelper.matrices.peek().model, color)
+        BoxData.getDrawFunc(side).invoke(
+                box.offsetBy(0.002, side), // offset to avoid z-fighting
+                eVerts.getBuffer(layer),
+                RenderHelper.matrices.peek().model,
+                color
+        )
     }
 
     fun drawBoxFilled(box: Box, color: RenderColor, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
