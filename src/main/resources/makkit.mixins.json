@@ -4,16 +4,17 @@
   "package": "io.ejekta.makkit.client.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "ItemBucketAccessor"
+    "ItemBucketAccessor",
+    "ServerWorldMixin"
   ],
   "client": [
     "BoxMixin",
     "ItemHotbarRenderMixin",
     "MouseMixin",
     "MouseScrollMixin",
+    "ServersideDisconnect",
     "TextRendererMixin",
-    "WorldRendererMixin",
-    "ServersideDisconnect"
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

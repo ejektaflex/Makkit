@@ -19,6 +19,11 @@ object NetworkHandler {
      */
     private val userProfiles = mutableMapOf<String, UserEditProfile>()
 
+    fun clearAllData() {
+        userProfiles.clear()
+        println("Cleared all edit data for Makkit")
+    }
+
     fun getProfileOf(player: ServerPlayerEntity): UserEditProfile {
         return userProfiles.getOrPut(player.uuidAsString) {
             UserEditProfile()
