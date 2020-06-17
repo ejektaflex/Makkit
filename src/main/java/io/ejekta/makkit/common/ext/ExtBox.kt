@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import kotlin.math.abs
 
 private fun Box.trace(
         reverse: Boolean = false // TODO re implement back selecting toggle
@@ -69,7 +70,7 @@ fun Box.getFacePlane(dir: Direction): Box {
 }
 
 fun Box.offsetBy(amt: Double, dir: Direction): Box {
-    return offset(Vec3d(amt, amt, amt).axisMask(dir))
+    return offset(Vec3d(amt, amt, amt).dirMask(dir))
 }
 
 fun Box.resizeBy(amt: Double, dir: Direction): Box {
@@ -252,9 +253,11 @@ private fun Box.geniusTrace(): BoxTraceResult {
             nonEmpty.first()
         }
         else -> {
-            nonEmpty
-                    .mapIndexed { i, btr -> i to btr }
-                    .minBy { faceCenterPos(it.second.dir).distanceTo(it.second.hit) * (it.first + 2) }!!.second
+            nonEmpty.minBy { btr ->
+                btr.dir.axis.others().map {
+                    abs(btr.hit.getComponentAlongAxis(it) - center.getComponentAlongAxis(it))
+                }.min()!!
+            }!!
         }
     }
 }

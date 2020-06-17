@@ -119,7 +119,7 @@ object RenderHelper : AbstractRenderHelper() {
 
     fun drawFaceFilled(box: Box, side: Direction, color: RenderColor, layer: RenderLayer = MyLayers.OVERLAY_QUADS) {
         BoxData.getDrawFunc(side).invoke(
-                box.offsetBy(0.002, side), // offset to avoid z-fighting
+                box.offsetBy(0.0025, side), // offset to avoid z-fighting that happens in prod
                 eVerts.getBuffer(layer),
                 RenderHelper.matrices.peek().model,
                 color

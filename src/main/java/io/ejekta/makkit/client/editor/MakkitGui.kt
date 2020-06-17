@@ -101,8 +101,4 @@ object MakkitGui {
 
     }
 
-
-    //private val barrierItem = ItemStack(Items.BARRIER)
-
-
 }

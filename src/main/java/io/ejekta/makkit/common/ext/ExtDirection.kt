@@ -4,16 +4,20 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 
-fun Direction.otherDirectionalAxes(): List<Direction> {
+fun Direction.otherDirectionsSameSigNum(): List<Direction> {
     return enumValues<Direction>().filter {
         it.direction == this.direction && it != this
     }
 }
 
-fun Direction.otherAxisDirections(): List<Direction> {
+fun Direction.alternateAxesDirs(): List<Direction> {
     return enumValues<Direction>().filter {
         it.axis != this.axis
     }
+}
+
+fun Direction.Axis.others(): List<Direction.Axis> {
+    return enumValues<Direction.Axis>().filter { it != this }
 }
 
 fun Direction.rotatedClockwise(times: Int): Direction {

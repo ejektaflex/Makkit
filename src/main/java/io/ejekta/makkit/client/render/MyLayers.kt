@@ -30,7 +30,7 @@ class MyLayers(name: String?, format: VertexFormat?, p_i225992_3_: Int, p_i22599
 
         private fun commonBuilder(depth: DepthTest, trans: Transparency): MultiPhaseParameters.Builder {
             return MultiPhaseParameters.builder()
-                    .lineWidth(LineWidth(OptionalDouble.of(3.0)))
+                    .lineWidth(LineWidth(OptionalDouble.of(4.0)))
                     .transparency(trans)
                     .texture(NO_TEXTURE)
                     .cull(Cull(false))

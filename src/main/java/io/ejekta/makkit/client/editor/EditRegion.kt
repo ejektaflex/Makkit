@@ -100,7 +100,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 return
             }
 
-            val others = result.dir.otherAxisDirections()
+            val others = result.dir.alternateAxesDirs()
 
             var boxProto = selection
 
