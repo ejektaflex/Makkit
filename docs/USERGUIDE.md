@@ -127,6 +127,7 @@ Block Mask options:
 * All Blocks - the default block mask, your tools affect all blocks.
 * Only Modify Air - your tools will only affect air blocks.
 * Only Modify Non-Air - your tools will affect all blocks, EXCEPT air blocks.
+* Only Modify Offhand - your tools will affect blocks matching the one in your offhand.
 
 So, for example, you could create a new box in an empty area and use
 Fill Walls to create walls made out of Stone Bricks, and then switch
