@@ -14,7 +14,7 @@ From there, you should be able to easily move and resize the box (defaults:
 
 
 **Note**: *If you want to edit the blocks inside of the Selection Box, you can
-toggle your placement mode by hitting the Placement Mode key (default: `Z`)!*
+toggle your placement mode by hitting the Toggle Interaction key (default: `Z`)!*
 
 
 ## Tools
