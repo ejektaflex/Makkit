@@ -1,13 +1,13 @@
 {
 
   "makkit.move_dual_axis": "选区移动工具 (与面平行的轴)",
-  "makkit.move_dual_axis.short": "移动选区 (平行方向, 拖拽)",
+  "makkit.move_dual_axis.short": "移动选区 (与面平行, 拖拽)",
 
   "makkit.move_single_axis": "选区移动工具 (与面垂直的轴)",
-  "makkit.move_single_axis.short": "移动选区 (垂直方向, 拖拽)",
+  "makkit.move_single_axis.short": "移动选区 (与面垂直, 拖拽)",
 
   "makkit.resize_single_axis": "选区范围调节工具 (与面垂直的轴)",
-  "makkit.resize_single_axis.short": "调节范围 (垂直方向, 拖拽)",
+  "makkit.resize_single_axis.short": "调节范围 (与面垂直, 拖拽)",
 
   "makkit.resize_single_axis_symmetric": "选区范围调节工具 (对称)",
   "makkit.resize_single_axis_symmetric.short": "调节范围 (对称, 拖拽)",
