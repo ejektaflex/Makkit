@@ -8,6 +8,7 @@
     "ServerWorldMixin"
   ],
   "client": [
+    "InventoryScrolledMixin",
     "BoxMixin",
     "ItemHotbarRenderMixin",
     "MouseMixin",

@@ -42,6 +42,12 @@ object Events {
         }
     }
 
+    data class InventoryScrolledEvent(val amount: Double, val newSlot: Int) {
+        companion object {
+            val Dispatcher = createSimpleEvent<InventoryScrolledEvent>()
+        }
+    }
+
     data class MouseClickedEvent(val button: Int) {
         companion object {
             val Dispatcher = createCancellableEvent<MouseClickedEvent>()

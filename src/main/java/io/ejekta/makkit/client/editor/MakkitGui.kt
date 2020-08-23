@@ -32,34 +32,48 @@ object MakkitGui {
         mc.textureManager.bindTexture(SELECTION)
         val i = width / 2
 
-        // Hotbar render additions
-        for (hotNum in 0..8) {
-            val stack = playerEntity.inventory.getStack(hotNum)
-            if (hasStack(hotNum)) {
-                MinecraftClient.getInstance().inGameHud.drawTexture(matrixStack,
-                        i - 92 + hotNum * 20, height - 23, 0, 0, 24, 22
-                )
+        fun highlightSlot(matrixStack: MatrixStack, num: Int) {
+            val stack = playerEntity.inventory.getStack(num)
+            if (hasStack(num)) {
+                val x = i - 92 + num * 20
+                drawAtlasIcon(matrixStack, x, height - 23, 0, 0)
 
                 // If test fails, add a red background
                 if (BlockPalette.test(stack) == null) {
-                    mc.inGameHud.drawTexture(matrixStack,
-                            i - 92 + hotNum * 20, height - 23, 0, 44, 24, 22
-                    )
+                    drawAtlasIcon(matrixStack, i - 92 + num * 20, height - 23, 0, 44)
                 }
             }
         }
 
+        // Hotbar render additions
+        for (hotNum in 0..8) {
+            highlightSlot(matrixStack, hotNum)
+        }
+
         // Selected item overlay
         if (hasAnyItems()) {
-            MinecraftClient.getInstance().inGameHud
-                    .drawTexture(matrixStack,
-                            i - 92 + playerEntity.inventory.selectedSlot * 20,
-                            height - 23, 0, 22, 24, 22
-                    )
+            val selected = playerEntity.inventory.selectedSlot
+            drawAtlasIcon(matrixStack, i - 92 + selected * 20, height - 23, 0, 22)
         }
 
     }
 
+
+
+    fun drawAtlasIcon(matrixStack: MatrixStack, x: Int, y: Int, ax: Int, ay: Int) {
+        MinecraftClient
+                .getInstance()
+                .inGameHud
+                .drawTexture(
+                        matrixStack,
+                        x,
+                        y,
+                        ax,
+                        ay,
+                        24,
+                        22
+                )
+    }
 
 
     fun renderBlockMaskGui(matrixStack: MatrixStack, width: Int, height: Int) {

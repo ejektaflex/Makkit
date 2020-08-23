@@ -14,6 +14,8 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
+import kotlin.math.ceil
+import kotlin.math.sign
 
 object MakkitClient : ClientModInitializer {
 
@@ -29,7 +31,7 @@ object MakkitClient : ClientModInitializer {
         config.assignKeybinds()
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
-        Events.MouseScrollEvent.Dispatcher.register(::onScroll)
+        Events.InventoryScrolledEvent.Dispatcher.register(::onInvScroll)
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
 
         HudRenderCallback.EVENT.register(HudRenderCallback(::onHudRender))
@@ -42,14 +44,14 @@ object MakkitClient : ClientModInitializer {
         }
     }
 
-    private fun onScroll(e: Events.MouseScrollEvent) {
+    private fun onInvScroll(e: Events.InventoryScrolledEvent) {
+
 
         if (config.multiPalette.isDown) {
             val holding = MinecraftClient.getInstance().player?.mainHandStack
-            val slot = MinecraftClient.getInstance().player?.inventory?.selectedSlot
 
-            if (holding != null && slot != null) {
-                ClientPalette.addToPalette(slot)
+            if (holding != null) {
+                ClientPalette.addToPalette(e.newSlot)
             } else {
                 ClientPalette.clearPalette()
             }
@@ -57,6 +59,8 @@ object MakkitClient : ClientModInitializer {
         } else {
             ClientPalette.clearPalette()
         }
+
+        println(ClientPalette.getSelectedSlots())
 
     }
 

@@ -11,6 +11,8 @@ object ClientPalette {
         stacks.add(slot)
     }
 
+    fun getSelectedSlots(): List<Int> = stacks.toList()
+
     private fun getStacks(): List<ItemStack> {
         return stacks.mapNotNull {
             MinecraftClient.getInstance().player?.inventory?.getStack(it)
