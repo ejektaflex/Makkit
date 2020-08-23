@@ -1,0 +1,52 @@
+{
+
+  "makkit.move_dual_axis": "选区移动工具 (与面平行的轴)",
+  "makkit.move_dual_axis.short": "移动选区 (与面平行, 拖拽)",
+
+  "makkit.move_single_axis": "选区移动工具 (与面垂直的轴)",
+  "makkit.move_single_axis.short": "移动选区 (与面垂直, 拖拽)",
+
+  "makkit.resize_single_axis": "选区范围调节工具 (与面垂直的轴)",
+  "makkit.resize_single_axis.short": "调节范围 (与面垂直, 拖拽)",
+
+  "makkit.resize_single_axis_symmetric": "选区范围调节工具 (对称)",
+  "makkit.resize_single_axis_symmetric.short": "调节范围 (对称, 拖拽)",
+
+  "makkit.fill_blocks": "选区填充工具",
+  "makkit.fill_blocks.short": "填充选区",
+
+  "makkit.fill_walls": "墙壁填充工具",
+  "makkit.fill_walls.short": "填充墙壁",
+
+  "makkit.multi_palette": "多素材填充工具",
+  "makkit.multi_palette.short": "多素材填充",
+
+  "makkit.copy_tool": "复制选区",
+  "makkit.copy_tool.short": "复制",
+
+  "makkit.paste_tool": "粘贴选区",
+  "makkit.paste_tool.short": "粘贴",
+
+  "makkit.undo": "撤销改动",
+  "makkit.undo.short": "撤销",
+
+  "makkit.redo": "重做改动",
+  "makkit.redo.short": "重做",
+
+  "makkit.center_edit_region": "新建一个选区",
+  "makkit.center_edit_region.short": "新建选区",
+
+  "makkit.repeat_pattern": "图案重复工具",
+  "makkit.repeat_pattern.short": "重复图案",
+
+  "makkit.mirror_tool": "镜像选区",
+  "makkit.mirror_tool.short": "镜像",
+
+  "makkit.air_mode": "切换空气方块蒙版",
+  "makkit.air_mode.short": "空气蒙版",
+
+  "makkit.place_mode": "切换选区交互",
+  "makkit.place_mode.short": "切换选区交互"
+
+
+}
