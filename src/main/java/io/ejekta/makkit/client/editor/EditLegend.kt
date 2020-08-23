@@ -7,9 +7,14 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
+import net.minecraft.text.TextColor
+import net.minecraft.util.Formatting
+import net.minecraft.util.math.MathHelper
 
 // The textual legend on the bottom left of the screen
 object EditLegend {
+
+    private data class LegendLine(val text: Text? = null, val key: KeyStateHandler? = null, var lastHit: Long = 0L)
 
     private val mc = MinecraftClient.getInstance()
     private val renderer = MinecraftClient.getInstance().textRenderer
@@ -19,21 +24,19 @@ object EditLegend {
     private val height: Float
         get() = mc.window.scaledHeight.toFloat()
     private var stack: MatrixStack = MatrixStack()
-    private val text = mutableListOf<Triple<Text, Int?, Text?>>()
+    private val texts = mutableListOf<LegendLine>()
+    private var longestNameLength = 0
 
-    fun setupDraw(inStack: MatrixStack) {
-        stack = inStack
-        text.clear()
+    private fun addText(newText: Text) {
+        texts.add(LegendLine(newText))
     }
 
+    init {
+        populateLegend()
+    }
 
-    fun draw(inStack: MatrixStack) {
-
-        if (!MakkitClient.config.showLegend) {
-            return
-        }
-
-        setupDraw(inStack)
+    fun populateLegend() {
+        texts.clear()
 
         addText(LiteralText("Makkit Key Legend: "))
         addText(LiteralText("==============="))
@@ -75,48 +78,67 @@ object EditLegend {
         }
 
         if (keysToUse.isNotEmpty()) {
-            drawKeybinds(*keysToUse.toTypedArray())
+            val longestName = keysToUse.maxBy { renderer.getWidth(it.name) }!!
+            longestNameLength = renderer.getWidth(longestName.name)
+
+            for (handler in keysToUse) {
+                texts.add(LegendLine(null, handler))
+            }
+        }
+
+    }
+
+    fun draw(inStack: MatrixStack) {
+
+        stack = inStack
+
+        if (!MakkitClient.config.showLegend) {
+            return
         }
 
         drawAllText()
     }
 
-    private fun addText(newText: Text) {
-        text.add(Triple(newText, null, null))
-    }
 
-    private fun drawKeybinds(vararg handlers: KeyStateHandler) {
-        val longestName = handlers.maxBy {
-            renderer.getWidth(it.name)
-        }!!
-        handlers.forEachIndexed { _, handler ->
-            text.add(Triple(
-                    handler.shortName,
-                    renderer.getWidth(longestName.name) + 5,
-                    handler.binding.localizedName
-            ))
-        }
 
-    }
 
     private fun drawAllText() {
-        text.reversed().forEachIndexed { i, text ->
-            drawTextOn(i, text.first, 0)
-            text.third?.let {
-                drawTextOn(i, text.third!!, text.second!!)
+        texts.reversed().forEachIndexed { i, line ->
+            when {
+                line.text != null -> drawTextOn(i, line, line.text, 0)
+                line.key != null -> {
+                    val isDown = line.key.isDown
+                    if (isDown) {
+                        line.lastHit = System.currentTimeMillis()
+                    }
+                    drawTextOn(i, line, line.key.shortName, 0, isDown)
+                    drawTextOn(i, line, line.key.binding.localizedName, longestNameLength + 5, false)
+                }
             }
         }
     }
 
-    private fun drawTextOn(line: Int, text: Text, offset: Int) {
+    private fun drawTextOn(lineNum: Int, line: LegendLine, text: Text, offset: Int, isDown: Boolean = false) {
+
+        val fadeTime = 900f // millis
+
+        val color = MathHelper.hsvToRgb(
+                0.13f,
+                (fadeTime - (System.currentTimeMillis() - line.lastHit).toFloat().coerceIn(0f..fadeTime)) / fadeTime,
+                1f
+        )
+
+        val textToUse = text.copy().styled {
+            it.withColor(TextColor.fromRgb(color))
+        }
 
         val enum = MakkitClient.config.legendCorner
         val padding = 2f
 
         val lx = padding + offset
-        val rx = width - (renderer.getWidth(text) + padding + offset)
-        val ty = (fontSize * (this.text.size - line))
-        val by = height - (fontSize * (line + 2.5f))
+        val rx = width - (renderer.getWidth(textToUse) + padding + offset)
+        val ty = (fontSize * (this.texts.size - lineNum))
+        val by = height - (fontSize * (lineNum + 2.5f))
 
         val corner = when (enum) {
             GuiCorner.TOP_LEFT -> lx to ty
@@ -124,7 +146,12 @@ object EditLegend {
             GuiCorner.BOTTOM_RIGHT -> rx to by
             GuiCorner.BOTTOM_LEFT -> lx to by
         }
-        drawText(text, corner.first, corner.second)
+
+        drawText(
+                textToUse,
+                corner.first,
+                corner.second
+        )
     }
 
     private fun drawText(text: Text, x: Float, y: Float) {
@@ -132,8 +159,7 @@ object EditLegend {
             true -> 0xFFFFFF
             false -> 0xAAAAAA
         }
-        renderer.draw(stack, text, x, y, color )
+        renderer.draw(stack, text, x, y, color)
     }
-
 
 }

@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.mixin;
 
+import io.ejekta.makkit.client.editor.EditLegend;
 import io.ejekta.makkit.client.event.Events;
 import io.ejekta.makkit.common.editor.NetworkHandler;
 import net.minecraft.client.render.*;

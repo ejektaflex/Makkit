@@ -2,6 +2,7 @@ package io.ejekta.makkit.client
 
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditLegend
+import io.ejekta.makkit.client.editor.EditLegend.populateLegend
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
@@ -14,8 +15,6 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
-import kotlin.math.ceil
-import kotlin.math.sign
 
 object MakkitClient : ClientModInitializer {
 
@@ -35,7 +34,6 @@ object MakkitClient : ClientModInitializer {
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
 
         HudRenderCallback.EVENT.register(HudRenderCallback(::onHudRender))
-
     }
 
     fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
@@ -45,8 +43,6 @@ object MakkitClient : ClientModInitializer {
     }
 
     private fun onInvScroll(e: Events.InventoryScrolledEvent) {
-
-
         if (config.multiPalette.isDown) {
             val holding = MinecraftClient.getInstance().player?.mainHandStack
 
@@ -59,9 +55,6 @@ object MakkitClient : ClientModInitializer {
         } else {
             ClientPalette.clearPalette()
         }
-
-        println(ClientPalette.getSelectedSlots())
-
     }
 
     // Return true if we want to cancel game interaction

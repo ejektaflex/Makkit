@@ -6,6 +6,7 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
@@ -398,6 +399,7 @@ class MakkitConfig {
     fun onSave() {
         save()
         MakkitClient.config = load()
+        EditLegend.populateLegend()
     }
 
     companion object {
