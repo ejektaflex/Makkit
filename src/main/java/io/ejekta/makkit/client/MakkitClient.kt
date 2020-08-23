@@ -2,7 +2,6 @@ package io.ejekta.makkit.client
 
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditLegend
-import io.ejekta.makkit.client.editor.EditLegend.populateLegend
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
@@ -12,9 +11,13 @@ import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.world.ClientWorld
+import net.minecraft.util.ActionResult
 
 object MakkitClient : ClientModInitializer {
 
@@ -34,12 +37,21 @@ object MakkitClient : ClientModInitializer {
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
 
         HudRenderCallback.EVENT.register(HudRenderCallback(::onHudRender))
+        UseBlockCallback.EVENT.register(onUseBlock())
     }
 
     fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
         if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
             EditLegend.draw(matrixStack)
         }
+    }
+
+    // Use client's Block Palette for block placement, if it's active
+    private fun onUseBlock() = UseBlockCallback { player, world, hand, hitResult ->
+        if (world is ClientWorld && ClientPalette.hasAnyItems()) {
+            player?.inventory?.selectedSlot = ClientPalette.getSelectedSlots().random()
+        }
+        ActionResult.PASS
     }
 
     private fun onInvScroll(e: Events.InventoryScrolledEvent) {

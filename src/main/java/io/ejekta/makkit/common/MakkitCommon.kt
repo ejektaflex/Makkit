@@ -7,6 +7,7 @@ import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ModInitializer
+import net.fabricmc.fabric.api.event.player.UseItemCallback
 
 object MakkitCommon : ModInitializer {
     const val ID = "makkit"
