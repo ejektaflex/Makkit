@@ -1,12 +1,7 @@
 package io.ejekta.makkit.client.mixin;
 
-import io.ejekta.makkit.client.MakkitClient;
 import io.ejekta.makkit.client.editor.MakkitGui;
-import io.ejekta.makkit.client.editor.input.ClientPalette;
-import io.ejekta.makkit.client.render.RenderTextHelper;
 import io.ejekta.makkit.common.MakkitCommon;
-import io.ejekta.makkit.common.editor.data.BlockPalette;
-import io.ejekta.makkit.common.enums.BlockMask;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -14,7 +9,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +29,7 @@ public abstract class ItemHotbarRenderMixin {
 
     @Shadow @Final private MinecraftClient client;
 
-    @Shadow @Final private static Identifier WIDGETS_TEX;
+    @Shadow @Final private static Identifier WIDGETS_TEXTURE;
 
     @Shadow protected abstract void drawTextBackground(MatrixStack matrixStack, TextRenderer textRenderer, int i, int j, int k);
 
@@ -52,7 +46,7 @@ public abstract class ItemHotbarRenderMixin {
         MakkitGui.INSTANCE.renderBlockMaskGui(matrixStack, scaledWidth, scaledHeight);
 
         // Bind back to widgets texture
-        client.getTextureManager().bindTexture(WIDGETS_TEX);
+        client.getTextureManager().bindTexture(WIDGETS_TEXTURE);
 
     }
 
