@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.input
 
+import io.ejekta.makkit.common.editor.data.BlockPalette
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 
@@ -13,10 +14,21 @@ object ClientPalette {
 
     fun getSelectedSlots(): List<Int> = stacks.toList()
 
-    private fun getStacks(): List<ItemStack> {
-        return stacks.mapNotNull {
-            MinecraftClient.getInstance().player?.inventory?.getStack(it)
+    // Get all slots that correspond with valid block palette blocks
+    fun getBlockSlots(): List<Int> {
+        return getSelectedSlots().filter { slot ->
+            getStack(slot)?.let {
+                BlockPalette.testBlock(it) != null
+            } == true
         }
+    }
+
+    private fun getStacks(): List<ItemStack> {
+        return stacks.mapNotNull { getStack(it) }
+    }
+
+    private fun getStack(slot: Int): ItemStack? {
+        return MinecraftClient.getInstance().player?.inventory?.getStack(slot)
     }
 
     fun hasStack(slot: Int): Boolean {

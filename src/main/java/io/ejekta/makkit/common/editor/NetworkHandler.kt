@@ -56,7 +56,7 @@ object NetworkHandler {
 
     fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: ShadowBoxUpdatePacket) {
         for (otherPlayer in player.world.players.filter { it != player }) {
-            ShadowBoxShowPacket(pakkit, player.uuidAsString).sendToClient(otherPlayer)
+            ShadowBoxShowPacket(pakkit, player.uuidAsString, pakkit.disconnect).sendToClient(otherPlayer)
         }
     }
 

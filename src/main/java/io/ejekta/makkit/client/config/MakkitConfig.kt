@@ -373,6 +373,12 @@ class MakkitConfig {
         }
 
         newBoxKey.setKeyDown {
+
+            // Delete region if it exists and you are looking at it
+            if (MakkitClient.region?.isBeingInteractedWith() == true) {
+                MakkitClient.region = null
+            }
+
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult

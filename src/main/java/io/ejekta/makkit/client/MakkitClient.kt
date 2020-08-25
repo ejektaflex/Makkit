@@ -49,7 +49,10 @@ object MakkitClient : ClientModInitializer {
     // Use client's Block Palette for block placement, if it's active
     private fun onUseBlock() = UseBlockCallback { player, world, hand, hitResult ->
         if (world is ClientWorld && ClientPalette.hasAnyItems()) {
-            player?.inventory?.selectedSlot = ClientPalette.getSelectedSlots().random()
+            val blockSlots = ClientPalette.getBlockSlots()
+            if (blockSlots.isNotEmpty()) {
+                player?.inventory?.selectedSlot = blockSlots.random()
+            }
         }
         ActionResult.PASS
     }

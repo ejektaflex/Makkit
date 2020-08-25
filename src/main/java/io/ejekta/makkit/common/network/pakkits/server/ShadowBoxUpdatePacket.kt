@@ -12,11 +12,24 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Box
 
 class ShadowBoxUpdatePacket(
-        override var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+        override var box: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
+        var disconnect: Boolean = false
 ) : BoxPacket(ID, box), ServerBoundPakkit {
 
     constructor(buffer: PacketByteBuf) : this() {
         read(buffer)
+    }
+
+    override fun write(): PacketByteBuf {
+        return super.write().apply {
+            writeBoolean(disconnect)
+        }
+    }
+
+    override fun read(buf: PacketByteBuf) {
+        super.read(buf).apply {
+            disconnect = buf.readBoolean()
+        }
     }
 
     companion object : ServerSidePakkitHandler {

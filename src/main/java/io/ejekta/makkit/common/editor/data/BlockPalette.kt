@@ -65,20 +65,21 @@ class BlockPalette(val action: EditAction) {
             return state
         }
 
+        fun testBlock(stack: ItemStack): Block? {
+            val item = stack.item
+            return when(item) {
+                is BlockItem -> item.block
+                else -> null
+            }
+        }
+
         fun test(stack: ItemStack): Block? {
             val item = stack.item
-            when (item) {
-                is BlockItem -> {
-                    return item.block
-                }
-                is AirBlockItem, Items.STICK -> {
-                    return Blocks.AIR
-                }
-                is BucketItem -> {
-                    return (item as ItemBucketAccessor).fluid.defaultState.blockState.block
-                }
+            return testBlock(stack) ?: when (item) {
+                is AirBlockItem, Items.STICK -> Blocks.AIR
+                is BucketItem -> (item as ItemBucketAccessor).fluid.defaultState.blockState.block
+                else -> null
             }
-            return null
         }
 
     }
