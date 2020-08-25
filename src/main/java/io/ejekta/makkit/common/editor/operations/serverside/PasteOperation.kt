@@ -19,12 +19,13 @@ class PasteOperation(val copy: CopyData) : WorldOperation() {
 
             val timesToRotateClockwise = (action.direction.horizontal + 3) % 4
 
+            var state = entry.value
+
             // Handle block position rotation
             val rotPos = BlockPos(entry.key.rotateClockwise(timesToRotateClockwise))
             val boxStartPos = CopyHelper.getLocalAxisStartPos(action.box, action.direction)
 
             // Handle block state rotation
-            var state = entry.value
 
             // Amount of rotation to blockstates is modified by copy direction
             // since we never put blockstate rotation into a common format

@@ -30,9 +30,14 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             ShadowBoxUpdatePacket(value).sendToServer()
         }
 
-    val selectionRenderer = RenderBox().apply {
+    private val selectionRenderer = RenderBox().apply {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+    }
+
+    fun changeColors(fill: RenderColor, edge: RenderColor = fill) {
+        selectionRenderer.fillColor = fill
+        selectionRenderer.edgeColor = edge
     }
 
     fun isActive() = MakkitClient.isInEditMode
@@ -47,11 +52,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun renderSelection() {
         selectionRenderer.box = selection
-
-        val configColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
-
         selectionRenderer.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
-
     }
 
     fun getSelectionColor(): RenderColor {
@@ -90,7 +91,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
-    fun centerSingleOn(pos: BlockPos) {
+    fun centerOriginCubeOn(pos: BlockPos) {
         selection = Box(pos, pos.add(1, 1, 1))
     }
 

@@ -64,6 +64,7 @@ data class EditAction(
         }
     }
 
+    // Remove changes which result in identical start and end states
     private fun optimize() {
         stateMap.filter {
             it.value.first == it.value.second
@@ -79,7 +80,7 @@ data class EditAction(
             stateMap[entry.key] = when(mode) {
                 UndoRedoMode.UNDO -> entry.value.first to player.world.getBlockState(entry.key)
                 UndoRedoMode.REDO -> player.world.getBlockState(entry.key) to entry.value.second
-                else -> throw Exception("You cannot sync edit history to world state with a CLEAR mode!")
+                else -> throw Exception("You cannot sync edit history to world state with a $mode mode!")
             }
         }
     }

@@ -109,7 +109,7 @@ object MakkitClient : ClientModInitializer {
 
     var config = MakkitConfig.load()
 
-    fun drawRemoteRegions() {
+    private fun drawRemoteRegions() {
         for (entry in remoteBoxMap) {
             entry.value.draw(
                     colorFill = config.multiplayerBoxColor.toAlpha(.2f),

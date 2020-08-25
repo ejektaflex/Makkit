@@ -174,8 +174,7 @@ class MakkitConfig {
                         LiteralText("When set to SIMPLE, you must press a key to switch between"),
                         LiteralText("front and back face selection. When set to SMART, Makkit will"),
                         LiteralText("figure out which face you want to select based on which face"),
-                        LiteralText("is closest to your cursor. EXPERIMENTAL is like SMART, but"),
-                        LiteralText("prefers to select front faces over back faces.")
+                        LiteralText("is closest to your cursor. EXPERIMENTAL is a work in progress!")
                 ).setSaveConsumer {
                     sideSelectionStyle = it
                 }.build()
@@ -290,10 +289,7 @@ class MakkitConfig {
                         LiteralText("The color of the selection box")
                 ).setSaveConsumer {
                     selectionBoxColor = RenderColor(it)
-                    MakkitClient.region?.selectionRenderer?.apply {
-                        fillColor = selectionBoxColor.toAlpha(.4f)
-                        edgeColor = selectionBoxColor.toAlpha(.4f)
-                    }
+                    MakkitClient.region?.changeColors(selectionBoxColor.toAlpha(.4f))
                 }.build()
         )
 
@@ -389,7 +385,7 @@ class MakkitConfig {
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
-                MakkitClient.getOrCreateRegion().centerSingleOn(bhr.blockPos)
+                MakkitClient.getOrCreateRegion().centerOriginCubeOn(bhr.blockPos)
             }
         }
 
@@ -443,7 +439,7 @@ class MakkitConfig {
             )
         }
 
-        // So many key binds!
+        // So many keybinds!
         object Default {
 
             // Tool Keys
@@ -492,15 +488,16 @@ class MakkitConfig {
 
         class KeyAdapter : TypeAdapter<KeyStateHandler>() {
             override fun write(out: JsonWriter, value: KeyStateHandler) {
-                out.beginArray()
-                out.value(value.id)
-                val bool = value.binding.type == InputUtil.Type.KEYSYM
-                out.value(bool)
-                out.value(value.binding.keyCode.code)
-                out.value(value.binding.modifier.hasAlt())
-                out.value(value.binding.modifier.hasControl())
-                out.value(value.binding.modifier.hasShift())
-                out.endArray()
+                out.apply {
+                    beginArray()
+                    value(value.id)
+                    value(value.binding.type == InputUtil.Type.KEYSYM)
+                    value(value.binding.keyCode.code)
+                    value(value.binding.modifier.hasAlt())
+                    value(value.binding.modifier.hasControl())
+                    value(value.binding.modifier.hasShift())
+                    endArray()
+                }
             }
 
             override fun read(`in`: JsonReader): KeyStateHandler {
@@ -523,8 +520,7 @@ class MakkitConfig {
 
         }
 
-        val configPath = FabricLoader.getInstance().configDirectory.toPath().resolve(MakkitCommon.ID + ".json")
-
+        val configPath = FabricLoader.getInstance().configDir.resolve(MakkitCommon.ID + ".json")
 
         private val GSON = GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)

@@ -1,6 +1,5 @@
 package io.ejekta.makkit.common.editor.data
 
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.enums.BlockMask
 
 class EditWorldOptions {
