@@ -11,8 +11,6 @@ import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
 import net.minecraft.text.LiteralText
 import net.minecraft.text.TextColor
 import net.minecraft.util.Formatting
@@ -39,9 +37,16 @@ object MakkitGui {
                 drawAtlasIcon(matrixStack, x, height - 23, 0, 0)
 
                 // If test fails, add a red background
+                if (BlockPalette.testBlockOnly(stack) == null && (MakkitClient.region?.isBeingInteractedWith() != true
+                                || !MakkitClient.isInEditMode)
+                ) {
+                    drawAtlasIcon(matrixStack, i - 92 + num * 20, height - 23, 24, 44)
+                }
+
                 if (BlockPalette.test(stack) == null) {
                     drawAtlasIcon(matrixStack, i - 92 + num * 20, height - 23, 0, 44)
                 }
+
             }
         }
 

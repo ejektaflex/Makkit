@@ -35,6 +35,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
 
+    fun isActive() = MakkitClient.isInEditMode
+
     fun isBeingInteractedWith(): Boolean {
         return isAnyToolBeingUsed() || selection.autoTrace() != BoxTraceResult.EMPTY
     }
@@ -88,8 +90,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
-    fun centerOn(pos: BlockPos) {
+    fun centerSingleOn(pos: BlockPos) {
         selection = Box(pos, pos.add(1, 1, 1))
+    }
+
+    fun centerOn(pos: BlockPos) {
+        val half =  BlockPos(selection.getSize().multiply(0.5))
+        selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
     }
 
     fun tryScrollFace(amt: Double) {

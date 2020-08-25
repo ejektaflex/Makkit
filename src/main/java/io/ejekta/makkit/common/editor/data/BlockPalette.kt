@@ -19,23 +19,7 @@ class BlockPalette(val action: EditAction) {
         return blocks.isEmpty()
     }
 
-    private fun parse(items: List<ItemStack>): Map<Block, Int> {
-        val proto = mutableMapOf<Block, Int>()
 
-        fun increment(block: Block, stack: ItemStack) {
-            val oldCount: Int = proto.getOrDefault(block, 0)
-            proto[block] = oldCount + max(stack.count, 1)
-        }
-
-        for (stack in items) {
-            val block = test(stack)
-            block?.let {
-                increment(it, stack)
-            }
-        }
-
-        return proto
-    }
 
     private val blocks = parse(action.stacks)
 
@@ -65,7 +49,25 @@ class BlockPalette(val action: EditAction) {
             return state
         }
 
-        fun testBlock(stack: ItemStack): Block? {
+        private fun parse(items: List<ItemStack>): Map<Block, Int> {
+            val proto = mutableMapOf<Block, Int>()
+
+            fun increment(block: Block, stack: ItemStack) {
+                val oldCount: Int = proto.getOrDefault(block, 0)
+                proto[block] = oldCount + max(stack.count, 1)
+            }
+
+            for (stack in items) {
+                val block = test(stack)
+                block?.let {
+                    increment(it, stack)
+                }
+            }
+
+            return proto
+        }
+
+        fun testBlockOnly(stack: ItemStack): Block? {
             val item = stack.item
             return when(item) {
                 is BlockItem -> item.block
@@ -75,7 +77,7 @@ class BlockPalette(val action: EditAction) {
 
         fun test(stack: ItemStack): Block? {
             val item = stack.item
-            return testBlock(stack) ?: when (item) {
+            return testBlockOnly(stack) ?: when (item) {
                 is AirBlockItem, Items.STICK -> Blocks.AIR
                 is BucketItem -> (item as ItemBucketAccessor).fluid.defaultState.blockState.block
                 else -> null

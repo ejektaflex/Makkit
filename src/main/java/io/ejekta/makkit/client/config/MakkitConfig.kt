@@ -18,6 +18,7 @@ import io.ejekta.makkit.common.enums.GuiCorner
 import io.ejekta.makkit.common.enums.SideSelectionStyle
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
+import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import me.shedaniel.clothconfig2.api.Modifier
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
@@ -28,6 +29,8 @@ import net.minecraft.client.util.InputUtil
 import net.minecraft.text.LiteralText
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
 import org.lwjgl.glfw.GLFW
 
 
@@ -91,6 +94,7 @@ class MakkitConfig {
     var copyKey = Default.COPY_KEY
     var pasteKey = Default.PASTE_KEY
     var newBoxKey = Default.NEW_BOX
+    var moveBoxKey = Default.MOVE_BOX
     var undoKey = Default.UNDO
     var redoKey = Default.REDO
     var multiPalette = Default.MULTIPALETTE
@@ -110,6 +114,7 @@ class MakkitConfig {
                 copyKey,
                 pasteKey,
                 newBoxKey,
+                moveBoxKey,
                 undoKey,
                 redoKey,
                 multiPalette,
@@ -377,13 +382,25 @@ class MakkitConfig {
             // Delete region if it exists and you are looking at it
             if (MakkitClient.region?.isBeingInteractedWith() == true) {
                 MakkitClient.region = null
+                ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
+                return@setKeyDown
             }
+
+            val btr = MinecraftClient.getInstance().crosshairTarget
+            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+                val bhr = btr as BlockHitResult
+                MakkitClient.getOrCreateRegion().centerSingleOn(bhr.blockPos)
+            }
+        }
+
+        moveBoxKey.setKeyDown {
 
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
                 MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos)
             }
+
         }
 
         multiPalette.setKeyDown {
@@ -464,6 +481,8 @@ class MakkitConfig {
                 get() = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, true)
             val NEW_BOX: KeyStateHandler
                 get() = makkitKey("center_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B)
+            val MOVE_BOX: KeyStateHandler
+                get() = makkitKey("move_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, alt = true)
             val UNDO: KeyStateHandler
                 get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
             val REDO: KeyStateHandler

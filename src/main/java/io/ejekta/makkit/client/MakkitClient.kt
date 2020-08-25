@@ -8,6 +8,7 @@ import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.enums.BlockMask
+import io.ejekta.makkit.common.ext.weightedRandomBy
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
@@ -49,9 +50,8 @@ object MakkitClient : ClientModInitializer {
     // Use client's Block Palette for block placement, if it's active
     private fun onUseBlock() = UseBlockCallback { player, world, hand, hitResult ->
         if (world is ClientWorld && ClientPalette.hasAnyItems()) {
-            val blockSlots = ClientPalette.getBlockSlots()
-            if (blockSlots.isNotEmpty()) {
-                player?.inventory?.selectedSlot = blockSlots.random()
+            ClientPalette.getRandomBlockSlot()?.let {
+                player?.inventory?.selectedSlot = it
             }
         }
         ActionResult.PASS

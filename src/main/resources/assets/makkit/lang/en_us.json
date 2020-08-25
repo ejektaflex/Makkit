@@ -36,6 +36,9 @@
   "makkit.center_edit_region": "Place New Box",
   "makkit.center_edit_region.short": "New Box",
 
+  "makkit.move_edit_region": "Move Box to Cursor",
+  "makkit.move_edit_region.short": "Move Box",
+
   "makkit.repeat_pattern": "Repeat Pattern Tool",
   "makkit.repeat_pattern.short": "Drag Pattern",
 

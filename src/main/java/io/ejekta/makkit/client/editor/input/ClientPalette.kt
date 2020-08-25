@@ -1,6 +1,8 @@
 package io.ejekta.makkit.client.editor.input
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.editor.data.BlockPalette
+import io.ejekta.makkit.common.ext.weightedRandomBy
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 
@@ -18,8 +20,20 @@ object ClientPalette {
     fun getBlockSlots(): List<Int> {
         return getSelectedSlots().filter { slot ->
             getStack(slot)?.let {
-                BlockPalette.testBlock(it) != null
+                BlockPalette.testBlockOnly(it) != null
             } == true
+        }
+    }
+
+    fun getRandomBlockSlot(): Int? {
+        val slots = getBlockSlots()
+
+        if (slots.isEmpty()) return null
+
+        return if (MakkitClient.config.weightedPalette) {
+            slots.weightedRandomBy { getStack(this)!!.count }
+        } else {
+            slots.random()
         }
     }
 
