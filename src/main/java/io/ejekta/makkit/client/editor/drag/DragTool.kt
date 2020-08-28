@@ -4,6 +4,7 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
+import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
@@ -12,12 +13,12 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DragTool(val region: EditRegion) {
+abstract class DragTool(val region: EditRegion) {
 
     abstract val keyHandler: KeyStateHandler
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
-    open val preview = RenderBox().apply {
+    open val preview = AnimBox {
         fillColor = RenderColor.BLUE.toAlpha(.4f)
         edgeColor = RenderColor.ORANGE.toAlpha(.2f)
     }
@@ -45,7 +46,7 @@ internal abstract class DragTool(val region: EditRegion) {
     }
 
     protected fun getPreviewSizeIn(direction: Direction): Double {
-        return preview.box.sizeInDirection(direction)
+        return preview.target.sizeInDirection(direction)
     }
 
 
@@ -64,13 +65,9 @@ internal abstract class DragTool(val region: EditRegion) {
      */
     abstract fun getCursorOffset(snapped: Boolean = MakkitClient.config.gridSnapping): Vec3d?
 
-    /**
-     * Draws the tool to the screen, with the given offset
-     */
-    abstract fun onDrawPreview(offset: Vec3d)
 
     open fun onStartDragging(start: BoxTraceResult) {
-        // Do nothing by default
+        preview.snapTo(region.selection)
     }
 
     fun updateState(updateSelection: Boolean = true): Box? {
@@ -84,12 +81,13 @@ internal abstract class DragTool(val region: EditRegion) {
     }
 
     open fun onStopDragging(stop: BoxTraceResult) {
-        val box = updateState(updateSelection = true)
+        updateState(updateSelection = true)
+        region.lastUsedDragTool = this
     }
 
     fun update() {
         // Try to start dragging
-        if (MakkitClient.isInEditMode && dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
+        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
             dragStart = region.selection.autoTrace()
             if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
                 onStartDragging(dragStart)
@@ -107,11 +105,17 @@ internal abstract class DragTool(val region: EditRegion) {
         if (isDragging()) {
             val off = getCursorOffset()
             if (off != null) {
-                //val prevBox = getPreviewBox(off, region.selection)
-                //preview.box = prevBox
                 onDrawPreview(off)
             }
         }
+    }
+
+    /**
+     * Draws the tool to the screen, with the given offset
+     */
+    open fun onDrawPreview(offset: Vec3d) {
+        preview.resize(getPreviewBox(offset, region.selection))
+        preview.draw()
     }
 
     protected companion object {

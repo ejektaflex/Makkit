@@ -22,9 +22,8 @@ internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
-        preview.draw()
 
-        val faceCenter = preview.box.getFacePlane(dragStart.dir).center
+        val faceCenter = preview.render.box.getFacePlane(dragStart.dir).center
         for (axisDir in getAlternateAxesDirections()) {
             val length = getSelectionSizeIn(axisDir) / 2 - 0.25
             val lineStart = faceCenter.projectedIn(axisDir, length)
@@ -32,7 +31,7 @@ internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
             RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
         }
 
-        preview.drawNearAxisLabels(offset)
+        preview.render.drawNearAxisLabels(offset)
     }
 
 }

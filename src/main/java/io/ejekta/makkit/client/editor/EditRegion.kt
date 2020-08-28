@@ -2,6 +2,7 @@ package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
+import io.ejekta.makkit.client.editor.drag.DragTool
 import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
@@ -33,7 +34,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     private var oldSelection: Box = selection
 
-    private val selectionRenderer = RenderBox().apply {
+    var lastUsedDragTool: DragTool? = null
+
+    val selectionRenderer = RenderBox().apply {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
@@ -84,7 +87,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 }
             }
         } else {
-            RenderColor.WHITE.toAlpha(.1f)
+            RenderColor.WHITE.toAlpha(.08f)
         }
     }
 
@@ -112,6 +115,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
     }
 
+    @Deprecated("Scrolling on faces may make a future return, but not quite like this")
     fun tryScrollFace(amt: Double) {
         if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
             val result = selection.autoTrace()

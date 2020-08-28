@@ -39,7 +39,8 @@ internal class PatternToolAxial(
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
-        preview.drawSizeOnFace(dragStart.dir)
+
+        preview.render.drawSizeOnFace(dragStart.dir)
 
         // If any of the size dimensions are 0, this will crash
         if (region.selection.getSize().hasZeroAxis()) {
@@ -52,10 +53,11 @@ internal class PatternToolAxial(
         val size = origBox.getSize()
 
         // Should be the number of times to tile in a given direction
+        // Note: We use target pos so anims don't get in the way here
         val tileVector = Vec3d(
-                preview.size.x / size.x,
-                preview.size.y / size.y,
-                preview.size.z / size.z
+                preview.target.getSize().x / size.x,
+                preview.target.getSize().y / size.y,
+                preview.target.getSize().z / size.z
         ).roundToVec3i()
 
         for (x in 0 until tileVector.x) {

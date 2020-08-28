@@ -373,19 +373,28 @@ class MakkitConfig {
 
     fun assignKeybinds() {
         fillKey.setKeyDown {
-            MakkitClient.region?.doOperation(FillBlocksOperation())
+            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+                MakkitClient.region?.doOperation(FillBlocksOperation())
+            }
         }
 
         wallsKey.setKeyDown {
-            MakkitClient.region?.doOperation(FillWallsOperation())
+            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+                MakkitClient.region?.doOperation(FillWallsOperation())
+            }
         }
 
         undoKey.setKeyDown {
-            EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+                EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+            }
+
         }
 
         redoKey.setKeyDown {
-            EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+                EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+            }
         }
 
         newBoxKey.setKeyDown {

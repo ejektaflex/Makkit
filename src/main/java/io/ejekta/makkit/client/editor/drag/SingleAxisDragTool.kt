@@ -34,6 +34,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
     }
 
     override fun onStartDragging(start: BoxTraceResult) {
+        super.onStartDragging(start)
 
         val renderPlanes = planes
 
@@ -57,18 +58,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
     }
 
     override fun onDrawPreview(offset: Vec3d) {
-        preview.box = when (MakkitClient.config.animations) {
-            true -> {
-                val b = getPreviewBox(offset, region.selection)
-                Box(
-                        (b.getStart() + preview.box.getStart()).multiply(0.5),
-                        (b.getEnd() + preview.box.getEnd()).multiply(0.5)
-                )
-            }
-            false -> getPreviewBox(offset, region.selection)
-        }
-
-        preview.draw()
+        super.onDrawPreview(offset)
 
         if (region.drawDragPlane) {
             planeAxis1.draw(RenderColor.PINK.toAlpha(0.2f))

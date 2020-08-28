@@ -60,8 +60,8 @@ object EditLegend {
                         placeMode,
                         fillKey,
                         wallsKey,
-                        repeatPatternKey,
                         multiPalette,
+                        repeatPatternKey,
                         mirrorToolKey,
                         airMode
                 ))
@@ -100,9 +100,6 @@ object EditLegend {
         drawAllText()
     }
 
-
-
-
     private fun drawAllText() {
         texts.reversed().forEachIndexed { i, line ->
             when {
@@ -124,7 +121,7 @@ object EditLegend {
         val fadeTime = 900f // millis
 
         val color = MathHelper.hsvToRgb(
-                0.13f,
+                0.5f,
                 (fadeTime - (System.currentTimeMillis() - line.lastHit).toFloat().coerceIn(0f..fadeTime)) / fadeTime,
                 1f
         )

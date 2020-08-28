@@ -43,6 +43,8 @@ internal abstract class DualAxisDragTool(region: EditRegion) : DragTool(region) 
     }
 
     override fun onDrawPreview(offset: Vec3d) {
+        super.onDrawPreview(offset)
+
         if (region.drawDragPlane) {
             plane.draw(RenderColor.PINK.toAlpha(0.2f))
         }

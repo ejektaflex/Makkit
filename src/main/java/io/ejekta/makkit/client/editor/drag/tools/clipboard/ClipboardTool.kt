@@ -27,8 +27,7 @@ internal abstract class ClipboardTool(region: EditRegion) : DualAxisDragTool(reg
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
-        preview.draw()
-        preview.drawNearAxisLabels(region.selection.getStart())
+        preview.render.drawNearAxisLabels(region.selection.getStart())
     }
 
 }

@@ -32,13 +32,13 @@ internal class ResizeToolAxial(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = preview.box.center
+        val faceCenter = preview.render.box.center
         val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        preview.drawSizeOnFace(dragStart.dir)
+        preview.render.drawSizeOnFace(dragStart.dir)
     }
 
 }
