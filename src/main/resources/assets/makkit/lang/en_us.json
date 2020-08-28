@@ -33,7 +33,7 @@
   "makkit.redo": "Redo Edit",
   "makkit.redo.short": "Redo",
 
-  "makkit.center_edit_region": "Place New Box",
+  "makkit.center_edit_region": "Place / Delete Box",
   "makkit.center_edit_region.short": "New Box",
 
   "makkit.move_edit_region": "Move Box to Cursor",

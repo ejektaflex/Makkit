@@ -26,9 +26,12 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     var selection: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
         set(value) {
+            oldSelection = field
             field = value
             ShadowBoxUpdatePacket(value).sendToServer()
         }
+
+    private var oldSelection: Box = selection
 
     private val selectionRenderer = RenderBox().apply {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
@@ -51,7 +54,16 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun renderSelection() {
-        selectionRenderer.box = selection
+        selectionRenderer.box = when (MakkitClient.config.animations) {
+            true -> {
+                val b = selectionRenderer.box
+                Box(
+                        (b.getStart() + selection.getStart()).multiply(0.5),
+                        (b.getEnd() + selection.getEnd()).multiply(0.5)
+                )
+            }
+            false -> selection
+        }
         selectionRenderer.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
     }
 

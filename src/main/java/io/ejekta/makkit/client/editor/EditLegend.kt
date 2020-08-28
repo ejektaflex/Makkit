@@ -47,6 +47,7 @@ object EditLegend {
             if (showUtility) {
                 keysToUse.addAll(listOf(
                         newBoxKey,
+                        moveBoxKey,
                         moveDragKey,
                         movePushKey,
                         resizeSideKey,
@@ -132,7 +133,6 @@ object EditLegend {
             it.withColor(TextColor.fromRgb(color))
         }
 
-        val enum = MakkitClient.config.legendCorner
         val padding = 2f
 
         val lx = padding + offset
@@ -140,7 +140,7 @@ object EditLegend {
         val ty = (fontSize * (this.texts.size - lineNum))
         val by = height - (fontSize * (lineNum + 2.5f))
 
-        val corner = when (enum) {
+        val corner = when (MakkitClient.config.legendCorner) {
             GuiCorner.TOP_LEFT -> lx to ty
             GuiCorner.TOP_RIGHT -> rx to ty
             GuiCorner.BOTTOM_RIGHT -> rx to by

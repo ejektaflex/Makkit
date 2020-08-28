@@ -91,7 +91,7 @@ private fun intSwitch(i: Int): Int {
     return (abs(i) - 1) * -1
 }
 
-fun Vec3d.flipMask(dir: Direction): Vec3d {
+fun Vec3d.reverseMask(dir: Direction): Vec3d {
     val unit = dir.vector
     val mask = Vec3i(intSwitch(unit.x), intSwitch(unit.y), intSwitch(unit.z))
     return Vec3d(x * mask.x, y * mask.y, z * mask.z)

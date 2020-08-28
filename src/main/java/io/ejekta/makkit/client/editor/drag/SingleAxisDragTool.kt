@@ -1,13 +1,12 @@
 package io.ejekta.makkit.client.editor.drag
 
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.ext.flipMask
-import io.ejekta.makkit.common.ext.otherDirectionsSameSigNum
-import io.ejekta.makkit.common.ext.snapped
+import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
@@ -45,7 +44,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE
-            ).flipMask(direction)
+            ).reverseMask(direction)
             renderPlanes[i].box = Box(
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)
@@ -58,7 +57,16 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
     }
 
     override fun onDrawPreview(offset: Vec3d) {
-        preview.box = getPreviewBox(offset, region.selection)
+        preview.box = when (MakkitClient.config.animations) {
+            true -> {
+                val b = getPreviewBox(offset, region.selection)
+                Box(
+                        (b.getStart() + preview.box.getStart()).multiply(0.5),
+                        (b.getEnd() + preview.box.getEnd()).multiply(0.5)
+                )
+            }
+            false -> getPreviewBox(offset, region.selection)
+        }
 
         preview.draw()
 

@@ -72,6 +72,8 @@ class MakkitConfig {
 
     var axialTextSize = 1f
 
+    var animations = true
+
     var selectionBoxColor = RenderColor.GREEN
 
     var selectionFaceColor = RenderColor.YELLOW
@@ -282,6 +284,18 @@ class MakkitConfig {
         )
 
         visuals.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Animations"),
+                        animations
+                ).setDefaultValue(true).setTooltip(
+                        LiteralText("Whether box resize animations should occur")
+                ).setSaveConsumer {
+                    animations = it
+                }.build()
+        )
+
+
+        visuals.addEntry(
                 entryBuilder.startColorField(
                         LiteralText("Selection Box Color"),
                         (selectionBoxColor.intValue - 0xFF000000).toInt()
@@ -342,6 +356,7 @@ class MakkitConfig {
         addKeybindEntry(Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricKey)
         addKeybindEntry(Default.MULTIPALETTE, multiPalette)
         addKeybindEntry(Default.NEW_BOX, newBoxKey)
+        addKeybindEntry(Default.MOVE_BOX, moveBoxKey)
         addKeybindEntry(Default.PLACE_MODE, placeMode)
         addKeybindEntry(Default.FILL_AREA, fillKey)
         addKeybindEntry(Default.FILL_WALL, wallsKey)

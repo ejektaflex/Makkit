@@ -53,7 +53,7 @@ fun Box.projectedIn(dir: Direction, amt: Double): Box {
 }
 
 fun Box.getFacePlane(dir: Direction): Box {
-    val faceSize = getSize().flipMask(dir)
+    val faceSize = getSize().reverseMask(dir)
 
     val width = getSize().dirMask(dir)
 

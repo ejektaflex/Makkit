@@ -83,8 +83,6 @@ internal abstract class DragTool(val region: EditRegion) {
         }
     }
 
-
-
     open fun onStopDragging(stop: BoxTraceResult) {
         val box = updateState(updateSelection = true)
     }
@@ -109,8 +107,8 @@ internal abstract class DragTool(val region: EditRegion) {
         if (isDragging()) {
             val off = getCursorOffset()
             if (off != null) {
-                val prevBox = getPreviewBox(off, region.selection)
-                preview.box = prevBox
+                //val prevBox = getPreviewBox(off, region.selection)
+                //preview.box = prevBox
                 onDrawPreview(off)
             }
         }
