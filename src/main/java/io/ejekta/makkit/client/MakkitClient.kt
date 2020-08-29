@@ -8,11 +8,9 @@ import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.enums.BlockMask
-import io.ejekta.makkit.common.ext.weightedRandomBy
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.client.MinecraftClient
@@ -82,6 +80,8 @@ object MakkitClient : ClientModInitializer {
         return false
     }
 
+    var time: Long = System.currentTimeMillis()
+
     private fun onDrawScreen(e: Events.DrawScreenEvent) {
         // RenderHelper state
         RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
@@ -96,9 +96,11 @@ object MakkitClient : ClientModInitializer {
         }
 
         RenderHelper.drawInWorld {
-            region?.update()
+            val newTime = System.currentTimeMillis()
+            val delta = newTime - time
+            region?.update(delta)
             region?.draw()
-
+            time = newTime
             drawRemoteRegions()
         }
     }

@@ -4,12 +4,22 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.ext.getEnd
 import io.ejekta.makkit.common.ext.getStart
 import io.ejekta.makkit.common.ext.plus
+import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import kotlin.math.PI
+import kotlin.math.cos
 
 class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit) {
 
     val render: RenderBox = RenderBox()
+
+    var animTime: Long = 0
+
+    var animLength: Long = 1000
+
+    val animPercent: Double
+        get() = (animTime.toDouble() / animLength)
 
     var target: Box = inTarget
         private set
@@ -23,11 +33,14 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
     }
 
     fun resize(box: Box) {
+        //startTime = System.currentTimeMillis()
+        animTime = 0L
         target = box
     }
 
     fun snapToTarget() {
         render.box = target
+        animTime = animLength
     }
 
     fun snapTo(box: Box) {
@@ -35,20 +48,40 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
         snapToTarget()
     }
 
-    fun update(dt: Float = 0f) {
+    fun update(dt: Long) {
 
-        render.box = when (MakkitClient.config.animations) {
-            true -> Box(
-                    (target.getStart() + render.box.getStart()).multiply(0.5),
-                    (target.getEnd() + render.box.getEnd()).multiply(0.5)
-            )
-            false -> target
+        if (!MakkitClient.config.animations) {
+            render.box = target
+            return
         }
+
+        if (render.box != target) {
+            //println("booyah")
+            animTime = 0L
+        }
+
+        //println(dt)
+
+        if (!MinecraftClient.getInstance().isPaused) {
+            //println("TIME WAS $animTime")
+        }
+
+        animTime = (animTime + (dt * 10)).coerceIn(0, animLength)
+
+        val func = Easing.InSine.func
+
+        if (!MinecraftClient.getInstance().isPaused) {
+            //println("$dt\t\t$animTime\t\t$animPercent\t\t${func(animPercent)}")
+        }
+
+        render.box = Box(
+                lerp(render.box.getStart(), target.getStart(), func(animPercent)),
+                lerp(render.box.getEnd(),  target.getEnd(), func(animPercent))
+        )
 
     }
 
     fun draw() {
-        update()
         render.draw()
     }
 

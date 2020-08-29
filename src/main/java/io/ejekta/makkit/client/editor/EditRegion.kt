@@ -2,7 +2,6 @@ package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.drag.DragTool
 import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
@@ -34,9 +33,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     private var oldSelection: Box = selection
 
-    var lastUsedDragTool: DragTool? = null
 
-    val selectionRenderer = RenderBox().apply {
+    private val selectionRenderer = RenderBox().apply {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
@@ -136,8 +134,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
-    fun update() {
-        tools.forEach { tool -> tool.update() }
+    fun update(delta: Long) {
+        tools.forEach { tool -> tool.update(delta) }
     }
 
     fun doOperation(
@@ -168,7 +166,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         if (MakkitClient.isInEditMode) {
             if (isAnyToolBeingUsed()) {
                 tools.forEach { tool ->
-                    tool.update()
+                    //tool.update(delta)
                     tool.tryDraw()
                 }
             } else {

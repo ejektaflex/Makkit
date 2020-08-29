@@ -39,7 +39,8 @@ internal class MoveToolAxial(
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        preview.render.drawTextOnFace(dragStart.dir,
+        preview.render.drawTextOnFace(
+                dragStart.dir,
                 preview.render.box.getStart().subtract(
                         region.selection.getStart()
                 ).axisValue(dragStart.dir.axis).roundToInt().toString()

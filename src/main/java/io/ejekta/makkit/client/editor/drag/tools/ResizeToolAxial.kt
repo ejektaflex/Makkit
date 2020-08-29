@@ -9,8 +9,10 @@ import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.dirMask
 import io.ejekta.makkit.common.ext.projectedIn
 import io.ejekta.makkit.common.ext.shrinkSide
+import io.ejekta.makkit.common.ext.sizeOnAxis
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import kotlin.math.roundToInt
 
 internal class ResizeToolAxial(
         region: EditRegion
@@ -38,7 +40,10 @@ internal class ResizeToolAxial(
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        preview.render.drawSizeOnFace(dragStart.dir)
+        //preview.render.drawSizeOnFace(dragStart.dir)
+        preview.render.drawTextOnFace(
+                dragStart.dir, preview.target.sizeOnAxis(dragStart.dir.axis).roundToInt().toString()
+        )
     }
 
 }

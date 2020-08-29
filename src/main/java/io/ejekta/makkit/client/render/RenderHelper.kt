@@ -21,6 +21,9 @@ object RenderHelper : AbstractRenderHelper() {
         get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND)
 
 
+
+
+
     fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)

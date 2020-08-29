@@ -5,7 +5,6 @@ import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.AnimBox
-import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
 import io.ejekta.makkit.common.ext.sizeInDirection
@@ -82,10 +81,9 @@ abstract class DragTool(val region: EditRegion) {
 
     open fun onStopDragging(stop: BoxTraceResult) {
         updateState(updateSelection = true)
-        region.lastUsedDragTool = this
     }
 
-    fun update() {
+    fun update(delta: Long) {
         // Try to start dragging
         if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
             dragStart = region.selection.autoTrace()
@@ -93,6 +91,8 @@ abstract class DragTool(val region: EditRegion) {
                 onStartDragging(dragStart)
             }
         }
+
+        preview.update(delta)
 
         // Try to stop dragging
         if (dragStart != BoxTraceResult.EMPTY && !keyHandler.isDown) {
