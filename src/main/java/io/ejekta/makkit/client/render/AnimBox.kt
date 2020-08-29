@@ -7,8 +7,8 @@ import io.ejekta.makkit.common.ext.plus
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import kotlin.math.PI
-import kotlin.math.cos
+import kotlin.math.*
+import kotlin.math.min
 
 class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit) {
 
@@ -19,13 +19,14 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
 
     var animTime: Long = 0
 
-    var animLength: Long = 1000
+    var animLength: Long = 4
 
-    val animPercent: Double
-        get() = (animTime.toDouble() / animLength)
 
     val isComplete: Boolean
         get() = animTime == animLength
+
+    var start: Box = inTarget
+        private set
 
     var target: Box = inTarget
         private set
@@ -39,8 +40,10 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
     }
 
     fun startAnimating() {
-        isAnimating = true
-        animTime = 0L
+        if (!isAnimating) {
+            isAnimating = true
+            animTime = 0L
+        }
     }
 
     fun resize(box: Box) {
@@ -65,24 +68,38 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
             return
         }
 
+        // TODO Change to distance checking instead of equality
         if (render.box != target && !isAnimating) {
-            //println("booyah")
+            start = render.box
             startAnimating()
+            //startAnimating()
         }
 
-        if (isAnimating) {
-            animTime = (animTime + (dt * 1)).coerceIn(0, animLength)
+        //animTime = (animTime + (dt * 1)).coerceIn(0, animLength)
 
-            val func = Easing.InSine.func
+        val func = Easing.InSine.func
 
-            render.box = Box(
-                    lerp(render.box.getStart(), target.getStart(), func(animPercent)),
-                    lerp(render.box.getEnd(),  target.getEnd(), func(animPercent))
-            )
+        val spd = 25.0
+        val v = spd / 1000.0
+        val m = 1.0 / v
 
-            if (isComplete) {
-                isAnimating = false
-            }
+
+        render.box = Box(
+                render.box.getStart() + (
+                        target.getStart().subtract(render.box.getStart()).multiply(
+                                (dt.coerceAtMost((m * 0.5).roundToLong()) * v)
+                        )
+                ),
+                render.box.getEnd() + (
+                        target.getEnd().subtract(render.box.getEnd()).multiply(
+                                (dt.coerceAtMost((m * 0.5).roundToLong()) * v)
+                        )
+                )
+        )
+
+
+        if (isComplete) {
+            isAnimating = false
         }
 
     }
