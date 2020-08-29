@@ -114,7 +114,10 @@ abstract class DragTool(val region: EditRegion) {
      * Draws the tool to the screen, with the given offset
      */
     open fun onDrawPreview(offset: Vec3d) {
-        preview.resize(getPreviewBox(offset, region.selection))
+        val newPreview = getPreviewBox(offset, region.selection)
+        if (newPreview != preview.target) {
+            preview.resize(getPreviewBox(offset, region.selection))
+        }
         preview.draw()
     }
 

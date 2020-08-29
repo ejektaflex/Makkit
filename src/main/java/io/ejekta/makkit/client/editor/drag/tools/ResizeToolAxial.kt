@@ -6,10 +6,7 @@ import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.ext.dirMask
-import io.ejekta.makkit.common.ext.projectedIn
-import io.ejekta.makkit.common.ext.shrinkSide
-import io.ejekta.makkit.common.ext.sizeOnAxis
+import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
@@ -35,7 +32,7 @@ internal class ResizeToolAxial(
         super.onDrawPreview(offset)
 
         val faceCenter = preview.render.box.center
-        val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
+        val length = preview.render.box.sizeInDirection(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)

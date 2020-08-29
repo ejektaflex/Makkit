@@ -14,12 +14,18 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
 
     val render: RenderBox = RenderBox()
 
+    var isAnimating: Boolean = false
+        private set
+
     var animTime: Long = 0
 
     var animLength: Long = 1000
 
     val animPercent: Double
         get() = (animTime.toDouble() / animLength)
+
+    val isComplete: Boolean
+        get() = animTime == animLength
 
     var target: Box = inTarget
         private set
@@ -32,9 +38,13 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
         render.box = box
     }
 
-    fun resize(box: Box) {
-        //startTime = System.currentTimeMillis()
+    fun startAnimating() {
+        isAnimating = true
         animTime = 0L
+    }
+
+    fun resize(box: Box) {
+        startAnimating()
         target = box
     }
 
@@ -55,29 +65,25 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
             return
         }
 
-        if (render.box != target) {
+        if (render.box != target && !isAnimating) {
             //println("booyah")
-            animTime = 0L
+            startAnimating()
         }
 
-        //println(dt)
+        if (isAnimating) {
+            animTime = (animTime + (dt * 1)).coerceIn(0, animLength)
 
-        if (!MinecraftClient.getInstance().isPaused) {
-            //println("TIME WAS $animTime")
+            val func = Easing.InSine.func
+
+            render.box = Box(
+                    lerp(render.box.getStart(), target.getStart(), func(animPercent)),
+                    lerp(render.box.getEnd(),  target.getEnd(), func(animPercent))
+            )
+
+            if (isComplete) {
+                isAnimating = false
+            }
         }
-
-        animTime = (animTime + (dt * 10)).coerceIn(0, animLength)
-
-        val func = Easing.InSine.func
-
-        if (!MinecraftClient.getInstance().isPaused) {
-            //println("$dt\t\t$animTime\t\t$animPercent\t\t${func(animPercent)}")
-        }
-
-        render.box = Box(
-                lerp(render.box.getStart(), target.getStart(), func(animPercent)),
-                lerp(render.box.getEnd(),  target.getEnd(), func(animPercent))
-        )
 
     }
 
