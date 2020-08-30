@@ -17,14 +17,6 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
     var isAnimating: Boolean = false
         private set
 
-    var animTime: Long = 0
-
-    var animLength: Long = 4
-
-
-    val isComplete: Boolean
-        get() = animTime == animLength
-
     var start: Box = inTarget
         private set
 
@@ -42,7 +34,6 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
     fun startAnimating() {
         if (!isAnimating) {
             isAnimating = true
-            animTime = 0L
         }
     }
 
@@ -53,7 +44,6 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
 
     fun snapToTarget() {
         render.box = target
-        animTime = animLength
     }
 
     fun snapTo(box: Box) {
@@ -68,18 +58,7 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
             return
         }
 
-        // TODO Change to distance checking instead of equality
-        if (render.box != target && !isAnimating) {
-            start = render.box
-            startAnimating()
-            //startAnimating()
-        }
-
-        //animTime = (animTime + (dt * 1)).coerceIn(0, animLength)
-
-        val func = Easing.InSine.func
-
-        val spd = 25.0
+        val spd = 12.0
         val v = spd / 1000.0
         val m = 1.0 / v
 
@@ -97,10 +76,6 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
                 )
         )
 
-
-        if (isComplete) {
-            isAnimating = false
-        }
 
     }
 
