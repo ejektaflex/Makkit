@@ -6,6 +6,7 @@ import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
+import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.data.CopyHelper
@@ -26,22 +27,19 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     var selection: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
         set(value) {
-            oldSelection = field
             field = value
+            selectionRenderer.resize(value)
             ShadowBoxUpdatePacket(value).sendToServer()
         }
 
-    private var oldSelection: Box = selection
-
-
-    private val selectionRenderer = RenderBox().apply {
+    private val selectionRenderer = AnimBox(selection) {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
 
     fun changeColors(fill: RenderColor, edge: RenderColor = fill) {
-        selectionRenderer.fillColor = fill
-        selectionRenderer.edgeColor = edge
+        selectionRenderer.render.fillColor = fill
+        selectionRenderer.render.edgeColor = edge
     }
 
     fun isActive() = MakkitClient.isInEditMode
@@ -55,9 +53,10 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun renderSelection() {
-        selectionRenderer.box = when (MakkitClient.config.animations) {
+        /*
+        selectionRenderer.render.box = when (MakkitClient.config.animations) {
             true -> {
-                val b = selectionRenderer.box
+                val b = selectionRenderer.render.box
                 Box(
                         (b.getStart() + selection.getStart()).multiply(0.5),
                         (b.getEnd() + selection.getEnd()).multiply(0.5)
@@ -65,7 +64,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             }
             false -> selection
         }
-        selectionRenderer.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
+
+         */
+        selectionRenderer.render.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
     }
 
     fun getSelectionColor(): RenderColor {
@@ -106,11 +107,19 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun centerOriginCubeOn(pos: BlockPos) {
         selection = Box(pos, pos.add(1, 1, 1))
+        selectionRenderer.render.box = Box(
+                selection.center,
+                selection.center
+        )
     }
 
     fun centerOn(pos: BlockPos) {
         val half =  BlockPos(selection.getSize().multiply(0.5))
         selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
+        selectionRenderer.render.box = Box(
+                selection.center,
+                selection.center
+        )
     }
 
     @Deprecated("Scrolling on faces may make a future return, but not quite like this")
@@ -135,6 +144,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun update(delta: Long) {
+        selectionRenderer.update(delta)
         tools.forEach { tool -> tool.update(delta) }
     }
 
@@ -174,8 +184,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 // default state when no drag tool is being used
                 val hit = selection.autoTrace()
                 if (hit != BoxTraceResult.EMPTY) {
-                    selectionRenderer.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
-                    selectionRenderer.drawAxisSizes()
+                    selectionRenderer.render.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
+                    selectionRenderer.render.drawAxisSizes()
                 }
             }
         }
