@@ -65,7 +65,7 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit 
             return
         }
 
-        val spd = 12.0
+        val spd = MakkitClient.config.animationSpeed
         val v = spd / 1000.0
         val m = 1.0 / v
 

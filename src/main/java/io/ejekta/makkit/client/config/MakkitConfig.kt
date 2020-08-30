@@ -74,6 +74,8 @@ class MakkitConfig {
 
     var animations = true
 
+    var animationSpeed = 25.0
+
     var selectionBoxColor = RenderColor.GREEN
 
     var selectionFaceColor = RenderColor.YELLOW
@@ -294,6 +296,16 @@ class MakkitConfig {
                 }.build()
         )
 
+        visuals.addEntry(
+                entryBuilder.startDoubleField(
+                        LiteralText("Animation Speed"),
+                        animationSpeed
+                ).setDefaultValue(25.0).setTooltip(
+                        LiteralText("Box animation speed")
+                ).setSaveConsumer {
+                    animationSpeed = it
+                }.setMin(5.0).setMax(100.0).build()
+        )
 
         visuals.addEntry(
                 entryBuilder.startColorField(
