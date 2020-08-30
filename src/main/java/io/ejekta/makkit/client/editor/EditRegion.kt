@@ -107,19 +107,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun centerOriginCubeOn(pos: BlockPos) {
         selection = Box(pos, pos.add(1, 1, 1))
-        selectionRenderer.render.box = Box(
-                selection.center,
-                selection.center
-        )
+        selectionRenderer.shrinkToCenter()
     }
 
     fun centerOn(pos: BlockPos) {
         val half =  BlockPos(selection.getSize().multiply(0.5))
         selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
-        selectionRenderer.render.box = Box(
-                selection.center,
-                selection.center
-        )
+        selectionRenderer.shrinkToCenter()
     }
 
     @Deprecated("Scrolling on faces may make a future return, but not quite like this")

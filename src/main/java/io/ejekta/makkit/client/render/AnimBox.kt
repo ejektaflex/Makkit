@@ -10,7 +10,7 @@ import net.minecraft.util.math.Box
 import kotlin.math.*
 import kotlin.math.min
 
-class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit) {
+class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit = {}) {
 
     val render: RenderBox = RenderBox()
 
@@ -44,6 +44,13 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit)
 
     fun snapToTarget() {
         render.box = target
+    }
+
+    fun shrinkToCenter() {
+        render.box = Box(
+                target.center,
+                target.center
+        )
     }
 
     fun snapTo(box: Box) {

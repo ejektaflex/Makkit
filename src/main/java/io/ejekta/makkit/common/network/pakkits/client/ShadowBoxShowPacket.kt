@@ -1,6 +1,7 @@
 package io.ejekta.makkit.common.network.pakkits.client
 
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.network.pakkit.ClientBoundPakkit
@@ -10,6 +11,7 @@ import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.fabric.api.network.PacketContext
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Box
 
 /*
 When received by the client, will add said box to the list of remote boxes that should be
@@ -28,12 +30,14 @@ class ShadowBoxShowPacket(
     override fun write(): PacketByteBuf {
         return super.write().apply {
             writeString(uid)
+            writeBoolean(disconnect)
         }
     }
 
     override fun read(buf: PacketByteBuf) {
         super.read(buf)
         uid = buf.readString()
+        disconnect = buf.readBoolean()
     }
 
     companion object : ClientSidePakkitHandler {
@@ -50,13 +54,14 @@ class ShadowBoxShowPacket(
                         MakkitClient.remoteBoxMap.remove(pakkit.uid)
                     }
                 } else {
-                    //println("Adding remote box w/id ${pakkit.uid} to draw map")
-                    MakkitClient.remoteBoxMap[pakkit.uid] = RenderBox(
-                            pakkit.box
-                    )
+                    if (pakkit.uid in MakkitClient.remoteBoxMap) {
+                        MakkitClient.remoteBoxMap[pakkit.uid]!!.resize(pakkit.box)
+                    } else {
+                        MakkitClient.remoteBoxMap[pakkit.uid] = AnimBox(pakkit.box).apply {
+                            shrinkToCenter()
+                        }
+                    }
                 }
-
-
 
             }
         }

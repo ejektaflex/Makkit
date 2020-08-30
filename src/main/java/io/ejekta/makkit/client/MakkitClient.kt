@@ -5,7 +5,7 @@ import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
-import io.ejekta.makkit.client.render.RenderBox
+import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
@@ -101,7 +101,7 @@ object MakkitClient : ClientModInitializer {
             region?.update(delta)
             region?.draw()
             time = newTime
-            drawRemoteRegions()
+            handleRemoteRegions(delta)
         }
     }
 
@@ -111,9 +111,10 @@ object MakkitClient : ClientModInitializer {
 
     var config = MakkitConfig.load()
 
-    private fun drawRemoteRegions() {
+    private fun handleRemoteRegions(delta: Long) {
         for (entry in remoteBoxMap) {
-            entry.value.draw(
+            entry.value.update(delta)
+            entry.value.render.draw(
                     colorFill = config.multiplayerBoxColor.toAlpha(.2f),
                     colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
             )
@@ -127,7 +128,7 @@ object MakkitClient : ClientModInitializer {
         return region!!
     }
 
-    var remoteBoxMap = mutableMapOf<String, RenderBox>()
+    var remoteBoxMap = mutableMapOf<String, AnimBox>()
 
     var region: EditRegion? = null
 
