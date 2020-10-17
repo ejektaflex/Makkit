@@ -6,7 +6,8 @@ so we've kept everything you need to know in this one document.
 Getting started with Makkit is easy. To start editing, place down a 
 selection box with the New Box key (default: `B`) while selecting a block
 near you. This should create a Selection Box that we can edit the world
-with.
+with. Removing the selection box is as easy as mousing over it again and
+pressing the same key.
 
 From there, you should be able to easily move and resize the box (defaults: 
 *Right Click* (`RMB`) and *Left Click* (`LMB`)). 
