@@ -20,7 +20,7 @@ import net.minecraft.util.ActionResult
 
 object MakkitClient : ClientModInitializer {
 
-    val mc = MinecraftClient.getInstance()
+    private val mc = MinecraftClient.getInstance()
 
     override fun onInitializeClient() {
 

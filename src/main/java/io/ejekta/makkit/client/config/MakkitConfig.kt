@@ -141,6 +141,8 @@ class MakkitConfig {
 
         val visuals = builder.getOrCreateCategory(LiteralText("Visuals"))
 
+        val animationsCat = builder.getOrCreateCategory(LiteralText("Animations"))
+
         val keybinds = builder.getOrCreateCategory(LiteralText("Keybinds"))
 
         val entryBuilder = builder.entryBuilder()
@@ -286,28 +288,6 @@ class MakkitConfig {
         )
 
         visuals.addEntry(
-                entryBuilder.startBooleanToggle(
-                        LiteralText("Animations"),
-                        animations
-                ).setDefaultValue(true).setTooltip(
-                        LiteralText("Whether box resize animations should occur")
-                ).setSaveConsumer {
-                    animations = it
-                }.build()
-        )
-
-        visuals.addEntry(
-                entryBuilder.startDoubleField(
-                        LiteralText("Animation Speed"),
-                        animationSpeed
-                ).setDefaultValue(25.0).setTooltip(
-                        LiteralText("Box animation speed")
-                ).setSaveConsumer {
-                    animationSpeed = it
-                }.setMin(5.0).setMax(100.0).build()
-        )
-
-        visuals.addEntry(
                 entryBuilder.startColorField(
                         LiteralText("Selection Box Color"),
                         (selectionBoxColor.intValue - 0xFF000000).toInt()
@@ -350,6 +330,30 @@ class MakkitConfig {
                 ).setSaveConsumer {
                     pasteBoxColor = RenderColor(it)
                 }.build()
+        )
+
+        // Animations
+
+        animationsCat.addEntry(
+                entryBuilder.startBooleanToggle(
+                        LiteralText("Animations"),
+                        animations
+                ).setDefaultValue(true).setTooltip(
+                        LiteralText("Whether box resize animations should occur")
+                ).setSaveConsumer {
+                    animations = it
+                }.build()
+        )
+
+        animationsCat.addEntry(
+                entryBuilder.startDoubleField(
+                        LiteralText("Animation Speed"),
+                        animationSpeed
+                ).setDefaultValue(25.0).setTooltip(
+                        LiteralText("Box animation speed")
+                ).setSaveConsumer {
+                    animationSpeed = it
+                }.setMin(5.0).setMax(100.0).build()
         )
 
         // Keybinds
@@ -421,7 +425,13 @@ class MakkitConfig {
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
-                MakkitClient.getOrCreateRegion().centerOriginCubeOn(bhr.blockPos)
+                MakkitClient.getOrCreateRegion().apply {
+                    selection = Box(bhr.blockPos, bhr.blockPos.add(1.0, 1.0, 1.0))
+                    selectionRenderer.directSet(Box(
+                            bhr.pos, bhr.pos
+                    ))
+                    //selectionRenderer.shrinkToCenter()
+                }
             }
         }
 

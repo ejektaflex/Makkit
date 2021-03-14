@@ -32,7 +32,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             ShadowBoxUpdatePacket(value).sendToServer()
         }
 
-    private val selectionRenderer = AnimBox(selection) {
+    val selectionRenderer = AnimBox(selection) {
         fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
         edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
     }
@@ -107,7 +107,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun centerOriginCubeOn(pos: BlockPos) {
         selection = Box(pos, pos.add(1, 1, 1))
-        selectionRenderer.shrinkToCenter()
+        //selectionRenderer.shrinkToCenter()
     }
 
     fun centerOn(pos: BlockPos) {
