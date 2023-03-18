@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.render
 
+import com.mojang.blaze3d.systems.RenderSystem
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
@@ -96,10 +97,12 @@ object RenderHelper : AbstractRenderHelper() {
     ) {
         val colors = color.floats
 
+        matrices.push()
+
         // In front of ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(MyLayers.NEW_LINES),
+                eVerts.getBuffer(layerFront),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
@@ -107,10 +110,12 @@ object RenderHelper : AbstractRenderHelper() {
         // Behind ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(MyLayers.NEW_LINES),
+                eVerts.getBuffer(layerBack),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
+
+        matrices.pop()
 
     }
 
