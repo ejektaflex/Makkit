@@ -107,9 +107,10 @@ object EditLegend {
                     if (isDown) {
                         line.lastHit = System.currentTimeMillis()
                     }
-                    drawTextOn(i, line, Text.translatable(line.key.translation), 0, isDown)
-                    // TODO figure this out
+                    drawTextOn(i, line, Text.translatable("makkit.${line.key.binding.translationKey}.short"), 0, isDown)
                     //drawTextOn(i, line, line.key.binding.localizedName, longestNameLength + 5, false)
+                    // TODO fix key rendering
+                    drawTextOn(i, line, Text.translatable(line.key.binding.boundKeyTranslationKey), longestNameLength + 5, false)
                 }
             }
         }

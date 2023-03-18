@@ -51,8 +51,6 @@ class MyLayers(
                 .cull(Cull.DISABLE_CULLING)
         }
 
-        // TODO revert get to static assignment for performance
-
         val OVERLAY_LINES_BEHIND: RenderLayer = of("overlay_lines_behind",
                 VertexFormats.LINES, DrawMode.LINES, 256,
                 commonBuilder(BehindDepth, BehindTransparency).build(false))
@@ -62,52 +60,10 @@ class MyLayers(
                 VertexFormats.LINES, DrawMode.LINES, 256,
                 commonBuilder(InFrontDepth, TRANSLUCENT_TRANSPARENCY).build(false))
 
-        //     public static final MultiPhase LINES =
-        //     RenderLayer.of("lines", VertexFormats.LINES,
-        //     VertexFormat.DrawMode.LINES, 256,
-        //     MultiPhaseParameters.builder().shader(LINES_SHADER).lineWidth(new RenderPhase.LineWidth(OptionalDouble.empty()))
-        //     .layering(VIEW_OFFSET_Z_LAYERING).transparency(TRANSLUCENT_TRANSPARENCY).target(ITEM_TARGET).writeMaskState(ALL_MASK).cull(DISABLE_CULLING).build(false));
-        val NEW_LINES: RenderLayer = of(
-            "my_new_lines",
-            VertexFormats.LINES,
-            DrawMode.LINES,
-            256,
-            MultiPhaseParameters.builder()
-                .shader(RenderPhase.LINES_SHADER)
-                .lineWidth(LineWidth(OptionalDouble.of(4.0)))
-                .layering(Layering.VIEW_OFFSET_Z_LAYERING)
-                .transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
-                .target(Target.ITEM_TARGET)
-                .writeMaskState(WriteMaskState.ALL_MASK)
-                .cull(Cull.DISABLE_CULLING)
-                .build(false)
-        )
-
-        val NEW_LINES_LETS_GO: RenderLayer = of(
-            "lines",
-            VertexFormats.LINES,
-            DrawMode.LINES,
-            256,
-            MultiPhaseParameters.builder()
-                .shader(LINES_SHADER)
-                .lineWidth(LineWidth(OptionalDouble.empty()))
-                .layering(VIEW_OFFSET_Z_LAYERING)
-                .transparency(TRANSLUCENT_TRANSPARENCY)
-                .target(ITEM_TARGET)
-                .writeMaskState(ALL_MASK)
-                .cull(DISABLE_CULLING)
-                .build(false))
 
         val OVERLAY_LINES_BOTH: RenderLayer = of("overlay_lines_both",
                 VertexFormats.POSITION_COLOR, DrawMode.LINES, 256,
                 commonBuilder(DepthTest("always", 519), TRANSLUCENT_TRANSPARENCY).build(false))
-
-        val OVERLAY_LINES_HIT_WALL: RenderLayer = of("overlay_lines_both",
-                VertexFormats.POSITION_COLOR, DrawMode.LINES, 256,
-                commonBuilder(DepthTest("always", 514), TRANSLUCENT_TRANSPARENCY)
-                        .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-                        .overlay(RenderPhase.ENABLE_OVERLAY_COLOR)
-                        .build(false))
 
         val OVERLAY_QUADS: RenderLayer = of("overlay_quads",
                 VertexFormats.POSITION_COLOR, DrawMode.QUADS, 256,
@@ -126,7 +82,7 @@ class MyLayers(
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .depthTest(DepthTest("overlay_quads_behind", 516))
                         .writeMaskState(COLOR_MASK)
-                    .shader(RenderPhase.OUTLINE_SHADER)
+                        .shader(RenderPhase.OUTLINE_SHADER)
                         .build(false))
 
     }
