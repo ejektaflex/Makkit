@@ -2,11 +2,14 @@ package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.ext.*
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.BlockView
 
-class MirrorOperation(val flipCenter: Vec3d) : WorldOperation() {
+@Serializable
+class MirrorOperation(val flipCenter: @Contextual Vec3d) : WorldOperation() {
 
     override fun getType() = OpType.MIRROR
 

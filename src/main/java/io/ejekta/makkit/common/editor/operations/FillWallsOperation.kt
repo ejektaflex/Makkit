@@ -2,9 +2,11 @@ package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.ext.wallBlocks
+import kotlinx.serialization.Serializable
 import net.minecraft.text.Text
 import net.minecraft.world.BlockView
 
+@Serializable
 class FillWallsOperation : WorldOperation() {
     override fun getType() = OpType.WALLS
 

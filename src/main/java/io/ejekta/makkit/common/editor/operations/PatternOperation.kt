@@ -1,15 +1,18 @@
 package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
+import io.ejekta.makkit.common.editor.operations.WorldOperation.Companion.modNoNegative
 import io.ejekta.makkit.common.ext.getBlockArray
 import io.ejekta.makkit.common.ext.getStart
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.world.BlockView
 
 
-
-class PatternOperation(val boxBefore: Box, val afterBox: Box) : WorldOperation() {
+@Serializable
+class PatternOperation(val boxBefore: @Contextual Box, val afterBox: @Contextual Box) : WorldOperation() {
     override fun getType() = OpType.PATTERN
 
     override fun calculate(action: EditAction, view: BlockView) {

@@ -3,10 +3,9 @@ package io.ejekta.makkit.common.network.pakkits.server
 import io.ejekta.kambrik.message.ServerMsg
 import io.ejekta.makkit.common.editor.NetworkHandler
 import io.ejekta.makkit.common.editor.data.EditWorldOptions
-import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
-import io.ejekta.makkit.common.editor.operations.OpType
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.Box
@@ -21,7 +20,7 @@ data class EditWorldPacket(
         // The side of the edit box that we are selecting
     var side: Direction = Direction.NORTH,
         // Which operation we are calling on the selection
-    var operation: OpType = OpType.SET,
+    var operation: @Contextual WorldOperation,
         // Packet options
     var options: EditWorldOptions = EditWorldOptions(),
         // Which items we are using for the operation

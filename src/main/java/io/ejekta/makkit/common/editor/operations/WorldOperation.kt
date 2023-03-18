@@ -1,17 +1,17 @@
 package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
-import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
 import kotlinx.serialization.Serializable
 import net.minecraft.world.BlockView
-import kotlin.reflect.KClass
 
 @Serializable
-abstract class WorldOperation {
+sealed class WorldOperation {
 
-    abstract fun getType(): OpType
+    open fun getType(): OpType {
+        return OpType.WALLS
+    }
 
-    abstract fun calculate(action: EditAction, view: BlockView)
+    open fun calculate(action: EditAction, view: BlockView) {}
 
     companion object {
 

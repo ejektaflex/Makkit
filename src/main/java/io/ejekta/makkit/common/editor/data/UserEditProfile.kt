@@ -1,6 +1,5 @@
 package io.ejekta.makkit.common.editor.data
 
-import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.forEachBlockCoord

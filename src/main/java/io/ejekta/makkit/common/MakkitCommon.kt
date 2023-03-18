@@ -2,11 +2,13 @@ package io.ejekta.makkit.common
 
 import io.ejekta.kambrik.Kambrik
 import io.ejekta.makkit.client.event.Events
+import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
+import kotlinx.serialization.modules.SerializersModule
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.server.network.ServerPlayerEntity
@@ -26,6 +28,12 @@ class MakkitCommon : ModInitializer {
     }
 
     override fun onInitialize() {
+
+        Kambrik.Message.addSerializerModule(
+            SerializersModule {
+                //contextual(WorldOperation::class, WorldOperation.serializer())
+            }
+        )
 
         // Serverbound packets
         Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), Identifier(ID, "edit_world"))

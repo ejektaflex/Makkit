@@ -1,12 +1,14 @@
-package io.ejekta.makkit.common.editor.operations.serverside
+package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.CopyData
 import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.operations.OpType
 import io.ejekta.makkit.common.editor.operations.WorldOperation
+import io.ejekta.makkit.common.editor.operations.WorldOperation.Companion.modNoNegative
 import io.ejekta.makkit.common.ext.rotateClockwise
 import io.ejekta.makkit.common.ext.rotated
+import kotlinx.serialization.Serializable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.BlockView
 

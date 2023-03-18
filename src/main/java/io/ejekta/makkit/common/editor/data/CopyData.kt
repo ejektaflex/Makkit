@@ -1,5 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
+import kotlinx.serialization.Serializable
 import net.minecraft.block.BlockState
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
