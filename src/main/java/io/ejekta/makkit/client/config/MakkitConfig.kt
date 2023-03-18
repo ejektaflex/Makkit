@@ -469,7 +469,6 @@ open class MakkitConfig {
 
         private fun makkitKey(
                 id: String,
-                type: InputUtil.Type,
                 code: Int,
                 ctrl: Boolean = false,
                 shift: Boolean = false,
@@ -484,50 +483,66 @@ open class MakkitConfig {
             }
         }
 
+        private fun makkitMouse(
+            id: String,
+            code: Int,
+            ctrl: Boolean = false,
+            shift: Boolean = false,
+            alt: Boolean = false
+        ): KambrikKeybind {
+            return Kambrik.Input.registerMouseBinding(
+                code, id, "doot", true
+            ) {
+
+            }.also {
+                println("Registered makkit keybind! ID: $id")
+            }
+        }
+
         // So many keybinds!
         object Default {
 
             // Tool Keys
             val MOVE_DRAG: KambrikKeybind
-                get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
+                get() = makkitMouse("move_dual_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val MOVE_PUSH: KambrikKeybind
-                get() = makkitKey("move_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
+                get() = makkitMouse("move_single_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
             val FILL_AREA: KambrikKeybind
-                get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
+                get() = makkitKey("fill_blocks", GLFW.GLFW_KEY_R)
             val FILL_WALL: KambrikKeybind
-                get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
+                get() = makkitKey("fill_walls", GLFW.GLFW_KEY_C)
             val RESIZE_SIDE: KambrikKeybind
-                get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
+                get() = makkitMouse("resize_single_axis", GLFW.GLFW_MOUSE_BUTTON_LEFT)
             val RESIDE_SIDE_SYMMETRIC: KambrikKeybind
-                get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
+                get() = makkitMouse("resize_single_axis_symmetric", GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
             val REPEAT_PATTERN: KambrikKeybind
-                get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
+                get() = makkitKey("repeat_pattern", GLFW.GLFW_KEY_X)
             val MIRROR_TOOL: KambrikKeybind
-                get() = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
+                get() = makkitKey("mirror_tool", GLFW.GLFW_KEY_N)
 
             // Special Keys
             val MULTIPALETTE: KambrikKeybind
-                get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
+                get() = makkitKey("multi_palette", GLFW.GLFW_KEY_V)
             val AIR_MODE: KambrikKeybind
-                get() = makkitKey("air_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
+                get() = makkitKey("air_mode", GLFW.GLFW_KEY_G)
             val PLACE_MODE: KambrikKeybind
-                get() = makkitKey("place_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
+                get() = makkitKey("place_mode", GLFW.GLFW_KEY_Z)
 
             // Z Key should be Toggle Air Mode
 
             // Non-Tool Keys
             val COPY_KEY: KambrikKeybind
-                get() = makkitKey("copy_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C, true)
+                get() = makkitKey("copy_tool", GLFW.GLFW_KEY_C, true)
             val PASTE_KEY: KambrikKeybind
-                get() = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, true)
+                get() = makkitKey("paste_tool", GLFW.GLFW_KEY_V, true)
             val NEW_BOX: KambrikKeybind
-                get() = makkitKey("center_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B)
+                get() = makkitKey("center_edit_region", GLFW.GLFW_KEY_B)
             val MOVE_BOX: KambrikKeybind
-                get() = makkitKey("move_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, alt = true)
+                get() = makkitKey("move_edit_region", GLFW.GLFW_KEY_B, alt = true)
             val UNDO: KambrikKeybind
-                get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
+                get() = makkitKey("undo", GLFW.GLFW_KEY_Z, ctrl = true)
             val REDO: KambrikKeybind
-                get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, ctrl = true)
+                get() = makkitKey("redo", GLFW.GLFW_KEY_Y, ctrl = true)
 
         }
 

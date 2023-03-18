@@ -15,13 +15,6 @@ import kotlin.math.sign
 
 object RenderHelper : AbstractRenderHelper() {
 
-    private val LINE_BUFF_FRONT: VertexConsumer
-        get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_FRONT)
-
-    private val LINE_BUFF_BEHIND: VertexConsumer
-        get() = eVerts.getBuffer(MyLayers.OVERLAY_LINES_BEHIND)
-
-
 
 
 
@@ -39,13 +32,13 @@ object RenderHelper : AbstractRenderHelper() {
                 // x offset to center text
                 -textRenderer.getWidth(Text.literal(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
-                0xFFFFFF,
+                -1,
                 false,
                 matrices.peek().positionMatrix,
                 buffers.outlineVertexConsumers,
                 true, // see through
                 0,
-                15728880
+            0xF000F0
         )
         matrices.pop()
     }
@@ -106,7 +99,7 @@ object RenderHelper : AbstractRenderHelper() {
         // In front of ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(RenderLayer.getLines()),
+                eVerts.getBuffer(MyLayers.NEW_LINES),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
@@ -114,7 +107,7 @@ object RenderHelper : AbstractRenderHelper() {
         // Behind ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(RenderLayer.getLines()),
+                eVerts.getBuffer(MyLayers.NEW_LINES),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
