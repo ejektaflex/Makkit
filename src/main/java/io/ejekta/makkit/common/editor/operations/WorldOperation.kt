@@ -2,9 +2,11 @@ package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
 import io.ejekta.makkit.common.editor.operations.serverside.PasteOperation
+import kotlinx.serialization.Serializable
 import net.minecraft.world.BlockView
 import kotlin.reflect.KClass
 
+@Serializable
 abstract class WorldOperation {
 
     abstract fun getType(): Type

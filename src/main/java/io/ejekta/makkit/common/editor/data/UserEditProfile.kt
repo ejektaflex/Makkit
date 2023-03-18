@@ -83,7 +83,7 @@ class UserEditProfile {
     fun copy(player: ServerPlayerEntity, copyBox: Box, face: Direction) {
 
         if (face.axis == Direction.Axis.Y) {
-            player.sendMessage(LiteralText("You have to look at a side face to copy a selection!"), true)
+            player.sendMessage(Text.literal("You have to look at a side face to copy a selection!"), true)
             return
         }
 
@@ -107,14 +107,14 @@ class UserEditProfile {
         }
 
         copyData = CopyData(stateMap, copyBox, BlockPos(copyBoxSize), face)
-        player.sendMessage(LiteralText("Copied data to clipboard!"), true)
+        player.sendMessage(Text.literal("Copied data to clipboard!"), true)
     }
 
 
     fun paste(player: ServerPlayerEntity, pasteBox: Box, face: Direction, mask: BlockMask) {
 
         if (face.axis == Direction.Axis.Y) {
-            player.sendMessage(LiteralText("You have to look at a side face to paste a selection!"), true)
+            player.sendMessage(Text.literal("You have to look at a side face to paste a selection!"), true)
             return
         }
 
@@ -127,7 +127,7 @@ class UserEditProfile {
 
             if (ourSize != copiedSize) {
 
-                player.sendMessage(LiteralText("Incorrect Size! To Paste, it must be: ${copiedSize.prettyString()}"), true)
+                player.sendMessage(Text.literal("Incorrect Size! To Paste, it must be: ${copiedSize.prettyString()}"), true)
 
             } else {
                 doAction(player, EditAction(

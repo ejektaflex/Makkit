@@ -8,6 +8,7 @@ import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import net.minecraft.util.math.*
 import kotlin.math.abs
 import kotlin.math.sign
@@ -34,9 +35,9 @@ object RenderHelper : AbstractRenderHelper() {
         val centerDiv = if (center) 2 else 1
 
         textRenderer.draw(
-                LiteralText(text),
+                Text.literal(text),
                 // x offset to center text
-                -textRenderer.getWidth(LiteralText(text)).toFloat() / 2,
+                -textRenderer.getWidth(Text.literal(text)).toFloat() / 2,
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
                 0xFFFFFF,
                 false,

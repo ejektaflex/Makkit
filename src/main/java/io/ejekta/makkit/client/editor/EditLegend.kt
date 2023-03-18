@@ -5,10 +5,8 @@ import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.common.enums.GuiCorner
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.text.TextColor
-import net.minecraft.util.Formatting
 import net.minecraft.util.math.MathHelper
 
 // The textual legend on the bottom left of the screen
@@ -38,8 +36,8 @@ object EditLegend {
     fun populateLegend() {
         texts.clear()
 
-        addText(LiteralText("Makkit Key Legend: "))
-        addText(LiteralText("==============="))
+        addText(Text.literal("Makkit Key Legend: "))
+        addText(Text.literal("==============="))
 
         val keysToUse = mutableListOf<KeyStateHandler>()
 

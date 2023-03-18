@@ -118,7 +118,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     @Deprecated("Scrolling on faces may make a future return, but not quite like this")
     fun tryScrollFace(amt: Double) {
-        if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.keySprint.isPressed) {
+        if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.sprintKey.isPressed) {
             val result = selection.autoTrace()
 
             if (result == BoxTraceResult.EMPTY) {

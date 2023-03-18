@@ -11,7 +11,7 @@ import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import net.minecraft.text.TextColor
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
@@ -106,7 +106,7 @@ object MakkitGui {
                 if (block != null && block != Blocks.AIR) {
                     mc.itemRenderer.renderGuiItemIcon(playerEntity.offHandStack, i - 8, 12)
                 } else {
-                    val invalidText = LiteralText("(Invalid Offhand Item)").styled {
+                    val invalidText = Text.literal("(Invalid Offhand Item)").styled {
                         it.withColor(TextColor.fromFormatting(Formatting.RED))
                     }
                     drawTextCentered(matrixStack, invalidText, i.toFloat(), 12f)

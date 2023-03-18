@@ -4,8 +4,8 @@ import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 
 enum class BlockMask(val text: Text) {
-    ALL_BLOCKS(LiteralText("Affect All Blocks")), // this shouldn't get displayed
-    ONLY_AIR(LiteralText("Only Modify Air")),
-    NON_AIR(LiteralText("Only Modify Non-Air")),
-    OFFHAND(LiteralText("Only Modify Offhand Block"))
+    ALL_BLOCKS(Text.literal("Affect All Blocks")), // this shouldn't get displayed
+    ONLY_AIR(Text.literal("Only Modify Air")),
+    NON_AIR(Text.literal("Only Modify Non-Air")),
+    OFFHAND(Text.literal("Only Modify Offhand Block"))
 }

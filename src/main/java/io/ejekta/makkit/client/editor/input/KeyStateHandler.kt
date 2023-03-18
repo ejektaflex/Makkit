@@ -7,7 +7,7 @@ import me.shedaniel.clothconfig2.api.Modifier
 import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.MutableText
-import net.minecraft.text.TranslatableText
+import net.minecraft.text.Text
 
 class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {
 
@@ -20,10 +20,10 @@ class KeyStateHandler(val id: String, var binding: ModifierKeyCode) : IEditor {
         private set
 
     val name: MutableText
-        get() = TranslatableText("${MakkitCommon.ID}.$id")
+        get() = Text.translatable("${MakkitCommon.ID}.$id")
 
     val shortName: MutableText
-        get() = TranslatableText("${MakkitCommon.ID}.$id.short")
+        get() = Text.translatable("${MakkitCommon.ID}.$id.short")
 
     fun setKeyDown(func: () -> Unit) {
         onKeyDown = func

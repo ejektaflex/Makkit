@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client
 
+import io.ejekta.kambrik.Kambrik
 import io.ejekta.makkit.client.config.MakkitConfig
 import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.EditRegion
@@ -7,6 +8,7 @@ import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
@@ -17,6 +19,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
 
 object MakkitClient : ClientModInitializer {
 
@@ -24,9 +27,15 @@ object MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
-        // Clientbound
-        FocusRegionPacket.registerS2C()
-        ShadowBoxShowPacket.registerS2C()
+        Kambrik.Message.registerClientMessage(
+            FocusRegionPacket.serializer(),
+            Identifier(MakkitCommon.ID, "focus_region")
+        )
+
+        Kambrik.Message.registerClientMessage(
+            ShadowBoxShowPacket.serializer(),
+            Identifier(MakkitCommon.ID, "shadow_box_show")
+        )
 
         MakkitConfig.load()
         config.assignKeybinds()

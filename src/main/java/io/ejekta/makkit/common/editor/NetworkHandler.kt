@@ -33,7 +33,7 @@ object NetworkHandler {
     fun handleEdit(player: ServerPlayerEntity, intent: EditWorldPacket) {
 
         if (!player.isCreative) {
-            player.sendMessage(LiteralText("Must be in Creative Mode to use Makkit!"), true)
+            player.sendMessage(Text.literal("Must be in Creative Mode to use Makkit!"), true)
             return
         }
 
@@ -81,10 +81,10 @@ object NetworkHandler {
             }
 
             if (!result) {
-                player.sendMessage(LiteralText("Could not ${pakkit.mode}!"), true)
+                player.sendMessage(Text.literal("Could not ${pakkit.mode}!"), true)
             }
         } else {
-            player.sendMessage(LiteralText("Must be in Creative Mode to use Makkit!"), true)
+            player.sendMessage(Text.literal("Must be in Creative Mode to use Makkit!"), true)
         }
     }
 

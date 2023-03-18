@@ -26,7 +26,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
-import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
@@ -130,20 +130,20 @@ class MakkitConfig {
     fun buildScreen(): Screen {
         val builder = ConfigBuilder.create()
                 //.setParentScreen(MinecraftClient.getInstance().currentScreen)
-                .setTitle(LiteralText("Makkit"))
+                .setTitle(Text.literal("Makkit"))
                 .setSavingRunnable(::onSave)
 
-        val general = builder.getOrCreateCategory(LiteralText("General"))
+        val general = builder.getOrCreateCategory(Text.literal("General"))
 
-        val legend = builder.getOrCreateCategory(LiteralText("Legend"))
+        val legend = builder.getOrCreateCategory(Text.literal("Legend"))
 
-        val operations = builder.getOrCreateCategory(LiteralText("Operations"))
+        val operations = builder.getOrCreateCategory(Text.literal("Operations"))
 
-        val visuals = builder.getOrCreateCategory(LiteralText("Visuals"))
+        val visuals = builder.getOrCreateCategory(Text.literal("Visuals"))
 
-        val animationsCat = builder.getOrCreateCategory(LiteralText("Animations"))
+        val animationsCat = builder.getOrCreateCategory(Text.literal("Animations"))
 
-        val keybinds = builder.getOrCreateCategory(LiteralText("Keybinds"))
+        val keybinds = builder.getOrCreateCategory(Text.literal("Keybinds"))
 
         val entryBuilder = builder.entryBuilder()
 
@@ -151,10 +151,10 @@ class MakkitConfig {
 
         general.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("Grid Snapping"),
+                        Text.literal("Grid Snapping"),
                         gridSnapping
                 ).setDefaultValue(true).setTooltip(
-                        LiteralText("Whether or not the preview box will snap to the Minecraft block grid")
+                        Text.literal("Whether or not the preview box will snap to the Minecraft block grid")
                 ).setSaveConsumer {
                     gridSnapping = it
                 }.build()
@@ -162,10 +162,10 @@ class MakkitConfig {
 
         general.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("History Focus"),
+                        Text.literal("History Focus"),
                         historyHighlighting
                 ).setDefaultValue(true).setTooltip(
-                        LiteralText("Whether the selection box should change when hitting undo/redo")
+                        Text.literal("Whether the selection box should change when hitting undo/redo")
                 ).setSaveConsumer {
                     historyHighlighting = it
                 }.build()
@@ -173,14 +173,14 @@ class MakkitConfig {
 
         general.addEntry(
                 entryBuilder.startEnumSelector(
-                        LiteralText("Side Selection Method"),
+                        Text.literal("Side Selection Method"),
                         SideSelectionStyle::class.java,
                         sideSelectionStyle
                 ).setDefaultValue(SideSelectionStyle.SIMPLE).setTooltip(
-                        LiteralText("When set to SIMPLE, you must press a key to switch between"),
-                        LiteralText("front and back face selection. When set to SMART, Makkit will"),
-                        LiteralText("figure out which face you want to select based on which face"),
-                        LiteralText("is closest to your cursor. EXPERIMENTAL is a work in progress!")
+                        Text.literal("When set to SIMPLE, you must press a key to switch between"),
+                        Text.literal("front and back face selection. When set to SMART, Makkit will"),
+                        Text.literal("figure out which face you want to select based on which face"),
+                        Text.literal("is closest to your cursor. EXPERIMENTAL is a work in progress!")
                 ).setSaveConsumer {
                     sideSelectionStyle = it
                 }.build()
@@ -190,11 +190,11 @@ class MakkitConfig {
 
         legend.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("Show Legend"),
+                        Text.literal("Show Legend"),
                         showLegend
                 ).setDefaultValue(true).setTooltip(
-                        LiteralText("Set to false if you don't want a keybinding legend to show up in"),
-                        LiteralText("the corner when using Makkit")
+                        Text.literal("Set to false if you don't want a keybinding legend to show up in"),
+                        Text.literal("the corner when using Makkit")
                 ).setSaveConsumer {
                     showLegend = it
                 }.build()
@@ -202,45 +202,45 @@ class MakkitConfig {
 
         legend.addEntry(
                 entryBuilder.startEnumSelector(
-                        LiteralText("Legend Corner"),
+                        Text.literal("Legend Corner"),
                         GuiCorner::class.java,
                         legendCorner
                 ).setDefaultValue(GuiCorner.BOTTOM_LEFT).setTooltip(
-                        LiteralText("Which corner the legend GUI should show up in")
+                        Text.literal("Which corner the legend GUI should show up in")
                 ).setSaveConsumer {
                     legendCorner = it
                 }.build()
         )
 
         legend.addEntry(
-                entryBuilder.startSubCategory(LiteralText("Categories to Show"),
+                entryBuilder.startSubCategory(Text.literal("Categories to Show"),
                 listOf(
                         entryBuilder.startBooleanToggle(
-                                LiteralText("Utility Keys"),
+                                Text.literal("Utility Keys"),
                                 showUtility
                         ).setDefaultValue(false).setTooltip(
-                                LiteralText("Whether or not to show utility based keybinds in the legend"),
-                                LiteralText("(move, resize, create new selection box)")
+                                Text.literal("Whether or not to show utility based keybinds in the legend"),
+                                Text.literal("(move, resize, create new selection box)")
                         ).setSaveConsumer {
                             showUtility = it
                         }.build(),
 
                         entryBuilder.startBooleanToggle(
-                                LiteralText("Basic Keys"),
+                                Text.literal("Basic Keys"),
                                 showBasic
                         ).setDefaultValue(true).setTooltip(
-                                LiteralText("Whether or not to show basic editor keybinds in the legend"),
-                                LiteralText("(fill area / walls, repeat, mirror, palette tool)")
+                                Text.literal("Whether or not to show basic editor keybinds in the legend"),
+                                Text.literal("(fill area / walls, repeat, mirror, palette tool)")
                         ).setSaveConsumer {
                             showBasic = it
                         }.build(),
 
                         entryBuilder.startBooleanToggle(
-                                LiteralText("System Keys"),
+                                Text.literal("System Keys"),
                                 showSystem
                         ).setDefaultValue(false).setTooltip(
-                                LiteralText("Whether or not to show system-level editor keybinds"),
-                                LiteralText("in the legend (copy/paste, undo/redo)")
+                                Text.literal("Whether or not to show system-level editor keybinds"),
+                                Text.literal("in the legend (copy/paste, undo/redo)")
                         ).setSaveConsumer {
                             showSystem = it
                         }.build()
@@ -253,11 +253,11 @@ class MakkitConfig {
 
         operations.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("Palette Weighting"),
+                        Text.literal("Palette Weighting"),
                         weightedPalette
                 ).setDefaultValue(false).setTooltip(
-                        LiteralText("If true, fill operations will be weighted"),
-                        LiteralText("based on the size of the stacks in your palette")
+                        Text.literal("If true, fill operations will be weighted"),
+                        Text.literal("based on the size of the stacks in your palette")
                 ).setSaveConsumer {
                     weightedPalette = it
                 }.build()
@@ -265,10 +265,10 @@ class MakkitConfig {
 
         operations.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("Random Rotation"),
+                        Text.literal("Random Rotation"),
                         randomRotate
                 ).setDefaultValue(false).setTooltip(
-                        LiteralText("If true, fill operations will rotate blocks randomly, if possible")
+                        Text.literal("If true, fill operations will rotate blocks randomly, if possible")
                 ).setSaveConsumer {
                     randomRotate = it
                 }.build()
@@ -278,10 +278,10 @@ class MakkitConfig {
 
         visuals.addEntry(
                 entryBuilder.startFloatField(
-                        LiteralText("3D Text Size Scaling"),
+                        Text.literal("3D Text Size Scaling"),
                         axialTextSize
                 ).setDefaultValue(1f).setTooltip(
-                        LiteralText("The size of text in the 3D world")
+                        Text.literal("The size of text in the 3D world")
                 ).setSaveConsumer {
                     axialTextSize = it
                 }.build()
@@ -289,10 +289,10 @@ class MakkitConfig {
 
         visuals.addEntry(
                 entryBuilder.startColorField(
-                        LiteralText("Selection Box Color"),
+                        Text.literal("Selection Box Color"),
                         (selectionBoxColor.intValue - 0xFF000000).toInt()
                 ).setDefaultValue((RenderColor.GREEN.intValue - 0xFF000000).toInt()).setTooltip(
-                        LiteralText("The color of the selection box")
+                        Text.literal("The color of the selection box")
                 ).setSaveConsumer {
                     selectionBoxColor = RenderColor(it)
                     MakkitClient.region?.changeColors(selectionBoxColor.toAlpha(.4f))
@@ -301,10 +301,10 @@ class MakkitConfig {
 
         visuals.addEntry(
                 entryBuilder.startColorField(
-                        LiteralText("Selection Face Color"),
+                        Text.literal("Selection Face Color"),
                         (selectionFaceColor.intValue - 0xFF000000).toInt()
                 ).setDefaultValue((RenderColor.YELLOW.intValue - 0xFF000000).toInt()).setTooltip(
-                        LiteralText("The color of the selected face")
+                        Text.literal("The color of the selected face")
                 ).setSaveConsumer {
                     selectionFaceColor = RenderColor(it)
                 }.build()
@@ -312,10 +312,10 @@ class MakkitConfig {
 
         visuals.addEntry(
                 entryBuilder.startColorField(
-                        LiteralText("Multiplayer Box Color"),
+                        Text.literal("Multiplayer Box Color"),
                         (multiplayerBoxColor.intValue - 0xFF000000).toInt()
                 ).setDefaultValue((RenderColor.PINK.intValue - 0xFF000000).toInt()).setTooltip(
-                        LiteralText("The color of the selection boxes of other players")
+                        Text.literal("The color of the selection boxes of other players")
                 ).setSaveConsumer {
                     multiplayerBoxColor = RenderColor(it)
                 }.build()
@@ -323,10 +323,10 @@ class MakkitConfig {
 
         visuals.addEntry(
                 entryBuilder.startColorField(
-                        LiteralText("Selection Face Color"),
+                        Text.literal("Selection Face Color"),
                         (pasteBoxColor.intValue - 0xFF000000).toInt()
                 ).setDefaultValue((RenderColor.PURPLE.intValue - 0xFF000000).toInt()).setTooltip(
-                        LiteralText("The color of the selected face")
+                        Text.literal("The color of the selected face")
                 ).setSaveConsumer {
                     pasteBoxColor = RenderColor(it)
                 }.build()
@@ -336,10 +336,10 @@ class MakkitConfig {
 
         animationsCat.addEntry(
                 entryBuilder.startBooleanToggle(
-                        LiteralText("Animations"),
+                        Text.literal("Animations"),
                         animations
                 ).setDefaultValue(true).setTooltip(
-                        LiteralText("Whether box resize animations should occur")
+                        Text.literal("Whether box resize animations should occur")
                 ).setSaveConsumer {
                     animations = it
                 }.build()
@@ -347,10 +347,10 @@ class MakkitConfig {
 
         animationsCat.addEntry(
                 entryBuilder.startDoubleField(
-                        LiteralText("Animation Speed"),
+                        Text.literal("Animation Speed"),
                         animationSpeed
                 ).setDefaultValue(25.0).setTooltip(
-                        LiteralText("Box animation speed")
+                        Text.literal("Box animation speed")
                 ).setSaveConsumer {
                     animationSpeed = it
                 }.setMin(5.0).setMax(100.0).build()

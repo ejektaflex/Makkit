@@ -25,7 +25,7 @@ object Versions {
 		const val Version = "4.0.0-SNAPSHOT"
 	}
 	object Env {
-		const val Kambrik = "5.1.0-1.19.4-SNAPSHOT+"
+		const val Kambrik = "5.0.0-1.19.2-SNAPSHOT+"
 		const val FLK = "1.9.1+kotlin.1.8.10"
 		const val ClothConfig = "8.2.88"
 		const val ModMenu = "4.2.0-beta.2"
