@@ -19,7 +19,7 @@ data class EditAction(
         val box: Box,
         val undoBox: Box,
         val direction: Direction,
-        val operation: WorldOperation = FillBlocksOperation(),
+        //val operation: WorldOperation = FillBlocksOperation(),
         val stacks: List<ItemStack> = listOf(),
         val options: EditWorldOptions = EditWorldOptions()
 ) {
@@ -86,7 +86,7 @@ data class EditAction(
     }
 
     private fun calcChangeSet(world: World) {
-        operation.calculate(this, world)
+        //operation.calculate(this, world)
     }
 
     fun select(player: ServerPlayerEntity, mode: UndoRedoMode) {

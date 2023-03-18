@@ -9,18 +9,11 @@ import kotlin.reflect.KClass
 @Serializable
 abstract class WorldOperation {
 
-    abstract fun getType(): Type
+    abstract fun getType(): OpType
 
     abstract fun calculate(action: EditAction, view: BlockView)
 
     companion object {
-        enum class Type(val clazz: KClass<out WorldOperation>) {
-            SET(FillBlocksOperation::class),
-            WALLS(FillWallsOperation::class),
-            PATTERN(PatternOperation::class),
-            PASTE(PasteOperation::class),
-            MIRROR(MirrorOperation::class)
-        }
 
         // Mod gets weird with negative numbers. I want the repeating behavior without the weirdness.
         fun modNoNegative(a: Int, b: Int): Int {

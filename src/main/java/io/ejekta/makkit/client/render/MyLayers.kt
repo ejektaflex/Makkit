@@ -47,6 +47,7 @@ class MyLayers(
                     .cull(Cull(false))
                     .depthTest(depth)
                     .lightmap(Lightmap(false))
+                    .shader(RenderPhase.NO_SHADER)
                     .writeMaskState(WriteMaskState(true, false))
         }
 
@@ -58,9 +59,6 @@ class MyLayers(
         val OVERLAY_LINES_FRONT: RenderLayer = of("overlay_lines_front",
                 VertexFormats.POSITION_COLOR, DrawMode.LINES, 256,
                 commonBuilder(InFrontDepth, TRANSLUCENT_TRANSPARENCY).build(false))
-
-        val OVERLAY_NEW_FRONT: RenderLayer = MyLayers("overlay_lines_front_new",
-            VertexFormats.POSITION_COLOR, DrawMode.LINES, 256, false, true, {}, {})
 
         val OVERLAY_LINES_BOTH: RenderLayer = of("overlay_lines_both",
                 VertexFormats.POSITION_COLOR, DrawMode.LINES, 256,
@@ -80,7 +78,7 @@ class MyLayers(
                         .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .writeMaskState(COLOR_MASK)
-                        //.shadeModel(SMOOTH_SHADE_MODEL)
+                        .shader(RenderPhase.OUTLINE_SHADER)
                         .build(false))
 
         val OVERLAY_QUADS_BEHIND: RenderLayer = of("overlay_quads_behind",
@@ -90,7 +88,7 @@ class MyLayers(
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .depthTest(DepthTest("overlay_quads_behind", 516))
                         .writeMaskState(COLOR_MASK)
-                        //.shadeModel(SMOOTH_SHADE_MODEL)
+                    .shader(RenderPhase.OUTLINE_SHADER)
                         .build(false))
 
     }

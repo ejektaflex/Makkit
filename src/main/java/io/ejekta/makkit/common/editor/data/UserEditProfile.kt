@@ -135,7 +135,7 @@ class UserEditProfile {
                         pasteBox,
                         pasteBox,
                         face,
-                        PasteOperation(cd),
+                        //PasteOperation(cd),
                         options = EditWorldOptions().apply { blockMask = mask }
                 ))
             }

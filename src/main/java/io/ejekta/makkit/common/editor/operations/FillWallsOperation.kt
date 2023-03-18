@@ -6,7 +6,7 @@ import net.minecraft.text.Text
 import net.minecraft.world.BlockView
 
 class FillWallsOperation : WorldOperation() {
-    override fun getType() = Companion.Type.WALLS
+    override fun getType() = OpType.WALLS
 
     override fun calculate(action: EditAction, view: BlockView) {
         if (action.palette.isEmpty()) {

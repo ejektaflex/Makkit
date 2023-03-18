@@ -8,7 +8,7 @@ import net.minecraft.world.BlockView
 
 class MirrorOperation(val flipCenter: Vec3d) : WorldOperation() {
 
-    override fun getType() = Companion.Type.MIRROR
+    override fun getType() = OpType.MIRROR
 
     override fun calculate(action: EditAction, view: BlockView) {
 

@@ -10,7 +10,7 @@ import net.minecraft.world.BlockView
 
 
 class PatternOperation(val boxBefore: Box, val afterBox: Box) : WorldOperation() {
-    override fun getType() = Companion.Type.PATTERN
+    override fun getType() = OpType.PATTERN
 
     override fun calculate(action: EditAction, view: BlockView) {
         val startPos = BlockPos(boxBefore.getStart())

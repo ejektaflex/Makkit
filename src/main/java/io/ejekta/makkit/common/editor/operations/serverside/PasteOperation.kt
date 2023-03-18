@@ -3,6 +3,7 @@ package io.ejekta.makkit.common.editor.operations.serverside
 import io.ejekta.makkit.common.editor.data.CopyData
 import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.editor.data.EditAction
+import io.ejekta.makkit.common.editor.operations.OpType
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.ext.rotateClockwise
 import io.ejekta.makkit.common.ext.rotated
@@ -11,7 +12,7 @@ import net.minecraft.world.BlockView
 
 class PasteOperation(val copy: CopyData) : WorldOperation() {
 
-    override fun getType() = Companion.Type.PASTE
+    override fun getType() = OpType.PASTE
 
     override fun calculate(action: EditAction, view: BlockView) {
 

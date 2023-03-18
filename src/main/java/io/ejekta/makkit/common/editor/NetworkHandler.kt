@@ -42,7 +42,7 @@ object NetworkHandler {
                 intent.box,
                 intent.undoBox,
                 intent.side,
-                intent.operation,
+                //intent.operation,
                 intent.palette,
                 intent.options
         )

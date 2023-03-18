@@ -153,7 +153,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     editBox,
                     undoBox,
                     trace.dir,
-                    operation,
+                    operation.getType(),
                     EditWorldOptions().apply {
                         randomRotate = MakkitClient.config.randomRotate
                         weightedPalette = MakkitClient.config.weightedPalette

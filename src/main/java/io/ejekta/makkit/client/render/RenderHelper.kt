@@ -5,6 +5,7 @@ import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.client.render.RenderLayer
+import net.minecraft.client.render.RenderLayers
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.Text
@@ -105,7 +106,7 @@ object RenderHelper : AbstractRenderHelper() {
         // In front of ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(layerFront),
+                eVerts.getBuffer(RenderLayer.getLines()),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
@@ -113,7 +114,7 @@ object RenderHelper : AbstractRenderHelper() {
         // Behind ground
         WorldRenderer.drawBox(
                 matrices,
-                eVerts.getBuffer(layerBack),
+                eVerts.getBuffer(RenderLayer.getLines()),
                 box,
                 colors[0], colors[1], colors[2], colors[3]
         )
