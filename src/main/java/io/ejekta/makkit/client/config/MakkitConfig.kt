@@ -391,7 +391,9 @@ open class MakkitConfig {
 
     fun assignKeybinds() {
         fillKey.onDown {
+            println("Fill key pressed")
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+                println("Trying to do fill blocks op")
                 MakkitClient.region?.doOperation(FillBlocksOperation())
             }
         }

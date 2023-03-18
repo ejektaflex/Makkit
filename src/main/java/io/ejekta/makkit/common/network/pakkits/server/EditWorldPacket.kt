@@ -28,6 +28,7 @@ data class EditWorldPacket(
 ) : ServerMsg() {
 
     override fun onServerReceived(ctx: MsgContext) {
+        println("Server received editworldpacket, handling..")
         NetworkHandler.handleEdit(ctx.player, this)
     }
 

@@ -11,6 +11,7 @@ class FillBlocksOperation : WorldOperation() {
     override fun getType() = OpType.SET
 
     override fun calculate(action: EditAction, view: BlockView) {
+        println("Doing fill blocks operation")
         if (action.palette.isEmpty()) {
             action.player.sendMessage(Text.literal("You must have a valid block or item in your palette!"), true)
             return

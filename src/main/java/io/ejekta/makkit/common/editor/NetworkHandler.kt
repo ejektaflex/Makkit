@@ -32,6 +32,8 @@ object NetworkHandler {
 
     fun handleEdit(player: ServerPlayerEntity, intent: EditWorldPacket) {
 
+        println("Handling edit..")
+
         if (!player.isCreative) {
             player.sendMessage(Text.literal("Must be in Creative Mode to use Makkit!"), true)
             return
@@ -42,7 +44,7 @@ object NetworkHandler {
                 intent.box,
                 intent.undoBox,
                 intent.side,
-                //intent.operation,
+                intent.operation,
                 intent.palette,
                 intent.options
         )
