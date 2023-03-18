@@ -1,6 +1,5 @@
 package io.ejekta.makkit.common.enums
 
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 
 enum class BlockMask(val text: Text) {

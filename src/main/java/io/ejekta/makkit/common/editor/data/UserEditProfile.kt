@@ -9,7 +9,7 @@ import io.ejekta.makkit.common.ext.prettyString
 import io.ejekta.makkit.common.ext.times
 import net.minecraft.block.BlockState
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction

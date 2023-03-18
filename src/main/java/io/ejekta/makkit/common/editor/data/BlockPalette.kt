@@ -10,6 +10,7 @@ import net.minecraft.block.FluidBlock
 import net.minecraft.item.*
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.random.Random
 import java.util.*
 import kotlin.math.max
 
@@ -36,7 +37,7 @@ class BlockPalette(val action: EditAction) {
     }
 
     companion object {
-        private val random = Random()
+        private val random = Random.create()
 
         fun getDefaultState(block: Block): BlockState {
             var state = block.defaultState

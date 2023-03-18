@@ -10,7 +10,7 @@ import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 
 object NetworkHandler {
 
@@ -56,7 +56,7 @@ object NetworkHandler {
 
     fun redirectRemoteBoxPreview(player: ServerPlayerEntity, pakkit: ShadowBoxUpdatePacket) {
         for (otherPlayer in player.world.players.filter { it != player }) {
-            ShadowBoxShowPacket(pakkit, player.uuidAsString, pakkit.disconnect).sendToClient(otherPlayer)
+            ShadowBoxShowPacket(uid = player.uuidAsString, disconnect = pakkit.disconnect).sendToClient(otherPlayer as ServerPlayerEntity)
         }
     }
 

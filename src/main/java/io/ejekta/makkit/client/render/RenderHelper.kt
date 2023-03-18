@@ -40,7 +40,7 @@ object RenderHelper : AbstractRenderHelper() {
                 -(textRenderer as TextRendererMixin).fontHeight.toFloat() / centerDiv,
                 0xFFFFFF,
                 false,
-                matrices.peek().model,
+                matrices.peek().positionMatrix,
                 buffers.outlineVertexConsumers,
                 true, // see through
                 0,
@@ -124,7 +124,7 @@ object RenderHelper : AbstractRenderHelper() {
         BoxData.getDrawFunc(side).invoke(
                 box.offsetBy(0.0025, side), // offset to avoid z-fighting that happens in prod
                 eVerts.getBuffer(layer),
-                RenderHelper.matrices.peek().model,
+                RenderHelper.matrices.peek().positionMatrix,
                 color
         )
     }
@@ -149,7 +149,7 @@ object RenderHelper : AbstractRenderHelper() {
 
     fun drawLine(start: Vec3d, end: Vec3d, color: RenderColor = RenderColor.WHITE, layer: RenderLayer = MyLayers.OVERLAY_LINES_BOTH) {
         val vert = eVerts.getBuffer(layer)
-        val mat = RenderHelper.matrices.peek().model
+        val mat = RenderHelper.matrices.peek().positionMatrix
 
         vert.vertex(mat, start.x, start.y, start.z).color(color).next()
         vert.vertex(mat, end.x, end.y, end.z).color(color).next()
