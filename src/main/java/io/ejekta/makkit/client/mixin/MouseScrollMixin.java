@@ -17,7 +17,7 @@ public abstract class MouseScrollMixin {
     @Environment(EnvType.CLIENT)
     @Inject(method = "onMouseScroll", at = @At(value = "HEAD"))
     private void onMouseScroll(long window, double d, double e, CallbackInfo ci) {
-        double f = (MinecraftClient.getInstance().options.discreteMouseScroll ? Math.signum(e) : e);
+        double f = (MinecraftClient.getInstance().options.getDiscreteMouseScroll().getValue() ? Math.signum(e) : e);
         // post event
         Events.MouseScrollEvent.Companion.getDispatcher().invoker().invoke(
                 new Events.MouseScrollEvent(f)

@@ -20,10 +20,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.ejekta.makkit.common.MakkitCommon::INSTANCE"
+      "io.ejekta.makkit.common.MakkitCommon"
     ],
     "client": [
-      "io.ejekta.makkit.client.MakkitClient::INSTANCE"
+      "io.ejekta.makkit.client.MakkitClient"
     ],
     "modmenu": [
       "io.ejekta.makkit.client.compat.MakkitModMenu"
@@ -34,9 +34,9 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.8.2",
+    "fabricloader": ">=0.14.17",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.19.2"
   },
   "suggests": {
     "flamingo": "*"

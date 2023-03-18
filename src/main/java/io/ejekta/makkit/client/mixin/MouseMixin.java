@@ -15,9 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 abstract class MouseMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "onMouseButton", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/options/KeyBinding;setKeyPressed(Lnet/minecraft/client/util/InputUtil$Key;Z)V",
-            ordinal = 0), cancellable = true)
+    @Inject(method = "onMouseButton", at = @At(value = "HEAD"), cancellable = true)
     public void onMouseClicked(
             long window,
             int button,
@@ -26,7 +24,7 @@ abstract class MouseMixin {
             CallbackInfo ci
     ) {
 
-        if (MakkitClient.INSTANCE.isInEditMode()) {
+        if (MakkitClient.Companion.isInEditMode()) {
             Boolean cancelled = Events.MouseClickedEvent.Companion.getDispatcher().invoker().invoke(
                     new Events.MouseClickedEvent(button)
             );

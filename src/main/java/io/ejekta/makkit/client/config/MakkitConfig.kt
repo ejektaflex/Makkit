@@ -35,7 +35,7 @@ import net.minecraft.util.math.Box
 import org.lwjgl.glfw.GLFW
 
 
-class MakkitConfig {
+open class MakkitConfig {
 
 
     // General
@@ -132,7 +132,7 @@ class MakkitConfig {
         val builder = ConfigBuilder.create()
                 //.setParentScreen(MinecraftClient.getInstance().currentScreen)
                 .setTitle(Text.literal("Makkit"))
-                .setSavingRunnable(::onSave)
+                //.setSavingRunnable(::onSave)
 
         val general = builder.getOrCreateCategory(Text.literal("General"))
 
@@ -463,12 +463,6 @@ class MakkitConfig {
         }
     }
 
-    fun onSave() {
-        save()
-        MakkitClient.config = load()
-        EditLegend.populateLegend()
-    }
-
     companion object {
 
         private fun makkitKey(
@@ -483,6 +477,8 @@ class MakkitConfig {
                 code, id, "doot", true
             ) {
 
+            }.also {
+                println("Registered makkit keybind! ID: $id")
             }
         }
 
@@ -544,7 +540,7 @@ class MakkitConfig {
         fun load(): MakkitConfig {
 
             return try {
-                TODO()
+                MakkitConfig()
             } catch (e: Exception) {
                 // If no file exists, just silently save
                 if (!configPath.toFile().exists()) {

@@ -21,9 +21,7 @@ import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 
-object MakkitClient : ClientModInitializer {
-
-    private val mc = MinecraftClient.getInstance()
+class MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
@@ -36,8 +34,6 @@ object MakkitClient : ClientModInitializer {
             ShadowBoxShowPacket.serializer(),
             Identifier(MakkitCommon.ID, "shadow_box_show")
         )
-
-        MakkitConfig.load()
         config.assignKeybinds()
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
@@ -48,92 +44,97 @@ object MakkitClient : ClientModInitializer {
         UseBlockCallback.EVENT.register(onUseBlock())
     }
 
-    fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
-        if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
-            EditLegend.draw(matrixStack)
-        }
-    }
+    companion object {
 
-    // Use client's Block Palette for block placement, if it's active
-    private fun onUseBlock() = UseBlockCallback { player, world, hand, hitResult ->
-        if (world is ClientWorld && ClientPalette.hasAnyItems()) {
-            ClientPalette.getRandomBlockSlot()?.let {
-                player?.inventory?.selectedSlot = it
+        private val mc = MinecraftClient.getInstance()
+
+        fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
+            if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
+                EditLegend.draw(matrixStack)
             }
         }
-        ActionResult.PASS
-    }
 
-    private fun onInvScroll(e: Events.InventoryScrolledEvent) {
-        if (config.multiPalette.isDown) {
-            val holding = MinecraftClient.getInstance().player?.mainHandStack
+        // Use client's Block Palette for block placement, if it's active
+        private fun onUseBlock() = UseBlockCallback { player, world, hand, hitResult ->
+            if (world is ClientWorld && ClientPalette.hasAnyItems()) {
+                ClientPalette.getRandomBlockSlot()?.let {
+                    player?.inventory?.selectedSlot = it
+                }
+            }
+            ActionResult.PASS
+        }
 
-            if (holding != null) {
-                ClientPalette.addToPalette(e.newSlot)
+        private fun onInvScroll(e: Events.InventoryScrolledEvent) {
+            if (config.multiPalette.isDown) {
+                val holding = MinecraftClient.getInstance().player?.mainHandStack
+
+                if (holding != null) {
+                    ClientPalette.addToPalette(e.newSlot)
+                } else {
+                    ClientPalette.clearPalette()
+                }
+
             } else {
                 ClientPalette.clearPalette()
             }
-
-        } else {
-            ClientPalette.clearPalette()
         }
-    }
 
-    // Return true if we want to cancel game interaction
-    private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
-        region?.let {
-            if (isInEditMode && it.isBeingInteractedWith()) {
-                return true
+        // Return true if we want to cancel game interaction
+        private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
+            region?.let {
+                if (isInEditMode && it.isBeingInteractedWith()) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        var time: Long = System.currentTimeMillis()
+
+        private fun onDrawScreen(e: Events.DrawScreenEvent) {
+            // RenderHelper state
+            RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
+
+            if (mc.player?.isCreative == false) {
+                return
+            }
+
+            RenderHelper.drawInWorld {
+                val newTime = System.currentTimeMillis()
+                val delta = newTime - time
+                region?.update(delta)
+                region?.draw()
+                time = newTime
+                handleRemoteRegions(delta)
             }
         }
-        return false
-    }
 
-    var time: Long = System.currentTimeMillis()
+        var isInEditMode = true
 
-    private fun onDrawScreen(e: Events.DrawScreenEvent) {
-        // RenderHelper state
-        RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
+        var blockMask = BlockMask.ALL_BLOCKS
 
-        if (mc.player?.isCreative == false) {
-            return
-        }
+        var config = MakkitConfig()
 
-        RenderHelper.drawInWorld {
-            val newTime = System.currentTimeMillis()
-            val delta = newTime - time
-            region?.update(delta)
-            region?.draw()
-            time = newTime
-            handleRemoteRegions(delta)
-        }
-    }
-
-    var isInEditMode = true
-
-    var blockMask = BlockMask.ALL_BLOCKS
-
-    var config = MakkitConfig.load()
-
-    private fun handleRemoteRegions(delta: Long) {
-        for (entry in remoteBoxMap) {
-            entry.value.update(delta)
-            entry.value.render.draw(
+        private fun handleRemoteRegions(delta: Long) {
+            for (entry in remoteBoxMap) {
+                entry.value.update(delta)
+                entry.value.render.draw(
                     colorFill = config.multiplayerBoxColor.toAlpha(.2f),
                     colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
-            )
+                )
+            }
         }
-    }
 
-    fun getOrCreateRegion(): EditRegion {
-        if (region == null) {
-            region = EditRegion()
+        fun getOrCreateRegion(): EditRegion {
+            if (region == null) {
+                region = EditRegion()
+            }
+            return region!!
         }
-        return region!!
+
+        var remoteBoxMap = mutableMapOf<String, AnimBox>()
+
+        var region: EditRegion? = null
     }
-
-    var remoteBoxMap = mutableMapOf<String, AnimBox>()
-
-    var region: EditRegion? = null
 
 }

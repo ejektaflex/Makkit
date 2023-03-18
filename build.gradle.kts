@@ -7,6 +7,10 @@ plugins {
 	`idea`
 }
 
+loom {
+	accessWidenerPath.set(file("src/main/resources/makkit.accesswidener"))
+}
+
 object Versions {
 	const val Minecraft = "1.19.2"
 	object Jvm {

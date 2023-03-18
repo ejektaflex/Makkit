@@ -12,8 +12,18 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 
-object MakkitCommon : ModInitializer {
-    const val ID = "makkit"
+class MakkitCommon : ModInitializer {
+
+
+    companion object {
+        const val ID = "makkit"
+
+        fun onServerPlayerDisconnect(e: Events.ServerDisconnectEvent) {
+            for (player in e.player.world.players) {
+                ShadowBoxShowPacket(uid = e.player.uuidAsString, disconnect = true).sendToClient(player as ServerPlayerEntity)
+            }
+        }
+    }
 
     override fun onInitialize() {
 
@@ -28,9 +38,5 @@ object MakkitCommon : ModInitializer {
         println("Common init")
     }
 
-    private fun onServerPlayerDisconnect(e: Events.ServerDisconnectEvent) {
-        for (player in e.player.world.players) {
-            ShadowBoxShowPacket(uid = e.player.uuidAsString, disconnect = true).sendToClient(player as ServerPlayerEntity)
-        }
-    }
+
 }

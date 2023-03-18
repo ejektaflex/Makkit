@@ -33,7 +33,7 @@ public abstract class ItemHotbarRenderMixin {
 
     @Shadow protected abstract void drawTextBackground(MatrixStack matrixStack, TextRenderer textRenderer, int i, int j, int k);
 
-    @Shadow public abstract TextRenderer getFontRenderer();
+    @Shadow public abstract TextRenderer getTextRenderer();
 
     Identifier SELECTION = new Identifier(MakkitCommon.ID, "textures/misc/palette_select.png");
 

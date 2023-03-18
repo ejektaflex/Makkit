@@ -11,7 +11,7 @@ import net.minecraft.util.math.Matrix4f
 
 abstract class AbstractRenderHelper {
 
-    protected val mc = MinecraftClient.getInstance()
+    protected val mc: MinecraftClient = MinecraftClient.getInstance()
 
     val textRenderer: TextRenderer
         get() = mc.textRenderer
