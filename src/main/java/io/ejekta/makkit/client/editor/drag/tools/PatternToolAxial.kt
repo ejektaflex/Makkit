@@ -1,10 +1,10 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.common.editor.operations.PatternOperation
 import io.ejekta.makkit.common.ext.*
@@ -15,7 +15,7 @@ internal class PatternToolAxial(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val keyHandler: KeyStateHandler
+    override val kambrikKeybind: KambrikKeybind
         get() = MakkitClient.config.repeatPatternKey
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {

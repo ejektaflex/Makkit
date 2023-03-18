@@ -1,5 +1,6 @@
 package io.ejekta.makkit.common
 
+import io.ejekta.kambrik.Kambrik
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
@@ -8,6 +9,8 @@ import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.event.player.UseItemCallback
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.Identifier
 
 object MakkitCommon : ModInitializer {
     const val ID = "makkit"
@@ -15,10 +18,10 @@ object MakkitCommon : ModInitializer {
     override fun onInitialize() {
 
         // Serverbound packets
-        EditWorldPacket.registerC2S()
-        EditHistoryPacket.registerC2S()
-        ShadowBoxUpdatePacket.registerC2S()
-        ClipboardIntentPacket.registerC2S()
+        Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), Identifier(ID, "edit_world"))
+        Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), Identifier(ID, "edit_history"))
+        Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), Identifier(ID, "shadow_box_update"))
+        Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), Identifier(ID, "clipboard_intent"))
 
         Events.ServerDisconnectEvent.Dispatcher.register(::onServerPlayerDisconnect)
 
@@ -27,7 +30,7 @@ object MakkitCommon : ModInitializer {
 
     private fun onServerPlayerDisconnect(e: Events.ServerDisconnectEvent) {
         for (player in e.player.world.players) {
-            ShadowBoxShowPacket(uid = e.player.uuidAsString, disconnect = true).sendToClient(player)
+            ShadowBoxShowPacket(uid = e.player.uuidAsString, disconnect = true).sendToClient(player as ServerPlayerEntity)
         }
     }
 }

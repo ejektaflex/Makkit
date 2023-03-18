@@ -5,10 +5,11 @@ import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import io.ejekta.kambrik.Kambrik
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.input.ClientPalette
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
@@ -105,7 +106,7 @@ class MakkitConfig {
     var airMode = Default.AIR_MODE
     var placeMode = Default.PLACE_MODE
 
-    val keys: Set<KeyStateHandler>
+    val keys: Set<KambrikKeybind>
         get() = setOf(
                 moveDragKey,
                 movePushKey,
@@ -358,11 +359,12 @@ class MakkitConfig {
 
         // Keybinds
 
-        fun addKeybindEntry(default: KeyStateHandler, current: KeyStateHandler) {
+        fun addKeybindEntry(default: KambrikKeybind, current: KambrikKeybind) {
             keybinds.addEntry(entryBuilder.startModifierKeyCodeField(
-                    default.name, current.binding
-            ).setDefaultValue(default.binding).setModifierSaveConsumer {
-                current.binding = it
+                    Text.translatable("${MakkitCommon.ID}.${default.translation}"), ModifierKeyCode.of(default.binding.defaultKey, Modifier.none())
+            ).setDefaultValue(default.binding.defaultKey).setModifierSaveConsumer {
+                //current.binding = it
+                // TODO binding config!
             }.build())
         }
 
@@ -388,38 +390,38 @@ class MakkitConfig {
     }
 
     fun assignKeybinds() {
-        fillKey.setKeyDown {
+        fillKey.onDown {
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
                 MakkitClient.region?.doOperation(FillBlocksOperation())
             }
         }
 
-        wallsKey.setKeyDown {
+        wallsKey.onDown {
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
                 MakkitClient.region?.doOperation(FillWallsOperation())
             }
         }
 
-        undoKey.setKeyDown {
+        undoKey.onDown {
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
                 EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
             }
 
         }
 
-        redoKey.setKeyDown {
+        redoKey.onDown {
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
                 EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
             }
         }
 
-        newBoxKey.setKeyDown {
+        newBoxKey.onDown {
 
             // Delete region if it exists and you are looking at it
             if (MakkitClient.region?.isBeingInteractedWith() == true) {
                 MakkitClient.region = null
                 ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
-                return@setKeyDown
+                return@onDown
             }
 
             val btr = MinecraftClient.getInstance().crosshairTarget
@@ -435,7 +437,7 @@ class MakkitConfig {
             }
         }
 
-        moveBoxKey.setKeyDown {
+        moveBoxKey.onDown {
 
             val btr = MinecraftClient.getInstance().crosshairTarget
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
@@ -445,17 +447,17 @@ class MakkitConfig {
 
         }
 
-        multiPalette.setKeyDown {
+        multiPalette.onDown {
             val inv = MinecraftClient.getInstance().player?.inventory
             val slot = inv?.selectedSlot
             slot?.let { ClientPalette.addToPalette(it) }
         }
 
-        placeMode.setKeyDown {
+        placeMode.onDown {
             MakkitClient.isInEditMode = !MakkitClient.isInEditMode
         }
 
-        airMode.setKeyDown {
+        airMode.onDown {
             val modeInd = MakkitClient.blockMask.ordinal
             MakkitClient.blockMask = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
         }
@@ -476,116 +478,73 @@ class MakkitConfig {
                 ctrl: Boolean = false,
                 shift: Boolean = false,
                 alt: Boolean = false
-        ): KeyStateHandler {
-            return KeyStateHandler(id,
-                    ModifierKeyCode.of(
-                            type.createFromCode(code),
-                            Modifier.of(alt, ctrl, shift)
-                    )
-            )
+        ): KambrikKeybind {
+            return Kambrik.Input.registerKeyboardBinding(
+                code, id, "doot", true
+            ) {
+
+            }
         }
 
         // So many keybinds!
         object Default {
 
             // Tool Keys
-            val MOVE_DRAG: KeyStateHandler
+            val MOVE_DRAG: KambrikKeybind
                 get() = makkitKey("move_dual_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT)
-            val MOVE_PUSH: KeyStateHandler
+            val MOVE_PUSH: KambrikKeybind
                 get() = makkitKey("move_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
-            val FILL_AREA: KeyStateHandler
+            val FILL_AREA: KambrikKeybind
                 get() = makkitKey("fill_blocks", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_R)
-            val FILL_WALL: KeyStateHandler
+            val FILL_WALL: KambrikKeybind
                 get() = makkitKey("fill_walls", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C)
-            val RESIZE_SIDE: KeyStateHandler
+            val RESIZE_SIDE: KambrikKeybind
                 get() = makkitKey("resize_single_axis", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT)
-            val RESIDE_SIDE_SYMMETRIC: KeyStateHandler
+            val RESIDE_SIDE_SYMMETRIC: KambrikKeybind
                 get() = makkitKey("resize_single_axis_symmetric", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
-            val REPEAT_PATTERN: KeyStateHandler
+            val REPEAT_PATTERN: KambrikKeybind
                 get() = makkitKey("repeat_pattern", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X)
-            val MIRROR_TOOL: KeyStateHandler
+            val MIRROR_TOOL: KambrikKeybind
                 get() = makkitKey("mirror_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N)
 
             // Special Keys
-            val MULTIPALETTE: KeyStateHandler
+            val MULTIPALETTE: KambrikKeybind
                 get() = makkitKey("multi_palette", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V)
-            val AIR_MODE: KeyStateHandler
+            val AIR_MODE: KambrikKeybind
                 get() = makkitKey("air_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G)
-            val PLACE_MODE: KeyStateHandler
+            val PLACE_MODE: KambrikKeybind
                 get() = makkitKey("place_mode", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z)
 
             // Z Key should be Toggle Air Mode
 
             // Non-Tool Keys
-            val COPY_KEY: KeyStateHandler
+            val COPY_KEY: KambrikKeybind
                 get() = makkitKey("copy_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_C, true)
-            val PASTE_KEY: KeyStateHandler
+            val PASTE_KEY: KambrikKeybind
                 get() = makkitKey("paste_tool", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, true)
-            val NEW_BOX: KeyStateHandler
+            val NEW_BOX: KambrikKeybind
                 get() = makkitKey("center_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B)
-            val MOVE_BOX: KeyStateHandler
+            val MOVE_BOX: KambrikKeybind
                 get() = makkitKey("move_edit_region", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, alt = true)
-            val UNDO: KeyStateHandler
+            val UNDO: KambrikKeybind
                 get() = makkitKey("undo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Z, ctrl = true)
-            val REDO: KeyStateHandler
+            val REDO: KambrikKeybind
                 get() = makkitKey("redo", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, ctrl = true)
 
         }
 
-        class KeyAdapter : TypeAdapter<KeyStateHandler>() {
-            override fun write(out: JsonWriter, value: KeyStateHandler) {
-                out.apply {
-                    beginArray()
-                    value(value.id)
-                    value(value.binding.type == InputUtil.Type.KEYSYM)
-                    value(value.binding.keyCode.code)
-                    value(value.binding.modifier.hasAlt())
-                    value(value.binding.modifier.hasControl())
-                    value(value.binding.modifier.hasShift())
-                    endArray()
-                }
-            }
 
-            override fun read(`in`: JsonReader): KeyStateHandler {
-                `in`.apply {
-                    beginArray()
-                    val id = nextString()
-                    val type = if (nextBoolean()) InputUtil.Type.KEYSYM else InputUtil.Type.MOUSE
-                    val code = nextInt()
-                    val alt = nextBoolean()
-                    val ctrl = nextBoolean()
-                    val shift = nextBoolean()
-                    endArray()
-                    return makkitKey(id, type, code,
-                            ctrl = ctrl,
-                            shift = shift,
-                            alt = alt
-                    )
-                }
-            }
-
-        }
 
         val configPath = FabricLoader.getInstance().configDir.resolve(MakkitCommon.ID + ".json")
 
-        private val GSON = GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .setPrettyPrinting()
-                .registerTypeAdapter(RenderColor::class.java, RenderColor.typeAdapter)
-                .registerTypeAdapter(KeyStateHandler::class.java, KeyAdapter())
-                .create()
+
 
 
 
         fun load(): MakkitConfig {
 
             return try {
-                GSON.fromJson(
-                        configPath.toFile().readText(),
-                        MakkitConfig::class.java
-                ).also {
-                    it.assignKeybinds()
-                }
+                TODO()
             } catch (e: Exception) {
                 // If no file exists, just silently save
                 if (!configPath.toFile().exists()) {
@@ -602,9 +561,9 @@ class MakkitConfig {
         }
 
         fun save() {
-            configPath.toFile().writeText(
-                    GSON.toJson(MakkitClient.config, MakkitConfig::class.java)
-            )
+//            configPath.toFile().writeText(
+//                    GSON.toJson(MakkitClient.config, MakkitConfig::class.java)
+//            )
             //MakkitClient.config = load()
         }
     }

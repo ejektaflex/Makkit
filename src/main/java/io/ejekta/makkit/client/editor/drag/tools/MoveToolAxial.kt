@@ -1,9 +1,9 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.axisMask
@@ -18,7 +18,7 @@ internal class MoveToolAxial(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val keyHandler: KeyStateHandler
+    override val kambrikKeybind: KambrikKeybind
         get() = MakkitClient.config.movePushKey
 
     // Constrain to direction

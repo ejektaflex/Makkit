@@ -1,9 +1,9 @@
 package io.ejekta.makkit.client.editor.drag
 
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
@@ -14,7 +14,7 @@ import net.minecraft.util.math.Vec3d
 
 abstract class DragTool(val region: EditRegion) {
 
-    abstract val keyHandler: KeyStateHandler
+    abstract val kambrikKeybind: KambrikKeybind
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
     open val preview = AnimBox {
@@ -85,7 +85,7 @@ abstract class DragTool(val region: EditRegion) {
 
     fun update(delta: Long) {
         // Try to start dragging
-        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && keyHandler.isDown) {
+        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && kambrikKeybind.isDown) {
             dragStart = region.selection.autoTrace()
             if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
                 onStartDragging(dragStart)
@@ -95,7 +95,7 @@ abstract class DragTool(val region: EditRegion) {
         preview.update(delta)
 
         // Try to stop dragging
-        if (dragStart != BoxTraceResult.EMPTY && !keyHandler.isDown) {
+        if (dragStart != BoxTraceResult.EMPTY && !kambrikKeybind.isDown) {
             onStopDragging(dragStart)
             dragStart = BoxTraceResult.EMPTY
         }

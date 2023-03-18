@@ -99,11 +99,6 @@ object MakkitClient : ClientModInitializer {
             return
         }
 
-        // Maybe don't tie this to draw calls, but why fix what isn't broken?
-        for (key in config.keys) {
-            key.update()
-        }
-
         RenderHelper.drawInWorld {
             val newTime = System.currentTimeMillis()
             val delta = newTime - time

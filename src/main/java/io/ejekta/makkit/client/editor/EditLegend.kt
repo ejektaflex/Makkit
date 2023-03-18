@@ -1,7 +1,7 @@
 package io.ejekta.makkit.client.editor
 
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.common.enums.GuiCorner
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.math.MatrixStack
@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper
 // The textual legend on the bottom left of the screen
 object EditLegend {
 
-    private data class LegendLine(val text: Text? = null, val key: KeyStateHandler? = null, var lastHit: Long = 0L)
+    private data class LegendLine(val text: Text? = null, val key: KambrikKeybind? = null, var lastHit: Long = 0L)
 
     private val mc = MinecraftClient.getInstance()
     private val renderer = MinecraftClient.getInstance().textRenderer
@@ -39,7 +39,7 @@ object EditLegend {
         addText(Text.literal("Makkit Key Legend: "))
         addText(Text.literal("==============="))
 
-        val keysToUse = mutableListOf<KeyStateHandler>()
+        val keysToUse = mutableListOf<KambrikKeybind>()
 
         MakkitClient.config.run {
             if (showUtility) {
@@ -77,8 +77,8 @@ object EditLegend {
         }
 
         if (keysToUse.isNotEmpty()) {
-            val longestName = keysToUse.maxBy { renderer.getWidth(it.name) }!!
-            longestNameLength = renderer.getWidth(longestName.name)
+            val longestName = keysToUse.maxBy { renderer.getWidth(it.translation) }
+            longestNameLength = renderer.getWidth(longestName.translation)
 
             for (handler in keysToUse) {
                 texts.add(LegendLine(null, handler))
@@ -107,8 +107,9 @@ object EditLegend {
                     if (isDown) {
                         line.lastHit = System.currentTimeMillis()
                     }
-                    drawTextOn(i, line, line.key.shortName, 0, isDown)
-                    drawTextOn(i, line, line.key.binding.localizedName, longestNameLength + 5, false)
+                    drawTextOn(i, line, Text.translatable(line.key.translation), 0, isDown)
+                    // TODO figure this out
+                    //drawTextOn(i, line, line.key.binding.localizedName, longestNameLength + 5, false)
                 }
             }
         }

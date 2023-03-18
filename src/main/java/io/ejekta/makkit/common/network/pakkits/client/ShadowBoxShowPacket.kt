@@ -13,7 +13,7 @@ displayed from other players
  */
 @Serializable
 class ShadowBoxShowPacket(
-        val box: @Contextual Box,
+        val box: @Contextual Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
         var uid: String,
         var disconnect: Boolean = false
 ) : ClientMsg() {

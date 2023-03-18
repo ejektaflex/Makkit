@@ -1,9 +1,9 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
-import io.ejekta.makkit.client.editor.input.KeyStateHandler
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.getFacePlane
@@ -13,7 +13,7 @@ import net.minecraft.util.math.Vec3d
 
 internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
 
-    override val keyHandler: KeyStateHandler
+    override val kambrikKeybind: KambrikKeybind
         get() = MakkitClient.config.moveDragKey
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {

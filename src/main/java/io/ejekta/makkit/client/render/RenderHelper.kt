@@ -7,7 +7,6 @@ import io.ejekta.makkit.common.ext.*
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.math.*
 import kotlin.math.abs
