@@ -10,6 +10,7 @@ import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.input.ClientPalette
+import io.ejekta.makkit.client.gui.ToolScreen
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
@@ -361,8 +362,8 @@ open class MakkitConfig {
 
         fun addKeybindEntry(default: KambrikKeybind, current: KambrikKeybind) {
             keybinds.addEntry(entryBuilder.startModifierKeyCodeField(
-                    Text.translatable("${MakkitCommon.ID}.${default.translation}"), ModifierKeyCode.of(default.binding.defaultKey, Modifier.none())
-            ).setDefaultValue(default.binding.defaultKey).setModifierSaveConsumer {
+                    Text.translatable("${MakkitCommon.ID}.${default.translation}"), ModifierKeyCode.of(default.defaultKey, Modifier.none())
+            ).setDefaultValue(default.defaultKey).setModifierSaveConsumer {
                 //current.binding = it
                 // TODO binding config!
             }.build())
@@ -390,6 +391,9 @@ open class MakkitConfig {
     }
 
     fun assignKeybinds() {
+
+
+
         fillKey.onDown {
             println("Fill key pressed")
             if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
@@ -475,7 +479,7 @@ open class MakkitConfig {
                 alt: Boolean = false
         ): KambrikKeybind {
             return Kambrik.Input.registerKeyboardBinding(
-                code, id, "doot", true
+                code, id, "doot", realTime = true, register = false
             ) {
 
             }.also {
@@ -491,7 +495,7 @@ open class MakkitConfig {
             alt: Boolean = false
         ): KambrikKeybind {
             return Kambrik.Input.registerMouseBinding(
-                code, id, "doot", true
+                code, id, "doot", realTime = true, register = false
             ) {
 
             }.also {
@@ -502,13 +506,27 @@ open class MakkitConfig {
         // So many keybinds!
         object Default {
 
+
+            val NEW_TEST = Kambrik.Input.registerKeyboardBinding(
+                GLFW.GLFW_KEY_R, "do_something_new", "doot", realTime = true
+            ) {
+                onDown {
+                    println("New test key pressed!")
+                    MinecraftClient.getInstance().setScreen(
+                        ToolScreen()
+                    )
+                }
+            }.also {
+                println("Registered makkit keybind! ID: ${it.modKey}")
+            }
+
             // Tool Keys
             val MOVE_DRAG: KambrikKeybind
                 get() = makkitMouse("move_dual_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val MOVE_PUSH: KambrikKeybind
                 get() = makkitMouse("move_single_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
             val FILL_AREA: KambrikKeybind
-                get() = makkitKey("fill_blocks", GLFW.GLFW_KEY_R)
+                get() = makkitKey("fill_blocks", GLFW.GLFW_KEY_N) // was R
             val FILL_WALL: KambrikKeybind
                 get() = makkitKey("fill_walls", GLFW.GLFW_KEY_C)
             val RESIZE_SIDE: KambrikKeybind

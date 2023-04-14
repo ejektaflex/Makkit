@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor
 
+import io.ejekta.kambrik.ext.client.getBoundKey
 import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.common.enums.GuiCorner
@@ -107,10 +108,10 @@ object EditLegend {
                     if (isDown) {
                         line.lastHit = System.currentTimeMillis()
                     }
-                    drawTextOn(i, line, Text.translatable("makkit.${line.key.binding.translationKey}.short"), 0, isDown)
+                    drawTextOn(i, line, Text.translatable("makkit.${line.key.translationKey}.short"), 0, isDown)
                     //drawTextOn(i, line, line.key.binding.localizedName, longestNameLength + 5, false)
-                    // TODO fix key rendering
-                    drawTextOn(i, line, Text.translatable(line.key.binding.boundKeyTranslationKey), longestNameLength + 5, false)
+                    // TODO fix key rendering,
+                    drawTextOn(i, line, line.key.getBoundKey().localizedText, longestNameLength + 5, false)
                 }
             }
         }

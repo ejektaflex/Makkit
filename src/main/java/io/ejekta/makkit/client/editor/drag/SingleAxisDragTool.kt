@@ -28,7 +28,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
             }
         }
 
-        return (offsets.minBy {
+        return (offsets.minByOrNull {
             it.hit.distanceTo(it.source)
         } ?: return null).hit.subtract(dragStart.hit).snapped(snapped)
     }

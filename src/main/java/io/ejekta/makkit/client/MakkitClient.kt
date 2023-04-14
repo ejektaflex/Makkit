@@ -64,6 +64,14 @@ class MakkitClient : ClientModInitializer {
             ActionResult.PASS
         }
 
+        private fun updateKeys() {
+
+//            for (key in config.keys) {
+//                if (MinecraftClient.getInstance().currentScreen == null && !key.isDown)
+//            }
+
+        }
+
         private fun onInvScroll(e: Events.InventoryScrolledEvent) {
             if (config.multiPalette.isDown) {
                 val holding = MinecraftClient.getInstance().player?.mainHandStack
@@ -98,6 +106,8 @@ class MakkitClient : ClientModInitializer {
             if (mc.player?.isCreative == false) {
                 return
             }
+
+            updateKeys()
 
             RenderHelper.drawInWorld {
                 val newTime = System.currentTimeMillis()
