@@ -29,17 +29,17 @@ class MakkitCommon : ModInitializer {
 
     override fun onInitialize() {
 
-        Kambrik.Message.addSerializerModule(
-            SerializersModule {
-                //contextual(WorldOperation::class, WorldOperation.serializer())
-            }
-        )
+//        Kambrik.Message.addSerializerModule(
+//            SerializersModule {
+//                //contextual(WorldOperation::class, WorldOperation.serializer())
+//            }
+//        )
 
         // Serverbound packets
-        Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), Identifier(ID, "edit_world"))
-        Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), Identifier(ID, "edit_history"))
-        Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), Identifier(ID, "shadow_box_update"))
-        Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), Identifier(ID, "clipboard_intent"))
+        Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), EditWorldPacket::class, Identifier(ID, "edit_world"))
+        Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), EditHistoryPacket::class, Identifier(ID, "edit_history"))
+        Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), ShadowBoxUpdatePacket::class, Identifier(ID, "shadow_box_update"))
+        Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), ClipboardIntentPacket::class, Identifier(ID, "clipboard_intent"))
 
         Events.ServerDisconnectEvent.Dispatcher.register(::onServerPlayerDisconnect)
 

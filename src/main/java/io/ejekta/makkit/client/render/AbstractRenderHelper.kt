@@ -7,7 +7,7 @@ import net.minecraft.client.render.BufferBuilderStorage
 import net.minecraft.client.render.Camera
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.math.Matrix4f
+import org.joml.Matrix4f
 
 abstract class AbstractRenderHelper {
 

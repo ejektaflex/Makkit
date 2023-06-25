@@ -103,7 +103,7 @@ fun Box.getSize(): Vec3d {
 }
 
 fun Box.blockSize(): BlockPos {
-    return BlockPos(getSize())
+    return BlockPos(getSize().roundToVec3i())
 }
 
 fun Box.getEnd(): Vec3d {
@@ -111,7 +111,11 @@ fun Box.getEnd(): Vec3d {
 }
 
 fun Box.startBlock(): BlockPos {
-    return BlockPos(getStart())
+    return BlockPos(getStart().roundToVec3i())
+}
+
+fun Box.endBlock(): BlockPos {
+    return BlockPos(getEnd().roundToVec3i())
 }
 
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
@@ -162,10 +166,12 @@ fun Box.positionOffsetInDirection(dir: Direction, other: Box): Double {
     return getStart().axisValue(dir.axis) - other.getStart().axisValue(dir.axis)
 }
 
+
+
 fun Box.getBlockArray(): List<BlockPos> {
     val buff = mutableListOf<BlockPos>()
-    val startPos = BlockPos(minX, minY, minZ)
-    val endPos = BlockPos(maxX, maxY, maxZ)
+    val startPos = startBlock()
+    val endPos = endBlock()
     for (dx in startPos.x until endPos.x) {
         for (dy in startPos.y until endPos.y) {
             for (dz in startPos.z until endPos.z) {
@@ -178,8 +184,8 @@ fun Box.getBlockArray(): List<BlockPos> {
 
 fun Box.wallBlocks(): List<BlockPos> {
     val buff = mutableListOf<BlockPos>()
-    val startPos = BlockPos(minX, minY, minZ)
-    val endPos = BlockPos(maxX, maxY, maxZ)
+    val startPos = startBlock()
+    val endPos = endBlock()
     for (dx in startPos.x until endPos.x) {
         for (dy in startPos.y until endPos.y) {
             for (dz in startPos.z until endPos.z) {
@@ -211,11 +217,7 @@ fun Box.longestAxisLength(): Double {
 }
 
 fun Box.autoTrace(): BoxTraceResult {
-    return when (MakkitClient.config.sideSelectionStyle) {
-        SideSelectionStyle.SIMPLE -> simpleTrace()
-        SideSelectionStyle.SMART -> smartTrace()
-        SideSelectionStyle.EXPERIMENTAL -> geniusTrace()
-    }
+    return simpleTrace()
 }
 
 private fun Box.simpleTrace(): BoxTraceResult {

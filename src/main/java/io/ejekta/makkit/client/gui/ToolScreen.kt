@@ -1,7 +1,8 @@
 package io.ejekta.makkit.client.gui
 
-import io.ejekta.kambrik.KambrikScreen
+import io.ejekta.kambrik.gui.screen.KambrikScreen
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 
@@ -29,12 +30,12 @@ class ToolScreen : KambrikScreen(Text.literal("Tool Screen")) {
         return false
     }
 
-    override fun onDrawBackground(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        //gui.draw(matrices, mouseX, mouseY, delta)
+    override fun onDrawBackground(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+
     }
 
-    override fun onDrawForeground(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        gui.draw(matrices, mouseX, mouseY, delta)
+    override fun onDrawForeground(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+        gui.draw(context, mouseX, mouseY, delta)
     }
 
 

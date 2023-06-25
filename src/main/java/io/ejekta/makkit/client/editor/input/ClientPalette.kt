@@ -30,7 +30,7 @@ object ClientPalette {
 
         if (slots.isEmpty()) return null
 
-        return if (MakkitClient.config.weightedPalette) {
+        return if (MakkitClient.weightedPalette) {
             slots.weightedRandomBy { getStack(this)!!.count }
         } else {
             slots.random()

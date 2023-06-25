@@ -1,12 +1,11 @@
 package io.ejekta.makkit.client
 
 import io.ejekta.kambrik.Kambrik
-import io.ejekta.makkit.client.config.MakkitConfig
-import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
+import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.enums.BlockMask
@@ -16,7 +15,7 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
@@ -27,14 +26,15 @@ class MakkitClient : ClientModInitializer {
 
         Kambrik.Message.registerClientMessage(
             FocusRegionPacket.serializer(),
+            FocusRegionPacket::class,
             Identifier(MakkitCommon.ID, "focus_region")
         )
 
         Kambrik.Message.registerClientMessage(
             ShadowBoxShowPacket.serializer(),
+            ShadowBoxShowPacket::class,
             Identifier(MakkitCommon.ID, "shadow_box_show")
         )
-        config.assignKeybinds()
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
         Events.InventoryScrolledEvent.Dispatcher.register(::onInvScroll)
@@ -46,12 +46,28 @@ class MakkitClient : ClientModInitializer {
 
     companion object {
 
+        var selectionBoxColor = RenderColor.GREEN
+
+        var selectionFaceColor = RenderColor.YELLOW
+
+        var multiplayerBoxColor = RenderColor.PINK
+
+        var pasteBoxColor = RenderColor.PURPLE
+
         private val mc = MinecraftClient.getInstance()
 
-        fun onHudRender(matrixStack: MatrixStack, tickDelta: Float) {
-            if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
-                EditLegend.draw(matrixStack)
-            }
+        var randomRotate = true
+        var weightedPalette = false
+        var gridSnapping = true
+        var animations = true
+        var animationSpeed = 20.0 // 5 to 100
+        var axialTextSize = 1f
+        var historyHighlighting = true
+
+        fun onHudRender(context: DrawContext, tickDelta: Float) {
+//            if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
+//                //EditLegend.draw(context)
+//            }
         }
 
         // Use client's Block Palette for block placement, if it's active
@@ -62,14 +78,6 @@ class MakkitClient : ClientModInitializer {
                 }
             }
             ActionResult.PASS
-        }
-
-        private fun updateKeys() {
-
-//            for (key in config.keys) {
-//                if (MinecraftClient.getInstance().currentScreen == null && !key.isDown)
-//            }
-
         }
 
         private fun onInvScroll(e: Events.InventoryScrolledEvent) {
@@ -89,11 +97,11 @@ class MakkitClient : ClientModInitializer {
 
         // Return true if we want to cancel game interaction
         private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
-            region?.let {
-                if (isInEditMode && it.isBeingInteractedWith()) {
-                    return true
-                }
-            }
+//            region?.let {
+//                if (isInEditMode && it.isBeingInteractedWith()) {
+//                    return true
+//                }
+//            }
             return false
         }
 
@@ -106,8 +114,6 @@ class MakkitClient : ClientModInitializer {
             if (mc.player?.isCreative == false) {
                 return
             }
-
-            updateKeys()
 
             RenderHelper.drawInWorld {
                 val newTime = System.currentTimeMillis()
@@ -123,14 +129,12 @@ class MakkitClient : ClientModInitializer {
 
         var blockMask = BlockMask.ALL_BLOCKS
 
-        var config = MakkitConfig()
-
         private fun handleRemoteRegions(delta: Long) {
             for (entry in remoteBoxMap) {
                 entry.value.update(delta)
                 entry.value.render.draw(
-                    colorFill = config.multiplayerBoxColor.toAlpha(.2f),
-                    colorEdge = config.multiplayerBoxColor.toAlpha(.2f)
+                    colorFill = multiplayerBoxColor.toAlpha(.2f),
+                    colorEdge = multiplayerBoxColor.toAlpha(.2f)
                 )
             }
         }

@@ -60,12 +60,12 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit 
 
     fun update(dt: Long) {
 
-        if (!MakkitClient.config.animations) {
+        if (!MakkitClient.animations) {
             render.box = target
             return
         }
 
-        val spd = MakkitClient.config.animationSpeed
+        val spd = MakkitClient.animationSpeed
         val v = spd / 1000.0
         val m = 1.0 / v
 

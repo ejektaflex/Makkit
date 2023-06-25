@@ -60,7 +60,7 @@ abstract class DragTool(val region: EditRegion) {
      * Calculates the position of the drag cursor. May also be snapped to a block grid
      * @param snapped Whether or not to snap the cursor to the block grid
      */
-    abstract fun getCursorOffset(snapped: Boolean = MakkitClient.config.gridSnapping): Vec3d?
+    abstract fun getCursorOffset(snapped: Boolean = MakkitClient.gridSnapping): Vec3d?
 
 
     open fun onStartDragging(start: BoxTraceResult) {

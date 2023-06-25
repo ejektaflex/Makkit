@@ -5,10 +5,10 @@ import io.ejekta.makkit.client.render.RenderHelper
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.Matrix4f
 import net.minecraft.util.math.Vec3d
-import net.minecraft.util.registry.Registry
+import org.joml.Matrix4f
 
 fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: RenderHelper) {
     translate(-pos.x, -pos.y, -pos.z)
@@ -17,7 +17,7 @@ fun MatrixStack.drawOffset(pos: Vec3d, func: RenderHelper.() -> Unit, helper: Re
 }
 
 val ItemStack.identifier: Identifier
-    get() = Registry.ITEM.getId(item)
+    get() = Registries.ITEM.getId(item)
 
 // Shorthand
 val ItemStack.id: Identifier

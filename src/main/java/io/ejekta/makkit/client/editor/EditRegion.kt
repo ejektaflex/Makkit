@@ -33,8 +33,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
 
     val selectionRenderer = AnimBox(selection) {
-        fillColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
-        edgeColor = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+        fillColor = MakkitClient.selectionBoxColor.toAlpha(.4f)
+        edgeColor = MakkitClient.selectionBoxColor.toAlpha(.4f)
     }
 
     fun changeColors(fill: RenderColor, edge: RenderColor = fill) {
@@ -71,7 +71,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun getSelectionColor(): RenderColor {
 
-        val default = MakkitClient.config.selectionBoxColor.toAlpha(.4f)
+        val default = MakkitClient.selectionBoxColor.toAlpha(.4f)
 
         return if (MakkitClient.isInEditMode) {
             if (copyBox == null) {
@@ -80,7 +80,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 val isPasteSize = selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.NORTH)
                         || selection.blockSize() == CopyHelper.getLocalAxisSize(copyBox!!, Direction.EAST)
                 if (isPasteSize) {
-                    MakkitClient.config.pasteBoxColor.toAlpha(.4f)
+                    MakkitClient.pasteBoxColor.toAlpha(.4f)
                 } else {
                     default
                 }
@@ -111,7 +111,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun centerOn(pos: BlockPos) {
-        val half =  BlockPos(selection.getSize().multiply(0.5))
+        val half =  BlockPos(selection.getSize().multiply(0.5).roundToVec3i())
         selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
         selectionRenderer.shrinkToCenter()
     }
@@ -155,8 +155,8 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     trace.dir,
                     operation,
                     EditWorldOptions().apply {
-                        randomRotate = MakkitClient.config.randomRotate
-                        weightedPalette = MakkitClient.config.weightedPalette
+                        randomRotate = MakkitClient.randomRotate
+                        weightedPalette = MakkitClient.weightedPalette
                         blockMask = MakkitClient.blockMask
                     },
                     ClientPalette.getSafePalette()
@@ -178,7 +178,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 // default state when no drag tool is being used
                 val hit = selection.autoTrace()
                 if (hit != BoxTraceResult.EMPTY) {
-                    selectionRenderer.render.drawFace(hit.dir, MakkitClient.config.selectionFaceColor.toAlpha(.3f))
+                    selectionRenderer.render.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
                     selectionRenderer.render.drawAxisSizes()
                 }
             }

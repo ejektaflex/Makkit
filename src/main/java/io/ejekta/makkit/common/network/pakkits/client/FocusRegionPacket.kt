@@ -16,7 +16,7 @@ data class FocusRegionPacket(
 
     override fun onClientReceived(ctx: MsgContext) {
         super.onClientReceived(ctx)
-        if (MakkitClient.config.historyHighlighting) {
+        if (MakkitClient.historyHighlighting) {
             MakkitClient.getOrCreateRegion().apply {
                 selection = box
             }

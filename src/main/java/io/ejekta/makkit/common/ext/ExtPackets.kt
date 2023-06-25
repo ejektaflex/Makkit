@@ -9,8 +9,8 @@ import net.minecraft.util.math.Box
 // hence why we call it an IntBox here
 
 fun PacketByteBuf.writeIntBox(box: Box) {
-    writeBlockPos(BlockPos(box.getStart()))
-    writeBlockPos(BlockPos(box.getEnd()))
+    writeBlockPos(box.startBlock())
+    writeBlockPos(box.endBlock())
 }
 
 fun PacketByteBuf.readIntBox(): Box {

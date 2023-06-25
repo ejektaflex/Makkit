@@ -5,12 +5,14 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
 import io.ejekta.makkit.common.ext.*
+import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.RenderLayers
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.Text
 import net.minecraft.util.math.*
+import org.joml.Matrix4f
 import kotlin.math.abs
 import kotlin.math.sign
 
@@ -23,7 +25,7 @@ object RenderHelper : AbstractRenderHelper() {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
         matrices.multiply(camera.rotation)
-        val newTextSize = -(textSize * MakkitClient.config.axialTextSize)/32
+        val newTextSize = -(textSize * MakkitClient.axialTextSize)/32
         matrices.scale(newTextSize, newTextSize, newTextSize)
 
         val centerDiv = if (center) 2 else 1
@@ -37,7 +39,7 @@ object RenderHelper : AbstractRenderHelper() {
                 false,
                 matrices.peek().positionMatrix,
                 buffers.outlineVertexConsumers,
-                true, // see through
+                TextRenderer.TextLayerType.SEE_THROUGH,
                 0,
             0xF000F0
         )
@@ -154,11 +156,8 @@ object RenderHelper : AbstractRenderHelper() {
         vert.vertex(mat, end.x, end.y, end.z).color(color).next()
     }
 
-    fun boxTrace(box: Box, distance: Float = (mc.interactionManager?.reachDistance ?: 0f) * 15, reverse: Boolean = false): BoxTraceResult {
-        if (mc.interactionManager == null || mc.player == null) {
-            return BoxTraceResult.EMPTY
-        }
-        val player = mc.player!!
+    fun boxTrace(box: Box, distance: Float = mc.interactionManager?.reachDistance ?: 15f, reverse: Boolean = false): BoxTraceResult {
+        val player = mc.player ?: return BoxTraceResult.EMPTY
         // Camera position and rotation
         val vec1 = player.getCameraPosVec(tickDelta)
         val vec2 = player.getRotationVec(tickDelta)

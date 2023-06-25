@@ -4,10 +4,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3i
-import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.max
-import kotlin.math.round
+import kotlin.math.*
 
 fun max(vecA: Vec3d, vecB: Vec3d): Vec3d {
     return Vec3d(
@@ -77,7 +74,7 @@ fun Vec3d.projectedIn(dir: Direction, amt: Double): Vec3d {
 }
 
 fun Vec3d.roundToVec3i(): Vec3i {
-    return Vec3i(x, y, z)
+    return Vec3i(x.roundToInt(), y.roundToInt(), z.roundToInt())
 }
 
 fun Vec3d.hasZeroAxis(): Boolean {
@@ -137,11 +134,11 @@ fun Vec3d.rotateClockwise(center: Vec3d): Vec3d {
 }
 
 fun Vec3d.floor(): Vec3i {
-    return BlockPos(this)
+    return BlockPos(floor(x).roundToInt(), floor(y).roundToInt(), floor(z).roundToInt())
 }
 
 fun Vec3d.ceil(): Vec3i {
-    return BlockPos(ceil(x), ceil(y), ceil(z))
+    return BlockPos(ceil(x).roundToInt(), ceil(y).roundToInt(), ceil(z).roundToInt())
 }
 
 fun Vec3i.rotateClockwise(center: Vec3i): Vec3i {

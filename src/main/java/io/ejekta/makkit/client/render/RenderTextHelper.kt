@@ -14,10 +14,10 @@ object RenderTextHelper {
         get() = MinecraftClient.getInstance().window
 
     fun drawText(stack: MatrixStack, text: Text, x: Float, y: Float, color: Int) {
-        renderer.draw(stack, text, x, y , color)
+        //renderer.draw(stack, text, x, y , color)
     }
 
     fun drawTextCentered(stack: MatrixStack, text: Text, x: Float, y: Float, color: Int = 0xFFFFFF) {
-        renderer.draw(stack, text, x - renderer.getWidth(text) / 2, y , color)
+        //renderer.draw(stack, text, x - renderer.getWidth(text) / 2, y , color)
     }
 }

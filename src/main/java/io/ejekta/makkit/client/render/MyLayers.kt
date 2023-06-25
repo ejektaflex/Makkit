@@ -41,7 +41,7 @@ class MyLayers(
 
         private fun commonBuilder(depth: DepthTest, trans: Transparency): MultiPhaseParameters.Builder {
             return MultiPhaseParameters.builder()
-                .shader(RenderPhase.LINES_SHADER)
+                .program(RenderPhase.LINES_PROGRAM)
                 .lineWidth(LineWidth(OptionalDouble.of(4.0)))
                 //.layering(Layering.VIEW_OFFSET_Z_LAYERING)
                 .transparency(Transparency.TRANSLUCENT_TRANSPARENCY)
@@ -68,22 +68,22 @@ class MyLayers(
         val OVERLAY_QUADS: RenderLayer = of("overlay_quads",
                 VertexFormats.POSITION_COLOR, DrawMode.QUADS, 256,
                 MultiPhaseParameters.builder()
-                        // Fix Z-Fighting on overlapping planes with ground
-                        .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-                        .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .writeMaskState(COLOR_MASK)
-                        .shader(RenderPhase.OUTLINE_SHADER)
-                        .build(false))
+                    // Fix Z-Fighting on overlapping planes with ground
+                    .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+                    .transparency(TRANSLUCENT_TRANSPARENCY)
+                    .writeMaskState(COLOR_MASK)
+                    .program(RenderPhase.OUTLINE_PROGRAM)
+                    .build(false))
 
         val OVERLAY_QUADS_BEHIND: RenderLayer = of("overlay_quads_behind",
                 VertexFormats.POSITION_COLOR, DrawMode.QUADS, 256,
                 MultiPhaseParameters.builder()
-                        .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
-                        .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .depthTest(DepthTest("overlay_quads_behind", 516))
-                        .writeMaskState(COLOR_MASK)
-                        .shader(RenderPhase.OUTLINE_SHADER)
-                        .build(false))
+                    .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
+                    .transparency(TRANSLUCENT_TRANSPARENCY)
+                    .depthTest(DepthTest("overlay_quads_behind", 516))
+                    .writeMaskState(COLOR_MASK)
+                    .program(RenderPhase.OUTLINE_PROGRAM)
+                    .build(false))
 
     }
 }

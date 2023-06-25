@@ -9,6 +9,7 @@ import io.ejekta.makkit.common.editor.data.BlockPalette
 import io.ejekta.makkit.common.enums.BlockMask
 import net.minecraft.block.Blocks
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.text.Text
@@ -25,7 +26,9 @@ object MakkitGui {
     private val playerEntity: PlayerEntity
         get() = mc.getCameraEntity() as PlayerEntity
 
-    fun renderHotbarChanges(matrixStack: MatrixStack, width: Int, height: Int) {
+    fun renderHotbarChanges(context: DrawContext, width: Int, height: Int) {
+
+        val matrixStack = context.matrices
 
         mc.textureManager.bindTexture(SELECTION)
         val i = width / 2
@@ -66,22 +69,23 @@ object MakkitGui {
 
 
     fun drawAtlasIcon(matrixStack: MatrixStack, x: Int, y: Int, ax: Int, ay: Int) {
-        MinecraftClient
-                .getInstance()
-                .inGameHud
-                .drawTexture(
-                        matrixStack,
-                        x,
-                        y,
-                        ax,
-                        ay,
-                        24,
-                        22
-                )
+//        MinecraftClient
+//                .getInstance()
+//                .inGameHud
+//                .drawTexture(
+//                        matrixStack,
+//                        x,
+//                        y,
+//                        ax,
+//                        ay,
+//                        24,
+//                        22
+//                )
+//
     }
 
 
-    fun renderBlockMaskGui(matrixStack: MatrixStack, width: Int, height: Int) {
+    fun renderBlockMaskGui(context: DrawContext, width: Int, height: Int) {
 
         mc.textureManager.bindTexture(SELECTION)
         val i = width / 2
@@ -89,13 +93,15 @@ object MakkitGui {
         // Block Mask data
         val opt = MakkitClient.blockMask
 
+        val matrixStack = context.matrices
+
         when (opt) {
             BlockMask.ONLY_AIR -> {
-                mc.inGameHud.drawTexture(matrixStack, i - 12, 6, 24, 0, 24, 22)
+                //mc.inGameHud.drawTexture(matrixStack, i - 12, 6, 24, 0, 24, 22)
                 drawTextCentered(matrixStack, opt.text, i.toFloat(), 2f)
             }
             BlockMask.NON_AIR -> {
-                mc.inGameHud.drawTexture(matrixStack, i - 12, 6, 48, 0, 24, 22)
+                //mc.inGameHud.drawTexture(matrixStack, i - 12, 6, 48, 0, 24, 22)
                 drawTextCentered(matrixStack, opt.text, i.toFloat(), 2f)
             }
             BlockMask.OFFHAND -> {
@@ -104,7 +110,7 @@ object MakkitGui {
                 drawTextCentered(matrixStack, opt.text, i.toFloat(), 2f)
 
                 if (block != null && block != Blocks.AIR) {
-                    mc.itemRenderer.renderGuiItemIcon(playerEntity.offHandStack, i - 8, 12)
+                    //mc.itemRenderer.renderGuiItemIcon(playerEntity.offHandStack, i - 8, 12)
                 } else {
                     val invalidText = Text.literal("(Invalid Offhand Item)").styled {
                         it.withColor(TextColor.fromFormatting(Formatting.RED))
