@@ -45,33 +45,22 @@ object EditLegend {
         MakkitClient.config.run {
             if (showUtility) {
                 keysToUse.addAll(listOf(
-                        newBoxKey,
-                        moveBoxKey,
                         moveDragKey,
                         movePushKey,
-                        resizeSideKey,
-                        resizeSymmetricKey
+                        resizeSideKey
                 ))
             }
 
             if (showBasic) {
                 keysToUse.addAll(listOf(
-                        placeMode,
                         fillKey,
-                        wallsKey,
-                        multiPalette,
-                        repeatPatternKey,
-                        mirrorToolKey,
-                        airMode
+                        wallsKey
                 ))
             }
 
             if (showSystem) {
                 keysToUse.addAll(listOf(
-                        copyKey,
-                        pasteKey,
-                        undoKey,
-                        redoKey
+
                 ))
             }
 

@@ -73,18 +73,18 @@ class MakkitClient : ClientModInitializer {
         }
 
         private fun onInvScroll(e: Events.InventoryScrolledEvent) {
-            if (config.multiPalette.isDown) {
-                val holding = MinecraftClient.getInstance().player?.mainHandStack
-
-                if (holding != null) {
-                    ClientPalette.addToPalette(e.newSlot)
-                } else {
-                    ClientPalette.clearPalette()
-                }
-
-            } else {
-                ClientPalette.clearPalette()
-            }
+//            if (config.multiPalette.isDown) {
+//                val holding = MinecraftClient.getInstance().player?.mainHandStack
+//
+//                if (holding != null) {
+//                    ClientPalette.addToPalette(e.newSlot)
+//                } else {
+//                    ClientPalette.clearPalette()
+//                }
+//
+//            } else {
+//                ClientPalette.clearPalette()
+//            }
         }
 
         // Return true if we want to cancel game interaction
@@ -137,7 +137,7 @@ class MakkitClient : ClientModInitializer {
 
         fun getOrCreateRegion(): EditRegion {
             if (region == null) {
-                region = EditRegion()
+                region = EditRegion(drawDragPlane = true)
             }
             return region!!
         }

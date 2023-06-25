@@ -14,8 +14,6 @@ import net.minecraft.util.math.Vec3d
 
 abstract class DragTool(val region: EditRegion) {
 
-    abstract val kambrikKeybind: KambrikKeybind
-
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
     open val preview = AnimBox {
         fillColor = RenderColor.BLUE.toAlpha(.4f)
@@ -85,20 +83,20 @@ abstract class DragTool(val region: EditRegion) {
 
     fun update(delta: Long) {
         // Try to start dragging
-        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && kambrikKeybind.isDown) {
-            dragStart = region.selection.autoTrace()
-            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
-                onStartDragging(dragStart)
-            }
-        }
+//        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && kambrikKeybind.isDown) {
+//            dragStart = region.selection.autoTrace()
+//            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
+//                onStartDragging(dragStart)
+//            }
+//        }
 
         preview.update(delta)
 
         // Try to stop dragging
-        if (dragStart != BoxTraceResult.EMPTY && !kambrikKeybind.isDown) {
-            onStopDragging(dragStart)
-            dragStart = BoxTraceResult.EMPTY
-        }
+//        if (dragStart != BoxTraceResult.EMPTY && !kambrikKeybind.isDown) {
+//            onStopDragging(dragStart)
+//            dragStart = BoxTraceResult.EMPTY
+//        }
     }
 
     fun tryDraw() {

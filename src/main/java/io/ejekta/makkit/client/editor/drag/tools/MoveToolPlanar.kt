@@ -13,9 +13,6 @@ import net.minecraft.util.math.Vec3d
 
 internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.moveDragKey
-
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.offset(offset)
     }

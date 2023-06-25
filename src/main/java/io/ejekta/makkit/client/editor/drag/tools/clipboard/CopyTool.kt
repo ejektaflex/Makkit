@@ -9,9 +9,6 @@ import net.minecraft.util.math.BlockPos
 
 internal class CopyTool(region: EditRegion) : ClipboardTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.copyKey
-
     override val mode = ClipboardMode.COPY
 
     override fun onStartDragging(start: BoxTraceResult) {

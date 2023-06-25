@@ -15,9 +15,6 @@ internal class PatternToolAxial(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.repeatPatternKey
-
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.stretch(
                 offset.axisMask(dragStart.dir)

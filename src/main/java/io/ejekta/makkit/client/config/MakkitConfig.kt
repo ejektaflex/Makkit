@@ -1,14 +1,8 @@
 package io.ejekta.makkit.client.config
 
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
 import io.ejekta.kambrik.Kambrik
 import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.editor.EditLegend
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.gui.ToolScreen
 import io.ejekta.makkit.client.render.RenderColor
@@ -27,7 +21,6 @@ import me.shedaniel.clothconfig2.api.ModifierKeyCode
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.InputUtil
 import net.minecraft.text.Text
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
@@ -91,21 +84,9 @@ open class MakkitConfig {
 
     var moveDragKey = Default.MOVE_DRAG
     var movePushKey = Default.MOVE_PUSH
-    var fillKey = Default.FILL_AREA
-    var wallsKey = Default.FILL_WALL
+    var fillKey = Default.ACTION_A
+    var wallsKey = Default.ACTION_B
     var resizeSideKey = Default.RESIZE_SIDE
-    var resizeSymmetricKey = Default.RESIDE_SIDE_SYMMETRIC
-    var repeatPatternKey = Default.REPEAT_PATTERN
-    var mirrorToolKey = Default.MIRROR_TOOL
-    var copyKey = Default.COPY_KEY
-    var pasteKey = Default.PASTE_KEY
-    var newBoxKey = Default.NEW_BOX
-    var moveBoxKey = Default.MOVE_BOX
-    var undoKey = Default.UNDO
-    var redoKey = Default.REDO
-    var multiPalette = Default.MULTIPALETTE
-    var airMode = Default.AIR_MODE
-    var placeMode = Default.PLACE_MODE
 
     val keys: Set<KambrikKeybind>
         get() = setOf(
@@ -113,19 +94,7 @@ open class MakkitConfig {
                 movePushKey,
                 fillKey,
                 wallsKey,
-                resizeSideKey,
-                resizeSymmetricKey,
-                repeatPatternKey,
-                mirrorToolKey,
-                copyKey,
-                pasteKey,
-                newBoxKey,
-                moveBoxKey,
-                undoKey,
-                redoKey,
-                multiPalette,
-                airMode,
-                placeMode
+                resizeSideKey
         )
 
 
@@ -371,20 +340,7 @@ open class MakkitConfig {
 
         addKeybindEntry(Default.MOVE_DRAG, moveDragKey)
         addKeybindEntry(Default.MOVE_PUSH, movePushKey)
-        addKeybindEntry(Default.RESIZE_SIDE, resizeSideKey)
-        addKeybindEntry(Default.RESIDE_SIDE_SYMMETRIC, resizeSymmetricKey)
-        addKeybindEntry(Default.MULTIPALETTE, multiPalette)
-        addKeybindEntry(Default.NEW_BOX, newBoxKey)
-        addKeybindEntry(Default.MOVE_BOX, moveBoxKey)
-        addKeybindEntry(Default.PLACE_MODE, placeMode)
-        addKeybindEntry(Default.FILL_AREA, fillKey)
-        addKeybindEntry(Default.FILL_WALL, wallsKey)
-        addKeybindEntry(Default.REPEAT_PATTERN, repeatPatternKey)
-        addKeybindEntry(Default.MIRROR_TOOL, mirrorToolKey)
-        addKeybindEntry(Default.COPY_KEY, copyKey)
-        addKeybindEntry(Default.PASTE_KEY, pasteKey)
-        addKeybindEntry(Default.UNDO, undoKey)
-        addKeybindEntry(Default.REDO, redoKey)
+        //addKeybindEntry(Default.MULTIPALETTE, multiPalette)
 
 
         return builder.build()
@@ -408,65 +364,65 @@ open class MakkitConfig {
             }
         }
 
-        undoKey.onDown {
-            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
-                EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
-            }
+//        undoKey.onDown {
+//            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+//                EditHistoryPacket(UndoRedoMode.UNDO).sendToServer()
+//            }
+//
+//        }
+//
+//        redoKey.onDown {
+//            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
+//                EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
+//            }
+//        }
 
-        }
-
-        redoKey.onDown {
-            if (MakkitClient.region?.isAnyToolBeingUsed() == false) {
-                EditHistoryPacket(UndoRedoMode.REDO).sendToServer()
-            }
-        }
-
-        newBoxKey.onDown {
-
-            // Delete region if it exists and you are looking at it
-            if (MakkitClient.region?.isBeingInteractedWith() == true) {
-                MakkitClient.region = null
-                ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
-                return@onDown
-            }
-
-            val btr = MinecraftClient.getInstance().crosshairTarget
-            if (btr != null && btr.type == HitResult.Type.BLOCK) {
-                val bhr = btr as BlockHitResult
-                MakkitClient.getOrCreateRegion().apply {
-                    selection = Box(bhr.blockPos, bhr.blockPos.add(1.0, 1.0, 1.0))
-                    selectionRenderer.directSet(Box(
-                            bhr.pos, bhr.pos
-                    ))
-                    //selectionRenderer.shrinkToCenter()
-                }
-            }
-        }
-
-        moveBoxKey.onDown {
-
-            val btr = MinecraftClient.getInstance().crosshairTarget
-            if (btr != null && btr.type == HitResult.Type.BLOCK) {
-                val bhr = btr as BlockHitResult
-                MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos)
-            }
-
-        }
-
-        multiPalette.onDown {
-            val inv = MinecraftClient.getInstance().player?.inventory
-            val slot = inv?.selectedSlot
-            slot?.let { ClientPalette.addToPalette(it) }
-        }
-
-        placeMode.onDown {
-            MakkitClient.isInEditMode = !MakkitClient.isInEditMode
-        }
-
-        airMode.onDown {
-            val modeInd = MakkitClient.blockMask.ordinal
-            MakkitClient.blockMask = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
-        }
+//        newBoxKey.onDown {
+//
+//            // Delete region if it exists and you are looking at it
+//            if (MakkitClient.region?.isBeingInteractedWith() == true) {
+//                MakkitClient.region = null
+//                ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
+//                return@onDown
+//            }
+//
+//            val btr = MinecraftClient.getInstance().crosshairTarget
+//            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+//                val bhr = btr as BlockHitResult
+//                MakkitClient.getOrCreateRegion().apply {
+//                    selection = Box(bhr.blockPos, bhr.blockPos.add(1.0, 1.0, 1.0))
+//                    selectionRenderer.directSet(Box(
+//                            bhr.pos, bhr.pos
+//                    ))
+//                    //selectionRenderer.shrinkToCenter()
+//                }
+//            }
+//        }
+//
+//        moveBoxKey.onDown {
+//
+//            val btr = MinecraftClient.getInstance().crosshairTarget
+//            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+//                val bhr = btr as BlockHitResult
+//                MakkitClient.getOrCreateRegion().centerOn(bhr.blockPos)
+//            }
+//
+//        }
+//
+//        multiPalette.onDown {
+//            val inv = MinecraftClient.getInstance().player?.inventory
+//            val slot = inv?.selectedSlot
+//            slot?.let { ClientPalette.addToPalette(it) }
+//        }
+//
+//        placeMode.onDown {
+//            MakkitClient.isInEditMode = !MakkitClient.isInEditMode
+//        }
+//
+//        airMode.onDown {
+//            val modeInd = MakkitClient.blockMask.ordinal
+//            MakkitClient.blockMask = enumValues<BlockMask>()[(modeInd + 1) % enumValues<BlockMask>().size]
+//        }
     }
 
     companion object {
@@ -525,42 +481,21 @@ open class MakkitConfig {
                 get() = makkitMouse("move_dual_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT)
             val MOVE_PUSH: KambrikKeybind
                 get() = makkitMouse("move_single_axis", GLFW.GLFW_MOUSE_BUTTON_RIGHT, alt = true)
-            val FILL_AREA: KambrikKeybind
-                get() = makkitKey("fill_blocks", GLFW.GLFW_KEY_N) // was R
-            val FILL_WALL: KambrikKeybind
+
+            val POWER: KambrikKeybind
+                get() = makkitKey("power", GLFW.GLFW_KEY_Z)
+
+            val ACTION_A: KambrikKeybind
+                get() = makkitKey("fill_blocks", GLFW.GLFW_KEY_X)
+
+            val ACTION_B: KambrikKeybind
                 get() = makkitKey("fill_walls", GLFW.GLFW_KEY_C)
+
             val RESIZE_SIDE: KambrikKeybind
                 get() = makkitMouse("resize_single_axis", GLFW.GLFW_MOUSE_BUTTON_LEFT)
+
             val RESIDE_SIDE_SYMMETRIC: KambrikKeybind
                 get() = makkitMouse("resize_single_axis_symmetric", GLFW.GLFW_MOUSE_BUTTON_LEFT, alt = true)
-            val REPEAT_PATTERN: KambrikKeybind
-                get() = makkitKey("repeat_pattern", GLFW.GLFW_KEY_X)
-            val MIRROR_TOOL: KambrikKeybind
-                get() = makkitKey("mirror_tool", GLFW.GLFW_KEY_N)
-
-            // Special Keys
-            val MULTIPALETTE: KambrikKeybind
-                get() = makkitKey("multi_palette", GLFW.GLFW_KEY_V)
-            val AIR_MODE: KambrikKeybind
-                get() = makkitKey("air_mode", GLFW.GLFW_KEY_G)
-            val PLACE_MODE: KambrikKeybind
-                get() = makkitKey("place_mode", GLFW.GLFW_KEY_Z)
-
-            // Z Key should be Toggle Air Mode
-
-            // Non-Tool Keys
-            val COPY_KEY: KambrikKeybind
-                get() = makkitKey("copy_tool", GLFW.GLFW_KEY_C, true)
-            val PASTE_KEY: KambrikKeybind
-                get() = makkitKey("paste_tool", GLFW.GLFW_KEY_V, true)
-            val NEW_BOX: KambrikKeybind
-                get() = makkitKey("center_edit_region", GLFW.GLFW_KEY_B)
-            val MOVE_BOX: KambrikKeybind
-                get() = makkitKey("move_edit_region", GLFW.GLFW_KEY_B, alt = true)
-            val UNDO: KambrikKeybind
-                get() = makkitKey("undo", GLFW.GLFW_KEY_Z, ctrl = true)
-            val REDO: KambrikKeybind
-                get() = makkitKey("redo", GLFW.GLFW_KEY_Y, ctrl = true)
 
         }
 

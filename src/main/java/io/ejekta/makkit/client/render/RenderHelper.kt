@@ -154,7 +154,10 @@ object RenderHelper : AbstractRenderHelper() {
         vert.vertex(mat, end.x, end.y, end.z).color(color).next()
     }
 
-    fun boxTrace(box: Box, distance: Float = mc.interactionManager!!.reachDistance * 15, reverse: Boolean = false): BoxTraceResult {
+    fun boxTrace(box: Box, distance: Float = (mc.interactionManager?.reachDistance ?: 0f) * 15, reverse: Boolean = false): BoxTraceResult {
+        if (mc.interactionManager == null || mc.player == null) {
+            return BoxTraceResult.EMPTY
+        }
         val player = mc.player!!
         // Camera position and rotation
         val vec1 = player.getCameraPosVec(tickDelta)

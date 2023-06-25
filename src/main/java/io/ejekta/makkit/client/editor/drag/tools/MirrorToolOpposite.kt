@@ -1,7 +1,5 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.kambrik.input.KambrikKeybind
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
@@ -17,9 +15,6 @@ import kotlin.math.roundToInt
 internal class MirrorToolOpposite(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
-
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.mirrorToolKey
 
     // The distance between the original selection and the mirrored section, for display
     private var mirrorDist = 0

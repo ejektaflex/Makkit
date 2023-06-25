@@ -15,9 +15,6 @@ internal class ResizeToolAxial(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.resizeSideKey
-
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
         return super.getCursorOffset(snapped)?.dirMask(dragStart.dir)

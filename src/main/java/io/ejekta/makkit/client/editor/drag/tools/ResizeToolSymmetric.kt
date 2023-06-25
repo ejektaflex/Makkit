@@ -17,9 +17,6 @@ internal class ResizeToolSymmetric (
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.resizeSymmetricKey
-
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         // this locks to an axis and flips so that "positive" is in the direction direction
         val change = offset.dirMask(dragStart.dir)

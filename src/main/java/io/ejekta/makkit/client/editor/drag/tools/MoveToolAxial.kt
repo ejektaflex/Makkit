@@ -18,9 +18,6 @@ internal class MoveToolAxial(
         region: EditRegion
 ) : SingleAxisDragTool(region) {
 
-    override val kambrikKeybind: KambrikKeybind
-        get() = MakkitClient.config.movePushKey
-
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
         return super.getCursorOffset(snapped)?.axisMask(dragStart.dir)
