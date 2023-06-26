@@ -18,7 +18,8 @@ abstract class AbstractRenderHelper {
 
     lateinit var matrices: MatrixStack
 
-    protected var tickDelta: Float = 0f
+    var tickDelta: Float = 0f
+        private set
 
     protected lateinit var camera: Camera
 

@@ -62,27 +62,27 @@ class MyLayers(
 
 
         val OVERLAY_LINES_BOTH: RenderLayer = of("overlay_lines_both",
-                VertexFormats.POSITION_COLOR, DrawMode.LINES, 256,
+                VertexFormats.LINES, DrawMode.LINES, 256,
                 commonBuilder(DepthTest("always", 519), TRANSLUCENT_TRANSPARENCY).build(false))
 
         val OVERLAY_QUADS: RenderLayer = of("overlay_quads",
-                VertexFormats.POSITION_COLOR, DrawMode.QUADS, 256,
+                VertexFormats.POSITION_COLOR, DrawMode.QUADS, 131072,
                 MultiPhaseParameters.builder()
                     // Fix Z-Fighting on overlapping planes with ground
                     .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                     .transparency(TRANSLUCENT_TRANSPARENCY)
                     .writeMaskState(COLOR_MASK)
-                    .program(RenderPhase.OUTLINE_PROGRAM)
+                    .program(RenderPhase.COLOR_PROGRAM)
                     .build(false))
 
         val OVERLAY_QUADS_BEHIND: RenderLayer = of("overlay_quads_behind",
-                VertexFormats.POSITION_COLOR, DrawMode.QUADS, 256,
+                VertexFormats.POSITION_COLOR, DrawMode.QUADS, 131072,
                 MultiPhaseParameters.builder()
                     .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                     .transparency(TRANSLUCENT_TRANSPARENCY)
                     .depthTest(DepthTest("overlay_quads_behind", 516))
                     .writeMaskState(COLOR_MASK)
-                    .program(RenderPhase.OUTLINE_PROGRAM)
+                    .program(RenderPhase.COLOR_PROGRAM)
                     .build(false))
 
     }

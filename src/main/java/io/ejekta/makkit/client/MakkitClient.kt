@@ -5,10 +5,13 @@ import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
+import io.ejekta.makkit.client.render.MyLayers
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.enums.BlockMask
+import io.ejekta.makkit.common.ext.minus
+import io.ejekta.makkit.common.ext.plus
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
@@ -19,6 +22,9 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 
 class MakkitClient : ClientModInitializer {
 
@@ -122,6 +128,28 @@ class MakkitClient : ClientModInitializer {
                 region?.draw()
                 time = newTime
                 handleRemoteRegions(delta)
+
+                drawBlockFaces(
+                    BlockPos(0, 64, 0)
+                )
+
+                mc.player?.let {
+                    //println("DRAW FACE")
+                    drawBlockFaces(
+                        it.blockPos.north(2),
+                        RenderColor.BLUE,
+                        MyLayers.OVERLAY_QUADS
+                    )
+
+                    drawLine(
+                        it.getCameraPosVec(tickDelta) - Vec3d(0.1, 0.1, 0.1), it.eyePos + Vec3d(4.0, 5.0, 6.0)
+                    )
+
+                    drawBoxEdges(
+                        Box(it.blockPos, it.blockPos + BlockPos(1, 2, 3))
+                    )
+                }
+
             }
         }
 

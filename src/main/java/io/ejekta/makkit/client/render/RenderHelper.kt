@@ -1,13 +1,11 @@
 package io.ejekta.makkit.client.render
 
-import com.mojang.blaze3d.systems.RenderSystem
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.RenderLayers
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.Text
@@ -150,10 +148,11 @@ object RenderHelper : AbstractRenderHelper() {
 
     fun drawLine(start: Vec3d, end: Vec3d, color: RenderColor = RenderColor.WHITE, layer: RenderLayer = MyLayers.OVERLAY_LINES_BOTH) {
         val vert = eVerts.getBuffer(layer)
-        val mat = RenderHelper.matrices.peek().positionMatrix
+        val posMat = RenderHelper.matrices.peek().positionMatrix
+        val normalMat = RenderHelper.matrices.peek().normalMatrix
 
-        vert.vertex(mat, start.x, start.y, start.z).color(color).next()
-        vert.vertex(mat, end.x, end.y, end.z).color(color).next()
+        vert.vertex(posMat, start.x, start.y, start.z).color(color).normal(normalMat, 0f, 0f, 0f).next()
+        vert.vertex(posMat, end.x, end.y, end.z).color(color).normal(normalMat, 0f, 0f, 0f).next()
     }
 
     fun boxTrace(box: Box, distance: Float = mc.interactionManager?.reachDistance ?: 15f, reverse: Boolean = false): BoxTraceResult {
