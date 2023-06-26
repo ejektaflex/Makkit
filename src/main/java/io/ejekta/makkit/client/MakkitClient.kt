@@ -14,6 +14,7 @@ import io.ejekta.makkit.common.ext.minus
 import io.ejekta.makkit.common.ext.plus
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
+import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
@@ -22,9 +23,12 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
+import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
 
@@ -103,11 +107,12 @@ class MakkitClient : ClientModInitializer {
 
         // Return true if we want to cancel game interaction
         private fun onGameClick(e: Events.MouseClickedEvent): Boolean {
-//            region?.let {
-//                if (isInEditMode && it.isBeingInteractedWith()) {
-//                    return true
-//                }
-//            }
+            // TODO holding right click on a region and dragging mouse off the region while holding a block causes block placement spam
+            region?.let {
+                if (isInEditMode && it.isBeingInteractedWith() && mc.currentScreen == null) {
+                    return true
+                }
+            }
             return false
         }
 
@@ -128,28 +133,6 @@ class MakkitClient : ClientModInitializer {
                 region?.draw()
                 time = newTime
                 handleRemoteRegions(delta)
-
-                drawBlockFaces(
-                    BlockPos(0, 64, 0)
-                )
-
-                mc.player?.let {
-                    //println("DRAW FACE")
-                    drawBlockFaces(
-                        it.blockPos.north(2),
-                        RenderColor.BLUE,
-                        MyLayers.OVERLAY_QUADS
-                    )
-
-                    drawLine(
-                        it.getCameraPosVec(tickDelta) - Vec3d(0.1, 0.1, 0.1), it.eyePos + Vec3d(4.0, 5.0, 6.0)
-                    )
-
-                    drawBoxEdges(
-                        Box(it.blockPos, it.blockPos + BlockPos(1, 2, 3))
-                    )
-                }
-
             }
         }
 
@@ -177,6 +160,41 @@ class MakkitClient : ClientModInitializer {
         var remoteBoxMap = mutableMapOf<String, AnimBox>()
 
         var region: EditRegion? = null
+    }
+
+    val powerKey = Kambrik.Input.registerKeyboardBinding(
+        GLFW.GLFW_KEY_Z, "doota", "dootb", true
+    ) {
+        onDown {
+            println("POWER KEY!")
+
+            // Delete region if it exists, and you are looking at it
+            if (region?.isBeingInteractedWith() == true) {
+                region = null
+                ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
+                return@onDown
+            }
+
+            val btr = MinecraftClient.getInstance().crosshairTarget
+            if (btr != null && btr.type == HitResult.Type.BLOCK) {
+                val bhr = btr as BlockHitResult
+                getOrCreateRegion().apply {
+                    selection = Box(bhr.blockPos, bhr.blockPos.add(1, 1, 1))
+                    selectionRenderer.directSet(Box(
+                        bhr.pos, bhr.pos
+                    ))
+                    //selectionRenderer.shrinkToCenter()
+                }
+            }
+        }
+    }
+
+    val mouseDragging = Kambrik.Input.registerMouseBinding(
+        GLFW.GLFW_MOUSE_BUTTON_LEFT, "dootx", "dooty", true
+    ) {
+
+        println("Mouse clicked!")
+
     }
 
 }

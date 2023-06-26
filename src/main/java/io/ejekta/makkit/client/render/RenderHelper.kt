@@ -57,9 +57,11 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun getLookDirections(): List<Direction> {
+    fun getLookBehindDirections() = Direction.values().toList() - getLookDirections().toSet()
+
+    fun getLookDirections(): Set<Direction> {
         val vec = getLookVector()
-        var dirs = mutableListOf<Direction>()
+        var dirs = mutableSetOf<Direction>()
 
         if (vec.z < 0) {
             dirs.add(Direction.SOUTH)
@@ -155,7 +157,7 @@ object RenderHelper : AbstractRenderHelper() {
         vert.vertex(posMat, end.x, end.y, end.z).color(color).normal(normalMat, 0f, 0f, 0f).next()
     }
 
-    fun boxTrace(box: Box, distance: Float = mc.interactionManager?.reachDistance ?: 15f, reverse: Boolean = false): BoxTraceResult {
+    fun boxTrace(box: Box, distance: Float = 15f, reverse: Boolean = false): BoxTraceResult {
         val player = mc.player ?: return BoxTraceResult.EMPTY
         // Camera position and rotation
         val vec1 = player.getCameraPosVec(tickDelta)

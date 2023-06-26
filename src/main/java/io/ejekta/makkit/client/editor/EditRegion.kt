@@ -7,7 +7,6 @@ import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.render.AnimBox
-import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.data.CopyHelper
 import io.ejekta.makkit.common.editor.data.EditWorldOptions
@@ -53,19 +52,6 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun renderSelection() {
-        /*
-        selectionRenderer.render.box = when (MakkitClient.config.animations) {
-            true -> {
-                val b = selectionRenderer.render.box
-                Box(
-                        (b.getStart() + selection.getStart()).multiply(0.5),
-                        (b.getEnd() + selection.getEnd()).multiply(0.5)
-                )
-            }
-            false -> selection
-        }
-
-         */
         selectionRenderer.render.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
     }
 
@@ -180,6 +166,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 if (hit != BoxTraceResult.EMPTY) {
                     selectionRenderer.render.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
                     selectionRenderer.render.drawAxisSizes()
+                    selectionRenderer.render.drawBackFacePlanes()
                 }
             }
         }

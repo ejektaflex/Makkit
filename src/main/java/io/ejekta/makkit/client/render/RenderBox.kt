@@ -23,7 +23,7 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         get() = end.subtract(pos)
 
     fun drawNearAxisLabels(func: () -> Vec3d) {
-        val dirs = RenderHelper.getLookDirections()
+        val dirs = RenderHelper.getLookDirections().toList()
 
         dirs.forEachIndexed { i, direction ->
             val shifted = dirs[(i + 1) % 3]
@@ -39,6 +39,24 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
 
     fun drawAxisSizes() {
         drawNearAxisLabels(size)
+    }
+
+    fun drawBackFacePlanes() {
+        val dirs = RenderHelper.getLookBehindDirections()
+
+
+        dirs.forEachIndexed { i, direction ->
+
+            var fp = box.getFacePlane(direction)
+
+            val flatStretchies = Vec3d(3.0, 3.0, 3.0).reverseMask(direction)
+            fp = fp.expand(flatStretchies.x, flatStretchies.y, flatStretchies.z)
+
+            RenderBox(
+                fp
+            ).draw(RenderColor.BLUE.toAlpha(0.2f))
+
+        }
     }
 
     fun drawAxisPositions() {
