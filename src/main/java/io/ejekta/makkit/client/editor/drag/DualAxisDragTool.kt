@@ -5,7 +5,7 @@ import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.render.RenderBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.autoTrace
-import io.ejekta.makkit.common.ext.reverseMask
+import io.ejekta.makkit.common.ext.flatMasked
 import io.ejekta.makkit.common.ext.snapped
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -30,7 +30,7 @@ internal abstract class DualAxisDragTool(region: EditRegion) : DragTool(region) 
                 DRAG_PLANE_SIZE,
                 DRAG_PLANE_SIZE,
                 DRAG_PLANE_SIZE
-        ).reverseMask(start.dir)
+        ).flatMasked(start.dir)
 
         plane.box = Box(
                 start.hit.subtract(areaSize),

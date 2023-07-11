@@ -1,7 +1,5 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.kambrik.input.KambrikKeybind
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.render.RenderColor
@@ -17,11 +15,11 @@ internal class ResizeToolAxial(
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
-        return super.getCursorOffset(snapped)?.dirMask(dragStart.dir)
+        return super.getCursorOffset(snapped)?.dirMasked(dragStart.dir)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
-        val shrinkVec = offset.dirMask(dragStart.dir.opposite)
+        val shrinkVec = offset.dirMasked(dragStart.dir.opposite)
         return box.shrinkSide(shrinkVec, dragStart.dir)
     }
 

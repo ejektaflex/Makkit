@@ -166,8 +166,28 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 if (hit != BoxTraceResult.EMPTY) {
                     selectionRenderer.render.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
                     selectionRenderer.render.drawAxisSizes()
-                    selectionRenderer.render.drawBackFacePlanes()
+                } else {
+                    val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
+
+                    val backFaces = selectionRenderer.render.genBackfacePlanes(9.0)
+
+//                    for ((dir, bf) in backFaces) {
+//                        RenderBox(bf).draw(RenderColor.BLUE.toAlpha(.3f))
+//                    }
+
+                    val results = backFaces.map { it.key to it.value.autoTrace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
+
+                    val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
+                        camVec
+                    ) }?.key
+
+                    closestBackplane?.let {
+                        selectionRenderer.render.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
+                    }
                 }
+
+
+
             }
         }
 

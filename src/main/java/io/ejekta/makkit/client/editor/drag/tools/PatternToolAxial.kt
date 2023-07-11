@@ -1,7 +1,5 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.kambrik.input.KambrikKeybind
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
@@ -17,7 +15,7 @@ internal class PatternToolAxial(
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.stretch(
-                offset.axisMask(dragStart.dir)
+                offset.axisMasked(dragStart.dir)
         )
     }
 
@@ -65,8 +63,8 @@ internal class PatternToolAxial(
 
                     RenderBox().apply {
                         box = Box(
-                                pos.add(size.multiply(step).dirMask(dragStart.dir)),
-                                pos.add(size.multiply(step).dirMask(dragStart.dir)).add(size)
+                                pos.add(size.multiply(step).dirMasked(dragStart.dir)),
+                                pos.add(size.multiply(step).dirMasked(dragStart.dir)).add(size)
                         )
                     }.draw()
 

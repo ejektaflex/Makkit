@@ -1,6 +1,5 @@
 package io.ejekta.makkit.client.editor.drag
 
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.render.RenderBox
@@ -45,7 +44,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE
-            ).reverseMask(direction)
+            ).flatMasked(direction)
             renderPlanes[i].box = Box(
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)

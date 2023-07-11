@@ -18,7 +18,7 @@ class MirrorOperation(val flipCenter: @Contextual Vec3d) : WorldOperation() {
         for (block in action.box.getBlockArray()) {
             val vec = block.vec3d()
             val newPosUnconstrained = vec.subtract(vec.flipAround(flipCenter)).add(Vec3d(1.0, 1.0, 1.0))
-            val newPos = vec.add(newPosUnconstrained.axisMask(action.direction).multiply(-1.0))
+            val newPos = vec.add(newPosUnconstrained.axisMasked(action.direction).multiply(-1.0))
             action.edit(BlockPos(newPos.roundToVec3i()), view.getBlockState(block).flippedOn(action.direction.axis))
         }
 

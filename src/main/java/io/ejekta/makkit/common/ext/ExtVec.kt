@@ -70,7 +70,7 @@ fun Vec3d.snapped(snap: Boolean): Vec3d {
 }
 
 fun Vec3d.projectedIn(dir: Direction, amt: Double): Vec3d {
-    return add(Vec3d(amt, amt, amt).dirMask(dir))
+    return add(Vec3d(amt, amt, amt).dirMasked(dir))
 }
 
 fun Vec3d.roundToVec3i(): Vec3i {
@@ -88,19 +88,20 @@ private fun intSwitch(i: Int): Int {
     return (abs(i) - 1) * -1
 }
 
-fun Vec3d.reverseMask(dir: Direction): Vec3d {
+// Masks a vector, flattening (zeroing) it on said axis
+fun Vec3d.flatMasked(dir: Direction): Vec3d {
     val unit = dir.vector
     val mask = Vec3i(intSwitch(unit.x), intSwitch(unit.y), intSwitch(unit.z))
     return Vec3d(x * mask.x, y * mask.y, z * mask.z)
 }
 
-// Masks a vector with a direction's unit vector
-fun Vec3d.dirMask(dir: Direction): Vec3d {
+// Masks a vector with a direction's unit vector, zeroing the other two axes
+fun Vec3d.dirMasked(dir: Direction): Vec3d {
     return multiply(dir.vec3d())
 }
 
 // Same as dirMask, but uses an absolute positive unit vector
-fun Vec3d.axisMask(dir: Direction): Vec3d {
+fun Vec3d.axisMasked(dir: Direction): Vec3d {
     return multiply(dir.vec3d().abs())
 }
 
@@ -165,6 +166,6 @@ fun Vec3d.flipAround(center: Vec3d): Vec3d {
 fun Vec3d.refitForSize(size: Vec3d, dir: Direction): Vec3d {
     return when (dir.direction!!) {
         Direction.AxisDirection.POSITIVE -> this
-        Direction.AxisDirection.NEGATIVE -> this.subtract(size.axisMask(dir))
+        Direction.AxisDirection.NEGATIVE -> this.subtract(size.axisMasked(dir))
     }
 }

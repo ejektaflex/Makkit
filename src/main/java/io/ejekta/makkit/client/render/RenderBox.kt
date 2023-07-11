@@ -41,22 +41,22 @@ class RenderBox(inPos: Vec3d = Vec3d(0.0, 0.0, 0.0), inPos2: Vec3d = Vec3d(1.0, 
         drawNearAxisLabels(size)
     }
 
-    fun drawBackFacePlanes() {
+    fun genBackfacePlanes(padding: Double): Map<Direction, Box> {
         val dirs = RenderHelper.getLookBehindDirections()
+        val backPlanes = mutableMapOf<Direction, Box>()
+
 
 
         dirs.forEachIndexed { i, direction ->
 
             var fp = box.getFacePlane(direction)
 
-            val flatStretchies = Vec3d(3.0, 3.0, 3.0).reverseMask(direction)
-            fp = fp.expand(flatStretchies.x, flatStretchies.y, flatStretchies.z)
+            val flatStretchies = Vec3d(padding, padding, padding).flatMasked(direction)
 
-            RenderBox(
-                fp
-            ).draw(RenderColor.BLUE.toAlpha(0.2f))
+            backPlanes[direction] = fp.expand(flatStretchies.x, flatStretchies.y, flatStretchies.z)
 
         }
+        return backPlanes
     }
 
     fun drawAxisPositions() {

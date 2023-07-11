@@ -1,10 +1,8 @@
 package io.ejekta.makkit.common.ext
 
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.BoxMixin
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.enums.SideSelectionStyle
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
@@ -48,14 +46,14 @@ fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
 }
 
 fun Box.projectedIn(dir: Direction, amt: Double): Box {
-    return offset(Vec3d(amt, amt, amt).axisMask(dir))
+    return offset(Vec3d(amt, amt, amt).axisMasked(dir))
     //return add(Vec3d(amt, amt, amt).dirMask(dir))
 }
 
 fun Box.getFacePlane(dir: Direction): Box {
-    val faceSize = getSize().reverseMask(dir)
+    val faceSize = getSize().flatMasked(dir)
 
-    val width = getSize().dirMask(dir)
+    val width = getSize().dirMasked(dir)
 
     val boxStart = center.subtract(
             faceSize.multiply(0.5)
@@ -70,12 +68,12 @@ fun Box.getFacePlane(dir: Direction): Box {
 }
 
 fun Box.offsetBy(amt: Double, dir: Direction): Box {
-    return offset(Vec3d(amt, amt, amt).dirMask(dir))
+    return offset(Vec3d(amt, amt, amt).dirMasked(dir))
 }
 
 fun Box.resizeBy(amt: Double, dir: Direction): Box {
     return shrinkSide(
-            Vec3d(amt, amt, amt).axisMask(dir),
+            Vec3d(amt, amt, amt).axisMasked(dir),
             dir
     )
 }
