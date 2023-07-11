@@ -1,67 +1,49 @@
 package io.ejekta.makkit.client.render
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.common.ext.getEnd
-import io.ejekta.makkit.common.ext.getStart
+import io.ejekta.makkit.common.ext.EMPTY_BOX
+import io.ejekta.makkit.common.ext.calcEnd
+import io.ejekta.makkit.common.ext.calcPos
 import io.ejekta.makkit.common.ext.plus
-import net.minecraft.client.MinecraftClient
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import kotlin.math.*
-import kotlin.math.min
 
-class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit = {}) {
+class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
 
-    val render: RenderBox = RenderBox()
+    // The box that is rendered
+    var renderBox = realBox()
+        private set
 
     var isAnimating: Boolean = false
         private set
 
-    var start: Box = inTarget
-        private set
+    // The real location of the box
+    private val actualBox: Box
+        get() = realBox()
 
-    var target: Box = inTarget
-        private set
-
-    init {
-        render.apply(setup)
+    fun setImmediate(box: Box) {
+        renderBox = box
     }
 
-    fun directSet(box: Box) {
-        render.box = box
-    }
-
-    fun startAnimating() {
+    private fun startAnimating() {
         if (!isAnimating) {
             isAnimating = true
         }
     }
 
-    fun resize(box: Box) {
-        startAnimating()
-        target = box
-    }
-
-    fun snapToTarget() {
-        render.box = target
-    }
-
     fun shrinkToCenter() {
-        render.box = Box(
-                target.center,
-                target.center
-        )
+        val center = actualBox.center
+        renderBox = Box(center, center)
     }
 
     fun snapTo(box: Box) {
-        target = box
-        snapToTarget()
+        renderBox = actualBox
     }
 
     fun update(dt: Long) {
 
         if (!MakkitClient.animations) {
-            render.box = target
+            renderBox = actualBox
             return
         }
 
@@ -70,14 +52,14 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit 
         val m = 1.0 / v
 
 
-        render.box = Box(
-                render.box.getStart() + (
-                        target.getStart().subtract(render.box.getStart()).multiply(
+        renderBox = Box(
+                renderBox.calcPos() + (
+                        actualBox.calcPos().subtract(renderBox.calcPos()).multiply(
                                 (dt.coerceAtMost((m * 0.5).roundToLong()) * v)
                         )
                 ),
-                render.box.getEnd() + (
-                        target.getEnd().subtract(render.box.getEnd()).multiply(
+                renderBox.calcEnd() + (
+                        actualBox.calcEnd().subtract(renderBox.calcEnd()).multiply(
                                 (dt.coerceAtMost((m * 0.5).roundToLong()) * v)
                         )
                 )
@@ -87,7 +69,7 @@ class AnimBox(inTarget: Box = Box(BlockPos.ORIGIN), setup: RenderBox.() -> Unit 
     }
 
     fun draw() {
-        render.draw()
+        renderBox.onDraw()
     }
 
 }

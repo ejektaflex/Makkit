@@ -2,9 +2,12 @@ package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
+import io.ejekta.makkit.client.editor.drag.DragTool
 import io.ejekta.makkit.client.editor.drag.tools.*
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
 import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
+import io.ejekta.makkit.client.editor.handle.FaceHandle
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
@@ -27,18 +30,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     var selection: Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
         set(value) {
             field = value
-            selectionRenderer.resize(value)
             ShadowBoxUpdatePacket(value).sendToServer()
         }
 
-    val selectionRenderer = AnimBox(selection) {
-        fillColor = MakkitClient.selectionBoxColor.toAlpha(.4f)
-        edgeColor = MakkitClient.selectionBoxColor.toAlpha(.4f)
-    }
+    val colorToDraw = MakkitClient.selectionBoxColor.toAlpha(.4f)
 
-    fun changeColors(fill: RenderColor, edge: RenderColor = fill) {
-        selectionRenderer.render.fillColor = fill
-        selectionRenderer.render.edgeColor = edge
+    val selectionRenderer = AnimBox({ selection }) {
+        draw(colorToDraw)
     }
 
     fun isActive() = MakkitClient.isInEditMode
@@ -52,7 +50,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun renderSelection() {
-        selectionRenderer.render.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
+        selectionRenderer.renderBox.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
     }
 
     fun getSelectionColor(): RenderColor {
@@ -76,15 +74,23 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
-    private var tools = mutableListOf(
-            MoveToolPlanar(this),
-            MoveToolAxial(this),
-            ResizeToolAxial(this),
-            ResizeToolSymmetric(this),
-            PatternToolAxial(this),
-            MirrorToolOpposite(this),
-            CopyTool(this),
-            PasteTool(this)
+    private var handles = mutableListOf<Handle>()
+
+    init {
+        for (handleDir in Direction.values()) {
+            handles.add(FaceHandle(this, handleDir))
+        }
+    }
+
+    private var tools = mutableListOf<DragTool>(
+//            MoveToolPlanar(this),
+//            MoveToolAxial(this),
+//            ResizeToolAxial(this),
+//            ResizeToolSymmetric(this),
+//            PatternToolAxial(this),
+//            MirrorToolOpposite(this),
+//            CopyTool(this),
+//            PasteTool(this)
     )
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
@@ -164,12 +170,12 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                 // default state when no drag tool is being used
                 val hit = selection.autoTrace()
                 if (hit != BoxTraceResult.EMPTY) {
-                    selectionRenderer.render.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                    selectionRenderer.render.drawAxisSizes()
+                    selectionRenderer.renderBox.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
+                    selectionRenderer.renderBox.drawAxisSizes()
                 } else {
                     val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
-                    val backFaces = selectionRenderer.render.genBackfacePlanes(9.0)
+                    val backFaces = selectionRenderer.renderBox.genBackfacePlanes(9.0)
 
 //                    for ((dir, bf) in backFaces) {
 //                        RenderBox(bf).draw(RenderColor.BLUE.toAlpha(.3f))
@@ -182,7 +188,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                     ) }?.key
 
                     closestBackplane?.let {
-                        selectionRenderer.render.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
+                        selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
                     }
                 }
 

@@ -1,9 +1,8 @@
 package io.ejekta.makkit.common.editor.operations
 
 import io.ejekta.makkit.common.editor.data.EditAction
-import io.ejekta.makkit.common.editor.operations.WorldOperation.Companion.modNoNegative
 import io.ejekta.makkit.common.ext.getBlockArray
-import io.ejekta.makkit.common.ext.getStart
+import io.ejekta.makkit.common.ext.calcPos
 import io.ejekta.makkit.common.ext.roundToVec3i
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -17,7 +16,7 @@ class PatternOperation(val boxBefore: @Contextual Box, val afterBox: @Contextual
     override fun getType() = OpType.PATTERN
 
     override fun calculate(action: EditAction, view: BlockView) {
-        val startPos = BlockPos(boxBefore.getStart().roundToVec3i())
+        val startPos = BlockPos(boxBefore.calcPos().roundToVec3i())
         val afterBlocks = afterBox.getBlockArray()
 
         for (blockPos in afterBlocks) {

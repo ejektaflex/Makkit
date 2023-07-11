@@ -1,23 +1,26 @@
 package io.ejekta.makkit.client.editor.drag
 
-import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
-import io.ejekta.makkit.common.ext.autoTrace
+import io.ejekta.makkit.common.ext.draw
 import io.ejekta.makkit.common.ext.sizeInDirection
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
-abstract class DragTool(val region: EditRegion) {
+abstract class DragTool(val handle: Handle) {
+
+    val region: EditRegion
+        get() = handle.region
+
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
-    open val preview = AnimBox {
-        fillColor = RenderColor.BLUE.toAlpha(.4f)
-        edgeColor = RenderColor.ORANGE.toAlpha(.2f)
+    open val preview = AnimBox({ handle.handleBox }) {
+        draw(fillColor, edgeColor)
     }
 
     var dragStart = BoxTraceResult.EMPTY
@@ -43,7 +46,7 @@ abstract class DragTool(val region: EditRegion) {
     }
 
     protected fun getPreviewSizeIn(direction: Direction): Double {
-        return preview.target.sizeInDirection(direction)
+        return handle.handleBox.sizeInDirection(direction)
     }
 
 
@@ -113,14 +116,16 @@ abstract class DragTool(val region: EditRegion) {
      */
     open fun onDrawPreview(offset: Vec3d) {
         val newPreview = getPreviewBox(offset, region.selection)
-        if (newPreview != preview.target) {
-            preview.resize(getPreviewBox(offset, region.selection))
-        }
+//        if (newPreview != preview.actualBox) {
+//            //preview.resize(getPreviewBox(offset, region.selection))
+//        }
         preview.draw()
     }
 
     protected companion object {
         const val DRAG_PLANE_SIZE = 64.0
+        val fillColor = RenderColor.BLUE.toAlpha(.4f)
+        val edgeColor = RenderColor.ORANGE.toAlpha(.2f)
     }
 
 }

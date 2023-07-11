@@ -5,13 +5,11 @@ import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
-import io.ejekta.makkit.client.render.MyLayers
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.enums.BlockMask
-import io.ejekta.makkit.common.ext.minus
-import io.ejekta.makkit.common.ext.plus
+import io.ejekta.makkit.common.ext.draw
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
@@ -27,7 +25,6 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
-import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
@@ -143,7 +140,7 @@ class MakkitClient : ClientModInitializer {
         private fun handleRemoteRegions(delta: Long) {
             for (entry in remoteBoxMap) {
                 entry.value.update(delta)
-                entry.value.render.draw(
+                entry.value.renderBox.draw(
                     colorFill = multiplayerBoxColor.toAlpha(.2f),
                     colorEdge = multiplayerBoxColor.toAlpha(.2f)
                 )
@@ -180,7 +177,7 @@ class MakkitClient : ClientModInitializer {
                 val bhr = btr as BlockHitResult
                 getOrCreateRegion().apply {
                     selection = Box(bhr.blockPos, bhr.blockPos.add(1, 1, 1))
-                    selectionRenderer.directSet(Box(
+                    selectionRenderer.setImmediate(Box(
                         bhr.pos, bhr.pos
                     ))
                     //selectionRenderer.shrinkToCenter()

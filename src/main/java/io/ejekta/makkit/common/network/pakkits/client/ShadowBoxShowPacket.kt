@@ -3,6 +3,8 @@ package io.ejekta.makkit.common.network.pakkits.client
 import io.ejekta.kambrik.message.ClientMsg
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.render.AnimBox
+import io.ejekta.makkit.client.render.RenderColor
+import io.ejekta.makkit.common.ext.draw
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import net.minecraft.util.math.Box
@@ -25,9 +27,9 @@ class ShadowBoxShowPacket(
             }
         } else {
             if (uid in MakkitClient.remoteBoxMap) {
-                MakkitClient.remoteBoxMap[uid]!!.resize(box)
+                //MakkitClient.remoteBoxMap[uid]!!.resize(box)
             } else {
-                MakkitClient.remoteBoxMap[uid] = AnimBox(box).apply {
+                MakkitClient.remoteBoxMap[uid] = AnimBox({ box }, { draw(RenderColor.RED) }).apply {
                     shrinkToCenter()
                 }
             }

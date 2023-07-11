@@ -3,7 +3,7 @@ package io.ejekta.makkit.client.editor.drag.tools
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
-import io.ejekta.makkit.client.render.RenderBox
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.operations.MirrorOperation
 import io.ejekta.makkit.common.ext.*
@@ -13,18 +13,15 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 internal class MirrorToolOpposite(
-        region: EditRegion
-) : SingleAxisDragTool(region) {
+    handle: Handle
+) : SingleAxisDragTool(handle) {
 
     // The distance between the original selection and the mirrored section, for display
     private var mirrorDist = 0
 
     private var projectionVector = Vec3d.ZERO
 
-    private val mirrorPlane = RenderBox().apply {
-        fillColor = RenderColor.PURPLE.toAlpha(.2f)
-        edgeColor = RenderColor.PINK.toAlpha(.3f)
-    }
+    private var mirrorPlane = EMPTY_BOX
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
@@ -32,9 +29,9 @@ internal class MirrorToolOpposite(
     }
 
     override fun onStopDragging(stop: BoxTraceResult) {
-        val old = Box(region.selection.getStart(), region.selection.getEnd())
+        val old = Box(region.selection.calcPos(), region.selection.calcEnd())
         super.onStopDragging(stop)
-        region.doOperation(MirrorOperation(mirrorPlane.box.getStart()), editBox = old, trace = stop)
+        region.doOperation(MirrorOperation(mirrorPlane.calcPos()), editBox = old, trace = stop)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
@@ -45,14 +42,14 @@ internal class MirrorToolOpposite(
 
 
 
-        mirrorPlane.box = selectedFace.projectedIn(
+        mirrorPlane = selectedFace.projectedIn(
                 dragStart.dir,
                 offset.getComponentAlongAxis(dragStart.dir.axis) * 0.5
         )
 
         val mirrorPos = selectedFace
-                .getStart()
-                .flipAround(mirrorPlane.box.getStart())
+                .calcPos()
+                .flipAround(mirrorPlane.calcPos())
                 .refitForSize(box.getSize(), dragStart.dir)
 
         return Box(
@@ -65,11 +62,16 @@ internal class MirrorToolOpposite(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        mirrorPlane.draw()
+        mirrorPlane.draw(fillColor, edgeColor)
         mirrorPlane.drawTextOnFace(
                 dragStart.dir,
                 mirrorDist.toString()
         )
+    }
+
+    companion object {
+        val fillColor = RenderColor.PURPLE.toAlpha(.2f)
+        val edgeColor = RenderColor.PINK.toAlpha(.3f)
     }
 
 }

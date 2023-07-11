@@ -2,24 +2,24 @@ package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.render.RenderBox
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region) {
+internal abstract class SingleAxisDragTool(handle: Handle) : DragTool(handle) {
 
-    protected val planeAxis1 = RenderBox()
-    protected val planeAxis2 = RenderBox()
+    protected var planeAxis1 = EMPTY_BOX
+    protected var planeAxis2 = EMPTY_BOX
 
-    protected val planes: List<RenderBox>
+    protected val planes: List<Box>
         get() = listOf(planeAxis1, planeAxis2)
 
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
         val offsets = planes.mapNotNull {
-            val current = RenderHelper.boxTrace(it.box, 1000f)
+            val current = RenderHelper.boxTrace(it, 1000f)
             if (current != BoxTraceResult.EMPTY) {
                 current
             } else {
@@ -35,7 +35,7 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
     override fun onStartDragging(start: BoxTraceResult) {
         super.onStartDragging(start)
 
-        val renderPlanes = planes
+        val renderPlanes = planes.toMutableList()
 
         val dirs = start.dir.otherDirectionsSameSigNum()
 
@@ -45,10 +45,11 @@ internal abstract class SingleAxisDragTool(region: EditRegion) : DragTool(region
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE
             ).flatMasked(direction)
-            renderPlanes[i].box = Box(
+            renderPlanes[i] = Box(
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)
             )
+            // TODO why are we setting renderPlanes[i]? Are we using it?
         }
     }
 

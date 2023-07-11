@@ -2,6 +2,7 @@ package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
@@ -10,8 +11,8 @@ import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
 
 internal class ResizeToolAxial(
-        region: EditRegion
-) : SingleAxisDragTool(region) {
+    handle: Handle
+) : SingleAxisDragTool(handle) {
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
@@ -26,15 +27,15 @@ internal class ResizeToolAxial(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = preview.render.box.center
-        val length = preview.render.box.sizeInDirection(dragStart.dir) / 2 - 0.25
+        val faceCenter = preview.renderBox.center
+        val length = preview.renderBox.sizeInDirection(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
         //preview.render.drawSizeOnFace(dragStart.dir)
-        preview.render.drawTextOnFace(
-                dragStart.dir, preview.target.sizeOnAxis(dragStart.dir.axis).roundToInt().toString()
+        preview.renderBox.drawTextOnFace(
+                dragStart.dir, handle.handleBox.sizeOnAxis(dragStart.dir.axis).roundToInt().toString()
         )
     }
 

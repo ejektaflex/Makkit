@@ -1,17 +1,17 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.kambrik.input.KambrikKeybind
-import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
+import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.ext.drawNearAxisLabels
 import io.ejekta.makkit.common.ext.getFacePlane
 import io.ejekta.makkit.common.ext.projectedIn
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
+internal class MoveToolPlanar(handle: Handle) : DualAxisDragTool(handle) {
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.offset(offset)
@@ -20,7 +20,7 @@ internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = preview.render.box.getFacePlane(dragStart.dir).center
+        val faceCenter = preview.renderBox.getFacePlane(dragStart.dir).center
         for (axisDir in getAlternateAxesDirections()) {
             val length = getSelectionSizeIn(axisDir) / 2 - 0.25
             val lineStart = faceCenter.projectedIn(axisDir, length)
@@ -28,7 +28,7 @@ internal class MoveToolPlanar(region: EditRegion) : DualAxisDragTool(region) {
             RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
         }
 
-        preview.render.drawNearAxisLabels(offset)
+        preview.renderBox.drawNearAxisLabels(offset)
     }
 
 }

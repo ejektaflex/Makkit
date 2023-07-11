@@ -17,8 +17,8 @@ private fun Box.trace(
 
 fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
 
-    var vecA = getStart()
-    var vecB = getEnd()
+    var vecA = calcPos()
+    var vecB = calcEnd()
 
     when (dir.direction) {
         Direction.AxisDirection.NEGATIVE -> {
@@ -34,7 +34,7 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
 }
 
 fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
-    val start = getStart()
+    val start = calcPos()
     val size = getSize()
     for (x in start.x.toInt() until (start.x + size.x).toInt()) {
         for (y in start.y.toInt() until (start.y + size.y).toInt()) {
@@ -82,8 +82,8 @@ fun Box.resizeBy(amt: Double, dir: Direction): Box {
 fun Box.withMinSize(minSize: Vec3d): Box {
     val size = getSize()
     return Box(
-            getStart(),
-            getStart().add(
+            calcPos(),
+            calcPos().add(
                     max(
                             getSize(),
                             Vec3d(1.0, 1.0, 1.0)
@@ -92,7 +92,7 @@ fun Box.withMinSize(minSize: Vec3d): Box {
     )
 }
 
-fun Box.getStart(): Vec3d {
+fun Box.calcPos(): Vec3d {
     return Vec3d(minX, minY, minZ)
 }
 
@@ -104,16 +104,16 @@ fun Box.blockSize(): BlockPos {
     return BlockPos(getSize().roundToVec3i())
 }
 
-fun Box.getEnd(): Vec3d {
+fun Box.calcEnd(): Vec3d {
     return Vec3d(maxX, maxY, maxZ)
 }
 
 fun Box.startBlock(): BlockPos {
-    return BlockPos(getStart().roundToVec3i())
+    return BlockPos(calcPos().roundToVec3i())
 }
 
 fun Box.endBlock(): BlockPos {
-    return BlockPos(getEnd().roundToVec3i())
+    return BlockPos(calcEnd().roundToVec3i())
 }
 
 fun Box.rayTraceForSide(min: Vec3d, max: Vec3d): BoxTraceResult? {
@@ -157,11 +157,11 @@ fun Box.sizeInDirection(dir: Direction): Double {
 }
 
 fun Box.positionInDirection(dir: Direction): Double {
-    return getStart().axisValue(dir.axis)
+    return calcPos().axisValue(dir.axis)
 }
 
 fun Box.positionOffsetInDirection(dir: Direction, other: Box): Double {
-    return getStart().axisValue(dir.axis) - other.getStart().axisValue(dir.axis)
+    return calcPos().axisValue(dir.axis) - other.calcPos().axisValue(dir.axis)
 }
 
 
@@ -260,4 +260,14 @@ private fun Box.geniusTrace(): BoxTraceResult {
             }!!
         }
     }
+}
+
+fun Box.genBackfacePlanes(padding: Double): Map<Direction, Box> {
+    val dirs = RenderHelper.getLookBehindDirections()
+    val backPlanes = mutableMapOf<Direction, Box>()
+    dirs.forEachIndexed { _, direction ->
+        val flatStretchies = Vec3d(padding, padding, padding).flatMasked(direction)
+        backPlanes[direction] = getFacePlane(direction).expand(flatStretchies.x, flatStretchies.y, flatStretchies.z)
+    }
+    return backPlanes
 }
