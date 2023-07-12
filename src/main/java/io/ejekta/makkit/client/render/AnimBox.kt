@@ -41,7 +41,6 @@ class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
     }
 
     fun update(dt: Long) {
-
         if (!MakkitClient.animations) {
             renderBox = actualBox
             return
@@ -50,7 +49,6 @@ class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
         val spd = MakkitClient.animationSpeed
         val v = spd / 1000.0
         val m = 1.0 / v
-
 
         renderBox = Box(
                 renderBox.calcPos() + (
@@ -64,8 +62,6 @@ class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
                         )
                 )
         )
-
-
     }
 
     fun draw() {

@@ -31,6 +31,8 @@ class MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
+        // TODO we might need to move these messages into common
+
         Kambrik.Message.registerClientMessage(
             FocusRegionPacket.serializer(),
             FocusRegionPacket::class,
@@ -160,7 +162,7 @@ class MakkitClient : ClientModInitializer {
     }
 
     val powerKey = Kambrik.Input.registerKeyboardBinding(
-        GLFW.GLFW_KEY_Z, "doota", "dootb", true
+        GLFW.GLFW_KEY_Z, "dootp", "dootb", true
     ) {
         onDown {
             println("POWER KEY!")
@@ -183,6 +185,14 @@ class MakkitClient : ClientModInitializer {
                     //selectionRenderer.shrinkToCenter()
                 }
             }
+        }
+    }
+
+    val actionKeyA = Kambrik.Input.registerKeyboardBinding(
+        GLFW.GLFW_KEY_C, "doota", "dootb", true
+    ) {
+        onDown {
+            println("ACTION KEY A!")
         }
     }
 

@@ -7,9 +7,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import kotlin.math.abs
 
-private fun Box.trace(
+fun Box.trace(
         reverse: Boolean = false // TODO re implement back selecting toggle
 ): BoxTraceResult {
     return RenderHelper.boxTrace(this, reverse = reverse)
@@ -212,54 +211,6 @@ fun Box.longestAxisLength(): Double {
     return enumValues<Direction.Axis>().maxBy {
         size.getComponentAlongAxis(it)
     }!!.let { size.getComponentAlongAxis(it) }
-}
-
-fun Box.autoTrace(): BoxTraceResult {
-    return simpleTrace()
-}
-
-private fun Box.simpleTrace(): BoxTraceResult {
-    return trace()
-}
-
-private fun Box.smartTrace(): BoxTraceResult {
-    val front = trace(reverse = false)
-    val back = trace(reverse = true)
-    val nonEmpty = listOf(front, back).filter { it != BoxTraceResult.EMPTY }
-
-    return when {
-        nonEmpty.isEmpty() -> {
-            BoxTraceResult.EMPTY
-        }
-        nonEmpty.size == 1 -> {
-            nonEmpty.first()
-        }
-        else -> {
-            nonEmpty.minBy { faceCenterPos(it.dir).distanceTo(it.hit) }!!
-        }
-    }
-}
-
-private fun Box.geniusTrace(): BoxTraceResult {
-    val front = trace(reverse = false)
-    val back = trace(reverse = true)
-    val nonEmpty = listOf(front, back).filter { it != BoxTraceResult.EMPTY }
-
-    return when {
-        nonEmpty.isEmpty() -> {
-            BoxTraceResult.EMPTY
-        }
-        nonEmpty.size == 1 -> {
-            nonEmpty.first()
-        }
-        else -> {
-            nonEmpty.minBy { btr ->
-                btr.dir.axis.others().map {
-                    abs(btr.hit.getComponentAlongAxis(it) - center.getComponentAlongAxis(it))
-                }.min()!!
-            }!!
-        }
-    }
 }
 
 fun Box.genBackfacePlanes(padding: Double): Map<Direction, Box> {

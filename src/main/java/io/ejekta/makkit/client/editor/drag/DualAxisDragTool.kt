@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.*
@@ -13,7 +12,7 @@ internal abstract class DualAxisDragTool(handle: Handle) : DragTool(handle) {
     private var plane = EMPTY_BOX
 
     override fun getCursorOffset(snapped: Boolean): Vec3d? {
-        val current = plane.autoTrace()
+        val current = plane.trace()
         return if (current != BoxTraceResult.EMPTY) {
             current.hit.subtract(dragStart.hit)
         } else {

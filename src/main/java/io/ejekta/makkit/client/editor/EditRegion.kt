@@ -3,9 +3,6 @@ package io.ejekta.makkit.client.editor
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.DragTool
-import io.ejekta.makkit.client.editor.drag.tools.*
-import io.ejekta.makkit.client.editor.drag.tools.clipboard.CopyTool
-import io.ejekta.makkit.client.editor.drag.tools.clipboard.PasteTool
 import io.ejekta.makkit.client.editor.handle.FaceHandle
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.editor.input.ClientPalette
@@ -42,11 +39,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     fun isActive() = MakkitClient.isInEditMode
 
     fun isBeingInteractedWith(): Boolean {
-        return isAnyToolBeingUsed() || selection.autoTrace() != BoxTraceResult.EMPTY
-    }
-
-    fun isAnyToolBeingUsed(): Boolean {
-        return tools.any { it.isDragging() }
+        return selection.trace() != BoxTraceResult.EMPTY
     }
 
     fun renderSelection() {
@@ -82,17 +75,6 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
-    private var tools = mutableListOf<DragTool>(
-//            MoveToolPlanar(this),
-//            MoveToolAxial(this),
-//            ResizeToolAxial(this),
-//            ResizeToolSymmetric(this),
-//            PatternToolAxial(this),
-//            MirrorToolOpposite(this),
-//            CopyTool(this),
-//            PasteTool(this)
-    )
-
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
         selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
@@ -108,37 +90,15 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         selectionRenderer.shrinkToCenter()
     }
 
-    @Deprecated("Scrolling on faces may make a future return, but not quite like this")
-    fun tryScrollFace(amt: Double) {
-        if (MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().options.sprintKey.isPressed) {
-            val result = selection.autoTrace()
-
-            if (result == BoxTraceResult.EMPTY) {
-                return
-            }
-
-            val others = result.dir.alternateAxesDirs()
-
-            var boxProto = selection
-
-            others.forEach { dir ->
-                boxProto = boxProto.resizeBy(amt, dir)
-            }
-
-            selection = boxProto.withMinSize(Vec3d(1.0, 1.0, 1.0))
-        }
-    }
-
     fun update(delta: Long) {
         selectionRenderer.update(delta)
-        tools.forEach { tool -> tool.update(delta) }
     }
 
     fun doOperation(
             operation: WorldOperation,
             editBox: Box = selection,
             undoBox: Box = editBox,
-            trace: BoxTraceResult = editBox.autoTrace()
+            trace: BoxTraceResult = editBox.trace()
     ) {
         if (trace != BoxTraceResult.EMPTY) {
             EditWorldPacket(
@@ -159,41 +119,28 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     fun draw() {
         renderSelection()
 
-        if (MakkitClient.isInEditMode) {
-            if (isAnyToolBeingUsed()) {
-                tools.forEach { tool ->
-                    //tool.update(delta)
-                    tool.tryDraw()
-                }
-            } else {
+        // default state when no drag tool is being used
+        val hit = selection.trace()
+        if (hit != BoxTraceResult.EMPTY) {
+            selectionRenderer.renderBox.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
+            selectionRenderer.renderBox.drawAxisSizes()
+        } else {
+            val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
-                // default state when no drag tool is being used
-                val hit = selection.autoTrace()
-                if (hit != BoxTraceResult.EMPTY) {
-                    selectionRenderer.renderBox.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                    selectionRenderer.renderBox.drawAxisSizes()
-                } else {
-                    val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
-
-                    val backFaces = selectionRenderer.renderBox.genBackfacePlanes(9.0)
+            val backFaces = selectionRenderer.renderBox.genBackfacePlanes(9.0)
 
 //                    for ((dir, bf) in backFaces) {
 //                        RenderBox(bf).draw(RenderColor.BLUE.toAlpha(.3f))
 //                    }
 
-                    val results = backFaces.map { it.key to it.value.autoTrace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
+            val results = backFaces.map { it.key to it.value.trace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
 
-                    val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
-                        camVec
-                    ) }?.key
+            val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
+                camVec
+            ) }?.key
 
-                    closestBackplane?.let {
-                        selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                    }
-                }
-
-
-
+            closestBackplane?.let {
+                selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
             }
         }
 
