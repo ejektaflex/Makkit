@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") version "1.8.22"
+	kotlin("jvm") version "2.0.0"
 	kotlin("plugin.serialization") version "1.6.0"
-	id("fabric-loom") version "1.2-SNAPSHOT"
+	id("fabric-loom") version "1.7-SNAPSHOT"
 	`idea`
 }
 
@@ -12,16 +12,16 @@ loom {
 }
 
 object Versions {
-	const val Minecraft = "1.20.1"
+	const val Minecraft = "1.21"
 	object Jvm {
-		val Java = JavaVersion.VERSION_17
-		const val Kotlin = "1.8.21"
+		val Java = JavaVersion.VERSION_21
+		const val Kotlin = "2.0.0"
 		const val TargetKotlin = "17"
 	}
 	object Fabric {
-		const val Yarn = "1.20.1+build.8"
-		const val Loader = "0.14.21"
-		const val Api = "0.84.0+1.20.1"
+		const val Yarn = "1.21+build.9"
+		const val Loader = "0.15.11"
+		const val Api = "0.100.8+1.21"
 	}
 	object Mod {
 		const val Group = "io.ejekta"
@@ -29,10 +29,10 @@ object Versions {
 		const val Version = "4.0.0-SNAPSHOT"
 	}
 	object Env {
-		const val Kambrik = "6.1.0+1.20.1SNAPSHOT+"
-		const val FLK = "1.9.6+kotlin.1.8.22"
-		const val ClothConfig = "11.0.99"
-		const val ModMenu = "7.1.0"
+		const val Kambrik = "8.0.0+1.21.SNAPSHOT.+"
+		const val FLK = "1.11.0+kotlin.2.0.0"
+		const val ClothConfig = "15.0.128"
+		const val ModMenu = "11.0.1"
 	}
 }
 
@@ -67,6 +67,7 @@ dependencies {
 	modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.Loader}")
 
 	// Kambrik API
+	modImplementation("io.ejekta:kambrik-common:${Versions.Env.Kambrik}")
 	modImplementation("io.ejekta:kambrik-fabric:${Versions.Env.Kambrik}")
 
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${Versions.Env.ClothConfig}") {
