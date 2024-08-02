@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import io.ejekta.makkit.client.event.Events;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,7 +10,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
@@ -33,10 +31,9 @@ public abstract class WorldRendererMixin {
             Matrix4f matrix4f, Matrix4f matrix4f2,
             CallbackInfo ci,
             @Local MatrixStack matrixStack
-            ) {
-
-        Events.DrawScreenEvent.Companion.getDispatcher().invoker().invoke(
-                new Events.DrawScreenEvent(matrixStack, tickCounter, camera, gameRenderer, getBufferBuilders(), matrix4f)
+    ) {
+        Events.RenderWorldEvent.Companion.getDispatcher().invoker().invoke(
+                new Events.RenderWorldEvent(matrixStack, tickCounter, camera, gameRenderer, getBufferBuilders(), matrix4f)
         );
     }
 

@@ -4,11 +4,13 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.mixin.TextRendererMixin
 import io.ejekta.makkit.common.ext.*
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumer
 import net.minecraft.client.render.WorldRenderer
 import net.minecraft.text.Text
+import net.minecraft.util.Colors
 import net.minecraft.util.math.*
 import org.joml.Matrix4f
 import kotlin.math.abs
@@ -20,8 +22,8 @@ object RenderHelper : AbstractRenderHelper() {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
         matrices.multiply(camera.rotation)
-        val newTextSize = -(textSize * MakkitClient.axialTextSize)/32
-        matrices.scale(newTextSize, newTextSize, newTextSize)
+        val newTextSize = (textSize * MakkitClient.axialTextSize)/32
+        matrices.scale(newTextSize, -newTextSize, newTextSize)
 
         val centerDiv = if (center) 2 else 1
 

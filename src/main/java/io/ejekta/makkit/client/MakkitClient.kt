@@ -8,25 +8,19 @@ import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
-import io.ejekta.makkit.common.MakkitCommon
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.ext.draw
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
-import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents
-import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
-import net.fabricmc.fabric.impl.client.screen.ScreenExtensions
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.client.world.ClientWorld
-import net.minecraft.network.packet.CustomPayload
+import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
-import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
@@ -50,7 +44,7 @@ class MakkitClient : ClientModInitializer {
             ShadowBoxShowPacket.ID
         )
 
-        Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
+        Events.RenderWorldEvent.Dispatcher.register(::onDrawScreen)
         Events.InventoryScrolledEvent.Dispatcher.register(::onInvScroll)
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
 
@@ -123,7 +117,7 @@ class MakkitClient : ClientModInitializer {
 
         var time: Long = System.currentTimeMillis()
 
-        private fun onDrawScreen(e: Events.DrawScreenEvent) {
+        private fun onDrawScreen(e: Events.RenderWorldEvent) {
             // RenderHelper state
             RenderHelper.setState(e.matrices, e.tickCounter.getTickDelta(true), e.camera, e.buffers, e.matrix)
 
@@ -140,13 +134,33 @@ class MakkitClient : ClientModInitializer {
                 time = newTime
                 handleRemoteRegions(delta)
 
-                drawText(Vec3d(64.0, 64.0, 64.0), "Hello!")
+                drawPoint(Vec3d(68.0, -58.0, 68.0), size = 0.1)
+
+                drawText(Vec3d(68.0, -58.0, 68.0), "Hello!", textSize = 5.0f)
+
+                //drawTextTwo(Vec3d(0.0, -58.0, 0.0), Text.literal("Hello!"), textSize = 10.0f)
+
                 drawBoxFilled(
                     Box.enclosing(
-                        BlockPos(60, 64, 60),
-                        BlockPos(62, 64, 62)
+                        BlockPos(60, -58, 60),
+                        BlockPos(62, -58, 62)
                     ),
-                    RenderColor.PINK.toAlpha(0.2f)
+                    RenderColor.PINK.toAlpha(0.8f)
+                )
+
+                drawBoxFilled(
+                    Box.enclosing(
+                        BlockPos(60, -58, 60),
+                        BlockPos(62, -58, 62)
+                    ),
+                    RenderColor.PINK.toAlpha(0.8f)
+                )
+
+                drawBoxEdges(
+                    Box.enclosing(
+                        BlockPos(60, -58, 60),
+                        BlockPos(62, -58, 62)
+                    )
                 )
 
             }

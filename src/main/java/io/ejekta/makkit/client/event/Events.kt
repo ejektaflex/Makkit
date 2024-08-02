@@ -61,7 +61,7 @@ object Events {
         }
     }
 
-    data class DrawScreenEvent(
+    data class RenderWorldEvent(
             val matrices: MatrixStack,
             val tickCounter: RenderTickCounter,
             val camera: Camera,
@@ -70,7 +70,7 @@ object Events {
             val matrix: Matrix4f
     ) {
         companion object {
-            val Dispatcher = createSimpleEvent<DrawScreenEvent>()
+            val Dispatcher = createSimpleEvent<RenderWorldEvent>()
         }
     }
 
