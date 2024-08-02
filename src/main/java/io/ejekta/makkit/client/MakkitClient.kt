@@ -1,7 +1,7 @@
 package io.ejekta.makkit.client
 
 import io.ejekta.kambrik.Kambrik
-import io.ejekta.kambrik.KambrikInputApi
+import io.ejekta.kambrik.input.KambrikModifiedBind
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
+import net.minecraft.client.util.InputUtil
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
@@ -34,15 +35,7 @@ class MakkitClient : ClientModInitializer {
 
         // TODO we might need to move these messages into common
 
-        Kambrik.Message.registerClientMessage(
-            FocusRegionPacket.serializer(),
-            FocusRegionPacket.ID
-        )
 
-        Kambrik.Message.registerClientMessage(
-            ShadowBoxShowPacket.serializer(),
-            ShadowBoxShowPacket.ID
-        )
 
         Events.RenderWorldEvent.Dispatcher.register(::onDrawScreen)
         Events.InventoryScrolledEvent.Dispatcher.register(::onInvScroll)
@@ -192,8 +185,10 @@ class MakkitClient : ClientModInitializer {
         var region: EditRegion? = null
     }
 
-    val powerKey = KambrikInputApi.registerKeyboardBinding(
-        GLFW.GLFW_KEY_Z, "dootp", "dootb", true
+    val powerKey = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_Z, -1)
+        ), realTime = true
     ) {
         onDown {
             println("POWER KEY!")
@@ -219,16 +214,20 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-    val actionKeyA = KambrikInputApi.registerKeyboardBinding(
-        GLFW.GLFW_KEY_C, "doota", "dootb", true
+    val actionKeyA = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_C, -1)
+        ), realTime = true
     ) {
         onDown {
             println("ACTION KEY A!")
         }
     }
 
-    val mouseDragging = KambrikInputApi.registerMouseBinding(
-        GLFW.GLFW_MOUSE_BUTTON_LEFT, "dootx", "dooty", true
+    val mouseDragging = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Mouse(
+            GLFW.GLFW_MOUSE_BUTTON_LEFT
+        ), realTime = true
     ) {
         println("Mouse clicked!")
     }

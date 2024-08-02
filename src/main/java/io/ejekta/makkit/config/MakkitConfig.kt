@@ -1,6 +1,10 @@
 package io.ejekta.makkit.config
 
+import kotlinx.serialization.Serializable
 import me.shedaniel.clothconfig2.api.ConfigBuilder
+import me.shedaniel.clothconfig2.api.Modifier
+import me.shedaniel.clothconfig2.api.ModifierKeyCode
+import me.shedaniel.clothconfig2.impl.builders.KeyCodeBuilder
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
@@ -31,6 +35,16 @@ object MakkitConfig {
                 keyCode
             ).setDefaultValue(
                 keyCode
+            ).build()
+        )
+
+        generalCat.addEntry(
+            creator.startModifierKeyCodeField(
+                Text.literal("Blah"),
+                ModifierKeyCode.of(
+                    InputUtil.fromKeyCode(GLFW.GLFW_KEY_Z, -1),
+                    Modifier.of(false, false, true)
+                )
             ).build()
         )
 
