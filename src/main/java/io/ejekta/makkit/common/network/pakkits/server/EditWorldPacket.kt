@@ -1,6 +1,6 @@
 package io.ejekta.makkit.common.network.pakkits.server
 
-import io.ejekta.kambrik.message.ServerMsg
+import io.ejekta.kambrik.message.KambrikMsg
 import io.ejekta.makkit.common.editor.NetworkHandler
 import io.ejekta.makkit.common.editor.data.EditWorldOptions
 import io.ejekta.makkit.common.editor.operations.WorldOperation
@@ -8,6 +8,7 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import net.minecraft.item.ItemStack
+import net.minecraft.network.packet.CustomPayload
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
@@ -25,12 +26,17 @@ data class EditWorldPacket(
     var options: EditWorldOptions = EditWorldOptions(),
         // Which items we are using for the operation
     var palette: List<@Contextual ItemStack> = listOf()
-) : ServerMsg() {
+) : KambrikMsg() {
 
     override fun onServerReceived(ctx: MsgContext) {
         println("Server received editworldpacket, handling..")
         NetworkHandler.handleEdit(ctx.player, this)
     }
 
+    override fun getId() = ID
+
+    companion object {
+        val ID = CustomPayload.id<EditWorldPacket>("edit_world")
+    }
 
 }

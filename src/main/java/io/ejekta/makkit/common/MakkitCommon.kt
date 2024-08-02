@@ -4,8 +4,6 @@ import io.ejekta.kambrik.Kambrik
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
-import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
-import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import kotlinx.serialization.modules.SerializersModule
@@ -36,10 +34,10 @@ class MakkitCommon : ModInitializer {
 //        )
 
         // Serverbound packets
-        Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), EditWorldPacket::class, Identifier(ID, "edit_world"))
-        Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), EditHistoryPacket::class, Identifier(ID, "edit_history"))
-        Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), ShadowBoxUpdatePacket::class, Identifier(ID, "shadow_box_update"))
-        Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), ClipboardIntentPacket::class, Identifier(ID, "clipboard_intent"))
+        Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), EditWorldPacket.ID)
+        //Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), EditHistoryPacket::class, Identifier(ID, "edit_history"))
+        Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), ShadowBoxUpdatePacket.ID)
+        //Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), ClipboardIntentPacket::class, Identifier(ID, "clipboard_intent"))
 
         Events.ServerDisconnectEvent.Dispatcher.register(::onServerPlayerDisconnect)
 

@@ -16,7 +16,7 @@ object Versions {
 	object Jvm {
 		val Java = JavaVersion.VERSION_21
 		const val Kotlin = "2.0.0"
-		const val TargetKotlin = "17"
+		const val TargetKotlin = "21"
 	}
 	object Fabric {
 		const val Yarn = "1.21+build.9"
@@ -29,7 +29,7 @@ object Versions {
 		const val Version = "4.0.0-SNAPSHOT"
 	}
 	object Env {
-		const val Kambrik = "8.0.0+1.21.SNAPSHOT.+"
+		const val Kambrik = "8.0.0.0001+1.21"
 		const val FLK = "1.11.0+kotlin.2.0.0"
 		const val ClothConfig = "15.0.128"
 		const val ModMenu = "11.0.1"
@@ -67,7 +67,7 @@ dependencies {
 	modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.Loader}")
 
 	// Kambrik API
-	modImplementation("io.ejekta:kambrik-common:${Versions.Env.Kambrik}")
+	//modImplementation("io.ejekta:kambrik-common:${Versions.Env.Kambrik}")
 	modImplementation("io.ejekta:kambrik-fabric:${Versions.Env.Kambrik}")
 
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${Versions.Env.ClothConfig}") {

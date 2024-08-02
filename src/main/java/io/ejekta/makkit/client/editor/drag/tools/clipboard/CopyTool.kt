@@ -1,6 +1,5 @@
 package io.ejekta.makkit.client.editor.drag.tools.clipboard
 
-import io.ejekta.kambrik.input.KambrikKeybind
 import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion

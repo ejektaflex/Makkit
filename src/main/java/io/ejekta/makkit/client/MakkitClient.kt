@@ -1,6 +1,7 @@
 package io.ejekta.makkit.client
 
 import io.ejekta.kambrik.Kambrik
+import io.ejekta.kambrik.KambrikInputApi
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
@@ -18,7 +19,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.client.world.ClientWorld
+import net.minecraft.network.packet.CustomPayload
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
@@ -35,14 +38,12 @@ class MakkitClient : ClientModInitializer {
 
         Kambrik.Message.registerClientMessage(
             FocusRegionPacket.serializer(),
-            FocusRegionPacket::class,
-            Identifier(MakkitCommon.ID, "focus_region")
+            FocusRegionPacket.ID
         )
 
         Kambrik.Message.registerClientMessage(
             ShadowBoxShowPacket.serializer(),
-            ShadowBoxShowPacket::class,
-            Identifier(MakkitCommon.ID, "shadow_box_show")
+            ShadowBoxShowPacket.ID
         )
 
         Events.DrawScreenEvent.Dispatcher.register(::onDrawScreen)
@@ -73,7 +74,7 @@ class MakkitClient : ClientModInitializer {
         var axialTextSize = 1f
         var historyHighlighting = true
 
-        fun onHudRender(context: DrawContext, tickDelta: Float) {
+        fun onHudRender(context: DrawContext, tickCounter: RenderTickCounter) {
 //            if (config.legend && mc.player?.isCreative == true && region?.isBeingInteractedWith() == true) {
 //                //EditLegend.draw(context)
 //            }
@@ -161,7 +162,7 @@ class MakkitClient : ClientModInitializer {
         var region: EditRegion? = null
     }
 
-    val powerKey = Kambrik.Input.registerKeyboardBinding(
+    val powerKey = KambrikInputApi.registerKeyboardBinding(
         GLFW.GLFW_KEY_Z, "dootp", "dootb", true
     ) {
         onDown {
@@ -170,7 +171,7 @@ class MakkitClient : ClientModInitializer {
             // Delete region if it exists, and you are looking at it
             if (region?.isBeingInteractedWith() == true) {
                 region = null
-                ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
+                //ShadowBoxUpdatePacket(Box(BlockPos.ORIGIN), disconnect = true).sendToServer()
                 return@onDown
             }
 
@@ -178,7 +179,7 @@ class MakkitClient : ClientModInitializer {
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
                 getOrCreateRegion().apply {
-                    selection = Box(bhr.blockPos, bhr.blockPos.add(1, 1, 1))
+                    selection = Box(bhr.pos, bhr.pos.add(1.0, 1.0, 1.0))
                     selectionRenderer.setImmediate(Box(
                         bhr.pos, bhr.pos
                     ))
@@ -188,7 +189,7 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-    val actionKeyA = Kambrik.Input.registerKeyboardBinding(
+    val actionKeyA = KambrikInputApi.registerKeyboardBinding(
         GLFW.GLFW_KEY_C, "doota", "dootb", true
     ) {
         onDown {
@@ -196,12 +197,10 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-    val mouseDragging = Kambrik.Input.registerMouseBinding(
+    val mouseDragging = KambrikInputApi.registerMouseBinding(
         GLFW.GLFW_MOUSE_BUTTON_LEFT, "dootx", "dooty", true
     ) {
-
         println("Mouse clicked!")
-
     }
 
 }

@@ -1,9 +1,10 @@
 package io.ejekta.makkit.common.network.pakkits.client
 
-import io.ejekta.kambrik.message.ClientMsg
+import io.ejekta.kambrik.message.KambrikMsg
 import io.ejekta.makkit.client.MakkitClient
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import net.minecraft.network.packet.CustomPayload
 import net.minecraft.util.math.Box
 
 /*
@@ -12,10 +13,9 @@ import net.minecraft.util.math.Box
 @Serializable
 data class FocusRegionPacket(
         var box: @Contextual Box = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-) : ClientMsg() {
+) : KambrikMsg() {
 
-    override fun onClientReceived(ctx: MsgContext) {
-        super.onClientReceived(ctx)
+    override fun onClientReceived() {
         if (MakkitClient.historyHighlighting) {
             MakkitClient.getOrCreateRegion().apply {
                 selection = box
@@ -23,5 +23,10 @@ data class FocusRegionPacket(
         }
     }
 
+    override fun getId() = ID
+
+    companion object {
+        val ID = CustomPayload.id<FocusRegionPacket>("focus_region")
+    }
 
 }

@@ -16,7 +16,7 @@ fun PacketByteBuf.writeIntBox(box: Box) {
 fun PacketByteBuf.readIntBox(): Box {
     val start = readBlockPos()
     val end = readBlockPos()
-    return Box(start, end)
+    return Box.enclosing(start, end)
 }
 
 fun PacketByteBuf.writeEnum(enum: Enum<*>) {

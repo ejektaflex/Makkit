@@ -81,17 +81,17 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
-        selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
+        selection = Box.enclosing(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
 
     fun centerOriginCubeOn(pos: BlockPos) {
-        selection = Box(pos, pos.add(1, 1, 1))
+        selection = Box.enclosing(pos, pos.add(1, 1, 1))
         //selectionRenderer.shrinkToCenter()
     }
 
     fun centerOn(pos: BlockPos) {
         val half =  BlockPos(selection.getSize().multiply(0.5).roundToVec3i())
-        selection = Box(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
+        selection = Box.enclosing(pos.subtract(half), pos.add(half)).withMinSize(Vec3d(1.0, 1.0, 1.0))
         selectionRenderer.shrinkToCenter()
     }
 

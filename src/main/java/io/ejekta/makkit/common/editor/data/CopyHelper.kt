@@ -10,8 +10,8 @@ object CopyHelper {
 
     fun getLocalAxisSize(copyBox: Box, face: Direction): BlockPos {
         return when (face.axis) {
-            Direction.Axis.X -> BlockPos(Vec3d(copyBox.xLength, copyBox.yLength, copyBox.zLength).roundToVec3i())
-            Direction.Axis.Z -> BlockPos(Vec3d(copyBox.zLength, copyBox.yLength, copyBox.xLength).roundToVec3i())
+            Direction.Axis.X -> BlockPos(Vec3d(copyBox.lengthX, copyBox.lengthY, copyBox.lengthZ).roundToVec3i())
+            Direction.Axis.Z -> BlockPos(Vec3d(copyBox.lengthZ, copyBox.lengthY, copyBox.lengthX).roundToVec3i())
             else -> throw Exception("This shouldn't happen!")
         }
     }

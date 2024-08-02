@@ -22,9 +22,9 @@ class PatternOperation(val boxBefore: @Contextual Box, val afterBox: @Contextual
         for (blockPos in afterBlocks) {
             val posRel = blockPos.subtract(startPos)
             val copySourcePos = startPos.add(BlockPos(
-                    modNoNegative(posRel.x, boxBefore.xLength.toInt()),
-                    modNoNegative(posRel.y, boxBefore.yLength.toInt()),
-                    modNoNegative(posRel.z, boxBefore.zLength.toInt())
+                    modNoNegative(posRel.x, boxBefore.lengthX.toInt()),
+                    modNoNegative(posRel.y, boxBefore.lengthY.toInt()),
+                    modNoNegative(posRel.z, boxBefore.lengthZ.toInt())
             ))
 
             action.edit(blockPos, view.getBlockState(copySourcePos))

@@ -5,8 +5,6 @@ import io.ejekta.makkit.common.editor.data.UserEditProfile
 import io.ejekta.makkit.common.enums.ClipboardMode
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
-import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
-import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.server.network.ServerPlayerEntity
@@ -62,32 +60,32 @@ object NetworkHandler {
         }
     }
 
-    fun handleCopyPaste(player: ServerPlayerEntity, pakkit: ClipboardIntentPacket) {
-        val profile = getProfileOf(player)
+//    fun handleCopyPaste(player: ServerPlayerEntity, pakkit: ClipboardIntentPacket) {
+//        val profile = getProfileOf(player)
+//
+//        when (pakkit.mode) {
+//            ClipboardMode.COPY -> profile.copy(player, pakkit.box, pakkit.face)
+//            ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face, pakkit.mask)
+//            else -> throw Exception("Clipboard mode not implemented on server! ${pakkit.mode}")
+//        }
+//    }
 
-        when (pakkit.mode) {
-            ClipboardMode.COPY -> profile.copy(player, pakkit.box, pakkit.face)
-            ClipboardMode.PASTE -> profile.paste(player, pakkit.box, pakkit.face, pakkit.mask)
-            else -> throw Exception("Clipboard mode not implemented on server! ${pakkit.mode}")
-        }
-    }
-
-    fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
-        if (player.isCreative) {
-            val profile = getProfileOf(player)
-
-            val result = when (pakkit.mode) {
-                UndoRedoMode.UNDO -> profile.undo(player)
-                UndoRedoMode.REDO -> profile.redo(player)
-                UndoRedoMode.CLEAR -> profile.clearHistory()
-            }
-
-            if (!result) {
-                player.sendMessage(Text.literal("Could not ${pakkit.mode}!"), true)
-            }
-        } else {
-            player.sendMessage(Text.literal("Must be in Creative Mode to use Makkit!"), true)
-        }
-    }
+//    fun handleUndoRedo(player: ServerPlayerEntity, pakkit: EditHistoryPacket) {
+//        if (player.isCreative) {
+//            val profile = getProfileOf(player)
+//
+//            val result = when (pakkit.mode) {
+//                UndoRedoMode.UNDO -> profile.undo(player)
+//                UndoRedoMode.REDO -> profile.redo(player)
+//                UndoRedoMode.CLEAR -> profile.clearHistory()
+//            }
+//
+//            if (!result) {
+//                player.sendMessage(Text.literal("Could not ${pakkit.mode}!"), true)
+//            }
+//        } else {
+//            player.sendMessage(Text.literal("Must be in Creative Mode to use Makkit!"), true)
+//        }
+//    }
 
 }

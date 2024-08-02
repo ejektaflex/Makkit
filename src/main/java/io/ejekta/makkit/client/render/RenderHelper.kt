@@ -15,10 +15,7 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 object RenderHelper : AbstractRenderHelper() {
-
-
-
-
+    
     fun drawText(pos: Vec3d, text: String, textSize: Float = 1f, center: Boolean = true) {
         matrices.push()
         matrices.translate(pos.x, pos.y, pos.z)
@@ -57,7 +54,7 @@ object RenderHelper : AbstractRenderHelper() {
         }
     }
 
-    fun getLookBehindDirections() = Direction.values().toList() - getLookDirections().toSet()
+    fun getLookBehindDirections() = Direction.entries - getLookDirections().toSet()
 
     fun getLookDirections(): Set<Direction> {
         val vec = getLookVector()
@@ -152,9 +149,11 @@ object RenderHelper : AbstractRenderHelper() {
         val vert = eVerts.getBuffer(layer)
         val posMat = RenderHelper.matrices.peek().positionMatrix
         val normalMat = RenderHelper.matrices.peek().normalMatrix
+        
+        val peek = RenderHelper.matrices.peek()
 
-        vert.vertex(posMat, start.x, start.y, start.z).color(color).normal(normalMat, 0f, 0f, 0f).next()
-        vert.vertex(posMat, end.x, end.y, end.z).color(color).normal(normalMat, 0f, 0f, 0f).next()
+        vert.vertex(posMat, start.x, start.y, start.z).color(color).normal(peek, 0f, 0f, 0f)
+        vert.vertex(posMat, end.x, end.y, end.z).color(color).normal(peek, 0f, 0f, 0f)
     }
 
     fun boxTrace(box: Box, distance: Float = 15f, reverse: Boolean = false): BoxTraceResult {
@@ -178,45 +177,45 @@ object RenderHelper : AbstractRenderHelper() {
         }
 
         private val drawDown: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
-            vert.vertex(mat, minX, minY, maxZ).color(color).next()
-            vert.vertex(mat, minX, minY, minZ).color(color).next()
-            vert.vertex(mat, maxX, minY, minZ).color(color).next()
+            vert.vertex(mat, maxX, minY, maxZ).color(color)
+            vert.vertex(mat, minX, minY, maxZ).color(color)
+            vert.vertex(mat, minX, minY, minZ).color(color)
+            vert.vertex(mat, maxX, minY, minZ).color(color)
         }
 
         private val drawUp: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
-            vert.vertex(mat, minX, maxY, minZ).color(color).next()
+            vert.vertex(mat, minX, maxY, maxZ).color(color)
+            vert.vertex(mat, maxX, maxY, maxZ).color(color)
+            vert.vertex(mat, maxX, maxY, minZ).color(color)
+            vert.vertex(mat, minX, maxY, minZ).color(color)
         }
 
         private val drawNorth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, maxX, minY, minZ).color(color).next()
-            vert.vertex(mat, minX, minY, minZ).color(color).next()
-            vert.vertex(mat, minX, maxY, minZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
+            vert.vertex(mat, maxX, minY, minZ).color(color)
+            vert.vertex(mat, minX, minY, minZ).color(color)
+            vert.vertex(mat, minX, maxY, minZ).color(color)
+            vert.vertex(mat, maxX, maxY, minZ).color(color)
         }
 
         private val drawSouth: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, minX, minY, maxZ).color(color).next()
-            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
-            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, minX, minY, maxZ).color(color)
+            vert.vertex(mat, maxX, minY, maxZ).color(color)
+            vert.vertex(mat, maxX, maxY, maxZ).color(color)
+            vert.vertex(mat, minX, maxY, maxZ).color(color)
         }
 
         private val drawWest: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, minX, minY, minZ).color(color).next()
-            vert.vertex(mat, minX, minY, maxZ).color(color).next()
-            vert.vertex(mat, minX, maxY, maxZ).color(color).next()
-            vert.vertex(mat, minX, maxY, minZ).color(color).next()
+            vert.vertex(mat, minX, minY, minZ).color(color)
+            vert.vertex(mat, minX, minY, maxZ).color(color)
+            vert.vertex(mat, minX, maxY, maxZ).color(color)
+            vert.vertex(mat, minX, maxY, minZ).color(color)
         }
 
         private val drawEast: Box.(vert: VertexConsumer, mat: Matrix4f, color: RenderColor) -> Unit = { vert, mat, color ->
-            vert.vertex(mat, maxX, minY, maxZ).color(color).next()
-            vert.vertex(mat, maxX, minY, minZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, minZ).color(color).next()
-            vert.vertex(mat, maxX, maxY, maxZ).color(color).next()
+            vert.vertex(mat, maxX, minY, maxZ).color(color)
+            vert.vertex(mat, maxX, minY, minZ).color(color)
+            vert.vertex(mat, maxX, maxY, minZ).color(color)
+            vert.vertex(mat, maxX, maxY, maxZ).color(color)
         }
 
         val drawDirections = mapOf(

@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier
 
 object MakkitGui {
 
-    var SELECTION = Identifier(MakkitCommon.ID, "textures/misc/palette_select.png")
+    var SELECTION = Identifier.of(MakkitCommon.ID, "textures/misc/palette_select.png")
 
     private val mc = MinecraftClient.getInstance()
 

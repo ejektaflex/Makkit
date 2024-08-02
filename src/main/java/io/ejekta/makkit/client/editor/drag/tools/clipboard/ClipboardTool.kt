@@ -8,7 +8,6 @@ import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.common.enums.ClipboardMode
 import io.ejekta.makkit.common.ext.calcPos
 import io.ejekta.makkit.common.ext.drawNearAxisLabels
-import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
@@ -20,11 +19,11 @@ internal abstract class ClipboardTool(handle: Handle) : DualAxisDragTool(handle)
 
     override fun onStartDragging(start: BoxTraceResult) {
         super.onStartDragging(start)
-        ClipboardIntentPacket(
-                mode,
-                dragStart.dir,
-                region.selection
-        ).sendToServer()
+//        ClipboardIntentPacket(
+//                mode,
+//                dragStart.dir,
+//                region.selection
+//        ).sendToServer()
     }
 
     override fun onDrawPreview(offset: Vec3d) {

@@ -96,7 +96,7 @@ class UserEditProfile {
 
         val stateMap = mutableMapOf<BlockPos, BlockState>()
 
-        Box(BlockPos(0, 0, 0), BlockPos(copyBoxSize)).forEachBlockCoord { x, y, z ->
+        Box.enclosing(BlockPos(0, 0, 0), BlockPos(copyBoxSize)).forEachBlockCoord { x, y, z ->
             stateMap[BlockPos(x, y, z)] = player.world.getBlockState(
                     startPos +
                             BlockPos(d1 * -z) +

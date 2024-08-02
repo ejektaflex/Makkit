@@ -8,7 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -22,32 +22,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ItemHotbarRenderMixin {
 
 
-    @Shadow private int scaledWidth;
-
-    @Shadow private int scaledHeight;
-
     @Shadow protected abstract PlayerEntity getCameraPlayer();
 
     @Shadow @Final private MinecraftClient client;
 
-    @Shadow @Final private static Identifier WIDGETS_TEXTURE;
+    @Shadow @Final private static Identifier HOTBAR_TEXTURE;
 
     //@Shadow protected abstract void drawTextBackground(MatrixStack matrixStack, TextRenderer textRenderer, int i, int j, int k);
 
     @Shadow public abstract TextRenderer getTextRenderer();
 
-    Identifier SELECTION = new Identifier(MakkitCommon.ID, "textures/misc/palette_select.png");
+    Identifier SELECTION = Identifier.of(MakkitCommon.ID, "textures/misc/palette_select.png");
 
     @Environment(EnvType.CLIENT)
     @Inject(method = "renderHotbar", at = @At(value = "RETURN", ordinal = 1))
-    private void renderHotbar(float tickDelta, DrawContext context, CallbackInfo ci) {
+    private void renderHotbar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
 
-        MakkitGui.INSTANCE.renderHotbarChanges(context, scaledWidth, scaledHeight);
+        MakkitGui.INSTANCE.renderHotbarChanges(context, context.getScaledWindowWidth(), context.getScaledWindowHeight());
 
-        MakkitGui.INSTANCE.renderBlockMaskGui(context, scaledWidth, scaledHeight);
+        MakkitGui.INSTANCE.renderBlockMaskGui(context, context.getScaledWindowWidth(), context.getScaledWindowHeight());
 
         // Bind back to widgets texture
-        client.getTextureManager().bindTexture(WIDGETS_TEXTURE);
+        client.getTextureManager().bindTexture(HOTBAR_TEXTURE);
 
     }
 
