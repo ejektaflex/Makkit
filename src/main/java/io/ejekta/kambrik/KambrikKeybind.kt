@@ -1,6 +1,8 @@
 package io.ejekta.kambrik
 
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
 
@@ -67,5 +69,17 @@ class KambrikKeybind(
 //            }
 //        }
 //    }
+
+    init {
+        if (realTime) {
+            WorldRenderEvents.LAST.register(WorldRenderEvents.Last {
+                update(isPressed)
+            })
+        } else {
+            ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick {
+                update(isPressed)
+            })
+        }
+    }
 
 }
