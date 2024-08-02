@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.handle
 
+import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.render.AnimBox
 import net.minecraft.util.math.Box
@@ -12,5 +13,9 @@ abstract class Handle(val region: EditRegion, val dirs: Set<Direction>) {
     }
 
     abstract val handleBox: Box
+
+    abstract val renderBox: Box
+
+    abstract fun renderHover()
 
 }

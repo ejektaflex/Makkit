@@ -75,6 +75,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
+    fun getFaceHandle(dir: Direction): Handle {
+        val dirSet = setOf(dir)
+        return handles.first { it.dirs == dirSet  }
+    }
+
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
         selection = Box(BlockPos(x, y, z), BlockPos(x + sx, y + sy, z + sz))
     }
@@ -121,9 +126,12 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         // default state when no drag tool is being used
         val hit = selection.trace()
+
+        val handle = getFaceHandle(hit.dir)
+
         if (hit != BoxTraceResult.EMPTY) {
-            selectionRenderer.renderBox.drawFace(hit.dir, MakkitClient.selectionFaceColor.toAlpha(.3f))
-            selectionRenderer.renderBox.drawAxisSizes()
+            handle.renderHover()
+
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
@@ -137,7 +145,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
                 camVec
-            ) }?.key
+            ) }?.key ?: return // if this is null, no reason to continue computation
+
+
 
             closestBackplane?.let {
                 selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
