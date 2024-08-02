@@ -16,7 +16,10 @@ import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents
+import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
+import net.fabricmc.fabric.impl.client.screen.ScreenExtensions
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
@@ -28,6 +31,7 @@ import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 
 class MakkitClient : ClientModInitializer {
@@ -52,6 +56,7 @@ class MakkitClient : ClientModInitializer {
 
         HudRenderCallback.EVENT.register(HudRenderCallback(::onHudRender))
         UseBlockCallback.EVENT.register(onUseBlock())
+
     }
 
     companion object {
@@ -120,11 +125,12 @@ class MakkitClient : ClientModInitializer {
 
         private fun onDrawScreen(e: Events.DrawScreenEvent) {
             // RenderHelper state
-            RenderHelper.setState(e.matrices, e.tickDelta, e.camera, e.buffers, e.matrix)
+            RenderHelper.setState(e.matrices, e.tickCounter.getTickDelta(true), e.camera, e.buffers, e.matrix)
 
             if (mc.player?.isCreative == false) {
                 return
             }
+
 
             RenderHelper.drawInWorld {
                 val newTime = System.currentTimeMillis()
@@ -133,6 +139,16 @@ class MakkitClient : ClientModInitializer {
                 region?.draw()
                 time = newTime
                 handleRemoteRegions(delta)
+
+                drawText(Vec3d(64.0, 64.0, 64.0), "Hello!")
+                drawBoxFilled(
+                    Box.enclosing(
+                        BlockPos(60, 64, 60),
+                        BlockPos(62, 64, 62)
+                    ),
+                    RenderColor.PINK.toAlpha(0.2f)
+                )
+
             }
         }
 

@@ -1,5 +1,7 @@
 package io.ejekta.makkit.client.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import io.ejekta.makkit.client.event.Events;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -9,6 +11,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(WorldRenderer.class)
 public abstract class WorldRendererMixin {
@@ -16,10 +19,24 @@ public abstract class WorldRendererMixin {
     @Accessor
     abstract BufferBuilderStorage getBufferBuilders();
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;draw()V", ordinal = 0))
-    private void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
+    @Inject(method = "render", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;draw()V",
+            ordinal = 0
+    ))
+    private void render(
+            RenderTickCounter tickCounter,
+            boolean renderBlockOutline,
+            Camera camera,
+            GameRenderer gameRenderer,
+            LightmapTextureManager lightmapTextureManager,
+            Matrix4f matrix4f, Matrix4f matrix4f2,
+            CallbackInfo ci,
+            @Local MatrixStack matrixStack
+            ) {
+
         Events.DrawScreenEvent.Companion.getDispatcher().invoker().invoke(
-                new Events.DrawScreenEvent(matrices, tickDelta, camera, gameRenderer, getBufferBuilders(), positionMatrix)
+                new Events.DrawScreenEvent(matrixStack, tickCounter, camera, gameRenderer, getBufferBuilders(), matrix4f)
         );
     }
 

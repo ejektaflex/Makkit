@@ -3,6 +3,7 @@ package io.ejekta.makkit.client.mixin;
 import io.ejekta.makkit.client.event.Events;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -22,7 +23,7 @@ public abstract class ServersideDisconnect {
             method = "onDisconnected",
             at = @At(value = "HEAD")
     )
-    private void onDisconnected(Text reason, CallbackInfo ci) {
+    private void onDisconnected(DisconnectionInfo info, CallbackInfo ci) {
 
         Events.ServerDisconnectEvent.Companion.getDispatcher().invoker().invoke(
                 new Events.ServerDisconnectEvent(player)
