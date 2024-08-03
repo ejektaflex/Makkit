@@ -29,13 +29,13 @@ everything extensively before each release so releases should be quite
 stable, but there may be some things I miss. Even if something does go 
 wrong, you can always press undo!
 
-
 ### What about Feature "X"?
 
 While Makkit intends to make creative mode editing easier, it can't do
 everything. It tries to do most common world editing features in a very
 intuitive way, but it isn't a replacement for other creative mods like 
-[WorldEdit](https://www.curseforge.com/minecraft/mc-mods/worldedit).
+[WorldEdit](https://www.curseforge.com/minecraft/mc-mods/worldedit) or 
+[Axiom](https://modrinth.com/mod/axiom).
 Rather, you should use them both together!
 
 In the future (once it is released), I plan on adding some compatibility 

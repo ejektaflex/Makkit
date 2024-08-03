@@ -33,10 +33,6 @@ class MakkitClient : ClientModInitializer {
 
     override fun onInitializeClient() {
 
-        // TODO we might need to move these messages into common
-
-
-
         Events.RenderWorldEvent.Dispatcher.register(::onDrawScreen)
         Events.InventoryScrolledEvent.Dispatcher.register(::onInvScroll)
         Events.MouseClickedEvent.Dispatcher.register(::onGameClick)
@@ -131,8 +127,6 @@ class MakkitClient : ClientModInitializer {
 
                 drawText(Vec3d(68.0, -58.0, 68.0), "Hello!", textSize = 5.0f)
 
-                //drawTextTwo(Vec3d(0.0, -58.0, 0.0), Text.literal("Hello!"), textSize = 10.0f)
-
                 drawBoxFilled(
                     Box.enclosing(
                         BlockPos(60, -58, 60),
@@ -204,11 +198,10 @@ class MakkitClient : ClientModInitializer {
             if (btr != null && btr.type == HitResult.Type.BLOCK) {
                 val bhr = btr as BlockHitResult
                 getOrCreateRegion().apply {
-                    selection = Box(bhr.pos, bhr.pos.add(1.0, 1.0, 1.0))
+                    selection = Box.enclosing(bhr.blockPos, bhr.blockPos)
                     selectionRenderer.setImmediate(Box(
                         bhr.pos, bhr.pos
                     ))
-                    //selectionRenderer.shrinkToCenter()
                 }
             }
         }
