@@ -26,7 +26,7 @@ internal class MoveToolAxial(
     val previewTarget: Box?
         get() = getCursorOffset(true)?.let { getPreviewBox(it, region.selection) }
 
-    override val preview = AnimBox({ previewTarget ?: region.selection }) {
+    override val handlePreview = AnimBox({ previewTarget ?: region.selection }) {
         draw(fillColor, edgeColor)
     }
 
@@ -39,15 +39,15 @@ internal class MoveToolAxial(
 
         //val pbox = getPreviewBox(offset, region.selection)
 
-        val faceCenter = preview.renderBox.center
+        val faceCenter = handlePreview.renderBox.center
         val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        preview.renderBox.drawTextOnFace(
+        handlePreview.renderBox.drawTextOnFace(
             dragStart.dir,
-            preview.renderBox.calcPos().subtract(
+            handlePreview.renderBox.calcPos().subtract(
                     region.selection.calcPos()
             ).axisValue(dragStart.dir.axis).roundToInt().toString()
         )

@@ -1,7 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
@@ -36,7 +35,7 @@ internal class PatternToolAxial(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        preview.renderBox.drawSizeOnFace(dragStart.dir)
+        handlePreview.renderBox.drawSizeOnFace(dragStart.dir)
 
         // If any of the size dimensions are 0, this will crash
         if (region.selection.getSize().hasZeroAxis()) {

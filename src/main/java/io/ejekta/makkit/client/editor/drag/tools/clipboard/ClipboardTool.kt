@@ -2,7 +2,6 @@ package io.ejekta.makkit.client.editor.drag.tools.clipboard
 
 
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.common.enums.ClipboardMode
@@ -28,7 +27,7 @@ internal abstract class ClipboardTool(handle: Handle) : DualAxisDragTool(handle)
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
-        preview.renderBox.drawNearAxisLabels(region.selection.calcPos())
+        handlePreview.renderBox.drawNearAxisLabels(region.selection.calcPos())
     }
 
 }

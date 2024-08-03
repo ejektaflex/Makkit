@@ -19,7 +19,7 @@ abstract class DragTool(val handle: Handle) {
         get() = handle.region
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
-    open val preview = AnimBox({ handle.handleBox }) {
+    open val handlePreview = AnimBox({ handle.handleBox }) {
         draw(fillColor, edgeColor)
     }
 
@@ -67,7 +67,7 @@ abstract class DragTool(val handle: Handle) {
 
     open fun onStartDragging(start: BoxTraceResult) {
         println("Base drag tool drag starting")
-        preview.snap()
+        handlePreview.snap()
     }
 
     fun updateState(updateSelection: Boolean = true): Box? {
@@ -87,12 +87,12 @@ abstract class DragTool(val handle: Handle) {
     fun update(delta: Long) {
         // Try to start dragging
         if (dragStart == BoxTraceResult.EMPTY) {
-            dragStart = region.selection.trace()
+            dragStart = handle.handleBox.trace()
             if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
                 onStartDragging(dragStart)
             }
         }
-        preview.update(delta)
+        handlePreview.update(delta)
     }
 
     fun tryDraw() {
@@ -117,7 +117,7 @@ abstract class DragTool(val handle: Handle) {
 //        if (newPreview != preview.actualBox) {
 //            //preview.resize(getPreviewBox(offset, region.selection))
 //        }
-        preview.draw()
+        handlePreview.draw()
     }
 
     protected companion object {

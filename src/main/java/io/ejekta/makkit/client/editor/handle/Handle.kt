@@ -5,6 +5,7 @@ import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.render.AnimBox
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
 
 abstract class Handle(val region: EditRegion, val dirs: Set<Direction>) {
 

@@ -1,6 +1,5 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
@@ -20,7 +19,7 @@ internal class MoveToolPlanar(handle: Handle) : DualAxisDragTool(handle) {
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = preview.renderBox.getFacePlane(dragStart.dir).center
+        val faceCenter = handlePreview.renderBox.getFacePlane(dragStart.dir).center
         for (axisDir in getAlternateAxesDirections()) {
             val length = getSelectionSizeIn(axisDir) / 2 - 0.25
             val lineStart = faceCenter.projectedIn(axisDir, length)
@@ -28,7 +27,7 @@ internal class MoveToolPlanar(handle: Handle) : DualAxisDragTool(handle) {
             RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
         }
 
-        preview.renderBox.drawNearAxisLabels(offset)
+        handlePreview.renderBox.drawNearAxisLabels(offset)
     }
 
 }

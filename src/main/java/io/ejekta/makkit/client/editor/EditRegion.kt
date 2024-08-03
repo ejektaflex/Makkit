@@ -19,6 +19,7 @@ import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.client.MinecraftClient
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
@@ -40,8 +41,11 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         draw(colorToDraw)
     }
 
+    // The handle currently being hovered over
     var hoveredHandle: Handle? = null
-
+    // The vec3d where the tool has been grabbed
+    var grabHit: BoxTraceResult? = null
+    // The tool currently being used
     var tool: DragTool? = null
     var toolEnumStored: MakkitTool? = null // TODO store enum in tool itself?
 
@@ -51,7 +55,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         val handle = region?.hoveredHandle ?: return
 
         if (isInEditMode) {
-            tool = toolMaker(handle)
+            tool = toolMaker(handle).also {
+                it.onStartDragging(grabHit!!)
+            }
             toolEnumStored = toolEnum
         }
     }
@@ -163,6 +169,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             handle.renderHover()
             hoveredHandle = handle
+            grabHit = hit
 
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
@@ -175,9 +182,10 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             val results = backFaces.map { it.key to it.value.trace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
 
+            // Compute the closest backplane
             val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
                 camVec
-            ) }?.key // if this is null, no reason to continue computation
+            ) }
 
             if (closestBackplane == null) {
                 hoveredHandle = null
@@ -185,8 +193,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             }
 
             closestBackplane.let {
-                selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
+                selectionRenderer.renderBox.drawFace(it.key, MakkitClient.selectionFaceColor.toAlpha(.3f))
                 hoveredHandle = handle
+                grabHit = it.value
             }
         }
 
