@@ -16,14 +16,9 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
     protected val planes: List<Box>
         get() = listOf(planeAxis1, planeAxis2)
 
-    init {
-        println("Created $this and it has planes: $planes $planeAxis1")
-    }
 
     override fun getCursorOffset(snapped: Boolean): Vec3d {
-        println("PLANES: $planes")
         val offsets = planes.mapNotNull {
-            println("PLANE: $it")
             val current = RenderHelper.boxTrace(it, 1000f)
             if (current != BoxTraceResult.EMPTY) {
                 current
@@ -33,15 +28,15 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
         }
         return (offsets.minByOrNull {
             it.hit.distanceTo(it.source)
-        } ?: return Vec3d.ZERO).hit.subtract(dragStart.hit).snapped(snapped)
+        } ?: return Vec3d.ZERO).hit.subtract(startVec).snapped(snapped)
     }
 
-    override fun onStartDragging(start: BoxTraceResult) {
-        super.onStartDragging(start)
+    override fun onStartDragging() {
+        super.onStartDragging()
 
         val renderPlanes = planes.toMutableList()
 
-        val dirs = start.dir.otherDirectionsSameSigNum()
+        val dirs = toolDir.otherDirectionsSameSigNum()
 
         dirs.forEachIndexed { i, direction ->
             println("Start dragging set render plane: $i")
@@ -51,8 +46,8 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
                     DRAG_PLANE_SIZE
             ).flatMasked(direction)
             renderPlanes[i] = Box(
-                    start.hit.subtract(areaSize),
-                    start.hit.add(areaSize)
+                    startVec.subtract(areaSize),
+                    startVec.add(areaSize)
             )
             println("Was set to: ${renderPlanes[i]}")
         }

@@ -20,6 +20,9 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     val handle: Handle
         get() = ctx.handle
 
+    val toolDir: Direction
+        get() = handle.faceDir
+
     private val previewTarget: Box
         get() = getPreviewBox(getCursorOffset(true))
 
@@ -28,23 +31,24 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
         draw(fillColor, edgeColor)
     }
 
-    val dragStart: BoxTraceResult
+    val startVec: Vec3d
         get() = ctx.hit
 
     fun isDragging(): Boolean {
-        return dragStart != BoxTraceResult.EMPTY
+        //return dragStart != BoxTraceResult.EMPTY
+        return true // TODO remove?
     }
 
     protected fun getMainAxis(): Direction.Axis {
-        return dragStart.dir.axis
+        return toolDir.axis
     }
 
     protected fun getAlternateAxesDirections(): List<Direction> {
-        return enumValues<Direction>().filter { it.axis != dragStart.dir.axis }
+        return enumValues<Direction>().filter { it.axis != toolDir.axis }
     }
 
     protected fun getAlternateAxes(): List<Direction.Axis> {
-        return enumValues<Direction.Axis>().filter { it != dragStart.dir.axis }
+        return enumValues<Direction.Axis>().filter { it != toolDir.axis }
     }
 
     protected fun getSelectionSizeIn(direction: Direction): Double {
@@ -71,7 +75,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     abstract fun getCursorOffset(snapped: Boolean = MakkitClient.gridSnapping): Vec3d
 
 
-    open fun onStartDragging(start: BoxTraceResult) {
+    open fun onStartDragging() {
         println("Base drag tool drag starting")
         toolPreviewBox.snap()
     }
@@ -86,7 +90,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
         }
     }
 
-    open fun onStopDragging(stop: BoxTraceResult) {
+    open fun onStopDragging() {
         updateState(updateSelection = true)
     }
 
@@ -97,12 +101,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     fun tryDraw() {
         if (isDragging()) {
             val off = getCursorOffset()
-            //println("Off: $off")
-            if (off != null) {
-                onDrawPreview(off)
-            } else {
-                println("Not drawing preview!")
-            }
+            onDrawPreview(off)
         } else {
             println("Nuh uh!")
         }

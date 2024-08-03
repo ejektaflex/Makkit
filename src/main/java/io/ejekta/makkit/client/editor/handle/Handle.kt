@@ -1,22 +1,22 @@
 package io.ejekta.makkit.client.editor.handle
 
-import io.ejekta.makkit.client.data.BoxTraceResult
+import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.render.AnimBox
+import io.ejekta.makkit.common.ext.drawAxisSizes
+import io.ejekta.makkit.common.ext.drawFace
+import io.ejekta.makkit.common.ext.getFacePlane
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Vec3d
 
-abstract class Handle(val region: EditRegion, val dirs: Set<Direction>) {
+class Handle(val region: EditRegion, val faceDir: Direction) {
+    val handleBox: Box
+        get() = region.selection.getFacePlane(faceDir)
 
-    val oppositeDirs: Set<Direction> by lazy {
-        dirs.map { it.opposite }.toSet()
+    val renderBox: Box
+        get() = region.selectionRenderer.renderBox
+
+    fun renderHover() {
+        renderBox.drawFace(faceDir, MakkitClient.selectionFaceColor.toAlpha(.3f))
+        renderBox.drawAxisSizes()
     }
-
-    abstract val handleBox: Box
-
-    abstract val renderBox: Box
-
-    abstract fun renderHover()
-
 }

@@ -2,7 +2,6 @@ package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
@@ -12,27 +11,28 @@ internal abstract class DualAxisDragTool(ctx: EditRegion.HandleContext) : DragTo
 
     private var plane = EMPTY_BOX
 
+
     override fun getCursorOffset(snapped: Boolean): Vec3d {
         val current = plane.trace()
         return if (current != BoxTraceResult.EMPTY) {
-            current.hit.subtract(dragStart.hit)
+            current.hit.subtract(startVec)
         } else {
             Vec3d.ZERO
         }.snapped(snapped)
     }
 
-    override fun onStartDragging(start: BoxTraceResult) {
-        super.onStartDragging(start)
+    override fun onStartDragging() {
+        super.onStartDragging()
 
         val areaSize = Vec3d(
                 DRAG_PLANE_SIZE,
                 DRAG_PLANE_SIZE,
                 DRAG_PLANE_SIZE
-        ).flatMasked(start.dir)
+        ).flatMasked(toolDir)
 
         plane = Box(
-                start.hit.subtract(areaSize),
-                start.hit.add(areaSize)
+                startVec.subtract(areaSize),
+                startVec.add(areaSize)
         )
     }
 

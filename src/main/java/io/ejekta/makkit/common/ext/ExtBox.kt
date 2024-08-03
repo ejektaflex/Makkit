@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d
 fun Box.trace(
         reverse: Boolean = false // TODO re implement back selecting toggle
 ): BoxTraceResult {
-    return RenderHelper.boxTrace(this, reverse = reverse)
+    return RenderHelper.boxTrace(this, 1000f, reverse = reverse)
 }
 
 fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
@@ -32,6 +32,25 @@ fun Box.shrinkSide(off: Vec3d, dir: Direction): Box {
     return Box(vecA, vecB)
 }
 
+fun Box.extrudedIn(dir: Direction, amt: Double): Box {
+    var vecA = calcPos()
+    var vecB = calcEnd()
+
+    val vecChange = dir.vec3d().multiply(amt)
+
+    when (dir.direction) {
+        Direction.AxisDirection.NEGATIVE -> {
+            vecA = vecA.add(vecChange)
+        }
+        Direction.AxisDirection.POSITIVE -> {
+            vecB = vecB.add(vecChange)
+        }
+        else -> { throw Exception("This should never happen!") }
+    }
+
+    return Box(vecA, vecB)
+}
+
 fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
     val start = calcPos()
     val size = getSize()
@@ -45,7 +64,7 @@ fun Box.forEachBlockCoord(func: (x: Int, y: Int, z: Int) -> Unit) {
 }
 
 fun Box.projectedIn(dir: Direction, amt: Double): Box {
-    return offset(Vec3d(amt, amt, amt).axisMasked(dir))
+    return offset(Vec3d(amt, amt, amt).dirMasked(dir))
     //return add(Vec3d(amt, amt, amt).dirMask(dir))
 }
 
@@ -210,15 +229,26 @@ fun Box.longestAxisLength(): Double {
     val size = getSize()
     return enumValues<Direction.Axis>().maxBy {
         size.getComponentAlongAxis(it)
-    }!!.let { size.getComponentAlongAxis(it) }
+    }.let { size.getComponentAlongAxis(it) }
 }
 
-fun Box.genBackfacePlanes(padding: Double): Map<Direction, Box> {
+fun Box.genBackfacePlanes(from: Vec3d, padding: Double): List<Pair<Direction, Box>> {
     val dirs = RenderHelper.getLookBehindDirections()
-    val backPlanes = mutableMapOf<Direction, Box>()
+    val backPlanes = mutableListOf<Pair<Direction, Box>>()
     dirs.forEachIndexed { _, direction ->
-        val flatStretchies = Vec3d(padding, padding, padding).flatMasked(direction)
-        backPlanes[direction] = getFacePlane(direction).expand(flatStretchies.x, flatStretchies.y, flatStretchies.z)
+
+        var fp = getFacePlane(direction)
+        val planeDist = fp.center.distanceTo(from) * 0.067 // 0.2 for some experimental stuff
+
+//        direction.alternateAxesDirs().map {
+//            fp = fp.extrudedIn(it, 0.25)
+//        }
+
+        val flatStretchies = Vec3d(planeDist, planeDist, planeDist).flatMasked(direction)
+        //backPlanes.add(direction to getFacePlane(direction).expand(flatStretchies.x, flatStretchies.y, flatStretchies.z))
+        backPlanes.add(direction to fp.extrudedIn(direction, planeDist))
+
+        //backPlanes[direction] = fp.extrudedIn(direction, planeDist)
     }
     return backPlanes
 }

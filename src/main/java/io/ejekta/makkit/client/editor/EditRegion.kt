@@ -4,7 +4,6 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.MakkitClient.Companion.timeDelta
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
-import io.ejekta.makkit.client.editor.handle.FaceHandle
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.render.AnimBox
@@ -25,7 +24,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     inner class HandleContext(
         val handle: Handle,
-        val hit: BoxTraceResult
+        val hit: Vec3d
     )
 
     inner class ToolUsageContext(
@@ -36,10 +35,10 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         private val tool = toolEnum.producer(hoverContext)
 
         fun startUsing() {
-            tool.onStartDragging(hoverContext.hit)
+            tool.onStartDragging()
         }
         fun stopUsing() {
-            tool.onStopDragging(hoverContext.hit)
+            tool.onStopDragging()
         }
         fun updateAndDraw() {
             tool.let {
@@ -112,7 +111,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     }
 
     private var handles = Direction.entries.associateWith {
-        FaceHandle(this, it)
+        Handle(this, it)
     }
 
     fun getFaceHandle(dir: Direction): Handle {
@@ -175,17 +174,18 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         if (hit != BoxTraceResult.EMPTY) {
             handle.renderHover()
-            hoverContext = HandleContext(handle, hit)
+            hoverContext = HandleContext(handle, hit.hit)
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
-            val backFaces = selectionRenderer.renderBox.genBackfacePlanes(9.0)
+            val backFaces = selectionRenderer.renderBox.genBackfacePlanes(camVec, 1.0)
 
-//                    for ((dir, bf) in backFaces) {
-//                        RenderBox(bf).draw(RenderColor.BLUE.toAlpha(.3f))
-//                    }
 
-            val results = backFaces.map { it.key to it.value.trace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
+            for ((dir, bf) in backFaces) {
+                bf.draw(RenderColor.BLUE.toAlpha(.3f))
+            }
+
+            val results = backFaces.map { it.first to it.second.trace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
 
             // Compute the closest backplane
             val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
@@ -199,7 +199,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             closestBackplane.let {
                 selectionRenderer.renderBox.drawFace(it.key, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                hoverContext = HandleContext(handle, it.value)
+                hoverContext = HandleContext(Handle(this, closestBackplane.key), it.value.hit)
             }
         }
 

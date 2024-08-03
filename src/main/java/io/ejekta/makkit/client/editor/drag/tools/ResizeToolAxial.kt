@@ -15,26 +15,26 @@ internal class ResizeToolAxial(
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d {
-        return super.getCursorOffset(snapped).dirMasked(dragStart.dir)
+        return super.getCursorOffset(snapped).dirMasked(toolDir)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
-        val shrinkVec = offset.dirMasked(dragStart.dir.opposite)
-        return box.shrinkSide(shrinkVec, dragStart.dir)
+        val shrinkVec = offset.dirMasked(toolDir.opposite)
+        return box.shrinkSide(shrinkVec, toolDir)
     }
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
         val faceCenter = toolPreviewBox.renderBox.center
-        val length = toolPreviewBox.renderBox.sizeInDirection(dragStart.dir) / 2 - 0.25
-        val lineStart = faceCenter.projectedIn(dragStart.dir, length)
-        val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
+        val length = toolPreviewBox.renderBox.sizeInDirection(toolDir) / 2 - 0.25
+        val lineStart = faceCenter.projectedIn(toolDir, length)
+        val lineEnd = faceCenter.projectedIn(toolDir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
         //preview.render.drawSizeOnFace(dragStart.dir)
         toolPreviewBox.renderBox.drawTextOnFace(
-                dragStart.dir, handle.handleBox.sizeOnAxis(dragStart.dir.axis).roundToInt().toString()
+            toolDir, handle.handleBox.sizeOnAxis(toolDir.axis).roundToInt().toString()
         )
     }
 

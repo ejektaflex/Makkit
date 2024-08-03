@@ -16,8 +16,8 @@ internal abstract class ClipboardTool(ctx: EditRegion.HandleContext) : DualAxisD
 
     override fun getPreviewBox(offset: Vec3d, box: Box) = box
 
-    override fun onStartDragging(start: BoxTraceResult) {
-        super.onStartDragging(start)
+    override fun onStartDragging() {
+        super.onStartDragging()
 //        ClipboardIntentPacket(
 //                mode,
 //                dragStart.dir,

@@ -215,6 +215,10 @@ class MakkitClient : ClientModInitializer {
     ) {
         onDown {
             println("ACTION KEY A!")
+            region?.startUsingTool(MakkitTool.RESIZE_SYMMETRIC)
+        }
+        onUp {
+            region?.stopUsingTool()
         }
     }
 

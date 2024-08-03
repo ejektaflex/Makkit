@@ -15,7 +15,7 @@ internal class PatternToolAxial(
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.stretch(
-                offset.axisMasked(dragStart.dir)
+                offset.axisMasked(toolDir)
         )
     }
 
@@ -24,18 +24,19 @@ internal class PatternToolAxial(
         return oldSelection
     }
 
-    override fun onStopDragging(stop: BoxTraceResult) {
+    override fun onStopDragging() {
         val chosen = updateState(updateSelection = false)
         if (chosen != null) {
-            region.doOperation(PatternOperation(region.selection, chosen), chosen, chosen, stop)
-            region.selection = chosen
+            // TODO reimpl pattern op
+            //region.doOperation(PatternOperation(region.selection, chosen), chosen, chosen, stop)
+            //region.selection = chosen
         }
     }
 
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        toolPreviewBox.renderBox.drawSizeOnFace(dragStart.dir)
+        toolPreviewBox.renderBox.drawSizeOnFace(toolDir)
 
         // If any of the size dimensions are 0, this will crash
         if (region.selection.getSize().hasZeroAxis()) {
@@ -61,8 +62,8 @@ internal class PatternToolAxial(
                     val step = Vec3d(x.toDouble(), y.toDouble(), z.toDouble())
 
                     Box(
-                        pos.add(size.multiply(step).dirMasked(dragStart.dir)),
-                        pos.add(size.multiply(step).dirMasked(dragStart.dir)).add(size)
+                        pos.add(size.multiply(step).dirMasked(toolDir)),
+                        pos.add(size.multiply(step).dirMasked(toolDir)).add(size)
                     ).draw(RenderColor.WHITE)
                 }
             }

@@ -19,7 +19,7 @@ internal class MoveToolPlanar(ctx: EditRegion.HandleContext) : DualAxisDragTool(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        val faceCenter = toolPreviewBox.renderBox.getFacePlane(dragStart.dir).center
+        val faceCenter = toolPreviewBox.renderBox.getFacePlane(toolDir).center
         for (axisDir in getAlternateAxesDirections()) {
             val length = getSelectionSizeIn(axisDir) / 2 - 0.25
             val lineStart = faceCenter.projectedIn(axisDir, length)

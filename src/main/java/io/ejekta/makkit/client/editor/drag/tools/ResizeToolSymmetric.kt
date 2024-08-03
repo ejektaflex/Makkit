@@ -14,7 +14,7 @@ internal class ResizeToolSymmetric (
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         // this locks to an axis and flips so that "positive" is in the direction direction
-        val change = offset.dirMasked(dragStart.dir)
+        val change = offset.dirMasked(toolDir)
         return Box(box.calcPos().subtract(change), box.calcEnd().add(change))
     }
 
@@ -22,12 +22,12 @@ internal class ResizeToolSymmetric (
         super.onDrawPreview(offset)
 
         val faceCenter = toolPreviewBox.renderBox.center
-        val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
-        val lineStart = faceCenter.projectedIn(dragStart.dir, length)
-        val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
+        val length = getPreviewSizeIn(toolDir) / 2 - 0.25
+        val lineStart = faceCenter.projectedIn(toolDir, length)
+        val lineEnd = faceCenter.projectedIn(toolDir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        toolPreviewBox.renderBox.drawSizeOnFace(dragStart.dir)
+        toolPreviewBox.renderBox.drawSizeOnFace(toolDir)
     }
 
 }

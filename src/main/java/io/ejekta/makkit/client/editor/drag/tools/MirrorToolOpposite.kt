@@ -3,7 +3,6 @@ package io.ejekta.makkit.client.editor.drag.tools
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
-import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.editor.operations.MirrorOperation
 import io.ejekta.makkit.common.ext.*
@@ -25,32 +24,33 @@ internal class MirrorToolOpposite(
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d {
-        return super.getCursorOffset(snapped).axisMasked(dragStart.dir)
+        return super.getCursorOffset(snapped).axisMasked(toolDir)
     }
 
-    override fun onStopDragging(stop: BoxTraceResult) {
+    override fun onStopDragging() {
         val old = Box(region.selection.calcPos(), region.selection.calcEnd())
-        super.onStopDragging(stop)
-        region.doOperation(MirrorOperation(mirrorPlane.calcPos()), editBox = old, trace = stop)
+        super.onStopDragging()
+        // TODO reimplement mirror op
+        //region.doOperation(MirrorOperation(mirrorPlane.calcPos()), editBox = old, trace = stop)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
 
-        mirrorDist = offset.axisValue(dragStart.dir.axis).roundToInt().absoluteValue
+        mirrorDist = offset.axisValue(toolDir.axis).roundToInt().absoluteValue
 
-        val selectedFace = box.getFacePlane(dragStart.dir)
+        val selectedFace = box.getFacePlane(toolDir)
 
 
 
         mirrorPlane = selectedFace.projectedIn(
-                dragStart.dir,
-                offset.getComponentAlongAxis(dragStart.dir.axis) * 0.5
+                toolDir,
+                offset.getComponentAlongAxis(toolDir.axis) * 0.5
         )
 
         val mirrorPos = selectedFace
                 .calcPos()
                 .flipAround(mirrorPlane.calcPos())
-                .refitForSize(box.getSize(), dragStart.dir)
+                .refitForSize(box.getSize(), toolDir)
 
         return Box(
                 mirrorPos,
@@ -64,7 +64,7 @@ internal class MirrorToolOpposite(
 
         mirrorPlane.draw(fillColor, edgeColor)
         mirrorPlane.drawTextOnFace(
-                dragStart.dir,
+                toolDir,
                 mirrorDist.toString()
         )
     }

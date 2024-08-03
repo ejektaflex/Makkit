@@ -15,7 +15,7 @@ internal class MoveToolAxial(
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d {
-        return super.getCursorOffset(snapped).axisMasked(dragStart.dir)
+        return super.getCursorOffset(snapped).axisMasked(toolDir)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
@@ -25,23 +25,22 @@ internal class MoveToolAxial(
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
 
-        // TODO is getPreviewBox box always region selection?? Can we remove it?
         //preview.setImmediate(getPreviewBox(offset, region.selection))
         //preview.snap()
 
         //val pbox = getPreviewBox(offset, region.selection)
 
         val faceCenter = toolPreviewBox.renderBox.center
-        val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
-        val lineStart = faceCenter.projectedIn(dragStart.dir, length)
-        val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
+        val length = getPreviewSizeIn(toolDir) / 2 - 0.25
+        val lineStart = faceCenter.projectedIn(toolDir, length)
+        val lineEnd = faceCenter.projectedIn(toolDir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
         toolPreviewBox.renderBox.drawTextOnFace(
-            dragStart.dir,
+            toolDir,
             toolPreviewBox.renderBox.calcPos().subtract(
                     region.selection.calcPos()
-            ).axisValue(dragStart.dir.axis).roundToInt().toString()
+            ).axisValue(toolDir.axis).roundToInt().toString()
         )
     }
 
