@@ -103,7 +103,7 @@ class MakkitClient : ClientModInitializer {
         }
 
         var time: Long = System.currentTimeMillis()
-        var delta: Long = 0
+        var timeDelta: Long = 0
 
         private fun onDrawScreen(e: Events.RenderWorldEvent) {
             // RenderHelper state
@@ -116,13 +116,13 @@ class MakkitClient : ClientModInitializer {
 
             RenderHelper.drawInWorld {
                 val newTime = System.currentTimeMillis()
-                delta = newTime - time
-                region?.update(delta)
+                timeDelta = newTime - time
+                region?.update(timeDelta)
 
                 region?.draw()
 
                 time = newTime
-                handleRemoteRegions(delta)
+                handleRemoteRegions(timeDelta)
 
                 drawPoint(Vec3d(68.0, -58.0, 68.0), size = 0.1)
 
@@ -230,7 +230,7 @@ class MakkitClient : ClientModInitializer {
         }
         onUp {
             println("Mouse unclicked!")
-            region?.stopUsingTool(MakkitTool.MOVE_AXIAL)
+            region?.stopUsingTool()
         }
     }
 

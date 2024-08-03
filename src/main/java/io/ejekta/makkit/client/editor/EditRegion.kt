@@ -1,11 +1,8 @@
 package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.MakkitClient.Companion.delta
-import io.ejekta.makkit.client.MakkitClient.Companion.isInEditMode
-import io.ejekta.makkit.client.MakkitClient.Companion.region
+import io.ejekta.makkit.client.MakkitClient.Companion.timeDelta
 import io.ejekta.makkit.client.data.BoxTraceResult
-import io.ejekta.makkit.client.editor.drag.DragTool
 import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
 import io.ejekta.makkit.client.editor.handle.FaceHandle
 import io.ejekta.makkit.client.editor.handle.Handle
@@ -19,13 +16,41 @@ import io.ejekta.makkit.common.ext.*
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import net.minecraft.client.MinecraftClient
-import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
+
+    inner class HoverContext(
+        val handle: Handle,
+        val hit: BoxTraceResult
+    )
+
+    inner class ToolUsageContext(
+        toolEnum: MakkitTool,
+        val hoverContext: HoverContext
+    ) {
+        val region: EditRegion = this@EditRegion
+        val tool = toolEnum.producer(hoverContext.handle)
+
+        fun startUsing() {
+            tool.onStartDragging(hoverContext.hit)
+        }
+        fun stopUsing() {
+            tool.onStopDragging(hoverContext.hit)
+        }
+        fun updateAndDraw() {
+            tool.let {
+                it.update(timeDelta)
+                it.tryDraw()
+            }
+        }
+    }
+
+    var hoverContext: HoverContext? = null
+    var toolContext: ToolUsageContext? = null
 
     var copyBox: Box? = null
 
@@ -41,36 +66,21 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         draw(colorToDraw)
     }
 
-    // The handle currently being hovered over
-    var hoveredHandle: Handle? = null
-    // The vec3d where the tool has been grabbed
-    var grabHit: BoxTraceResult? = null
-    // The tool currently being used
-    var tool: DragTool? = null
-    var toolEnumStored: MakkitTool? = null // TODO store enum in tool itself?
-
     fun startUsingTool(toolEnum: MakkitTool) {
-        val toolMaker = toolEnum.producer
-
-        val handle = region?.hoveredHandle ?: return
-
-        if (isInEditMode) {
-            tool = toolMaker(handle).also {
-                it.onStartDragging(grabHit!!)
+        hoverContext?.let {
+            stopUsingTool()
+            toolContext = ToolUsageContext(toolEnum, it).also { ctx ->
+                ctx.startUsing()
             }
-            toolEnumStored = toolEnum
         }
     }
 
-    fun stopUsingTool(toolEnum: MakkitTool) {
-        if (toolEnumStored == toolEnum) {
-            tool!!.onStopDragging(tool!!.dragStart) // TODO eww
-            tool = null
-            toolEnumStored = null
-        }
+    fun stopUsingTool() {
+        toolContext?.stopUsing()
+        toolContext = null
     }
 
-    fun isActive() = MakkitClient.isInEditMode
+    //fun isActive() = MakkitClient.isInEditMode
 
     fun isBeingInteractedWith(): Boolean {
         return selection.trace() != BoxTraceResult.EMPTY
@@ -158,19 +168,14 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         val handle = getFaceHandle(hit.dir)
 
-        tool?.let {
-            it.update(delta)
-            it.tryDraw()
+        toolContext?.let {
+            it.updateAndDraw()
             return
         }
 
-
         if (hit != BoxTraceResult.EMPTY) {
-
             handle.renderHover()
-            hoveredHandle = handle
-            grabHit = hit
-
+            hoverContext = HoverContext(handle, hit)
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
@@ -188,14 +193,13 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             ) }
 
             if (closestBackplane == null) {
-                hoveredHandle = null
+                hoverContext = null
                 return
             }
 
             closestBackplane.let {
                 selectionRenderer.renderBox.drawFace(it.key, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                hoveredHandle = handle
-                grabHit = it.value
+                hoverContext = HoverContext(handle, it.value)
             }
         }
 
