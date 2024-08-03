@@ -32,10 +32,10 @@ internal class MoveToolAxial(
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
         preview.renderBox.drawTextOnFace(
-                dragStart.dir,
-                preview.renderBox.calcPos().subtract(
-                        region.selection.calcPos()
-                ).axisValue(dragStart.dir.axis).roundToInt().toString()
+            dragStart.dir,
+            preview.renderBox.calcPos().subtract(
+                    region.selection.calcPos()
+            ).axisValue(dragStart.dir.axis).roundToInt().toString()
         )
     }
 

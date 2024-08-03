@@ -3,6 +3,7 @@ package io.ejekta.makkit.client
 import io.ejekta.kambrik.Kambrik
 import io.ejekta.kambrik.input.KambrikModifiedBind
 import io.ejekta.makkit.client.editor.EditRegion
+import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
@@ -10,8 +11,6 @@ import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.ext.draw
-import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
-import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
@@ -20,7 +19,6 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.client.util.InputUtil
 import net.minecraft.client.world.ClientWorld
-import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
@@ -105,6 +103,7 @@ class MakkitClient : ClientModInitializer {
         }
 
         var time: Long = System.currentTimeMillis()
+        var delta: Long = 0
 
         private fun onDrawScreen(e: Events.RenderWorldEvent) {
             // RenderHelper state
@@ -117,9 +116,11 @@ class MakkitClient : ClientModInitializer {
 
             RenderHelper.drawInWorld {
                 val newTime = System.currentTimeMillis()
-                val delta = newTime - time
+                delta = newTime - time
                 region?.update(delta)
+
                 region?.draw()
+
                 time = newTime
                 handleRemoteRegions(delta)
 
@@ -217,12 +218,20 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
+
     val mouseDragging = Kambrik.Input.registerBinding(
         KambrikModifiedBind.Mouse(
             GLFW.GLFW_MOUSE_BUTTON_LEFT
         ), realTime = true
     ) {
-        println("Mouse clicked!")
+        onDown {
+            println("Mouse clicked!")
+            region?.startUsingTool(MakkitTool.MOVE_AXIAL)
+        }
+        onUp {
+            println("Mouse unclicked!")
+            region?.stopUsingTool(MakkitTool.MOVE_AXIAL)
+        }
     }
 
 }

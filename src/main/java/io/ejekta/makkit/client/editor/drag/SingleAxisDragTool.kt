@@ -49,8 +49,10 @@ internal abstract class SingleAxisDragTool(handle: Handle) : DragTool(handle) {
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)
             )
-            // TODO why are we setting renderPlanes[i]? Are we using it?
         }
+
+        planeAxis1 = renderPlanes[0]
+        planeAxis2 = renderPlanes[1]
     }
 
     override fun getSelectionBox(offset: Vec3d, oldSelection: Box, preview: Box): Box {

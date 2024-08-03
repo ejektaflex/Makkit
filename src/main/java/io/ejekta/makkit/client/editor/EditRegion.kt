@@ -1,8 +1,12 @@
 package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
+import io.ejekta.makkit.client.MakkitClient.Companion.delta
+import io.ejekta.makkit.client.MakkitClient.Companion.isInEditMode
+import io.ejekta.makkit.client.MakkitClient.Companion.region
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.DragTool
+import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
 import io.ejekta.makkit.client.editor.handle.FaceHandle
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.editor.input.ClientPalette
@@ -36,17 +40,41 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         draw(colorToDraw)
     }
 
+    var hoveredHandle: Handle? = null
+
+    var tool: DragTool? = null
+    var toolEnumStored: MakkitTool? = null // TODO store enum in tool itself?
+
+    fun startUsingTool(toolEnum: MakkitTool) {
+        val toolMaker = toolEnum.producer
+
+        val handle = region?.hoveredHandle ?: return
+
+        if (isInEditMode) {
+            tool = toolMaker(handle)
+            toolEnumStored = toolEnum
+        }
+    }
+
+    fun stopUsingTool(toolEnum: MakkitTool) {
+        if (toolEnumStored == toolEnum) {
+            tool!!.onStopDragging(tool!!.dragStart)
+            tool = null
+            toolEnumStored = null
+        }
+    }
+
     fun isActive() = MakkitClient.isInEditMode
 
     fun isBeingInteractedWith(): Boolean {
         return selection.trace() != BoxTraceResult.EMPTY
     }
 
-    fun renderSelection() {
+    private fun renderSelection() {
         selectionRenderer.renderBox.draw(colorFill = getSelectionColor(), colorEdge = getSelectionColor())
     }
 
-    fun getSelectionColor(): RenderColor {
+    private fun getSelectionColor(): RenderColor {
 
         val default = MakkitClient.selectionBoxColor.toAlpha(.4f)
 
@@ -67,17 +95,12 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
-    private var handles = mutableListOf<Handle>()
-
-    init {
-        for (handleDir in Direction.values()) {
-            handles.add(FaceHandle(this, handleDir))
-        }
+    private var handles = Direction.entries.associateWith {
+        FaceHandle(this, it)
     }
 
     fun getFaceHandle(dir: Direction): Handle {
-        val dirSet = setOf(dir)
-        return handles.first { it.dirs == dirSet  }
+        return handles[dir]!!
     }
 
     fun moveTo(x: Int, y: Int, z: Int, sx: Int, sy: Int, sz: Int) {
@@ -129,8 +152,17 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         val handle = getFaceHandle(hit.dir)
 
+        tool?.let {
+            it.update(delta)
+            it.tryDraw()
+            return
+        }
+
+
         if (hit != BoxTraceResult.EMPTY) {
+
             handle.renderHover()
+            hoveredHandle = handle
 
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
@@ -145,12 +177,16 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             val closestBackplane = results.minByOrNull { it.value.hit.distanceTo(
                 camVec
-            ) }?.key ?: return // if this is null, no reason to continue computation
+            ) }?.key // if this is null, no reason to continue computation
 
+            if (closestBackplane == null) {
+                hoveredHandle = null
+                return
+            }
 
-
-            closestBackplane?.let {
+            closestBackplane.let {
                 selectionRenderer.renderBox.drawFace(it, MakkitClient.selectionFaceColor.toAlpha(.3f))
+                hoveredHandle = handle
             }
         }
 

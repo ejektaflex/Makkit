@@ -8,6 +8,7 @@ import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.draw
 import io.ejekta.makkit.common.ext.sizeInDirection
+import io.ejekta.makkit.common.ext.trace
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
@@ -61,12 +62,13 @@ abstract class DragTool(val handle: Handle) {
 
     /**
      * Calculates the position of the drag cursor. May also be snapped to a block grid
-     * @param snapped Whether or not to snap the cursor to the block grid
+     * @param snapped Whether to snap the cursor to the block grid
      */
     abstract fun getCursorOffset(snapped: Boolean = MakkitClient.gridSnapping): Vec3d?
 
 
     open fun onStartDragging(start: BoxTraceResult) {
+        println("Base drag tool drag starting")
         preview.snapTo(region.selection)
     }
 
@@ -86,28 +88,27 @@ abstract class DragTool(val handle: Handle) {
 
     fun update(delta: Long) {
         // Try to start dragging
-//        if (MakkitClient.isInEditMode && !region.isAnyToolBeingUsed() && dragStart == BoxTraceResult.EMPTY && kambrikKeybind.isDown) {
-//            dragStart = region.selection.autoTrace()
-//            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
-//                onStartDragging(dragStart)
-//            }
-//        }
+        if (dragStart == BoxTraceResult.EMPTY) {
+            println("On start dragging tool?")
+            dragStart = region.selection.trace()
+            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
+                println("Starting!!")
+                onStartDragging(dragStart)
+            }
 
+        }
         preview.update(delta)
-
-        // Try to stop dragging
-//        if (dragStart != BoxTraceResult.EMPTY && !kambrikKeybind.isDown) {
-//            onStopDragging(dragStart)
-//            dragStart = BoxTraceResult.EMPTY
-//        }
     }
 
     fun tryDraw() {
         if (isDragging()) {
             val off = getCursorOffset()
+            //println("Off: $off")
             if (off != null) {
                 onDrawPreview(off)
             }
+        } else {
+            println("Nuh uh!")
         }
     }
 
