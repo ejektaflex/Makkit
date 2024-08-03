@@ -18,7 +18,6 @@ abstract class DragTool(val handle: Handle) {
     val region: EditRegion
         get() = handle.region
 
-
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
     open val preview = AnimBox({ handle.handleBox }) {
         draw(fillColor, edgeColor)
@@ -50,7 +49,6 @@ abstract class DragTool(val handle: Handle) {
         return handle.handleBox.sizeInDirection(direction)
     }
 
-
     /**
      * Calculates a box shape for the tool, given a position
      * @param offset The position of the cursor
@@ -69,7 +67,7 @@ abstract class DragTool(val handle: Handle) {
 
     open fun onStartDragging(start: BoxTraceResult) {
         println("Base drag tool drag starting")
-        preview.snapTo(region.selection)
+        preview.snap()
     }
 
     fun updateState(updateSelection: Boolean = true): Box? {
@@ -89,13 +87,10 @@ abstract class DragTool(val handle: Handle) {
     fun update(delta: Long) {
         // Try to start dragging
         if (dragStart == BoxTraceResult.EMPTY) {
-            println("On start dragging tool?")
             dragStart = region.selection.trace()
             if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
-                println("Starting!!")
                 onStartDragging(dragStart)
             }
-
         }
         preview.update(delta)
     }
@@ -106,6 +101,8 @@ abstract class DragTool(val handle: Handle) {
             //println("Off: $off")
             if (off != null) {
                 onDrawPreview(off)
+            } else {
+                println("Not drawing preview!")
             }
         } else {
             println("Nuh uh!")
@@ -116,7 +113,7 @@ abstract class DragTool(val handle: Handle) {
      * Draws the tool to the screen, with the given offset
      */
     open fun onDrawPreview(offset: Vec3d) {
-        val newPreview = getPreviewBox(offset, region.selection)
+        //val newPreview = getPreviewBox(offset, region.selection)
 //        if (newPreview != preview.actualBox) {
 //            //preview.resize(getPreviewBox(offset, region.selection))
 //        }

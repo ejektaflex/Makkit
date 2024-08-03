@@ -36,7 +36,7 @@ class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
         renderBox = Box(center, center)
     }
 
-    fun snapTo(box: Box) {
+    fun snap() {
         renderBox = actualBox
     }
 

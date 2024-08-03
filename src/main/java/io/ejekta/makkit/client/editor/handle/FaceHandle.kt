@@ -14,7 +14,7 @@ class FaceHandle(region: EditRegion, private val faceDir: Direction) : Handle(re
         get() = region.selection.getFacePlane(faceDir)
 
     override val renderBox: Box
-        get() = region.selectionRenderer.renderBox.getFacePlane(faceDir)
+        get() = region.selectionRenderer.renderBox
 
     override fun renderHover() {
         renderBox.drawFace(faceDir, MakkitClient.selectionFaceColor.toAlpha(.3f))

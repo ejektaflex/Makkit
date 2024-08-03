@@ -2,6 +2,7 @@ package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
+import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
@@ -22,8 +23,21 @@ internal class MoveToolAxial(
         return box.offset(offset)
     }
 
+    val previewTarget: Box?
+        get() = getCursorOffset(true)?.let { getPreviewBox(it, region.selection) }
+
+    override val preview = AnimBox({ previewTarget ?: region.selection }) {
+        draw(fillColor, edgeColor)
+    }
+
     override fun onDrawPreview(offset: Vec3d) {
         super.onDrawPreview(offset)
+
+        // TODO is getPreviewBox box always region selection?? Can we remove it?
+        //preview.setImmediate(getPreviewBox(offset, region.selection))
+        //preview.snap()
+
+        //val pbox = getPreviewBox(offset, region.selection)
 
         val faceCenter = preview.renderBox.center
         val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25

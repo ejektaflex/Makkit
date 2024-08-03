@@ -58,7 +58,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
     fun stopUsingTool(toolEnum: MakkitTool) {
         if (toolEnumStored == toolEnum) {
-            tool!!.onStopDragging(tool!!.dragStart)
+            tool!!.onStopDragging(tool!!.dragStart) // TODO eww
             tool = null
             toolEnumStored = null
         }
