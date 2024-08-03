@@ -1,17 +1,15 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
-import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.render.RenderColor
-import io.ejekta.makkit.common.editor.operations.MirrorOperation
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-internal class MirrorToolOpposite(
+internal class MirrorToolAxial(
     ctx: EditRegion.HandleContext
 ) : SingleAxisDragTool(ctx) {
 
@@ -24,7 +22,7 @@ internal class MirrorToolOpposite(
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d {
-        return super.getCursorOffset(snapped).axisMasked(toolDir)
+        return super.getCursorOffset(snapped).dirMasked(toolDir)
     }
 
     override fun onStopDragging() {

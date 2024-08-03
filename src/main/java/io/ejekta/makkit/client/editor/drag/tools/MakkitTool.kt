@@ -6,5 +6,8 @@ import io.ejekta.makkit.client.editor.drag.DragTool
 enum class MakkitTool(val producer: (handleCtx: EditRegion.HandleContext) -> DragTool) {
     MOVE_AXIAL(::MoveToolAxial),
     MOVE_PLANAR(::MoveToolPlanar),
-    RESIZE_SYMMETRIC(::ResizeToolSymmetric)
+    RESIZE_AXIAL(::ResizeToolAxial),
+    RESIZE_SYMMETRIC(::ResizeToolSymmetric),
+    MIRROR(::MirrorToolAxial),
+    PATTERN(::PatternToolAxial)
 }

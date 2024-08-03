@@ -1,6 +1,7 @@
 package io.ejekta.makkit.client
 
 import io.ejekta.kambrik.Kambrik
+import io.ejekta.kambrik.input.KambrikKeyModifier
 import io.ejekta.kambrik.input.KambrikModifiedBind
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
@@ -208,49 +209,53 @@ class MakkitClient : ClientModInitializer {
         }
     }
 
-    val actionKeyA = Kambrik.Input.registerBinding(
-        KambrikModifiedBind.Key(
-            InputUtil.fromKeyCode(GLFW.GLFW_KEY_C, -1)
-        ), realTime = true
-    ) {
-        onDown {
-            println("ACTION KEY A!")
-            region?.startUsingTool(MakkitTool.RESIZE_SYMMETRIC)
-        }
-        onUp {
-            region?.stopUsingTool()
+
+
+    fun regBind(bindModifiedBind: KambrikModifiedBind, toolEnum: MakkitTool) {
+        Kambrik.Input.registerBinding(
+            bindModifiedBind, realTime = true
+        ) {
+            onDown {
+                println("Tool button down!: $toolEnum")
+                region?.startUsingTool(toolEnum)
+            }
+            onUp {
+                region?.stopUsingTool()
+            }
         }
     }
 
-
-    val mouseDraggingLeft = Kambrik.Input.registerBinding(
-        KambrikModifiedBind.Mouse(
+    init {
+        regBind(KambrikModifiedBind.Mouse(
             GLFW.GLFW_MOUSE_BUTTON_LEFT
-        ), realTime = true
-    ) {
-        onDown {
-            println("Mouse clicked!")
-            region?.startUsingTool(MakkitTool.MOVE_AXIAL)
-        }
-        onUp {
-            println("Mouse unclicked!")
-            region?.stopUsingTool()
-        }
-    }
+        ), MakkitTool.RESIZE_AXIAL)
 
-    val mouseDraggingRight = Kambrik.Input.registerBinding(
-        KambrikModifiedBind.Mouse(
+        regBind(KambrikModifiedBind.Mouse(
             GLFW.GLFW_MOUSE_BUTTON_RIGHT
-        ), realTime = true
-    ) {
-        onDown {
-            println("Mouse clicked!")
-            region?.startUsingTool(MakkitTool.MOVE_PLANAR)
-        }
-        onUp {
-            println("Mouse unclicked!")
-            region?.stopUsingTool()
-        }
+        ), MakkitTool.MOVE_PLANAR)
+
+        regBind(KambrikModifiedBind.Mouse(
+            GLFW.GLFW_MOUSE_BUTTON_LEFT,
+            KambrikKeyModifier(alt = true)
+        ), MakkitTool.RESIZE_SYMMETRIC)
+
+        regBind(KambrikModifiedBind.Mouse(
+            GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+            KambrikKeyModifier(alt = true)
+        ), MakkitTool.MOVE_AXIAL)
+
+//        regBind(KambrikModifiedBind.Key(
+//            InputUtil.fromKeyCode(GLFW.GLFW_KEY_C, -1)
+//        ), MakkitTool.RESIZE_SYMMETRIC)
+
+        regBind(KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_N, -1)
+        ), MakkitTool.MIRROR)
+
+        regBind(KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_X, -1)
+        ), MakkitTool.PATTERN)
+
     }
 
 }

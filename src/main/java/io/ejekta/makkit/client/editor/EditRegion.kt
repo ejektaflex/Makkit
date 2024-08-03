@@ -181,9 +181,9 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             val backFaces = selectionRenderer.renderBox.genBackfacePlanes(camVec, 1.0)
 
 
-            for ((dir, bf) in backFaces) {
-                bf.draw(RenderColor.BLUE.toAlpha(.3f))
-            }
+//            for ((dir, bf) in backFaces) {
+//                bf.draw(RenderColor.BLUE.toAlpha(.3f))
+//            }
 
             val results = backFaces.map { it.first to it.second.trace() }.filter { it.second != BoxTraceResult.EMPTY }.toMap()
 
