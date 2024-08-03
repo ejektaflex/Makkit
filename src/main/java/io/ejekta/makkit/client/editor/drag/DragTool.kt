@@ -13,17 +13,21 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
-abstract class DragTool(val handle: Handle) {
+abstract class DragTool(val ctx: EditRegion.HandleContext) {
 
     val region: EditRegion
-        get() = handle.region
+        get() = ctx.handle.region
+
+    val handle: Handle
+        get() = ctx.handle
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
     open val handlePreview = AnimBox({ handle.handleBox }) {
         draw(fillColor, edgeColor)
     }
 
-    var dragStart = BoxTraceResult.EMPTY
+    val dragStart: BoxTraceResult
+        get() = ctx.hit
 
     fun isDragging(): Boolean {
         return dragStart != BoxTraceResult.EMPTY
@@ -85,13 +89,6 @@ abstract class DragTool(val handle: Handle) {
     }
 
     fun update(delta: Long) {
-        // Try to start dragging
-        if (dragStart == BoxTraceResult.EMPTY) {
-            dragStart = handle.handleBox.trace()
-            if (dragStart != BoxTraceResult.EMPTY && MakkitClient.isInEditMode) {
-                onStartDragging(dragStart)
-            }
-        }
         handlePreview.update(delta)
     }
 

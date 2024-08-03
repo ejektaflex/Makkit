@@ -7,7 +7,7 @@ import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.common.enums.ClipboardMode
 import net.minecraft.util.math.BlockPos
 
-internal class CopyTool(handle: Handle) : ClipboardTool(handle) {
+internal class CopyTool(ctx: EditRegion.HandleContext) : ClipboardTool(ctx) {
 
     override val mode = ClipboardMode.COPY
 

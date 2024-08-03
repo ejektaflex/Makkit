@@ -5,6 +5,6 @@ import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.common.enums.ClipboardMode
 
-internal class PasteTool(handle: Handle) : ClipboardTool(handle) {
+internal class PasteTool(ctx: EditRegion.HandleContext) : ClipboardTool(ctx) {
     override val mode = ClipboardMode.PASTE
 }

@@ -23,17 +23,17 @@ import net.minecraft.util.math.Vec3d
 
 class EditRegion(var drawDragPlane: Boolean = false) {
 
-    inner class HoverContext(
+    inner class HandleContext(
         val handle: Handle,
         val hit: BoxTraceResult
     )
 
     inner class ToolUsageContext(
         toolEnum: MakkitTool,
-        val hoverContext: HoverContext
+        val hoverContext: HandleContext
     ) {
         val region: EditRegion = this@EditRegion
-        val tool = toolEnum.producer(hoverContext.handle)
+        private val tool = toolEnum.producer(hoverContext)
 
         fun startUsing() {
             tool.onStartDragging(hoverContext.hit)
@@ -49,7 +49,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         }
     }
 
-    var hoverContext: HoverContext? = null
+    var hoverContext: HandleContext? = null
     var toolContext: ToolUsageContext? = null
 
     var copyBox: Box? = null
@@ -175,7 +175,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
         if (hit != BoxTraceResult.EMPTY) {
             handle.renderHover()
-            hoverContext = HoverContext(handle, hit)
+            hoverContext = HandleContext(handle, hit)
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
@@ -199,7 +199,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
 
             closestBackplane.let {
                 selectionRenderer.renderBox.drawFace(it.key, MakkitClient.selectionFaceColor.toAlpha(.3f))
-                hoverContext = HoverContext(handle, it.value)
+                hoverContext = HandleContext(handle, it.value)
             }
         }
 

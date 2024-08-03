@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
@@ -9,8 +10,8 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
 internal class ResizeToolSymmetric (
-    handle: Handle
-) : SingleAxisDragTool(handle) {
+    ctx: EditRegion.HandleContext
+) : SingleAxisDragTool(ctx) {
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         // this locks to an axis and flips so that "positive" is in the direction direction

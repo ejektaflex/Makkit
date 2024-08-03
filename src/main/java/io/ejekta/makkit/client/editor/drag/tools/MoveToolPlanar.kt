@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.DualAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
@@ -10,7 +11,7 @@ import io.ejekta.makkit.common.ext.projectedIn
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal class MoveToolPlanar(handle: Handle) : DualAxisDragTool(handle) {
+internal class MoveToolPlanar(ctx: EditRegion.HandleContext) : DualAxisDragTool(ctx) {
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.offset(offset)

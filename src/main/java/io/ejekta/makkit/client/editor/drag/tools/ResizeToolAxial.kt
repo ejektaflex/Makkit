@@ -1,5 +1,6 @@
 package io.ejekta.makkit.client.editor.drag.tools
 
+import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
@@ -10,8 +11,8 @@ import net.minecraft.util.math.Vec3d
 import kotlin.math.roundToInt
 
 internal class ResizeToolAxial(
-    handle: Handle
-) : SingleAxisDragTool(handle) {
+    ctx: EditRegion.HandleContext
+) : SingleAxisDragTool(ctx) {
 
     // Constrain to direction
     override fun getCursorOffset(snapped: Boolean): Vec3d? {

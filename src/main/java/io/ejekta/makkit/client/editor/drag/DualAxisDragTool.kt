@@ -1,13 +1,14 @@
 package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
+import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class DualAxisDragTool(handle: Handle) : DragTool(handle) {
+internal abstract class DualAxisDragTool(ctx: EditRegion.HandleContext) : DragTool(ctx) {
 
     private var plane = EMPTY_BOX
 

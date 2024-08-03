@@ -13,8 +13,8 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 internal class MirrorToolOpposite(
-    handle: Handle
-) : SingleAxisDragTool(handle) {
+    ctx: EditRegion.HandleContext
+) : SingleAxisDragTool(ctx) {
 
     // The distance between the original selection and the mirrored section, for display
     private var mirrorDist = 0

@@ -9,7 +9,7 @@ import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
 
-internal abstract class SingleAxisDragTool(handle: Handle) : DragTool(handle) {
+internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : DragTool(ctx) {
 
     protected var planeAxis1 = EMPTY_BOX
     protected var planeAxis2 = EMPTY_BOX
