@@ -2,8 +2,6 @@ package io.ejekta.makkit.client.editor.drag.tools
 
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
-import io.ejekta.makkit.client.editor.handle.Handle
-import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
@@ -16,19 +14,12 @@ internal class MoveToolAxial(
 ) : SingleAxisDragTool(ctx) {
 
     // Constrain to direction
-    override fun getCursorOffset(snapped: Boolean): Vec3d? {
-        return super.getCursorOffset(snapped)?.axisMasked(dragStart.dir)
+    override fun getCursorOffset(snapped: Boolean): Vec3d {
+        return super.getCursorOffset(snapped).axisMasked(dragStart.dir)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
         return box.offset(offset)
-    }
-
-    val previewTarget: Box?
-        get() = getCursorOffset(true)?.let { getPreviewBox(it, region.selection) }
-
-    override val handlePreview = AnimBox({ previewTarget ?: region.selection }) {
-        draw(fillColor, edgeColor)
     }
 
     override fun onDrawPreview(offset: Vec3d) {
@@ -40,15 +31,15 @@ internal class MoveToolAxial(
 
         //val pbox = getPreviewBox(offset, region.selection)
 
-        val faceCenter = handlePreview.renderBox.center
+        val faceCenter = toolPreviewBox.renderBox.center
         val length = getPreviewSizeIn(dragStart.dir) / 2 - 0.25
         val lineStart = faceCenter.projectedIn(dragStart.dir, length)
         val lineEnd = faceCenter.projectedIn(dragStart.dir, -length)
         RenderHelper.drawLine(lineStart, lineEnd, RenderColor.WHITE)
 
-        handlePreview.renderBox.drawTextOnFace(
+        toolPreviewBox.renderBox.drawTextOnFace(
             dragStart.dir,
-            handlePreview.renderBox.calcPos().subtract(
+            toolPreviewBox.renderBox.calcPos().subtract(
                     region.selection.calcPos()
             ).axisValue(dragStart.dir.axis).roundToInt().toString()
         )

@@ -12,13 +12,13 @@ internal abstract class DualAxisDragTool(ctx: EditRegion.HandleContext) : DragTo
 
     private var plane = EMPTY_BOX
 
-    override fun getCursorOffset(snapped: Boolean): Vec3d? {
+    override fun getCursorOffset(snapped: Boolean): Vec3d {
         val current = plane.trace()
         return if (current != BoxTraceResult.EMPTY) {
             current.hit.subtract(dragStart.hit)
         } else {
-            null
-        }?.snapped(snapped)
+            Vec3d.ZERO
+        }.snapped(snapped)
     }
 
     override fun onStartDragging(start: BoxTraceResult) {

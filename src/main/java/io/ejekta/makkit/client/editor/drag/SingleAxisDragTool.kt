@@ -2,7 +2,6 @@ package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.ext.*
@@ -11,14 +10,20 @@ import net.minecraft.util.math.Vec3d
 
 internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : DragTool(ctx) {
 
-    protected var planeAxis1 = EMPTY_BOX
-    protected var planeAxis2 = EMPTY_BOX
+    protected var planeAxis1: Box = EMPTY_BOX
+    protected var planeAxis2: Box = EMPTY_BOX
 
     protected val planes: List<Box>
         get() = listOf(planeAxis1, planeAxis2)
 
-    override fun getCursorOffset(snapped: Boolean): Vec3d? {
+    init {
+        println("Created $this and it has planes: $planes $planeAxis1")
+    }
+
+    override fun getCursorOffset(snapped: Boolean): Vec3d {
+        println("PLANES: $planes")
         val offsets = planes.mapNotNull {
+            println("PLANE: $it")
             val current = RenderHelper.boxTrace(it, 1000f)
             if (current != BoxTraceResult.EMPTY) {
                 current
@@ -26,10 +31,9 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
                 null
             }
         }
-
         return (offsets.minByOrNull {
             it.hit.distanceTo(it.source)
-        } ?: return null).hit.subtract(dragStart.hit).snapped(snapped)
+        } ?: return Vec3d.ZERO).hit.subtract(dragStart.hit).snapped(snapped)
     }
 
     override fun onStartDragging(start: BoxTraceResult) {
@@ -40,6 +44,7 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
         val dirs = start.dir.otherDirectionsSameSigNum()
 
         dirs.forEachIndexed { i, direction ->
+            println("Start dragging set render plane: $i")
             val areaSize = Vec3d(
                     DRAG_PLANE_SIZE,
                     DRAG_PLANE_SIZE,
@@ -49,8 +54,9 @@ internal abstract class SingleAxisDragTool(ctx: EditRegion.HandleContext) : Drag
                     start.hit.subtract(areaSize),
                     start.hit.add(areaSize)
             )
+            println("Was set to: ${renderPlanes[i]}")
         }
-
+        println("Planes for setting: $renderPlanes")
         planeAxis1 = renderPlanes[0]
         planeAxis2 = renderPlanes[1]
     }

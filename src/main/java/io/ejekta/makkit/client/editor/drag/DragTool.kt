@@ -8,7 +8,6 @@ import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.draw
 import io.ejekta.makkit.common.ext.sizeInDirection
-import io.ejekta.makkit.common.ext.trace
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
@@ -21,8 +20,11 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     val handle: Handle
         get() = ctx.handle
 
+    private val previewTarget: Box
+        get() = getPreviewBox(getCursorOffset(true))
+
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one
-    open val handlePreview = AnimBox({ handle.handleBox }) {
+    open val toolPreviewBox = AnimBox({ previewTarget }) {
         draw(fillColor, edgeColor)
     }
 
@@ -58,7 +60,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
      * @param offset The position of the cursor
      * @param box The starting box region
      */
-    abstract fun getPreviewBox(offset: Vec3d, box: Box): Box
+    abstract fun getPreviewBox(offset: Vec3d, box: Box = region.selection): Box
 
     abstract fun getSelectionBox(offset: Vec3d, oldSelection: Box, preview: Box): Box
 
@@ -66,16 +68,16 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
      * Calculates the position of the drag cursor. May also be snapped to a block grid
      * @param snapped Whether to snap the cursor to the block grid
      */
-    abstract fun getCursorOffset(snapped: Boolean = MakkitClient.gridSnapping): Vec3d?
+    abstract fun getCursorOffset(snapped: Boolean = MakkitClient.gridSnapping): Vec3d
 
 
     open fun onStartDragging(start: BoxTraceResult) {
         println("Base drag tool drag starting")
-        handlePreview.snap()
+        toolPreviewBox.snap()
     }
 
-    fun updateState(updateSelection: Boolean = true): Box? {
-        return getCursorOffset(true)?.let {
+    fun updateState(updateSelection: Boolean = true): Box {
+        return getCursorOffset(true).let {
             val preview = getPreviewBox(it, region.selection)
             if (updateSelection) {
                 region.selection = getSelectionBox(it, region.selection, preview)
@@ -89,7 +91,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     }
 
     fun update(delta: Long) {
-        handlePreview.update(delta)
+        toolPreviewBox.update(delta)
     }
 
     fun tryDraw() {
@@ -114,7 +116,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
 //        if (newPreview != preview.actualBox) {
 //            //preview.resize(getPreviewBox(offset, region.selection))
 //        }
-        handlePreview.draw()
+        toolPreviewBox.draw()
     }
 
     protected companion object {

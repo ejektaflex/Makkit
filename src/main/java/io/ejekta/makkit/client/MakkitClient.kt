@@ -219,7 +219,7 @@ class MakkitClient : ClientModInitializer {
     }
 
 
-    val mouseDragging = Kambrik.Input.registerBinding(
+    val mouseDraggingLeft = Kambrik.Input.registerBinding(
         KambrikModifiedBind.Mouse(
             GLFW.GLFW_MOUSE_BUTTON_LEFT
         ), realTime = true
@@ -227,6 +227,21 @@ class MakkitClient : ClientModInitializer {
         onDown {
             println("Mouse clicked!")
             region?.startUsingTool(MakkitTool.MOVE_AXIAL)
+        }
+        onUp {
+            println("Mouse unclicked!")
+            region?.stopUsingTool()
+        }
+    }
+
+    val mouseDraggingRight = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Mouse(
+            GLFW.GLFW_MOUSE_BUTTON_RIGHT
+        ), realTime = true
+    ) {
+        onDown {
+            println("Mouse clicked!")
+            region?.startUsingTool(MakkitTool.MOVE_PLANAR)
         }
         onUp {
             println("Mouse unclicked!")

@@ -11,7 +11,7 @@ import kotlin.math.*
 class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
 
     // The box that is rendered
-    var renderBox = realBox()
+    var renderBox = EMPTY_BOX
         private set
 
     var isAnimating: Boolean = false

@@ -24,8 +24,8 @@ internal class MirrorToolOpposite(
     private var mirrorPlane = EMPTY_BOX
 
     // Constrain to direction
-    override fun getCursorOffset(snapped: Boolean): Vec3d? {
-        return super.getCursorOffset(snapped)?.axisMasked(dragStart.dir)
+    override fun getCursorOffset(snapped: Boolean): Vec3d {
+        return super.getCursorOffset(snapped).axisMasked(dragStart.dir)
     }
 
     override fun onStopDragging(stop: BoxTraceResult) {
