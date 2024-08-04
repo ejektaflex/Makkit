@@ -13,7 +13,9 @@ import io.ejekta.makkit.client.render.RenderHelper
 import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
 import io.ejekta.makkit.common.editor.operations.FillWallsOperation
 import io.ejekta.makkit.common.enums.BlockMask
+import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.draw
+import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
@@ -235,6 +237,24 @@ class MakkitClient : ClientModInitializer {
                 FillWallsOperation
             )
         }
+    }
+
+    val undoKey = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_Z, -1),
+            KambrikKeyModifier(ctrl = true)
+        ), realTime = true
+    ) {
+        onDown { EditHistoryPacket(UndoRedoMode.UNDO).sendToServer() }
+    }
+
+    val redoKey = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_Z, -1),
+            KambrikKeyModifier(ctrl = true, shift = true)
+        ), realTime = true
+    ) {
+        onDown { EditHistoryPacket(UndoRedoMode.REDO).sendToServer() }
     }
 
     fun regBind(bindModifiedBind: KambrikModifiedBind, toolEnum: MakkitTool) {
