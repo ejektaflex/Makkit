@@ -7,6 +7,9 @@ import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
+import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 
@@ -43,7 +46,10 @@ object NetworkHandler {
                 intent.undoBox,
                 intent.side,
                 intent.operation,
-                intent.palette,
+                intent.palette.map {
+                    val lookupItem = player.server.registryManager.get(RegistryKeys.ITEM).get(it) ?: Items.AIR
+                    ItemStack(lookupItem)
+                },
                 intent.options
         )
 

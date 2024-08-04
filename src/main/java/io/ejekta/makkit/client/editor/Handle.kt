@@ -1,7 +1,6 @@
-package io.ejekta.makkit.client.editor.handle
+package io.ejekta.makkit.client.editor
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.common.ext.drawAxisSizes
 import io.ejekta.makkit.common.ext.drawFace
 import io.ejekta.makkit.common.ext.getFacePlane

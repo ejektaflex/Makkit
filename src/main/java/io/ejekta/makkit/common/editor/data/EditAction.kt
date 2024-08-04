@@ -15,13 +15,13 @@ import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 
 data class EditAction(
-        val player: ServerPlayerEntity,
-        val box: Box,
-        val undoBox: Box,
-        val direction: Direction,
-        val operation: WorldOperation = FillBlocksOperation(),
-        val stacks: List<ItemStack> = listOf(),
-        val options: EditWorldOptions = EditWorldOptions()
+    val player: ServerPlayerEntity,
+    val box: Box,
+    val undoBox: Box,
+    val direction: Direction,
+    val operation: WorldOperation = FillBlocksOperation,
+    val stacks: List<ItemStack> = listOf(),
+    val options: EditWorldOptions = EditWorldOptions()
 ) {
     // Key: Position. Value: BeforeState, AfterState
     private var stateMap = mutableMapOf<BlockPos, Pair<BlockState, BlockState>>()

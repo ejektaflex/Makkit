@@ -7,7 +7,7 @@ import net.minecraft.text.Text
 import net.minecraft.world.BlockView
 
 @Serializable
-class FillWallsOperation : WorldOperation() {
+data object FillWallsOperation : WorldOperation() {
     override fun getType() = OpType.WALLS
 
     override fun calculate(action: EditAction, view: BlockView) {

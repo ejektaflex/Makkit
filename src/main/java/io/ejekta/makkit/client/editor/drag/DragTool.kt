@@ -1,9 +1,8 @@
 package io.ejekta.makkit.client.editor.drag
 
 import io.ejekta.makkit.client.MakkitClient
-import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.EditRegion
-import io.ejekta.makkit.client.editor.handle.Handle
+import io.ejekta.makkit.client.editor.Handle
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.common.ext.draw

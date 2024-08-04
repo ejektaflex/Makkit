@@ -10,8 +10,11 @@ import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
 import io.ejekta.makkit.client.render.RenderHelper
+import io.ejekta.makkit.common.editor.operations.FillBlocksOperation
+import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.ext.draw
+import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.fabricmc.fabric.api.event.player.UseBlockCallback
@@ -20,11 +23,14 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.client.util.InputUtil
 import net.minecraft.client.world.ClientWorld
+import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
 import net.minecraft.util.ActionResult
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.HitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import org.lwjgl.glfw.GLFW
 
@@ -206,6 +212,23 @@ class MakkitClient : ClientModInitializer {
                     ))
                 }
             }
+        }
+    }
+
+    val fillKey = Kambrik.Input.registerBinding(
+        KambrikModifiedBind.Key(
+            InputUtil.fromKeyCode(GLFW.GLFW_KEY_R, -1)
+        ), realTime = true
+    ) {
+        onDown {
+            println("FILL KEY!")
+
+            val reg = getOrCreateRegion()
+
+            reg.doOperation(
+                FillBlocksOperation
+            )
+
         }
     }
 

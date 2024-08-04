@@ -4,7 +4,6 @@ import io.ejekta.makkit.client.MakkitClient
 import io.ejekta.makkit.client.MakkitClient.Companion.timeDelta
 import io.ejekta.makkit.client.data.BoxTraceResult
 import io.ejekta.makkit.client.editor.drag.tools.MakkitTool
-import io.ejekta.makkit.client.editor.handle.Handle
 import io.ejekta.makkit.client.editor.input.ClientPalette
 import io.ejekta.makkit.client.render.AnimBox
 import io.ejekta.makkit.client.render.RenderColor
@@ -154,7 +153,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
                         weightedPalette = MakkitClient.weightedPalette
                         blockMask = MakkitClient.blockMask
                     },
-                    ClientPalette.getSafePalette()
+                    ClientPalette.getSafePalette().map { it.id }
             ).sendToServer()
         }
     }

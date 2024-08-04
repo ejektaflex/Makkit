@@ -6,8 +6,8 @@ import io.ejekta.makkit.common.editor.data.EditWorldOptions
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import net.minecraft.item.ItemStack
 import net.minecraft.network.packet.CustomPayload
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Direction
 
@@ -25,7 +25,7 @@ data class EditWorldPacket(
     var options: EditWorldOptions = EditWorldOptions(),
         // Which items we are using for the operation
         // TODO maybe we can make this block Identifier list instead for ease
-    var palette: List<@Contextual ItemStack> = listOf()
+    var palette: List<@Contextual Identifier> = listOf()
 ) : KambrikMsg() {
 
     override fun onServerReceived(ctx: MsgContext) {
