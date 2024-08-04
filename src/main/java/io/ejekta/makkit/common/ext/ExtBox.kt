@@ -238,14 +238,14 @@ fun Box.genBackfacePlanes(from: Vec3d, padding: Double): List<Pair<Direction, Bo
     dirs.forEachIndexed { _, direction ->
 
         var fp = getFacePlane(direction)
-        val planeDist = fp.center.distanceTo(from) * 0.067 // 0.2 for some experimental stuff
+        val planeDist = fp.center.distanceTo(from) * 0.01 // 0.2 for some experimental stuff
 
 //        direction.alternateAxesDirs().map {
 //            fp = fp.extrudedIn(it, 0.25)
 //        }
 
-        val flatStretchies = Vec3d(planeDist, planeDist, planeDist).flatMasked(direction)
-        //backPlanes.add(direction to getFacePlane(direction).expand(flatStretchies.x, flatStretchies.y, flatStretchies.z))
+        val flatStretchies = Vec3d(padding, padding, padding).flatMasked(direction)
+        backPlanes.add(direction to getFacePlane(direction).expand(flatStretchies.x, flatStretchies.y, flatStretchies.z))
         backPlanes.add(direction to fp.extrudedIn(direction, planeDist))
 
         //backPlanes[direction] = fp.extrudedIn(direction, planeDist)

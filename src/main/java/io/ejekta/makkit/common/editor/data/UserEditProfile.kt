@@ -38,6 +38,27 @@ class UserEditProfile {
         return true
     }
 
+    /*
+    TODO refactor undo/redo
+
+    each commit will add an EditAction containing the Before and After states;
+    We also store whether we are currently in the Before or After states!!
+
+    Every time a new action is performed, we push the Edit action, execute it, and set our pointer to After state
+
+    Every time we want to Undo this happens:
+        * If we are in After state, revert to Before state and set us to Before state
+        * If we are in Before state, pop the Undo off and set us to the new head After state
+
+    Every time we want to Redo this happens:
+        * If we are in After state, push the new Redo on and set us to Before
+        * If we are in Before state, commit to After state and set us to After
+
+    Potential problems / edge cases:
+        * If your only action was a fill
+
+     */
+
     fun undo(player: ServerPlayerEntity): Boolean {
         return if (undoHistory.isEmpty()) {
             false

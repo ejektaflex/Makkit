@@ -175,7 +175,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
         } else {
             val camVec = MinecraftClient.getInstance().cameraEntity?.pos ?: return
 
-            val backFaces = selectionRenderer.renderBox.genBackfacePlanes(camVec, 1.0)
+            val backFaces = selectionRenderer.renderBox.genBackfacePlanes(camVec, 0.25)
 
 
 //            for ((dir, bf) in backFaces) {
