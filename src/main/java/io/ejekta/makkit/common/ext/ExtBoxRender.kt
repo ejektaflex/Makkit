@@ -51,6 +51,10 @@ fun Box.draw(colorFill: RenderColor, colorEdge: RenderColor = colorFill, offset:
     RenderHelper.drawBoxEdges(offset(offset), colorEdge)
 }
 
+fun Box.drawEdges(colorEdge: RenderColor, offset: Vec3d = Vec3d.ZERO) {
+    RenderHelper.drawBoxEdges(offset(offset), colorEdge)
+}
+
 
 
 

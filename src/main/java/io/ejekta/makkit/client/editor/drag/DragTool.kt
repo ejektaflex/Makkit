@@ -22,7 +22,7 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     val toolDir: Direction
         get() = handle.faceDir
 
-    private val previewTarget: Box
+    val previewTarget: Box
         get() = getPreviewBox(getCursorOffset(true))
 
     // We can have other preview boxes and draw them in [onDrawPreview], we just need at least one

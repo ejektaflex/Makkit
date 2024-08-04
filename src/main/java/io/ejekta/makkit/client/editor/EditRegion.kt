@@ -81,7 +81,7 @@ class EditRegion(var drawDragPlane: Boolean = false) {
     //fun isActive() = MakkitClient.isInEditMode
 
     fun isBeingInteractedWith(): Boolean {
-        return selection.trace() != BoxTraceResult.EMPTY
+        return hoverContext != null
     }
 
     private fun renderSelection() {

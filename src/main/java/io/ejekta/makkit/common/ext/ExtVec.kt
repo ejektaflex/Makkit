@@ -77,6 +77,10 @@ fun Vec3d.roundToVec3i(): Vec3i {
     return Vec3i(x.roundToInt(), y.roundToInt(), z.roundToInt())
 }
 
+fun Vec3d.floorToVec3i(): Vec3i {
+    return Vec3i(x.toInt(), y.toInt(), z.toInt())
+}
+
 fun Vec3d.hasZeroAxis(): Boolean {
     return enumValues<Direction.Axis>().any {
         axisValue(it) == 0.0
