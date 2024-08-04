@@ -18,21 +18,12 @@ class AnimBox(var realBox: () -> Box, var onDraw: Box.() -> Unit) {
     var renderBox = EMPTY_BOX
         private set
 
-    var isAnimating: Boolean = false
-        private set
-
     // The real location of the box
     private val actualBox: Box
         get() = realBox()
 
     fun setImmediate(box: Box) {
         renderBox = box
-    }
-
-    private fun startAnimating() {
-        if (!isAnimating) {
-            isAnimating = true
-        }
     }
 
     fun shrinkToCenter() {
