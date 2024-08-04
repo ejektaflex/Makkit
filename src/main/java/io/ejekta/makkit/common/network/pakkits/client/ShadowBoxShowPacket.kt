@@ -30,6 +30,7 @@ class ShadowBoxShowPacket(
         } else {
             if (uid in MakkitClient.remoteBoxMap) {
                 //MakkitClient.remoteBoxMap[uid]!!.resize(box)
+                MakkitClient.remoteBoxMap[uid]!!.setTarget { box }
             } else {
                 MakkitClient.remoteBoxMap[uid] = AnimBox({ box }, { draw(RenderColor.RED) }).apply {
                     shrinkToCenter()

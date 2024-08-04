@@ -140,22 +140,20 @@ class EditRegion(var drawDragPlane: Boolean = false) {
             operation: WorldOperation,
             editBox: Box = selection,
             undoBox: Box = editBox,
-            trace: BoxTraceResult = editBox.trace()
+            direction: Direction = Direction.UP
     ) {
-        if (trace != BoxTraceResult.EMPTY) {
-            EditWorldPacket(
-                    editBox,
-                    undoBox,
-                    trace.dir,
-                    operation,
-                    EditWorldOptions().apply {
-                        randomRotate = MakkitClient.randomRotate
-                        weightedPalette = MakkitClient.weightedPalette
-                        blockMask = MakkitClient.blockMask
-                    },
-                    ClientPalette.getSafePalette().map { it.id }
-            ).sendToServer()
-        }
+        EditWorldPacket(
+            editBox,
+            undoBox,
+            direction,
+            operation,
+            EditWorldOptions().apply {
+                randomRotate = MakkitClient.randomRotate
+                weightedPalette = MakkitClient.weightedPalette
+                blockMask = MakkitClient.blockMask
+            },
+            ClientPalette.getSafePalette().map { it.id }
+        ).sendToServer()
     }
 
     fun draw() {

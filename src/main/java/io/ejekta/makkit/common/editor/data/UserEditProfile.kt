@@ -1,5 +1,6 @@
 package io.ejekta.makkit.common.editor.data
 
+import io.ejekta.makkit.common.editor.operations.PasteOperation
 import io.ejekta.makkit.common.enums.BlockMask
 import io.ejekta.makkit.common.enums.UndoRedoMode
 import io.ejekta.makkit.common.ext.forEachBlockCoord
@@ -97,6 +98,7 @@ class UserEditProfile {
         val stateMap = mutableMapOf<BlockPos, BlockState>()
 
         Box.enclosing(BlockPos(0, 0, 0), BlockPos(copyBoxSize)).forEachBlockCoord { x, y, z ->
+            println("Saving state.. $x $y $z")
             stateMap[BlockPos(x, y, z)] = player.world.getBlockState(
                     startPos +
                             BlockPos(d1 * -z) +
@@ -134,7 +136,7 @@ class UserEditProfile {
                         pasteBox,
                         pasteBox,
                         face,
-                        //PasteOperation(cd),
+                        PasteOperation(cd),
                         options = EditWorldOptions().apply { blockMask = mask }
                 ))
             }

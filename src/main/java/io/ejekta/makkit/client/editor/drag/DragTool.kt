@@ -33,21 +33,14 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     val startVec: Vec3d
         get() = ctx.hit
 
-    fun isDragging(): Boolean {
-        //return dragStart != BoxTraceResult.EMPTY
-        return true // TODO remove?
-    }
-
-    protected fun getMainAxis(): Direction.Axis {
-        return toolDir.axis
-    }
+    protected fun getMainAxis(): Direction.Axis = toolDir.axis
 
     protected fun getAlternateAxesDirections(): List<Direction> {
-        return enumValues<Direction>().filter { it.axis != toolDir.axis }
+        return Direction.entries.filter { it.axis != toolDir.axis }
     }
 
     protected fun getAlternateAxes(): List<Direction.Axis> {
-        return enumValues<Direction.Axis>().filter { it != toolDir.axis }
+        return Direction.Axis.entries.filter { it != toolDir.axis }
     }
 
     protected fun getSelectionSizeIn(direction: Direction): Double {
@@ -98,12 +91,8 @@ abstract class DragTool(val ctx: EditRegion.HandleContext) {
     }
 
     fun tryDraw() {
-        if (isDragging()) {
-            val off = getCursorOffset()
-            onDrawPreview(off)
-        } else {
-            println("Nuh uh!")
-        }
+        val off = getCursorOffset()
+        onDrawPreview(off)
     }
 
     /**

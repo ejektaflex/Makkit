@@ -6,6 +6,8 @@ import io.ejekta.makkit.client.event.Events
 import io.ejekta.makkit.common.editor.operations.WorldOperation
 import io.ejekta.makkit.common.network.pakkits.client.FocusRegionPacket
 import io.ejekta.makkit.common.network.pakkits.client.ShadowBoxShowPacket
+import io.ejekta.makkit.common.network.pakkits.server.ClipboardIntentPacket
+import io.ejekta.makkit.common.network.pakkits.server.EditHistoryPacket
 import io.ejekta.makkit.common.network.pakkits.server.EditWorldPacket
 import io.ejekta.makkit.common.network.pakkits.server.ShadowBoxUpdatePacket
 import kotlinx.serialization.KSerializer
@@ -32,28 +34,9 @@ class MakkitCommon : ModInitializer {
         }
     }
 
-    fun <M : KambrikMsg> KSerializer<M>.toSimplePacketCodecTwo(): PacketCodec<RegistryByteBuf, M> {
-        val json = Kambrik.Serial.networkingFormat()
-        return PacketCodec.of(
-            { value, buf -> buf.writeString(json.encodeToString(this, value)) },
-            { json.decodeFromString(this, it.readString()) }
-        )
-    }
-
     override fun onInitialize() {
 
-//        Kambrik.Message.addSerializerModule(
-//            SerializersModule {
-//                //contextual(WorldOperation::class, WorldOperation.serializer())
-//            }
-//        )
-
-//        PayloadTypeRegistry.playS2C().register(ShadowBoxShowPacket.ID, ShadowBoxShowPacket.serializer().toSimplePacketCodecTwo())
-//        ClientPlayNetworking.registerGlobalReceiver(ShadowBoxShowPacket.ID) { payload, context ->
-//            println("Woo!")
-//            (payload as KambrikMsg).onClientReceived()
-//        }
-
+        // Clientbound packets
         Kambrik.Message.registerClientMessage(
             FocusRegionPacket.serializer(),
             FocusRegionPacket.ID
@@ -66,9 +49,9 @@ class MakkitCommon : ModInitializer {
 
         // Serverbound packets
         Kambrik.Message.registerServerMessage(EditWorldPacket.serializer(), EditWorldPacket.ID)
-        //Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), EditHistoryPacket::class, Identifier(ID, "edit_history"))
+        Kambrik.Message.registerServerMessage(EditHistoryPacket.serializer(), EditHistoryPacket.ID)
         Kambrik.Message.registerServerMessage(ShadowBoxUpdatePacket.serializer(), ShadowBoxUpdatePacket.ID)
-        //Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), ClipboardIntentPacket::class, Identifier(ID, "clipboard_intent"))
+        Kambrik.Message.registerServerMessage(ClipboardIntentPacket.serializer(), ClipboardIntentPacket.ID)
 
         Events.ServerDisconnectEvent.Dispatcher.register(::onServerPlayerDisconnect)
 

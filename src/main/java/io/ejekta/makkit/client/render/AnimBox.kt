@@ -8,7 +8,11 @@ import io.ejekta.makkit.common.ext.plus
 import net.minecraft.util.math.Box
 import kotlin.math.*
 
-class AnimBox(val realBox: () -> Box, var onDraw: Box.() -> Unit) {
+class AnimBox(var realBox: () -> Box, var onDraw: Box.() -> Unit) {
+
+    fun setTarget(func: () -> Box) {
+        realBox = func
+    }
 
     // The box that is rendered
     var renderBox = EMPTY_BOX

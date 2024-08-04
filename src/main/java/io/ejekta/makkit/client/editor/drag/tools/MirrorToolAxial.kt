@@ -3,6 +3,7 @@ package io.ejekta.makkit.client.editor.drag.tools
 import io.ejekta.makkit.client.editor.EditRegion
 import io.ejekta.makkit.client.editor.drag.SingleAxisDragTool
 import io.ejekta.makkit.client.render.RenderColor
+import io.ejekta.makkit.common.editor.operations.MirrorOperation
 import io.ejekta.makkit.common.ext.*
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -28,8 +29,7 @@ internal class MirrorToolAxial(
     override fun onStopDragging() {
         val old = Box(region.selection.calcPos(), region.selection.calcEnd())
         super.onStopDragging()
-        // TODO reimplement mirror op
-        //region.doOperation(MirrorOperation(mirrorPlane.calcPos()), editBox = old, trace = stop)
+        region.doOperation(MirrorOperation(mirrorPlane.calcPos()), editBox = old, direction = toolDir)
     }
 
     override fun getPreviewBox(offset: Vec3d, box: Box): Box {
